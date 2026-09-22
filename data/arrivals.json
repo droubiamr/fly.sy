@@ -1,0 +1,26 @@
+[
+  {"airline":"TK","city":{"ar":"إسطنبول","en":"Istanbul"},"country":"TR","entry":"DAM","from":"tr","mode":"air","hours":2,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20"},
+  {"airline":"VF","city":{"ar":"إسطنبول صبيحة","en":"Istanbul Sabiha"},"country":"TR","entry":"ALP","from":"tr","mode":"air","hours":1.7,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20","note":{"ar":"استُؤنف في نيسان ٢٠٢٦.","en":"Restored April 2026."}},
+  {"airline":"PC","city":{"ar":"إسطنبول","en":"Istanbul"},"country":"TR","entry":"ALP","from":"tr","mode":"air","hours":1.7,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20","note":{"ar":"استُؤنف في حزيران ٢٠٢٦.","en":"Restored June 2026."}},
+  {"airline":null,"city":{"ar":"غازي عنتاب","en":"Gaziantep"},"country":"TR","entry":"BAB","from":"tr","mode":"land","hours":3,"status":"open","confidence":"reported","source":"ports","seen":"2026-09-20"},
+
+  {"airline":null,"city":{"ar":"بيروت","en":"Beirut"},"country":"LB","entry":"JDE","from":"lb","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-09-20"},
+  {"airline":null,"city":{"ar":"طرابلس","en":"Tripoli"},"country":"LB","entry":"ARI","from":"lb","mode":"land","hours":1.5,"status":"open","confidence":"reported","source":"ports","seen":"2026-09-20"},
+  {"airline":null,"city":{"ar":"البقاع","en":"the Bekaa"},"country":"LB","entry":"JOU","from":"lb","mode":"land","hours":1.5,"status":"open","confidence":"reported","source":"sana","seen":"2026-09-20"},
+
+  {"airline":null,"city":{"ar":"عمّان","en":"Amman"},"country":"JO","entry":"NAS","from":"jo","mode":"land","hours":3,"status":"open","confidence":"verified","source":"sana","seen":"2026-09-20"},
+  {"airline":"RJ","city":{"ar":"عمّان","en":"Amman"},"country":"JO","entry":"DAM","from":"jo","mode":"air","hours":1,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20"},
+
+  {"airline":"FZ","city":{"ar":"دبي","en":"Dubai"},"country":"AE","entry":"DAM","from":"gulf","mode":"air","hours":3,"status":"open","confidence":"verified","source":"airline","seen":"2026-09-20","note":{"ar":"الناقل ينشر عدد الرحلات الأسبوعية وأقل سعر على موقعه.","en":"The airline publishes weekly frequency and a fare floor on its own site."}},
+  {"airline":"QR","city":{"ar":"الدوحة","en":"Doha"},"country":"QA","entry":"DAM","from":"gulf","mode":"air","hours":3,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20"},
+  {"airline":"EY","city":{"ar":"أبوظبي","en":"Abu Dhabi"},"country":"AE","entry":"DAM","from":"gulf","mode":"air","hours":3.3,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20","note":{"ar":"بدأ في ١٤ حزيران ٢٠٢٦.","en":"Began 14 June 2026."}},
+  {"airline":"KU","city":{"ar":"الكويت","en":"Kuwait"},"country":"KW","entry":"DAM","from":"gulf","mode":"air","hours":2.5,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20","note":{"ar":"استُؤنف في ١٥ تموز ٢٠٢٦.","en":"Resumed 15 July 2026."}},
+  {"airline":"J9","city":{"ar":"الكويت","en":"Kuwait"},"country":"KW","entry":"ALP","from":"gulf","mode":"air","hours":2.8,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20"},
+  {"airline":"RB","city":{"ar":"الشارقة","en":"Sharjah"},"country":"AE","entry":"DAM","from":"gulf","mode":"air","hours":3,"status":"open","confidence":"reported","source":"press","seen":"2026-09-20"},
+  {"airline":"RB","city":{"ar":"وجهات أخرى معلنة","en":"other listed destinations"},"country":"SY","entry":"DAM","from":"gulf","mode":"air","hours":3,"status":"unknown","confidence":"unconfirmed","source":"nosrc","seen":"2026-09-20","hidden":true,"note":{"ar":"تدرج الشركة وجهات أخرى في شبكتها (القاهرة، بيروت، بغداد، جدة، موسكو وغيرها). لم نتحقق من أيٍّ منها على حدة — لا تحجز بناءً على هذا.","en":"The airline lists further destinations (Cairo, Beirut, Baghdad, Jeddah, Moscow and others). We have checked none of them individually — don't book on this."}},
+
+  {"airline":null,"city":{"ar":"القائم","en":"Al-Qa'im"},"country":"IQ","entry":"BKM","from":"iq","mode":"land","hours":2,"status":"caution","confidence":"reported","source":"press","seen":"2026-09-20"},
+
+  {"airline":null,"city":{"ar":"ترانزيت عبر إسطنبول أو الخليج","en":"connecting via Istanbul or the Gulf"},"country":"EU","entry":"DAM","from":"eu","mode":"air","hours":8,"status":"caution","confidence":"verified","source":"easa","seen":"2026-09-20","note":{"ar":"لا خط مباشر من أوروبا. EASA ما زالت تنصح شركاتها بعدم دخول الأجواء السورية، والنشرة سارية حتى ٣١ تشرين الأول ٢٠٢٦.","en":"No direct route from Europe. EASA still advises its operators to avoid Syrian airspace; the bulletin runs to 31 October 2026."}},
+  {"airline":null,"city":{"ar":"بيروت (طيران ثم براً)","en":"Beirut, then overland"},"country":"LB","entry":"JDE","from":"eu","mode":"land","hours":7,"status":"open","confidence":"verified","source":"ports","seen":"2026-09-20","note":{"ar":"الطريق الأكثر موثوقية من أوروبا.","en":"The most dependable way in from Europe."}}
+]

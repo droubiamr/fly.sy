@@ -1,0 +1,5 @@
+[
+  {"id":"seed-1","entry":"JDE","travelled_on":"2026-09-18","wait_minutes":45,"passport":"sy","note":{"ar":"انتظار ٤٥ دقيقة الساعة ٧ صباحاً. طلبوا الجواز فقط. لا رسوم للسوريين.","en":"45 minutes at 7 am. Passport only. No fee for Syrians."},"status":"published","editor_verified":true},
+  {"id":"seed-2","entry":"DAM","travelled_on":"2026-09-16","wait_minutes":null,"passport":"voa","note":{"ar":"فلاي دبي من دبي. طلبوا موافقة مسبقة عند الإقلاع رغم أن جوازي ألماني. جهّزها قبل السفر.","en":"flydubai from Dubai. They asked for prior approval at boarding even on a German passport. Have it ready before you fly."},"status":"published","editor_verified":true},
+  {"id":"seed-3","entry":"NAS","travelled_on":"2026-09-11","wait_minutes":360,"passport":"sy","note":{"ar":"٦ ساعات انتظار يوم الجمعة. تجنبوا نهاية الأسبوع.","en":"Six hours on a Friday. Avoid the weekend."},"status":"published","editor_verified":true}
+]

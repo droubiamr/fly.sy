@@ -1,0 +1,12 @@
+{
+  "TK":{"name":{"ar":"الخطوط التركية","en":"Turkish Airlines"},"country":"TR"},
+  "VF":{"name":{"ar":"أجيت","en":"AJet"},"country":"TR"},
+  "PC":{"name":{"ar":"بيغاسوس","en":"Pegasus"},"country":"TR"},
+  "QR":{"name":{"ar":"القطرية","en":"Qatar Airways"},"country":"QA"},
+  "FZ":{"name":{"ar":"فلاي دبي","en":"flydubai"},"country":"AE"},
+  "EY":{"name":{"ar":"الاتحاد","en":"Etihad"},"country":"AE"},
+  "KU":{"name":{"ar":"الكويتية","en":"Kuwait Airways"},"country":"KW"},
+  "J9":{"name":{"ar":"طيران الجزيرة","en":"Jazeera Airways"},"country":"KW"},
+  "RJ":{"name":{"ar":"الملكية الأردنية","en":"Royal Jordanian"},"country":"JO"},
+  "RB":{"name":{"ar":"السورية للطيران","en":"Syrian Air"},"country":"SY"}
+}

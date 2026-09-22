@@ -1,0 +1,32 @@
+{
+  "air":{
+    "sy":[
+      {"source":"nosrc","text":{"ar":"جواز سوري ساري. إن كان منتهياً وأنت في الخارج فالوضع يختلف حسب السفارة — لا نملك جواباً موثقاً، ولن نخمّن.","en":"A valid Syrian passport. If yours expired abroad the answer depends on the embassy — we have no verified answer, and won't guess."}},
+      {"source":"nosrc","text":{"ar":"المقيمون في أوروبا: السفر قد يمسّ وضع اللجوء أو الإقامة. لن ننشر شيئاً قبل التحقق من مصدر رسمي لكل دولة — اسأل محامي هجرة.","en":"If you live in Europe: travelling can affect asylum or residence status. We'll publish nothing until we can verify an official source per country — speak to an immigration lawyer."}}
+    ],
+    "voa":[
+      {"source":"gov","text":{"ar":"جواز صالح ستة أشهر بعد عودتك، وفيه صفحتان فارغتان.","en":"A passport valid six months past your return, with two blank pages."}},
+      {"source":"ops","text":{"ar":"أهم نقطة: حتى لو كانت جنسيتك مؤهلة للتأشيرة عند الوصول، أنظمة بعض شركات الطيران لم تُحدَّث وقد ترفض إركابك دون موافقة مسبقة. المصادر متضاربة — اتصل بالسفارة واطلب الجواب كتابةً.","en":"The big one: even if your nationality qualifies for a visa on arrival, some airlines' systems aren't updated and staff may refuse to board you without prior approval. Sources contradict each other — call the embassy and ask in writing."}},
+      {"source":"gov","text":{"ar":"الرسم نقداً بالدولار عند الوصول، تقريباً بين ٢٥ و٤٠٠ دولار حسب الجنسية، بموجب القرار ١٢٨ منذ ٦ تموز ٢٠٢٥.","en":"The fee is US-dollar cash on arrival, roughly $25–$400 by nationality, under Decision 128 since 6 July 2025."}},
+      {"source":"ops","text":{"ar":"ختم دخول إلى إسرائيل في جوازك قد يمنع منحك التأشيرة.","en":"An Israeli entry stamp may block the visa."}}
+    ],
+    "res":[
+      {"source":"ops","text":{"ar":"موافقة مسبقة إلزامية. المعالجة حتى شهر، والموافقة صالحة للدخول خلال ثلاثة أشهر.","en":"Prior approval is mandatory. Processing up to a month; valid for entry within three months."}},
+      {"source":"nosrc","text":{"ar":"قوائم الجنسيات المقيّدة تختلف بين المصادر، ولا نملك قائمة رسمية. لن ننشر واحدة — تحقق من سفارتك.","en":"Published lists of restricted nationalities differ and we have no official one. We won't publish a list — check with your embassy."}}
+    ]
+  },
+  "land":{
+    "sy":[
+      {"source":"sana","text":{"ar":"نحو ٣٩١ ألف عودة طوعية عبر المعابر في النصف الأول من ٢٠٢٦، أكثر من ٢٤ ألفاً منها عبر نصيب.","en":"Around 391,000 voluntary returns through the crossings in the first half of 2026, over 24,000 through Nasib."}},
+      {"source":"nosrc","text":{"ar":"المقيمون في تركيا: وضع الإقامة أو الحماية المؤقتة هو ما يحدد إمكانية العودة. لا مصدر رسمي محدّث لدينا — تحقق قبل السفر.","en":"If you live in Türkiye, residence or temporary-protection status decides whether you can return. We have no current official source — check before you travel."}}
+    ],
+    "voa":[
+      {"source":"ops","text":{"ar":"التأشيرة تُمنح عند المعبر: استمارة قصيرة وختم في الجواز، دخولاً وخروجاً.","en":"The visa is issued at the crossing: a short form and a stamp, in and out."}},
+      {"source":"gov","text":{"ar":"الرسم نقداً بالدولار. لا بطاقات ولا صراف آلي. احمل أوراقاً نظيفة غير ممزقة.","en":"US-dollar cash. No cards, no ATM. Bring clean undamaged notes."}},
+      {"source":"ops","text":{"ar":"اللبنانيون والأردنيون والماليزيون والموريتانيون معفون من الرسم.","en":"Lebanese, Jordanian, Malaysian and Mauritanian citizens are exempt from the fee."}}
+    ],
+    "res":[
+      {"source":"ops","text":{"ar":"موافقة مسبقة إلزامية حتى براً.","en":"Prior approval is mandatory even by land."}}
+    ]
+  }
+}

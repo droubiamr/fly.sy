@@ -1,0 +1,210 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Dark follows the OS. An explicit .dark or .light class on <html> wins over it,
+   so an in-app toggle can be added later without touching anything here. */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    &:where(:not(.light):not(.light *)) {
+      @slot;
+    }
+  }
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+}
+
+/* fly.sy — direction B "Passport". Edit tokens here; nothing else restyles. */
+:root {
+  color-scheme: light dark;
+
+  --background: #f5f6f3;
+  --foreground: #1c2a25;
+  --card: #ffffff;
+  --card-foreground: #1c2a25;
+  --popover: #ffffff;
+  --popover-foreground: #1c2a25;
+  --primary: #0e5c3f;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f1ec;
+  --secondary-foreground: #0e5c3f;
+  --muted: #edefec;
+  --muted-foreground: #5c6b65;
+  --accent: #e8f1ec;
+  --accent-foreground: #0e5c3f;
+  --destructive: #b3261e;
+  --border: #e3e6e1;
+  --input: #d8ddd8;
+  --ring: #0e5c3f;
+  --radius: 0.75rem;
+
+  --status-open: #0e5c3f;
+  --status-caution: #9a6200;
+  --status-closed: #b3261e;
+  --status-unknown: #5c6b65;
+}
+
+:root.light {
+  color-scheme: light;
+}
+
+/* The dark palette is written twice on purpose: once for the OS setting and once
+   for the class. Keep the two lists identical. */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+
+    --background: #0b1512;
+    --foreground: #e8efeb;
+    --card: #111e1a;
+    --card-foreground: #e8efeb;
+    --popover: #111e1a;
+    --popover-foreground: #e8efeb;
+    --primary: #5cc98c;
+    --primary-foreground: #0b1512;
+    --secondary: #133a28;
+    --secondary-foreground: #5cc98c;
+    --muted: #1a2a26;
+    --muted-foreground: #a9bdb6;
+    --accent: #133a28;
+    --accent-foreground: #5cc98c;
+    --destructive: #f0817c;
+    --border: #233833;
+    --input: #2c453d;
+    --ring: #5cc98c;
+
+    --status-open: #5cc98c;
+    --status-caution: #e0a83c;
+    --status-closed: #f0817c;
+    --status-unknown: #93a39e;
+  }
+}
+
+:root.dark {
+  color-scheme: dark;
+
+  --background: #0b1512;
+  --foreground: #e8efeb;
+  --card: #111e1a;
+  --card-foreground: #e8efeb;
+  --popover: #111e1a;
+  --popover-foreground: #e8efeb;
+  --primary: #5cc98c;
+  --primary-foreground: #0b1512;
+  --secondary: #133a28;
+  --secondary-foreground: #5cc98c;
+  --muted: #1a2a26;
+  --muted-foreground: #a9bdb6;
+  --accent: #133a28;
+  --accent-foreground: #5cc98c;
+  --destructive: #f0817c;
+  --border: #233833;
+  --input: #2c453d;
+  --ring: #5cc98c;
+
+  --status-open: #5cc98c;
+  --status-caution: #e0a83c;
+  --status-closed: #f0817c;
+  --status-unknown: #93a39e;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-status-open: var(--status-open);
+  --color-status-caution: var(--status-caution);
+  --color-status-closed: var(--status-closed);
+  --color-status-unknown: var(--status-unknown);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: "Readex Pro", ui-sans-serif, system-ui, sans-serif;
+
+  /* Motion. The browser's built-in easings are too soft to read as deliberate,
+     so ease-out and ease-in-out are replaced with stronger curves everywhere. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+    /* iOS and Android paint a grey box over anything tapped. It is the loudest
+       "this is a website" tell, so it goes; :active states replace it. */
+    -webkit-tap-highlight-color: transparent;
+    /* No font inflation when the phone is turned sideways. */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "tnum" 1;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /* Skips the browser's wait-and-see for a double-tap, so taps fire at once. */
+  button,
+  a,
+  summary,
+  label,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* Controls only. Body text, route names and figures stay selectable: people
+     copy them. */
+  button,
+  [role="button"] {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Fewer and gentler, not none: colour and opacity still carry meaning here,
+     movement does not. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-property: opacity, color, background-color, border-color, fill, stroke !important;
+      transition-duration: 150ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Deliberately outside every layer. iOS zooms the page in when a focused field's
+   text is under 16px and never zooms back out, and a utility class setting a
+   smaller size would otherwise win over a rule in @layer base. Touch pointers
+   only, so desktop keeps its smaller fields. Never fix this with user-scalable=no. */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}

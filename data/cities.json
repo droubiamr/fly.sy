@@ -1,0 +1,14 @@
+[
+  {"id":"damascus","name":{"ar":"دمشق","en":"Damascus"},"lat":33.51,"lng":36.29},
+  {"id":"aleppo","name":{"ar":"حلب","en":"Aleppo"},"lat":36.20,"lng":37.13},
+  {"id":"homs","name":{"ar":"حمص","en":"Homs"},"lat":34.73,"lng":36.71},
+  {"id":"hama","name":{"ar":"حماة","en":"Hama"},"lat":35.13,"lng":36.75},
+  {"id":"latakia","name":{"ar":"اللاذقية","en":"Latakia"},"lat":35.52,"lng":35.79},
+  {"id":"tartus","name":{"ar":"طرطوس","en":"Tartus"},"lat":34.89,"lng":35.89},
+  {"id":"idlib","name":{"ar":"إدلب","en":"Idlib"},"lat":35.93,"lng":36.63},
+  {"id":"daraa","name":{"ar":"درعا","en":"Daraa"},"lat":32.62,"lng":36.10},
+  {"id":"sweida","name":{"ar":"السويداء","en":"Sweida"},"lat":32.71,"lng":36.57},
+  {"id":"raqqa","name":{"ar":"الرقة","en":"Raqqa"},"lat":35.95,"lng":39.01},
+  {"id":"deirezzor","name":{"ar":"دير الزور","en":"Deir ez-Zor"},"lat":35.33,"lng":40.14},
+  {"id":"qamishli","name":{"ar":"القامشلي","en":"Qamishli"},"lat":37.05,"lng":41.23}
+]

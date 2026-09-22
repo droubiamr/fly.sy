@@ -1,0 +1,10 @@
+{
+  "DAM":{"damascus":0.5,"daraa":1.5,"sweida":1.5,"homs":2,"hama":2.5,"tartus":3.5,"latakia":4,"aleppo":5,"idlib":5,"raqqa":6.5,"deirezzor":6.5,"qamishli":9},
+  "ALP":{"aleppo":0.5,"idlib":1.5,"hama":2,"homs":2.5,"raqqa":3,"latakia":3,"tartus":3.5,"damascus":4.5,"deirezzor":5,"qamishli":6,"daraa":6,"sweida":6},
+  "JDE":{"damascus":1,"daraa":2,"sweida":2.5,"homs":2.5,"hama":3,"tartus":3,"latakia":4,"aleppo":5,"idlib":5,"raqqa":7,"deirezzor":7,"qamishli":9.5},
+  "NAS":{"daraa":0.5,"sweida":1,"damascus":1.5,"homs":3,"hama":3.5,"tartus":4,"latakia":4.5,"aleppo":5.5,"idlib":5.5,"raqqa":7.5,"deirezzor":7.5,"qamishli":10},
+  "ARI":{"tartus":1,"homs":1.5,"latakia":1.5,"hama":2,"damascus":3,"aleppo":4,"idlib":4,"daraa":4,"sweida":4.5,"raqqa":7,"deirezzor":7,"qamishli":9},
+  "JOU":{"homs":1,"hama":1.5,"tartus":2,"damascus":2.5,"latakia":2.5,"aleppo":3.5,"idlib":3.5,"daraa":3.5,"sweida":4,"raqqa":6,"deirezzor":6,"qamishli":8.5},
+  "BAB":{"idlib":0.5,"aleppo":1.5,"hama":2.5,"latakia":2.5,"homs":3,"tartus":3.5,"raqqa":4,"damascus":5,"deirezzor":6,"daraa":6.5,"sweida":6.5,"qamishli":7},
+  "BKM":{"deirezzor":2,"raqqa":4,"qamishli":4,"homs":7,"aleppo":7,"hama":7.5,"idlib":8,"damascus":8,"latakia":8.5,"tartus":8.5,"daraa":9,"sweida":9}
+}
