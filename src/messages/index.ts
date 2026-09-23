@@ -3,6 +3,12 @@ import type { Locale } from "@/lib/types"
 const messages = {
   ar: {
     brand: "fly.sy",
+    meta: {
+      title: "fly.sy — كيف تصل إلى سوريا",
+      description: "كل طريق إلى سوريا، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
+      // Alt text for the share card, which carries the same words as an image.
+      card: "fly.sy — كيف تصل إلى سوريا. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
+    },
     tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", reports: "تجارب", about: "عن الموقع" },
     indep: "موقع مستقل، غير رسمي، لا يتبع أي جهة حكومية ولا يمثّل أي شركة طيران أو سفارة. يُحدَّث يدوياً ومن تجارب الناس.",
     updated: "آخر تحديث",
@@ -68,6 +74,11 @@ const messages = {
   },
   en: {
     brand: "fly.sy",
+    meta: {
+      title: "fly.sy — How to get into Syria",
+      description: "Every route into Syria, with the source and the date checked on every line. Independent and unofficial.",
+      card: "fly.sy — How to get into Syria. Every route, with a source on every line. Independent, unofficial.",
+    },
     tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", reports: "Reports", about: "About" },
     indep: "Independent and unofficial. Not part of any government body; represents no airline or embassy. Updated by hand and from people's real experiences.",
     updated: "Last updated",

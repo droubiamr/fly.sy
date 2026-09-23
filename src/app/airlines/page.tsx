@@ -1,8 +1,14 @@
+import type { Metadata } from "next"
 import { DATA } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
 import { formatDate, formatHours } from "@/lib/format"
 import { StatusDot } from "@/components/status-stamp"
 import { CountryTag } from "@/components/country-tag"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n()
+  return { title: m.airlines.title }
+}
 
 export default async function AirlinesPage() {
   const { locale, m } = await getI18n()

@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "node --experimental-strip-types --test \"tests/**/*.test.ts\"",
     "check": "npm run lint && npx tsc --noEmit && npm test && npm run build",
+    "icons": "node scripts/icons.mjs",
     "preview": "opennextjs-cloudflare build && wrangler dev",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
   },

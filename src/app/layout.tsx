@@ -1,12 +1,34 @@
 import type { Metadata, Viewport } from "next"
 import { getI18n } from "@/lib/i18n"
+import { SITE_URL } from "@/lib/site"
 import { AppShell } from "@/components/app-shell"
 import { MessagesProvider } from "@/components/messages-provider"
 import "./globals.css"
 
-export const metadata: Metadata = {
-  title: "fly.sy — كيف تصل إلى سوريا",
-  description: "كل طريق إلى سوريا، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
+// Icons, the manifest and the share card come from files next to this one
+// (icon.svg, favicon.ico, apple-icon.png, manifest.ts, opengraph-image.png), which
+// the app router turns into <link> and <meta> tags on its own. Regenerate the
+// rasters from icon.svg with `npm run icons`.
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, m } = await getI18n()
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: m.meta.title, template: "%s · fly.sy" },
+    description: m.meta.description,
+    applicationName: "fly.sy",
+    openGraph: {
+      type: "website",
+      siteName: "fly.sy",
+      locale: locale === "ar" ? "ar_SY" : "en_GB",
+      title: m.meta.title,
+      description: m.meta.description,
+    },
+    twitter: { card: "summary_large_image" },
+    appleWebApp: { title: "fly.sy", statusBarStyle: "default" },
+    // Phone numbers in route notes are not for tapping, and the URL is not a link
+    // Safari should guess at.
+    formatDetection: { telephone: false, address: false, email: false },
+  }
 }
 
 export const viewport: Viewport = {
