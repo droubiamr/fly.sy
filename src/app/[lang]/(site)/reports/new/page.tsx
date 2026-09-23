@@ -4,8 +4,9 @@ import { supabaseConfigured } from "@/lib/supabase/server"
 import { DATA } from "@/lib/data"
 import { pageMetadata } from "@/lib/seo"
 import type { Locale } from "@/lib/types"
-import { Breadcrumbs } from "@/components/breadcrumbs"
+import { PageBody, PageHero, SURFACE } from "@/components/page"
 import { ReportForm } from "@/components/report-form"
+import { cn } from "@/lib/utils"
 
 type Props = { params: Promise<{ lang: Locale }> }
 
@@ -22,20 +23,23 @@ export default async function NewReportPage({ params }: Props) {
   requireLocale(lang)
   const { locale, m } = getI18n(lang)
   return (
-    <div>
-      <Breadcrumbs
+    <>
+      <PageHero
         locale={locale}
-        items={[
+        crumbs={[
           { name: m.home, path: "/" },
           { name: m.tabs.reports, path: "/reports" },
           { name: m.reports.add, path: "/reports/new" },
         ]}
+        title={m.reports.form.title}
+        lede={m.reports.form.lede}
       />
-      <h1 className="text-2xl font-bold tracking-tight">{m.reports.form.title}</h1>
-      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{m.reports.form.lede}</p>
-      <div className="mt-6">
-        <ReportForm configured={supabaseConfigured()} contactUrl={`mailto:${DATA.meta.contact}`} />
-      </div>
-    </div>
+      <PageBody narrow>
+        {/* Linkat's sign-in card: one rounded card holding the whole form. */}
+        <div className={cn(SURFACE, "p-5 md:p-7")}>
+          <ReportForm configured={supabaseConfigured()} contactUrl={`mailto:${DATA.meta.contact}`} />
+        </div>
+      </PageBody>
+    </>
   )
 }

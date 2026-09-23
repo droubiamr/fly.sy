@@ -9,18 +9,22 @@
 //   src/app/opengraph-image.png    1200x630 share card: the mark beside the tagline
 //
 // sharp comes with Next, so this needs nothing installed beyond `npm install`.
-// The share card sets its text in Readex Pro, which must be installed on the
-// machine running this (fontconfig finds it); otherwise it falls back to whatever
-// sans-serif is around and the card should not be committed.
+// The share card sets its text in Geist and IBM Plex Sans Arabic, the site's own
+// fonts, which must be installed on the machine running this (fontconfig finds
+// them; the .woff files from @fontsource/geist and @fontsource/ibm-plex-sans-arabic
+// in ~/.fonts work). Otherwise it falls back to whatever sans-serif is around and
+// the card should not be committed.
 
 import { readFile, writeFile } from "node:fs/promises"
 import sharp from "sharp"
 
-const GREEN = "#0e5c3f"
-const GROUND = "#f5f6f3"
-const INK = "#1c2a25"
-const MUTED = "#5c6b65"
-const BORDER = "#e3e6e1"
+// The Linkat palette as hex (primary, page, text, muted text, border); the
+// oklch originals are in src/app/globals.css.
+const GREEN = "#0b462b"
+const GROUND = "#edf1ee"
+const INK = "#032113"
+const MUTED = "#4f6358"
+const BORDER = "#ccd3cd"
 
 const source = await readFile("src/app/icon.svg", "utf8")
 // Everything drawn on top of the tile.
@@ -72,20 +76,20 @@ function ico(pngs) {
 function shareCard() {
   const R = 1130 // right edge of the text column
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"
-       font-family="Readex Pro">
+       font-family="Geist, IBM Plex Sans Arabic">
     <rect width="1200" height="630" fill="${GROUND}"/>
     <g transform="translate(90 165) scale(3)">
       <rect width="100" height="100" rx="22" fill="${GREEN}"/>
       ${mark}
     </g>
-    <text x="${R}" y="128" text-anchor="end" font-size="46" font-weight="700" fill="${INK}" letter-spacing="-1">fly<tspan fill="${GREEN}">.sy</tspan></text>
+    <text x="${R}" y="128" text-anchor="end" font-size="46" font-weight="700" fill="${INK}" letter-spacing="-1">fly.sy</text>
     <text x="${R}" y="318" direction="rtl" text-anchor="start" font-size="76" font-weight="700" fill="${INK}">كيف تصل إلى سوريا</text>
     <text x="${R}" y="378" direction="rtl" text-anchor="start" font-size="30" font-weight="400" fill="${MUTED}">كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها</text>
     <text x="${R}" y="436" text-anchor="end" font-size="26" font-weight="400" fill="${MUTED}">How to get into Syria, with a source on every line.</text>
     <g transform="translate(${R} 500)" font-size="20" font-weight="500" fill="${MUTED}">
-      <rect x="-198" y="0" width="198" height="50" rx="14" fill="none" stroke="${BORDER}" stroke-width="2"/>
+      <rect x="-198" y="0" width="198" height="50" rx="25" fill="none" stroke="${BORDER}" stroke-width="2"/>
       <text x="-99" y="33" text-anchor="middle" direction="rtl">مستقل · غير رسمي</text>
-      <rect x="-482" y="0" width="266" height="50" rx="14" fill="none" stroke="${BORDER}" stroke-width="2"/>
+      <rect x="-482" y="0" width="266" height="50" rx="25" fill="none" stroke="${BORDER}" stroke-width="2"/>
       <text x="-349" y="33" text-anchor="middle">Independent · Unofficial</text>
     </g>
   </svg>`

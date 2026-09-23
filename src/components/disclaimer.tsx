@@ -10,6 +10,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogMedia,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
@@ -67,10 +68,12 @@ export function Disclaimer() {
 
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent>
+      <AlertDialogContent className="rounded-3xl p-6 data-[size=default]:max-w-[calc(100%-2.5rem)] data-[size=default]:sm:max-w-md">
         <AlertDialogHeader>
-          <ShieldAlert className="size-6 text-primary" strokeWidth={1.8} aria-hidden="true" />
-          <AlertDialogTitle>{m.disclaimer.title}</AlertDialogTitle>
+          <AlertDialogMedia className="rounded-full">
+            <ShieldAlert strokeWidth={1.8} aria-hidden="true" />
+          </AlertDialogMedia>
+          <AlertDialogTitle className="text-lg font-semibold">{m.disclaimer.title}</AlertDialogTitle>
           <AlertDialogDescription className="flex flex-col gap-3">
             {m.disclaimer.body.map((p) => (
               <span key={p} className="block">
@@ -79,8 +82,8 @@ export function Disclaimer() {
             ))}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogAction onClick={accept} className="h-11 w-full rounded-full text-[15px]">
+        <AlertDialogFooter className="-mx-6 -mb-6 rounded-b-3xl p-6 sm:flex-col">
+          <AlertDialogAction onClick={accept} size="lg" className="h-11 w-full rounded-full text-[15px]">
             {m.disclaimer.accept}
           </AlertDialogAction>
         </AlertDialogFooter>

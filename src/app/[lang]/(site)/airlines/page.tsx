@@ -7,10 +7,11 @@ import { breadcrumbLd, graph, webPageLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
 import type { Locale } from "@/lib/types"
 import { AirlineLogo } from "@/components/airline-logo"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 import { CountryTag } from "@/components/country-tag"
 import { JsonLd } from "@/components/json-ld"
-import { StatusStamp } from "@/components/status-stamp"
+import { PageBody, PageHero, SURFACE } from "@/components/page"
+import { StatusBadge } from "@/components/status-badge"
+import { cn } from "@/lib/utils"
 
 type Props = { params: Promise<{ lang: Locale }> }
 const year = () => DATA.meta.updated.slice(0, 4)
@@ -36,35 +37,34 @@ export default async function AirlinesPage({ params }: Props) {
     { name: m.tabs.airlines, path: "/airlines" },
   ]
   return (
-    <div>
+    <>
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path: "/airlines", name: m.airlines.title, description: m.seo.airlines.description }))} />
-      <Breadcrumbs locale={locale} items={crumbs} />
-      <h1 className="text-2xl font-bold tracking-tight">{m.airlines.title}</h1>
-      <p className="mt-2 mb-4 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.airlines.lede}</p>
+      <PageHero locale={locale} crumbs={crumbs} title={m.airlines.title} lede={m.airlines.lede} />
+      <PageBody>
       {/* minmax(0,1fr) columns: a no-wrap city list must truncate, not widen the track. */}
-      <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+      <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {Object.entries(DATA.airlines).map(([code, al]) => {
           const hops = arrivalsBy(code)
-          // What the carrier is doing now, for the stamp beside its name: flying if any
+          // What the carrier is doing now, for the badge beside its name: flying if any
           // route is open; otherwise closed only when every route is, else unknown.
           const state = hops.some((h) => h.status === "open") ? "open" : hops.every((h) => h.status === "closed") ? "closed" : "unknown"
           return (
             <li key={code}>
               <Link
                 href={localePath(locale, airlinePath(code))}
-                className="flex items-center gap-3 rounded-2xl border bg-card px-4 py-3 transition-colors duration-100 ease-out active:bg-muted"
+                className={cn(SURFACE, "flex items-center gap-3 px-4 py-3.5 transition-[background-color,box-shadow] duration-150 ease-out hover:ring-foreground/30 active:bg-muted")}
               >
-                {/* Carriers with nothing flying stay listed, in colour, with a stamp
+                {/* Carriers with nothing flying stay listed, in colour, with a badge
                     that says so: the list is also a record of who used to fly, and a
                     greyed logo reads as a broken image rather than a status. */}
-                <span className="size-10 shrink-0 rounded-[10px] border bg-background p-1.5">
+                <span className="size-11 shrink-0 rounded-full bg-background p-1.5 ring-1 ring-foreground/10">
                   <AirlineLogo code={code} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-2 font-semibold">
                     <CountryTag code={al.country} />
                     <span className="truncate">{al.name[locale]}</span>
-                    {state !== "open" && <StatusStamp status={state} label={m.status[state]} />}
+                    {state !== "open" && <StatusBadge status={state} label={m.status[state]} />}
                   </span>
                   <span className="mt-0.5 block truncate text-[13px] text-muted-foreground">
                     {hops.length ? hops.map((h) => h.city[locale]).join(" · ") : m.airlines.empty}
@@ -75,6 +75,7 @@ export default async function AirlinesPage({ params }: Props) {
           )
         })}
       </ul>
-    </div>
+      </PageBody>
+    </>
   )
 }

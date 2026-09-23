@@ -8,9 +8,10 @@ import { GITHUB_URL, breadcrumbLd, datasetLd, graph, organizationLd, webPageLd, 
 import { localePath } from "@/lib/site"
 import type { Locale } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 import { JsonLd } from "@/components/json-ld"
+import { PageBody, PageHero, SURFACE, Section } from "@/components/page"
 import { SourceLink } from "@/components/source-link"
+import { cn } from "@/lib/utils"
 
 type Props = { params: Promise<{ lang: Locale }> }
 
@@ -30,8 +31,9 @@ export default async function AboutPage({ params }: Props) {
     { name: m.home, path: "/" },
     { name: m.tabs.about, path: "/about" },
   ]
+  const link = "text-sm font-medium underline-offset-4 hover:underline"
   return (
-    <div className="flex flex-col gap-7">
+    <>
       <JsonLd
         data={graph(
           organizationLd(locale),
@@ -41,118 +43,108 @@ export default async function AboutPage({ params }: Props) {
           webPageLd(locale, { path: "/about", name: m.about.title, description: m.seo.about.description }),
         )}
       />
-      <section>
-        <Breadcrumbs locale={locale} items={crumbs} />
-        <h1 className="text-2xl font-bold tracking-tight">{m.about.title}</h1>
-        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.about.lede}</p>
-      </section>
+      <PageHero locale={locale} crumbs={crumbs} title={m.about.title} lede={m.about.lede} />
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.about.what}</h2>
-        <p className="max-w-prose text-[13.5px] leading-relaxed">{m.about.whatText}</p>
-      </section>
+      {/* Mostly prose, so Linkat's 680px reading column. */}
+      <PageBody narrow>
+        <Section id="what-h" title={m.about.what}>
+          <p className="text-[15px] leading-relaxed">{m.about.whatText}</p>
+        </Section>
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.about.levels}</h2>
-        <ul className="divide-y rounded-2xl border bg-card px-5">
-          {levels.map((k) => (
-            <li key={k} className="flex items-start gap-3 py-3">
-              <Badge variant="secondary" className="shrink-0">
-                {m.confidence[k]}
-              </Badge>
-              <p className="text-[13.5px] leading-relaxed">{m.about.lv[k]}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <Section id="lv-h" title={m.about.levels}>
+          <ul className={cn(SURFACE, "divide-y px-5")}>
+            {levels.map((k) => (
+              <li key={k} className="flex items-start gap-3 py-4">
+                <Badge variant="secondary" className="mt-0.5 h-6 shrink-0 px-2.5">
+                  {m.confidence[k]}
+                </Badge>
+                <p className="text-[14px] leading-relaxed">{m.about.lv[k]}</p>
+              </li>
+            ))}
+          </ul>
+        </Section>
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.about.how}</h2>
-        <p className="max-w-prose text-[13.5px] leading-relaxed">{m.about.howText}</p>
-        <p className="mt-2 text-xs text-muted-foreground">
-          {m.updated} <time dateTime={DATA.meta.updated}>{formatDate(DATA.meta.updated, locale)}</time>
-        </p>
-      </section>
+        <Section
+          id="how-h"
+          title={m.about.how}
+          note={
+            <>
+              {m.updated} <time dateTime={DATA.meta.updated}>{formatDate(DATA.meta.updated, locale)}</time>
+            </>
+          }
+        >
+          <p className="text-[15px] leading-relaxed">{m.about.howText}</p>
+        </Section>
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.about.sources}</h2>
-        <ul className="divide-y rounded-2xl border bg-card px-5">
-          {Object.entries(DATA.sources).map(([id, s]) => (
-            <li key={id} className="flex items-start justify-between gap-3 py-3">
-              <div>
-                <h3 className="text-sm font-semibold">
-                  <SourceLink source={s} locale={locale}>{s.name[locale]}</SourceLink>
-                </h3>
-                <p className="mt-0.5 text-[13px] leading-relaxed text-muted-foreground">{s.use[locale]}</p>
+        <Section id="src-h" title={m.about.sources}>
+          <ul className={cn(SURFACE, "divide-y px-5")}>
+            {Object.entries(DATA.sources).map(([id, s]) => (
+              <li key={id} className="flex items-start justify-between gap-3 py-4">
+                <div>
+                  <h3 className="text-sm font-semibold">
+                    <SourceLink source={s} locale={locale}>{s.name[locale]}</SourceLink>
+                  </h3>
+                  <p className="mt-0.5 text-[13.5px] leading-relaxed text-muted-foreground">{s.use[locale]}</p>
+                </div>
+                <Badge variant="outline" className="h-6 shrink-0 px-2.5 text-muted-foreground">
+                  {s.kind[locale]}
+                </Badge>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section id="faq-h" title={m.about.faq}>
+          <dl className={cn(SURFACE, "divide-y px-5")}>
+            {m.about.faqs.map((f) => (
+              <div key={f.q} className="py-4">
+                <dt className="font-semibold">{f.q}</dt>
+                <dd className="mt-1 text-[14px] leading-relaxed text-muted-foreground">{f.a}</dd>
               </div>
-              <span className="shrink-0 pt-0.5 text-[11px] font-semibold text-muted-foreground">{s.kind[locale]}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.about.faq}</h2>
-        <dl className="divide-y rounded-2xl border bg-card px-5">
-          {m.about.faqs.map((f) => (
-            <div key={f.q} className="py-3">
-              <dt className="text-sm font-semibold">{f.q}</dt>
-              <dd className="mt-1 text-[13.5px] leading-relaxed text-muted-foreground">{f.a}</dd>
-            </div>
-          ))}
-        </dl>
-        <p className="mt-2 text-xs">
-          <Link href={localePath(locale, "/documents")} className="text-primary underline-offset-4 hover:underline">
+            ))}
+          </dl>
+          <Link href={localePath(locale, "/documents")} className={cn(link, "mt-3 inline-flex")}>
             {m.footer.documents} {arrow(locale)}
           </Link>
-        </p>
-      </section>
+        </Section>
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.about.open}</h2>
-        <p className="max-w-prose text-[13.5px] leading-relaxed text-muted-foreground">{m.about.openText}</p>
-        <p className="mt-2 text-xs">
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-primary underline-offset-4 hover:underline">
-            github.com/droubiamr/fly.sy {arrow(locale)}
+        <Section id="open-h" title={m.about.open}>
+          <p className="text-[15px] leading-relaxed text-muted-foreground">{m.about.openText}</p>
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" dir="ltr" className={cn(link, "mt-3 inline-flex")}>
+            github.com/droubiamr/fly.sy
           </a>
-        </p>
-      </section>
+        </Section>
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.about.contact}</h2>
-        <p className="text-[13.5px] leading-relaxed text-muted-foreground">
-          {m.about.contactText}{" "}
-          {/* dir="ltr" keeps the address in reading order inside an Arabic sentence. */}
-          <a
-            href={`mailto:${DATA.meta.contact}`}
-            dir="ltr"
-            className="font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] hover:decoration-current"
-          >
-            {DATA.meta.contact}
-          </a>
-        </p>
-        {/* An open door for people who want to build it with us: its own card, so
-            the invitation reads as such and not as fine print under the address. */}
-        <div className="mt-3 rounded-2xl border bg-card px-5 py-4">
-          <p className="text-sm font-semibold">{m.about.join}</p>
-          <p className="mt-1 text-[13.5px] leading-relaxed text-muted-foreground">{m.about.joinText}</p>
-        </div>
-      </section>
+        <Section id="contact-h" title={m.about.contact}>
+          <p className="text-[15px] leading-relaxed text-muted-foreground">
+            {m.about.contactText}{" "}
+            {/* dir="ltr" keeps the address in reading order inside an Arabic sentence. */}
+            <a href={`mailto:${DATA.meta.contact}`} dir="ltr" className="font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] hover:decoration-current">
+              {DATA.meta.contact}
+            </a>
+          </p>
+          {/* An open door for people who want to build it with us: its own card,
+              so the invitation reads as such and not as fine print. */}
+          <div className={cn(SURFACE, "mt-4 px-5 py-4")}>
+            <p className="font-semibold">{m.about.join}</p>
+            <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground">{m.about.joinText}</p>
+          </div>
+        </Section>
 
-      {/* The same words as the first-visit popup, kept here for anyone who
-          dismissed it or whose browser dropped the flag. */}
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.disclaimer.title}</h2>
-        <div className="flex flex-col gap-3 rounded-2xl border bg-card px-5 py-4">
-          {m.disclaimer.body.map((p) => (
-            <p key={p} className="text-[13.5px] leading-relaxed">
-              {p}
-            </p>
-          ))}
-        </div>
-      </section>
+        {/* The same words as the first-visit popup, kept here for anyone who
+            dismissed it or whose browser dropped the flag. */}
+        <Section id="disc-h" title={m.disclaimer.title}>
+          <div className={cn(SURFACE, "flex flex-col gap-3 px-5 py-4")}>
+            {m.disclaimer.body.map((p) => (
+              <p key={p} className="text-[14px] leading-relaxed">
+                {p}
+              </p>
+            ))}
+          </div>
+        </Section>
 
-      <p className="text-xs leading-relaxed text-muted-foreground">{m.about.fine}</p>
-    </div>
+        <p className="text-xs leading-relaxed text-muted-foreground">{m.about.fine}</p>
+      </PageBody>
+    </>
   )
 }

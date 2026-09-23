@@ -6,9 +6,11 @@ import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, graph, webPageLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
 import type { Locale, Mode, Passport } from "@/lib/types"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 import { JsonLd } from "@/components/json-ld"
+import { PageBody, PageHero, SURFACE, Section } from "@/components/page"
 import { Provenance } from "@/components/provenance"
+import { cn } from "@/lib/utils"
+import { TriangleAlert } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 type Props = { params: Promise<{ lang: Locale }> }
@@ -32,25 +34,21 @@ export default async function DocumentsPage({ params }: Props) {
     { name: m.footer.documents, path: "/documents" },
   ]
   return (
-    <div className="flex flex-col gap-7">
+    <>
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path: "/documents", name: m.documents.title, description: m.seo.documents.description }))} />
-      <section>
-        <Breadcrumbs locale={locale} items={crumbs} />
-        <h1 className="text-2xl font-bold tracking-tight">{m.documents.title}</h1>
-        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.documents.lede}</p>
-      </section>
+      <PageHero locale={locale} crumbs={crumbs} title={m.documents.title} lede={m.documents.lede} />
+      <PageBody>
+        <Alert className="rounded-2xl px-4 py-3">
+          <TriangleAlert className="text-status-caution" aria-hidden="true" />
+          <AlertDescription className="text-foreground">{m.documents.warn}</AlertDescription>
+        </Alert>
 
-      <Alert>
-        <AlertDescription>{m.documents.warn}</AlertDescription>
-      </Alert>
-
-      {MODES.map((mode) => (
-        <section key={mode} aria-labelledby={`h-${mode}`}>
-          <h2 id={`h-${mode}`} className="text-xl font-bold tracking-tight">
-            {m.documents[mode]}
-          </h2>
-          <p className="mt-1 mb-3 text-xs text-muted-foreground">
-            {(mode === "air" ? airEntries() : landEntries()).map(([id, e], i, arr) => (
+        {MODES.map((mode) => (
+          <Section
+            key={mode}
+            id={`h-${mode}`}
+            title={m.documents[mode]}
+            note={(mode === "air" ? airEntries() : landEntries()).map(([id, e], i, arr) => (
               <span key={id}>
                 <Link href={href(entryPath(id))} className="underline-offset-4 hover:underline">
                   {e.name[locale]}
@@ -58,26 +56,27 @@ export default async function DocumentsPage({ params }: Props) {
                 {i < arr.length - 1 && " · "}
               </span>
             ))}
-          </p>
-          <div className="flex flex-col gap-3">
-            {PASSPORTS.map((pp) => (
-              <div key={pp} className="rounded-2xl border bg-card px-5 py-4">
-                <h3 className="text-[15px] font-semibold">{m.reports.form.passports[pp]}</h3>
-                <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
-                  {DATA.needs[mode][pp].map((n, i) => (
-                    <li key={i}>
-                      {n.text[locale]}
-                      <Provenance source={n.source} locale={locale} m={m} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
+          >
+            <div className="grid gap-3 xl:grid-cols-3">
+              {PASSPORTS.map((pp) => (
+                <div key={pp} className={cn(SURFACE, "px-5 py-4")}>
+                  <h3 className="font-semibold">{m.reports.form.passports[pp]}</h3>
+                  <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
+                    {DATA.needs[mode][pp].map((n, i) => (
+                      <li key={i}>
+                        {n.text[locale]}
+                        <Provenance source={n.source} locale={locale} m={m} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Section>
+        ))}
 
-      <p className="text-xs leading-relaxed text-muted-foreground">{m.about.fine}</p>
-    </div>
+        <p className="text-xs leading-relaxed text-muted-foreground">{m.about.fine}</p>
+      </PageBody>
+    </>
   )
 }

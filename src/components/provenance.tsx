@@ -22,7 +22,9 @@ export function Provenance({
   seen,
   locale,
   m,
+  className,
 }: {
+  className?: string
   confidence?: Confidence
   source: string
   seen?: string
@@ -32,7 +34,7 @@ export function Provenance({
   const src = DATA.sources[source]
   const c = confidence && CONFIDENCE[confidence]
   return (
-    <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+    <p className={cn("mt-1.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground", className)}>
       {c && (
         <span className={cn("inline-flex items-center gap-1", c.tone)}>
           <c.Icon className="size-3.5" aria-hidden="true" />

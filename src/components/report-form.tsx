@@ -25,8 +25,8 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
 
   if (state?.ok) {
     return (
-      <Alert>
-        <AlertDescription className="text-base">{f.done}</AlertDescription>
+      <Alert className="rounded-2xl px-4 py-3">
+        <AlertDescription className="text-base text-foreground">{f.done}</AlertDescription>
       </Alert>
     )
   }
@@ -60,7 +60,7 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
             <ToggleGroupItem
               key={id}
               value={id}
-              className="h-11 rounded-full border-0 bg-muted px-4 text-sm font-medium data-[state=on]:bg-foreground data-[state=on]:text-background"
+              className="h-11 rounded-full border-0 bg-muted px-4 text-sm font-medium data-[state=on]:bg-foreground/85 data-[state=on]:text-background"
             >
               {e.name[locale]}
             </ToggleGroupItem>
@@ -68,14 +68,14 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
         </ToggleGroup>
       </fieldset>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 items-end gap-3">
         <div className="flex flex-col gap-2">
           <Label htmlFor="travelled_on">{f.date}</Label>
-          <Input id="travelled_on" name="travelled_on" type="date" required className="h-11 rounded-[10px]" />
+          <Input id="travelled_on" name="travelled_on" type="date" required className="h-11 rounded-xl" />
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="wait_minutes">{f.wait}</Label>
-          <Input id="wait_minutes" name="wait_minutes" type="number" inputMode="numeric" min={0} max={4320} className="h-11 rounded-[10px]" />
+          <Input id="wait_minutes" name="wait_minutes" type="number" inputMode="numeric" min={0} max={4320} className="h-11 rounded-xl" />
         </div>
       </div>
 
@@ -87,7 +87,7 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
             <ToggleGroupItem
               key={p}
               value={p}
-              className="h-11 rounded-[10px] border-0 bg-muted text-sm font-medium data-[state=on]:bg-foreground data-[state=on]:text-background"
+              className="h-11 rounded-full border-0 bg-muted text-sm font-medium data-[state=on]:bg-foreground/85 data-[state=on]:text-background"
             >
               {f.passports[p]}
             </ToggleGroupItem>
@@ -97,7 +97,7 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="note">{f.note}</Label>
-        <Textarea id="note" name="note" required minLength={10} maxLength={1000} rows={4} className="rounded-[10px] text-base leading-relaxed" />
+        <Textarea id="note" name="note" required minLength={10} maxLength={1000} rows={4} className="rounded-xl px-3 py-2.5 text-base leading-relaxed" />
       </div>
 
       <div className="flex flex-col gap-2">
@@ -112,7 +112,7 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
           spellCheck={false}
           enterKeyHint="done"
           maxLength={200}
-          className="h-11 rounded-[10px]"
+          className="h-11 rounded-xl"
         />
       </div>
 
@@ -129,7 +129,7 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
         </Alert>
       )}
 
-      <Button type="submit" size="lg" disabled={pending || !configured} className="h-13 rounded-xl text-[15.5px] shadow-none">
+      <Button type="submit" size="lg" disabled={pending || !configured} className="h-11 rounded-xl text-[15px]">
         {pending ? f.sending : f.submit}
       </Button>
     </form>

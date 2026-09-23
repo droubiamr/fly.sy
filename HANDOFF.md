@@ -18,7 +18,7 @@ Start here, then README.md and CONTRIBUTING.md.
 |---|---|
 | Audience | Public / consumers, not agencies |
 | Licence | Code MIT, data CC BY-SA 4.0 |
-| UI direction | **B — "Passport"**: calm, light, cool-grey ground, passport-green `#0E5C3F` accent, outlined *stamp* chips for status, Readex Pro font |
+| UI direction | **Linkat design system** (linkat.sy, same owner), chosen by Amr on 23 Sep 2026 to replace direction B "Passport": green-grey ground, forest-green `oklch(0.35 0.075 158)` accent, one radius token, Geist + IBM Plex Sans Arabic, stepped containers, green hero panels, radix-nova shadcn components, light/dark toggle. README → Design has the rules |
 | Style rules | Icon-first, minimal text: an icon always carries a short visible label, never a hover tooltip. Two layers only: the closed card is the answer, one tap opens sources and documents, and the control says what it opens. Hide content, never navigation. Mobile-first. No gradients, shadows, emoji, left-border cards. 44px touch targets. Pre-built components, not hand-rolled |
 | Stack | Next.js 16 (App Router, Server Actions), TypeScript, Tailwind 4, shadcn/ui (Radix), lucide-react |
 | Community reports | Supabase (Postgres + RLS) with a moderation queue |
@@ -49,7 +49,8 @@ src/app/[lang]/(site)/ routes: / (plan), /from/[origin]/to/[city] (?p=passport),
                        /crossings, /crossings/[slug], /airports/[slug], /documents, /reports, /reports/new, /about
 src/app/               sitemap.ts, robots.ts, manifest.ts, icons; src/proxy.ts maps / → /ar internally
 src/components/        app-shell, bottom-nav, disclaimer (no-liability popup, once per browser), planner, world-map, flag,
-                       route-card, status-stamp, provenance, report-form, ui/ (shadcn)
+                       route-card, status-badge, provenance, report-form, page (panel, sections, surfaces),
+                       ticker, main-nav, mode-toggle, theme-provider, logo, ui/ (shadcn, radix-nova, from Linkat)
 supabase/migrations/0001_reports.sql   reports table, RLS, public view without contact field
 tests/plan.test.ts     planner + data integrity tests
 ```

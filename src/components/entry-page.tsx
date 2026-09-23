@@ -21,11 +21,12 @@ import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, entryLd, graph, webPageLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
 import type { Locale, Mode, Passport } from "@/lib/types"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 import { CountryTag } from "@/components/country-tag"
 import { JsonLd } from "@/components/json-ld"
+import { CHIP, PageBody, PageHero, SURFACE, Section } from "@/components/page"
 import { Provenance } from "@/components/provenance"
-import { StatusDot, StatusStamp } from "@/components/status-stamp"
+import { cn } from "@/lib/utils"
+import { StatusDot, StatusBadge } from "@/components/status-badge"
 
 export type EntryParams = { lang: Locale; slug: string }
 const PASSPORTS: Passport[] = ["sy", "voa", "res"]
@@ -78,7 +79,7 @@ export function EntryPage(p: EntryParams, kind: Mode) {
   const siblings = (kind === "air" ? airEntries() : landEntries()).filter(([x]) => x !== id)
 
   return (
-    <div className="flex flex-col gap-7">
+    <>
       <JsonLd
         data={graph(
           breadcrumbLd(locale, crumbs),
@@ -86,162 +87,140 @@ export function EntryPage(p: EntryParams, kind: Mode) {
           webPageLd(locale, { path, name: e.name[locale], description: e.note ? e.note[locale] : m.crossings.lede }),
         )}
       />
-      <section>
-        <Breadcrumbs locale={locale} items={crumbs} />
-        <div className="flex items-start justify-between gap-3">
-          <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-            {e.country && <CountryTag code={e.country} />}
-            {e.name[locale]}
-          </h1>
-          <StatusStamp status={e.status} label={m.status[e.status]} className="mt-1.5" />
+      <PageHero locale={locale} crumbs={crumbs} title={e.name[locale]} lede={e.note?.[locale]}>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground">
+          <StatusBadge status={e.status} label={m.status[e.status]} solid />
+          {e.country && <CountryTag code={e.country} />}
+          <span>
+            {m.checked} <time dateTime={e.seen}>{formatDate(e.seen, locale)}</time>
+          </span>
         </div>
-        <p className="mt-1 text-xs text-muted-foreground">
-          {m.checked} <time dateTime={e.seen}>{formatDate(e.seen, locale)}</time>
-        </p>
-        {e.note && <p className="mt-3 max-w-prose text-[14.5px] leading-relaxed">{e.note[locale]}</p>}
-        <Provenance source={e.source} locale={locale} m={m} />
-      </section>
+        <Provenance source={e.source} locale={locale} m={m} className="mt-2 justify-center text-sm" />
+      </PageHero>
 
-      <section aria-labelledby="via-h">
-        <h2 id="via-h" className="mb-2 text-[15px] font-semibold">
-          {m.entry.via} {e.name[locale]}
-        </h2>
-        {via.length === 0 ? (
-          <p className="rounded-2xl border bg-card p-5 text-sm text-muted-foreground">{m.entry.viaEmpty}</p>
-        ) : (
-          <ul className="divide-y rounded-2xl border bg-card px-5">
-            {via.map((a, i) => {
-              const al = a.airline ? DATA.airlines[a.airline] : null
-              const o = originForArrival(a)
-              return (
-                <li key={i} className="py-3">
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-                    <StatusDot status={a.status} />
-                    <span className="font-semibold">
-                      {m.mode[a.mode]} · {m.entry.from} {a.city[locale]}
-                    </span>
-                    {al && a.airline && (
-                      <Link href={href(airlinePath(a.airline))} className="text-primary underline-offset-4 hover:underline">
-                        {al.name[locale]}
-                      </Link>
-                    )}
-                    <span className="ms-auto text-[13px] text-muted-foreground">{formatHours(a.hours, locale)}</span>
-                  </div>
-                  {a.note && <p className="mt-1 text-[13px] leading-relaxed">{a.note[locale]}</p>}
-                  <Provenance confidence={a.confidence} source={a.source} seen={a.seen} locale={locale} m={m} />
-                  <p className="mt-1.5 text-xs">
-                    <Link href={href(routePath(o.id, destinationVia(id)))} className="text-primary underline-offset-4 hover:underline">
+      <PageBody>
+        <Section id="via-h" title={`${m.entry.via} ${e.name[locale]}`}>
+          {via.length === 0 ? (
+            <p className={cn(SURFACE, "p-5 text-sm text-muted-foreground")}>{m.entry.viaEmpty}</p>
+          ) : (
+            <ul className={cn(SURFACE, "divide-y px-5")}>
+              {via.map((a, i) => {
+                const al = a.airline ? DATA.airlines[a.airline] : null
+                const o = originForArrival(a)
+                return (
+                  <li key={i} className="py-4">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <StatusDot status={a.status} />
+                      <span className="font-semibold">
+                        {m.mode[a.mode]} · {m.entry.from} {a.city[locale]}
+                      </span>
+                      {al && a.airline && (
+                        <Link href={href(airlinePath(a.airline))} className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+                          {al.name[locale]}
+                        </Link>
+                      )}
+                      <span className="ms-auto text-sm font-semibold">{formatHours(a.hours, locale)}</span>
+                    </div>
+                    {a.note && <p className="mt-1.5 text-[13.5px] leading-relaxed">{a.note[locale]}</p>}
+                    <Provenance confidence={a.confidence} source={a.source} seen={a.seen} locale={locale} m={m} />
+                    <Link
+                      href={href(routePath(o.id, destinationVia(id)))}
+                      className="mt-2 inline-flex items-center gap-1 text-sm font-medium underline-offset-4 hover:underline"
+                    >
                       {m.entry.plan} · {o.name[locale]} {arrow(locale)}
                     </Link>
-                  </p>
-                </li>
-              )
-            })}
-          </ul>
-        )}
-      </section>
-
-      {roads.length > 0 && (
-        <section aria-labelledby="roads-h">
-          <h2 id="roads-h" className="mb-1 text-[15px] font-semibold">
-            {m.entry.roads}
-          </h2>
-          <p className="mb-2 text-xs text-muted-foreground">{m.entry.roadsNote}</p>
-          <ul className="grid grid-cols-2 gap-x-4 rounded-2xl border bg-card px-5 sm:grid-cols-3">
-            {roads.map(([cityId, h]) => {
-              const c = DATA.cities.find((x) => x.id === cityId)
-              if (!c) return null
-              // Only cities with an airport have planner pages; the rest are plain text.
-              const linked = origin && destinationById(cityId)
-              return (
-                <li key={cityId} className="flex items-center justify-between border-b py-2.5 text-sm last:border-0">
-                  {linked ? (
-                    <Link href={href(routePath(origin.id, cityId))} className="underline-offset-4 hover:underline">
-                      {c.name[locale]}
-                    </Link>
-                  ) : (
-                    <span>{c.name[locale]}</span>
-                  )}
-                  <span className="text-[13px] text-muted-foreground">{formatHours(h, locale)}</span>
-                </li>
-              )
-            })}
-          </ul>
-        </section>
-      )}
-
-      <section aria-labelledby="need-h">
-        <h2 id="need-h" className="mb-2 text-[15px] font-semibold">
-          {m.entry.need}
-        </h2>
-        <div className="flex flex-col gap-3">
-          {PASSPORTS.map((pp) => (
-            <div key={pp} className="rounded-2xl border bg-card px-5 py-4">
-              <h3 className="text-[13.5px] font-semibold">{m.reports.form.passports[pp]}</h3>
-              <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
-                {DATA.needs[kind][pp].map((n, i) => (
-                  <li key={i}>
-                    {n.text[locale]}
-                    <Provenance source={n.source} locale={locale} m={m} />
                   </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <p className="mt-2 text-xs">
-          <Link href={href("/documents")} className="text-primary underline-offset-4 hover:underline">
+                )
+              })}
+            </ul>
+          )}
+        </Section>
+
+        {roads.length > 0 && (
+          <Section id="roads-h" title={m.entry.roads} note={m.entry.roadsNote}>
+            <ul className={cn(SURFACE, "grid grid-cols-2 gap-x-6 px-5 md:grid-cols-3")}>
+              {roads.map(([cityId, h]) => {
+                const c = DATA.cities.find((x) => x.id === cityId)
+                if (!c) return null
+                // Only cities with an airport have planner pages; the rest are plain text.
+                const linked = origin && destinationById(cityId)
+                return (
+                  <li key={cityId} className="flex items-center justify-between border-b py-3 text-sm last:border-0">
+                    {linked ? (
+                      <Link href={href(routePath(origin.id, cityId))} className="underline-offset-4 hover:underline">
+                        {c.name[locale]}
+                      </Link>
+                    ) : (
+                      <span>{c.name[locale]}</span>
+                    )}
+                    <span className="font-semibold">{formatHours(h, locale)}</span>
+                  </li>
+                )
+              })}
+            </ul>
+          </Section>
+        )}
+
+        <Section id="need-h" title={m.entry.need}>
+          <div className="grid gap-3 xl:grid-cols-3">
+            {PASSPORTS.map((pp) => (
+              <div key={pp} className={cn(SURFACE, "px-5 py-4")}>
+                <h3 className="font-semibold">{m.reports.form.passports[pp]}</h3>
+                <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
+                  {DATA.needs[kind][pp].map((n, i) => (
+                    <li key={i}>
+                      {n.text[locale]}
+                      <Provenance source={n.source} locale={locale} m={m} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <Link href={href("/documents")} className="mt-3 inline-flex text-sm font-medium underline-offset-4 hover:underline">
             {m.footer.documents} {arrow(locale)}
           </Link>
-        </p>
-      </section>
+        </Section>
 
-      <section aria-labelledby="rep-h">
-        <h2 id="rep-h" className="mb-2 text-[15px] font-semibold">
-          {m.entry.reports}
-        </h2>
-        {reports.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{m.entry.reportsEmpty}</p>
-        ) : (
-          <ul className="divide-y rounded-2xl border bg-card px-5">
-            {reports.map((r) => {
-              const wait = formatMinutes(r.wait_minutes, locale)
-              return (
-                <li key={r.id} className="py-3">
-                  <p className="text-xs text-muted-foreground">
-                    <time dateTime={r.travelled_on}>{formatDate(r.travelled_on, locale)}</time> · {m.reports.form.passports[r.passport]}
-                    {wait && ` · ${m.reports.wait} ${wait}`}
-                  </p>
-                  <p className="mt-1 text-[14px] leading-relaxed">{typeof r.note === "string" ? r.note : r.note[locale]}</p>
-                </li>
-              )
-            })}
-          </ul>
-        )}
-        <p className="mt-2 text-xs">
-          <Link href={href("/reports")} className="text-primary underline-offset-4 hover:underline">
+        <Section id="rep-h" title={m.entry.reports}>
+          {reports.length === 0 ? (
+            <p className="text-sm text-muted-foreground">{m.entry.reportsEmpty}</p>
+          ) : (
+            <ul className={cn(SURFACE, "divide-y px-5")}>
+              {reports.map((r) => {
+                const wait = formatMinutes(r.wait_minutes, locale)
+                return (
+                  <li key={r.id} className="py-4">
+                    <p className="text-xs text-muted-foreground">
+                      <time dateTime={r.travelled_on}>{formatDate(r.travelled_on, locale)}</time> · {m.reports.form.passports[r.passport]}
+                      {wait && ` · ${m.reports.wait} ${wait}`}
+                    </p>
+                    <p className="mt-1 text-[14.5px] leading-relaxed">{typeof r.note === "string" ? r.note : r.note[locale]}</p>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+          <Link href={href("/reports")} className="mt-3 inline-flex text-sm font-medium underline-offset-4 hover:underline">
             {m.reports.title} {arrow(locale)}
           </Link>
-        </p>
-      </section>
+        </Section>
 
-      {siblings.length > 0 && (
-        <section aria-labelledby="sib-h">
-          <h2 id="sib-h" className="mb-2 text-[15px] font-semibold">
-            {kind === "air" ? m.crossings.airports : m.crossings.more}
-          </h2>
-          <ul className="flex flex-wrap gap-2">
-            {siblings.map(([sid, se]) => (
-              <li key={sid}>
-                <Link href={href(entryPath(sid))} className="inline-flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 text-sm">
-                  <StatusDot status={se.status} />
-                  {se.name[locale]}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </div>
+        {siblings.length > 0 && (
+          <Section id="sib-h" title={kind === "air" ? m.crossings.airports : m.crossings.more}>
+            <ul className="flex flex-wrap gap-2">
+              {siblings.map(([sid, se]) => (
+                <li key={sid}>
+                  <Link href={href(entryPath(sid))} className={CHIP}>
+                    <StatusDot status={se.status} />
+                    {se.name[locale]}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
+      </PageBody>
+    </>
   )
 }

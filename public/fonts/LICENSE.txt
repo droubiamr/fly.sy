@@ -1,3 +1,5 @@
-Readex Pro — Copyright 2020 The Readex Project Authors (https://github.com/ThomasJockin/readexpro)
-Licensed under the SIL Open Font License, Version 1.1: https://openfontlicense.org
-The two .woff2 files here are the Arabic and Latin subsets served by Google Fonts, unchanged.
+Geist — Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font)
+IBM Plex Sans Arabic — Copyright © 2017 IBM Corp. with Reserved Font Name "Plex"
+Both licensed under the SIL Open Font License, Version 1.1: https://openfontlicense.org
+The .woff2 files here are the Latin (Geist, variable) and Arabic (Plex 500/600/700) subsets
+published by Fontsource (@fontsource-variable/geist, @fontsource/ibm-plex-sans-arabic), unchanged.

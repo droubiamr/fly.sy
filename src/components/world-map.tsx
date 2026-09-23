@@ -171,7 +171,7 @@ export function WorldMap({ origin, dest, liveEntries, locale }: { origin: Origin
   const labels = place(wanted, dots)
 
   return (
-    <figure className="overflow-hidden rounded-2xl border">
+    <figure className="overflow-hidden rounded-3xl ring-1 ring-foreground/10">
       <svg
         // A new element per origin, so the route draws itself again when the
         // country changes.

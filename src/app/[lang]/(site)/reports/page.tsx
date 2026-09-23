@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Plus, Check } from "lucide-react"
+import { BadgeCheck, Plus } from "lucide-react"
 import { DATA, entryPath } from "@/lib/data"
 import { getI18n, requireLocale } from "@/lib/i18n"
 import { formatDate, formatMinutes } from "@/lib/format"
@@ -9,9 +9,10 @@ import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, graph, webPageLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
 import type { Locale } from "@/lib/types"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 import { JsonLd } from "@/components/json-ld"
+import { PageBody, PageHero, SURFACE } from "@/components/page"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 type Props = { params: Promise<{ lang: Locale }> }
 
@@ -35,61 +36,57 @@ export default async function ReportsPage({ params }: Props) {
   ]
 
   return (
-    <div>
+    <>
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path: "/reports", name: m.reports.title, description: m.seo.reports.description }))} />
-      <Breadcrumbs locale={locale} items={crumbs} />
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">{m.reports.title}</h1>
-          <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.reports.lede}</p>
-        </div>
-      </div>
-
-      {reports.length === 0 ? (
-        <p className="rounded-2xl border bg-card p-5 text-sm text-muted-foreground">{m.reports.empty}</p>
-      ) : (
-        <ul className="divide-y rounded-2xl border bg-card px-5">
-          {reports.map((r) => {
-            const entry = DATA.entries[r.entry]
-            const note = typeof r.note === "string" ? r.note : r.note[locale]
-            const wait = formatMinutes(r.wait_minutes, locale)
-            return (
-              <li key={r.id} className="py-4">
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-                  {entry ? (
-                    <Link href={localePath(locale, entryPath(r.entry))} className="rounded-md bg-muted px-2 py-0.5 font-medium text-foreground">
-                      {entry.name[locale]}
-                    </Link>
-                  ) : (
-                    <span className="rounded-md bg-muted px-2 py-0.5 font-medium text-foreground">{r.entry}</span>
-                  )}
-                  <time dateTime={r.travelled_on}>{formatDate(r.travelled_on, locale)}</time>
-                  <span>· {m.reports.form.passports[r.passport]}</span>
-                  {wait && (
-                    <span>
-                      · {m.reports.wait} {wait}
-                    </span>
-                  )}
-                  <span className="ms-auto inline-flex items-center gap-1 font-medium text-primary">
-                    <Check className="size-3" strokeWidth={3} aria-hidden="true" />
-                    {r.editor_verified ? m.reports.editor : m.reports.community}
-                  </span>
-                </div>
-                <p className="mt-2 text-[14.5px] leading-relaxed">{note}</p>
-              </li>
-            )
-          })}
-        </ul>
-      )}
-
-      <div className="fixed inset-x-0 bottom-[calc(76px+env(safe-area-inset-bottom,0px))] z-10 mx-auto flex max-w-2xl justify-end px-5">
-        <Button asChild size="lg" className="h-12 rounded-full px-5 shadow-none">
+      <PageHero locale={locale} crumbs={crumbs} title={m.reports.title} lede={m.reports.lede}>
+        {/* The page's one action, in the hero like Linkat's claim button: the
+            filled button inverts to light grey on the green panel. */}
+        <Button asChild size="lg" className="mt-8 h-11 rounded-full px-6 text-[15px]">
           <Link href={localePath(locale, "/reports/new")}>
-            <Plus className="size-5" strokeWidth={2.4} />
+            <Plus data-icon="inline-start" />
             {m.reports.add}
           </Link>
         </Button>
-      </div>
-    </div>
+      </PageHero>
+
+      <PageBody>
+        {reports.length === 0 ? (
+          <p className={cn(SURFACE, "p-5 text-sm text-muted-foreground")}>{m.reports.empty}</p>
+        ) : (
+          <ul className="grid gap-3 md:grid-cols-2">
+            {reports.map((r) => {
+              const entry = DATA.entries[r.entry]
+              const note = typeof r.note === "string" ? r.note : r.note[locale]
+              const wait = formatMinutes(r.wait_minutes, locale)
+              return (
+                <li key={r.id} className={cn(SURFACE, "px-5 py-4")}>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-muted-foreground">
+                    {entry ? (
+                      <Link href={localePath(locale, entryPath(r.entry))} className="rounded-4xl bg-secondary px-2.5 py-1 font-medium text-secondary-foreground">
+                        {entry.name[locale]}
+                      </Link>
+                    ) : (
+                      <span className="rounded-4xl bg-secondary px-2.5 py-1 font-medium text-secondary-foreground">{r.entry}</span>
+                    )}
+                    <time dateTime={r.travelled_on}>{formatDate(r.travelled_on, locale)}</time>
+                    <span>· {m.reports.form.passports[r.passport]}</span>
+                    {wait && (
+                      <span>
+                        · {m.reports.wait} {wait}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-3 text-[14.5px] leading-relaxed">{note}</p>
+                  <p className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-status-open">
+                    <BadgeCheck className="size-3.5" aria-hidden="true" />
+                    {r.editor_verified ? m.reports.editor : m.reports.community}
+                  </p>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </PageBody>
+    </>
   )
 }

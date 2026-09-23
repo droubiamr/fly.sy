@@ -92,13 +92,32 @@ paste the URL and anon key into `.env.local`.
 
 ## Design
 
-Direction "Passport": cool grey ground, passport-green accent, outlined *stamp* chips for status,
-Readex Pro. Tokens are in `globals.css`; every component reads them, so restyling is one file.
+fly.sy follows the **Linkat design system** ([linkat.sy](https://linkat.sy), same owner), ported from its source:
 
-The brand mark is `src/app/icon.svg`: Syria's border from Natural Earth (public domain), in white on a passport-green tile. Everything raster
+- **Palette:** a green-grey page, one deep forest green as the text and the filled button, in oklch. Dark mode is the
+  same two hues swapped (light grey button with green text). Status colours (open, caution, closed, unknown) are the
+  only other colours, because they carry meaning. The sun/moon button in the header pins light or dark (next-themes);
+  until then the site follows the device.
+- **One radius token** (`--radius: 0.875rem`); every `rounded-*` step is a multiple of it. Never a one-off radius.
+- **Type:** Geist for Latin, IBM Plex Sans Arabic for Arabic, glyph by glyph, self-hosted in `public/fonts`.
+  Headlines are very large, bold and tightly tracked; tracking is zeroed on Arabic pages so letters stay joined.
+- **Stepped container** (`.container-app`): 100% on phones, then 460, 720 and 960px. Breakpoints only at `md` (768)
+  and `xl` (1280). Narrower content sits inside as a fixed `max-w-[Npx]` (the about page reads at 680px).
+- **Green panel** (`.panel`): every page opens with one, holding its breadcrumbs, one headline and at most one input
+  or action. It carries its own tokens, so buttons, selects and cards inside restyle themselves.
+- **Components:** shadcn/ui in Linkat's `radix-nova` style (`src/components/ui`, copied from Linkat). Cards are
+  `SURFACE` (rounded-3xl, a 10% ring, no border or shadow), links to other pages are `CHIP` (secondary pill), status is
+  a tinted pill with a dot, choices of three are a segmented pill. All in `src/components/page.tsx`.
+- **Chrome:** a ticker of live statuses along the top, a sticky blurred header (brand, sections on desktop, language,
+  light/dark, one pill action), a floating dock with the sections on phones and iPads, and Linkat's column footer.
+
+Tokens are in `globals.css`; every component reads them, so restyling is one file.
+
+The brand mark is `src/app/icon.svg`: Syria's border from Natural Earth (public domain), in white on a forest-green
+tile. `src/components/logo.tsx` draws the same outline in the text colour for the header and footer. Everything raster
 (`favicon.ico`, `apple-icon.png`, the manifest icons in `public/`, `opengraph-image.png`) is generated from it
-by `npm run icons` and committed. The share card sets its text in Readex Pro, so install the font locally
-before regenerating it.
+by `npm run icons` and committed. The share card sets its text in Geist and IBM Plex Sans Arabic, so install both
+locally (as TTF; fontconfig must list them) before regenerating it.
 
 ## Licence
 

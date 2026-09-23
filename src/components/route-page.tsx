@@ -6,7 +6,6 @@ import { formatHours } from "@/lib/format"
 import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, graph, webPageLd } from "@/lib/schema"
 import type { Locale, OriginDef } from "@/lib/types"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 import { JsonLd } from "@/components/json-ld"
 import { PlanView, journeysFor } from "@/components/plan-view"
 
@@ -57,18 +56,7 @@ export function RoutePage(p: RouteParams) {
   return (
     <>
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path, name: title, description: fmt(m.route.lede, vars) }))} />
-      <PlanView
-        locale={locale}
-        origin={origin}
-        dest={dest}
-        heading={
-          <div>
-            <Breadcrumbs locale={locale} items={crumbs} />
-            <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-            <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{fmt(m.route.lede, vars)}</p>
-          </div>
-        }
-      />
+      <PlanView locale={locale} origin={origin} dest={dest} crumbs={crumbs} title={title} lede={fmt(m.route.lede, vars)} />
     </>
   )
 }

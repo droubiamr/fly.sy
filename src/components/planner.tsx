@@ -13,11 +13,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { cn } from "@/lib/utils"
 
 const trigger =
-  // No chip: the choice reads as a word in the sentence, set in the accent
-  // colour so the chevron and colour alone say it is tappable. Size and weight
-  // are inherited (with type hints, so tailwind-merge drops the base text-sm and
-  // font-medium) and the labels and choices read as one sentence in one face.
-  "relative inline-block h-auto w-auto rounded-md border-0 bg-transparent px-0.5 py-0 text-[length:inherit] font-[weight:inherit] text-primary shadow-none hover:bg-transparent dark:bg-transparent dark:hover:bg-transparent data-[size=default]:h-auto" +
+  // No chip: the choice reads as a word in the sentence, underlined the way
+  // Linkat underlines the one keyword in its hero, so the line and the chevron
+  // say it is tappable. Size and weight are inherited (with type hints, so
+  // tailwind-merge drops the base text-sm) and the labels and choices read as
+  // one sentence in one face.
+  "relative inline-block h-auto w-auto rounded-md border-0 bg-transparent py-0 ps-0.5 pe-0.5 text-[length:inherit] font-[weight:inherit] text-foreground shadow-none hover:bg-transparent dark:bg-transparent dark:hover:bg-transparent data-[size=default]:h-auto" +
+  " *:data-[slot=select-value]:underline *:data-[slot=select-value]:decoration-2 *:data-[slot=select-value]:decoration-foreground/40 *:data-[slot=select-value]:underline-offset-[0.2em] hover:*:data-[slot=select-value]:decoration-foreground" +
   // Never wider than the card. The base trigger is nowrap, and a long choice
   // ("a passport needing pre-approval", or the Arabic visa-on-arrival wording
   // on a 360px phone) then runs past the edge; the phone widens its layout
@@ -61,8 +63,9 @@ export function Planner({
   }
 
   return (
-    <div className={cn("rounded-2xl border bg-card px-5 py-4 transition-opacity duration-200 ease-out", pending && "opacity-70")}>
-      <p className="text-[21px] font-semibold leading-[2.2] tracking-tight">
+    // The claim box of Linkat's hero: a lighter green card inside the panel.
+    <div className={cn("mx-auto mt-10 max-w-xl rounded-3xl bg-card px-5 py-4 text-start ring-1 ring-foreground/10 transition-opacity duration-200 ease-out md:mt-12 md:px-7 md:py-6", pending && "opacity-70")}>
+      <p className="text-[22px] font-semibold leading-[2.1] tracking-tight md:text-[28px]">
         {m.ask.in}{" "}
         <Select value={from} onValueChange={(v) => go({ from: v })}>
           <SelectTrigger className={trigger} aria-label={m.ask.in}>

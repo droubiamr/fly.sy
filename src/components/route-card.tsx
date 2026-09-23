@@ -6,20 +6,23 @@ import { arrow, formatHours } from "@/lib/format"
 import type { Journey } from "@/lib/plan"
 import type { Locale, Passport } from "@/lib/types"
 import type { Messages } from "@/messages"
-import { StatusStamp } from "@/components/status-stamp"
+import { StatusBadge } from "@/components/status-badge"
+import { SURFACE } from "@/components/page"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 import { Provenance } from "@/components/provenance"
 import { AirlineLogo } from "@/components/airline-logo"
 
 /** The carrier's mark, or the mode's icon when the leg has no carrier. */
-function LegMark({ journey: j, className = "" }: { journey: Journey; className?: string }) {
+function LegMark({ journey: j, className }: { journey: Journey; className?: string }) {
   if (j.airline)
     return (
-      <span className={"size-9 shrink-0 rounded-full border bg-background p-1.5 " + className}>
+      <span className={cn("size-10 shrink-0 rounded-full bg-background p-1.5 ring-1 ring-foreground/10", className)}>
         <AirlineLogo code={j.airline} />
       </span>
     )
   return (
-    <span className={"grid size-9 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground " + className}>
+    <span className={cn("grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground", className)}>
       {j.mode === "air" ? <Plane className="size-4" aria-hidden="true" /> : <Car className="size-4" aria-hidden="true" />}
     </span>
   )
@@ -41,7 +44,7 @@ export function RouteCard({
   journey: Journey
   dest: string
   passport: Passport
-  /** The first journey with a known total time wears the "fastest" stamp. */
+  /** The first journey with a known total time wears the "fastest" badge. */
   fastest: boolean
   locale: Locale
   m: Messages
@@ -60,8 +63,8 @@ export function RouteCard({
 
   if (j.blocked) {
     return (
-      <div className="flex items-start gap-3 rounded-2xl border bg-card px-5 py-4 opacity-70">
-        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-muted text-status-closed">
+      <div className={cn(SURFACE, "flex items-start gap-3 px-5 py-4 opacity-70")}>
+        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-muted text-status-closed">
           <Ban className="size-4" aria-hidden="true" />
         </span>
         <div className="min-w-0 flex-1">
@@ -69,16 +72,16 @@ export function RouteCard({
           <p className="mt-0.5 text-[13px] text-muted-foreground">{carrier}</p>
           <p className="mt-2 text-[13px] text-destructive">{m.blockedWhy}</p>
         </div>
-        <StatusStamp status="closed" label={m.blocked} />
+        <StatusBadge status="closed" label={m.blocked} />
       </div>
     )
   }
 
   return (
-    <details className="group rounded-2xl border bg-card open:bg-card">
+    <details className={cn(SURFACE, "group")}>
       {/* A full-width row answers a press the way a native list row does, with a
           background, not a scale. */}
-      <summary className="cursor-pointer list-none rounded-2xl px-5 py-4 transition-colors duration-100 ease-out active:bg-muted [&::-webkit-details-marker]:hidden">
+      <summary className="cursor-pointer list-none rounded-3xl px-5 py-4 transition-colors duration-100 ease-out active:bg-muted [&::-webkit-details-marker]:hidden">
         <span className="flex items-start gap-3">
           <LegMark journey={j} />
           <span className="min-w-0 flex-1">
@@ -86,20 +89,20 @@ export function RouteCard({
             <span className="mt-0.5 flex items-center gap-2 text-[13px] text-muted-foreground">
               <span className="truncate">{carrier}</span>
               {fastest && (
-                <span className="inline-flex shrink-0 items-center gap-1 rounded-md border-[1.5px] border-primary px-1.5 py-0.5 text-[11px] font-bold tracking-wide text-primary">
-                  <Zap className="size-3" aria-hidden="true" />
+                <Badge className="h-6 px-2.5">
+                  <Zap data-icon="inline-start" aria-hidden="true" />
                   {m.fastest}
-                </span>
+                </Badge>
               )}
             </span>
           </span>
           <span className="flex shrink-0 flex-col items-end gap-1.5">
             <span className="text-xl font-bold leading-none">{formatHours(j.totalHours, locale)}</span>
-            <StatusStamp status={j.status} label={m.status[j.status]} />
+            <StatusBadge status={j.status} label={m.status[j.status]} />
           </span>
         </span>
         {/* The control says what it opens, so the reader knows before tapping. */}
-        <span className="mt-3 flex items-center gap-1 text-[13px] font-medium text-primary">
+        <span className="mt-3 flex items-center gap-1 text-sm font-medium text-foreground">
           <ChevronDown className="size-4 transition-transform duration-200 ease-out group-open:rotate-180" aria-hidden="true" />
           {m.more}
         </span>
@@ -135,7 +138,7 @@ export function RouteCard({
           </li>
 
           <li className="flex gap-3 py-4">
-            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground">
+            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground">
               <ArrowRight className="size-4 rtl:rotate-180" aria-hidden="true" />
             </span>
             <div className="min-w-0 flex-1">
@@ -150,7 +153,7 @@ export function RouteCard({
           </li>
         </ol>
 
-        <div className="rounded-xl bg-muted px-4 py-3">
+        <div className="rounded-2xl bg-muted px-4 py-3">
           <p className="flex items-center gap-1.5 text-[13px] font-semibold">
             <ClipboardList className="size-4" aria-hidden="true" />
             {m.need}

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { getI18n } from "@/lib/i18n"
 import { LOCALES, SITE_NAME, SITE_URL } from "@/lib/site"
 import { AppShell } from "@/components/app-shell"
+import { ThemeProvider } from "@/components/theme-provider"
 import { MessagesProvider } from "@/components/messages-provider"
 import "../globals.css"
 
@@ -49,11 +50,12 @@ export const viewport: Viewport = {
   // keyboard opens, so the bottom nav ends up underneath it.
   interactiveWidget: "resizes-content",
   colorScheme: "light dark",
-  // One value per scheme, matched to the colour at the very top of the page.
-  // A single value gives one scheme a status bar that does not belong to it.
+  // One value per scheme: the page colour, as on Linkat. A single value gives
+  // one scheme a status bar that does not belong to it.
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f6f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b1512" },
+    // The two page colours from globals.css as hex (Linkat's values). Change both together.
+    { media: "(prefers-color-scheme: light)", color: "#edf1ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a110e" },
   ],
 }
 
@@ -63,21 +65,21 @@ export default async function RootLayout({ children, params }: Props) {
   // lang falls back to Arabic and every page below rejects it with requireLocale().
   const { locale, m } = getI18n(lang)
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
+    // suppressHydrationWarning: next-themes sets the theme class on <html>
+    // before React hydrates, so the attribute differs from the server's on purpose.
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
       <head>
-        {/* The one font subset this language needs goes out with the HTML; the other is fetched only if a glyph calls for it. */}
-        <link
-          rel="preload"
-          href={locale === "ar" ? "/fonts/readex-pro-arabic.woff2" : "/fonts/readex-pro-latin.woff2"}
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        {/* The fonts this language needs go out with the HTML. Latin (Geist) is
+            on every page, since Arabic pages carry Western digits and names too. */}
+        <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        {locale === "ar" && <link rel="preload" href="/fonts/plex-arabic-500.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />}
       </head>
       <body>
-        <MessagesProvider locale={locale} m={m}>
-          <AppShell locale={locale}>{children}</AppShell>
-        </MessagesProvider>
+        <ThemeProvider>
+          <MessagesProvider locale={locale} m={m}>
+            <AppShell locale={locale}>{children}</AppShell>
+          </MessagesProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

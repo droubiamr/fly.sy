@@ -37,12 +37,8 @@ export default async function HomePage({ params }: Props) {
           webPageLd(lang, { path: "/", name: m.seo.home.title, description: m.seo.home.description }),
         )}
       />
-      <PlanView
-        locale={lang}
-        origin={origin}
-        dest="damascus"
-        heading={<h1 className="text-2xl font-bold tracking-tight">{m.homeTitle}</h1>}
-      />
+      {/* Like Linkat's hero: the headline and the one input, nothing else. */}
+      <PlanView locale={lang} origin={origin} dest="damascus" title={m.homeTitle} size="home" />
     </>
   )
 }

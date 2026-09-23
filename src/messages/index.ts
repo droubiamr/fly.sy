@@ -33,6 +33,8 @@ const messages = {
     home: "الرئيسية",
     homeTitle: "كيف تصل إلى سوريا اليوم",
     langSwitch: "Read in English",
+    theme: "التبديل بين الوضع الفاتح والداكن",
+    nav: "القائمة الرئيسية",
     airlines: {
       title: "من يطير إلى سوريا",
       lede: "كل شركة طيران تهبط اليوم في دمشق أو حلب أو دير الزور، ومن أين، وكم تستغرق الرحلة، ومدى ثقتنا بالمعلومة.",
@@ -165,6 +167,8 @@ const messages = {
       data: "البيانات مفتوحة برخصة CC BY-SA 4.0",
       code: "الكود على GitHub",
       disclaimer: "غير رسمي. أكّد كل شيء مع شركة الطيران أو السفارة قبل السفر.",
+      open: "مفتوح المصدر",
+      contact: "تواصل",
     },
     notFound: {
       title: "الصفحة غير موجودة",
@@ -256,6 +260,8 @@ const messages = {
     home: "Home",
     homeTitle: "How to get to Syria today",
     langSwitch: "اقرأ بالعربية",
+    theme: "Switch between light and dark mode",
+    nav: "Main",
     airlines: {
       title: "Who flies to Syria",
       lede: "Every airline landing in Damascus, Aleppo or Deir ez-Zor today, from where, how long the flight takes, and how sure we are.",
@@ -388,6 +394,8 @@ const messages = {
       data: "Data is open under CC BY-SA 4.0",
       code: "Code on GitHub",
       disclaimer: "Unofficial. Confirm everything with the airline or embassy before you travel.",
+      open: "Open source",
+      contact: "Contact",
     },
     notFound: {
       title: "Page not found",

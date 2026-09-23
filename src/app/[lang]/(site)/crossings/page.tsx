@@ -7,11 +7,12 @@ import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, graph, webPageLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
 import type { Locale } from "@/lib/types"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 import { CountryTag } from "@/components/country-tag"
 import { JsonLd } from "@/components/json-ld"
+import { PageBody, PageHero, SURFACE, Section } from "@/components/page"
 import { Provenance } from "@/components/provenance"
-import { StatusStamp } from "@/components/status-stamp"
+import { cn } from "@/lib/utils"
+import { StatusBadge } from "@/components/status-badge"
 
 type Props = { params: Promise<{ lang: Locale }> }
 
@@ -32,7 +33,7 @@ export default async function CrossingsPage({ params }: Props) {
     { name: m.tabs.crossings, path: "/crossings" },
   ]
   const Card = ({ id, e }: { id: string; e: (typeof DATA.entries)[string] }) => (
-    <li className="rounded-2xl border bg-card px-5 py-4">
+    <li className={cn(SURFACE, "px-5 py-4")}>
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="flex items-center gap-2 font-semibold">
@@ -45,7 +46,7 @@ export default async function CrossingsPage({ params }: Props) {
             {m.checked} <time dateTime={e.seen}>{formatDate(e.seen, locale)}</time>
           </p>
         </div>
-        <StatusStamp status={e.status} label={m.status[e.status]} />
+        <StatusBadge status={e.status} label={m.status[e.status]} />
       </div>
       {e.note && <p className="mt-3 text-[13.5px] leading-relaxed">{e.note[locale]}</p>}
       <Provenance source={e.source} locale={locale} m={m} />
@@ -55,27 +56,23 @@ export default async function CrossingsPage({ params }: Props) {
     </li>
   )
   return (
-    <div>
+    <>
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path: "/crossings", name: m.crossings.title, description: m.seo.crossings.description }))} />
-      <Breadcrumbs locale={locale} items={crumbs} />
-      <h1 className="text-2xl font-bold tracking-tight">{m.crossings.title}</h1>
-      <p className="mt-2 mb-4 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.crossings.lede}</p>
-      <ul className="flex flex-col gap-2.5">
-        {landEntries().map(([id, e]) => (
-          <Card key={id} id={id} e={e} />
-        ))}
-      </ul>
-      <section id="airports" aria-labelledby="ap-h" className="mt-8">
-        <h2 id="ap-h" className="text-xl font-bold tracking-tight">
-          {m.crossings.airports}
-        </h2>
-        <p className="mt-1 mb-3 text-sm text-muted-foreground">{m.crossings.airportsLede}</p>
-        <ul className="flex flex-col gap-2.5">
-          {airEntries().map(([id, e]) => (
+      <PageHero locale={locale} crumbs={crumbs} title={m.crossings.title} lede={m.crossings.lede} />
+      <PageBody>
+        <ul className="grid gap-3 md:grid-cols-2">
+          {landEntries().map(([id, e]) => (
             <Card key={id} id={id} e={e} />
           ))}
         </ul>
-      </section>
-    </div>
+        <Section id="ap-h" title={m.crossings.airports} note={m.crossings.airportsLede} className="scroll-mt-24">
+          <ul className="grid gap-3 md:grid-cols-2">
+            {airEntries().map(([id, e]) => (
+              <Card key={id} id={id} e={e} />
+            ))}
+          </ul>
+        </Section>
+      </PageBody>
+    </>
   )
 }
