@@ -23,8 +23,8 @@ const MUTED = "#5c6b65"
 const BORDER = "#e3e6e1"
 
 const source = await readFile("src/app/icon.svg", "utf8")
-// Everything drawn on top of the tile: the country and the plane cut out of it.
-const mark = source.match(/<g id="mark">[\s\S]*?<\/g>\s*<\/g>/)[0]
+// Everything drawn on top of the tile.
+const mark = source.match(/<g id="mark">[\s\S]*?<\/g>/)[0]
 
 // The tile with its corner radius, as the SVG draws it.
 const tile = (size) => sharp(Buffer.from(source), { density: (72 * size) / 100 }).resize(size, size)
