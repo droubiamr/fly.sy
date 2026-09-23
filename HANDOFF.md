@@ -57,7 +57,7 @@ Scripts: `npm run dev`, `npm test`, `npm run check` (lint + types + tests + buil
 - Built, lint-clean, type-clean, 4 tests passing, production build passes, all routes return 200 on the built server.
 - **Not yet verified:** in a real browser on a phone, and the Supabase insert end to end.
 - Seeded data is from news reporting and travel operators as of Sep 2026 — mostly `reported`, not `verified`. Road times are estimates. **All of it needs re-verifying by Amr** before launch.
-- 23 Sep 2026 airline pass: 22 carriers and 5 airports (Deir ez-Zor open; Latakia and Qamishli closed) built from press and airline announcements found via web search, because Flightradar24 and the airline sites were unreachable from the editing environment. Every new row is capped at `reported`; open each airline's booking page once to promote it to `verified`.
+- 23 Sep 2026 airline pass: 22 carriers and 5 airports (Deir ez-Zor open; Latakia and Qamishli closed). Every air route was checked against the official airport flight boards (damairport.gov.sy, alpairport.gov.sy) and against Flightradar24 / FlightAware tracking of flights actually flown in September 2026; rows confirmed that way are `verified` with source `damairport`, `alpairport` or `tracker`, and carry the flight number and days in the note. Routes that were announced but never showed up on a board or in tracking are `unknown`/`unconfirmed` with the reason in the note.
 - Report contact link in `data/meta.json` is a placeholder (`https://instagram.com/`).
 
 ## Immediate next step — get it onto GitHub

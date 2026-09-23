@@ -29,6 +29,7 @@ export const ORIGINS = [
   { id: "iq", name: { ar: "العراق", en: "Iraq" } },
   { id: "ru", name: { ar: "روسيا", en: "Russia" } },
   { id: "ly", name: { ar: "ليبيا", en: "Libya" } },
+  { id: "am", name: { ar: "أرمينيا", en: "Armenia" } },
   { id: "eu", name: { ar: "أوروبا", en: "Europe" } },
 ] as const
 
