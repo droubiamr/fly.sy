@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { DATA } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
 import { formatDate, formatHours } from "@/lib/format"
-import { StatusDot } from "@/components/status-stamp"
+import { StatusDot, StatusStamp } from "@/components/status-stamp"
 import { CountryTag } from "@/components/country-tag"
 import { AirlineLogo } from "@/components/airline-logo"
 
@@ -22,28 +22,28 @@ export default async function AirlinesPage() {
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold tracking-tight">{m.airlines.title}</h1>
-      <ul className="grid gap-2.5 sm:grid-cols-2">
+      {/* minmax(0,1fr) columns: a no-wrap city list must truncate, not widen the track. */}
+      <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
         {Object.entries(DATA.airlines).map(([code, al]) => {
           const hops = byAirline.get(code) ?? []
-          const live = hops.some((h) => h.status === "open")
+          // What the carrier is doing now, for the stamp beside its name: flying if any
+          // route is open; otherwise closed only when every route is, else unknown.
+          const state = hops.some((h) => h.status === "open") ? "open" : hops.every((h) => h.status === "closed") ? "closed" : "unknown"
           return (
             <li key={code}>
               <details className="group rounded-2xl border bg-card">
                 <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
-                  {/* Carriers with nothing flying are greyed rather than hidden: the
-                      list is also a record of who used to fly. */}
-                  <span
-                    className={
-                      "size-10 shrink-0 rounded-[10px] border bg-background p-1.5 " +
-                      (live ? "" : "opacity-50 grayscale")
-                    }
-                  >
+                  {/* Carriers with nothing flying stay listed, in colour, with a stamp
+                      that says so: the list is also a record of who used to fly, and a
+                      greyed logo reads as a broken image rather than a status. */}
+                  <span className="size-10 shrink-0 rounded-[10px] border bg-background p-1.5">
                     <AirlineLogo code={code} />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-2 font-semibold">
                       <CountryTag code={al.country} />
                       <span className="truncate">{al.name[locale]}</span>
+                      {state !== "open" && <StatusStamp status={state} label={m.status[state]} />}
                     </span>
                     <span className="mt-0.5 block truncate text-[13px] text-muted-foreground">
                       {hops.length ? hops.map((h) => h.city[locale]).join(" · ") : m.airlines.empty}
