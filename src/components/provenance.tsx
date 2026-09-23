@@ -24,7 +24,7 @@ export function Provenance({
       {confidence && <span>{m.confidence[confidence]}</span>}
       {confidence && <span aria-hidden="true">·</span>}
       <span>
-        {m.source}: {src ? <SourceLink source={src}>{src.name[locale]}</SourceLink> : source}
+        {m.source}: {src ? <SourceLink source={src} locale={locale}>{src.name[locale]}</SourceLink> : source}
       </span>
       {seen && (
         <>

@@ -1,17 +1,23 @@
-import { cookies } from "next/headers"
-import type { Locale, Text } from "./types"
+import { notFound } from "next/navigation"
+import type { Locale } from "./types"
 import { getMessages } from "@/messages"
+import { DEFAULT_LOCALE, isLocale } from "./site"
+import { tx } from "./text"
 
-export const LOCALE_COOKIE = "lang"
+export { fmt, tx } from "./text"
 
-export async function getLocale(): Promise<Locale> {
-  const v = (await cookies()).get(LOCALE_COOKIE)?.value
-  return v === "en" ? "en" : "ar"
+/** Strings and helpers for a locale. The locale comes from the URL (see site.ts), never from a cookie. */
+export function getI18n(lang: string) {
+  const locale: Locale = isLocale(lang) ? lang : DEFAULT_LOCALE
+  return { locale, m: getMessages(locale), t: (x: Parameters<typeof tx>[0]) => tx(x, locale) }
 }
 
-export async function getI18n() {
-  const locale = await getLocale()
-  return { locale, m: getMessages(locale), t: (x: Text | undefined) => (x ? x[locale] ?? x.ar : "") }
+/**
+ * Pages call this first. The proxy only sends ar or en, but a path that skipped
+ * it (a file-like URL such as /x.txt matches [lang]) must be a 404, not a copy
+ * of the Arabic page under a second address.
+ */
+export function requireLocale(lang: string): Locale {
+  if (!isLocale(lang)) notFound()
+  return lang
 }
-
-export const tx = (x: Text | undefined, locale: Locale) => (x ? x[locale] ?? x.ar : "")

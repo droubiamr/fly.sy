@@ -1,8 +1,9 @@
 "use client"
 
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useTransition } from "react"
-import { DESTINATIONS, ORIGINS, PASSPORTS, REGIONS } from "@/lib/data"
+import { DESTINATIONS, ORIGINS, PASSPORTS, REGIONS, routePath } from "@/lib/data"
+import { localePath } from "@/lib/site"
 import type { Origin, Passport } from "@/lib/types"
 import type { Reach } from "@/lib/plan"
 import { useLocale, useMessages } from "@/components/messages-provider"
@@ -15,12 +16,26 @@ const trigger =
   // colour so the chevron and colour alone say it is tappable. Size and weight
   // are inherited (with type hints, so tailwind-merge drops the base text-sm and
   // font-medium) and the labels and choices read as one sentence in one face.
-  "relative inline-flex h-auto w-auto gap-1 rounded-md border-0 bg-transparent px-0.5 py-0 text-[length:inherit] font-[weight:inherit] text-primary shadow-none hover:bg-transparent dark:bg-transparent dark:hover:bg-transparent data-[size=default]:h-auto" +
+  "relative inline-block h-auto w-auto rounded-md border-0 bg-transparent px-0.5 py-0 text-[length:inherit] font-[weight:inherit] text-primary shadow-none hover:bg-transparent dark:bg-transparent dark:hover:bg-transparent data-[size=default]:h-auto" +
+  // Never wider than the card. The base trigger is nowrap, and a long choice
+  // ("a passport needing pre-approval", or the Arabic visa-on-arrival wording
+  // on a 360px phone) then runs past the edge; the phone widens its layout
+  // viewport to fit it, and the whole page can be dragged sideways. Instead
+  // the choice is laid out as text inside the button, so it wraps like the
+  // rest of the sentence. Only the value is allowed to wrap; the button stays
+  // nowrap, and GLUE below keeps the chevron on the last word's line.
+  " max-w-full text-start *:data-[slot=select-value]:inline *:data-[slot=select-value]:whitespace-normal [&_svg]:inline-block [&_svg]:align-middle [&>svg]:ms-1" +
   // The tappable area is grown to 44px behind the word, and the line height
   // is opened up enough that the areas on neighbouring lines cannot overlap.
   " after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2 after:content-['']"
 
-/** The sentence you fill in. Choices live in the URL so any answer is a link. */
+// U+2060 WORD JOINER between the value and the chevron. Browsers allow a line
+// break before an inline SVG whatever the white-space around it, so on a
+// narrow phone the chevron would drop to a line of its own; the joiner forbids
+// a break on either side of itself, and the chevron stays with the last word.
+const GLUE = "\u2060"
+
+/** The sentence you fill in. Every answer is its own page (/from/…/to/…), so any answer is a link. */
 export function Planner({
   from,
   dest,
@@ -34,24 +49,23 @@ export function Planner({
   reach: Record<string, Reach>
 }) {
   const router = useRouter()
-  const path = usePathname()
   const locale = useLocale()
   const m = useMessages()
   const [pending, start] = useTransition()
 
-  const set = (key: "from" | "to" | "p", value: string) => {
-    const q = new URLSearchParams({ from, to: dest, p: passport })
-    q.set(key, value)
-    start(() => router.replace(`${path}?${q}`, { scroll: false }))
+  const go = (next: { from?: Origin; dest?: string; passport?: Passport }) => {
+    const href = localePath(locale, routePath(next.from ?? from, next.dest ?? dest, next.passport ?? passport))
+    start(() => router.push(href, { scroll: false }))
   }
 
   return (
     <div className={cn("rounded-2xl border bg-card px-5 py-4 transition-opacity duration-200 ease-out", pending && "opacity-70")}>
       <p className="text-[21px] font-semibold leading-[2.2] tracking-tight">
         {m.ask.in}{" "}
-        <Select value={from} onValueChange={(v) => set("from", v)}>
+        <Select value={from} onValueChange={(v) => go({ from: v })}>
           <SelectTrigger className={trigger} aria-label={m.ask.in}>
             <SelectValue />
+            {GLUE}
           </SelectTrigger>
           <SelectContent>
             {REGIONS.map((r) => (
@@ -61,6 +75,9 @@ export function Planner({
                   <SelectItem key={o.id} value={o.id}>
                     {/* The flag rides inside ItemText, so the closed chip shows it too. */}
                     <Flag code={o.id} className="h-3.5" />
+                    {/* A real space: the list row is a flex box and drops it, the
+                        closed trigger is inline text and needs it. */}
+                    {" "}
                     {o.name[locale]}
                   </SelectItem>
                 ))}
@@ -69,9 +86,10 @@ export function Planner({
           </SelectContent>
         </Select>{" "}
         {m.ask.with}{" "}
-        <Select value={passport} onValueChange={(v) => set("p", v)}>
+        <Select value={passport} onValueChange={(v) => go({ passport: v as Passport })}>
           <SelectTrigger className={trigger} aria-label={m.ask.with}>
             <SelectValue />
+            {GLUE}
           </SelectTrigger>
           <SelectContent>
             {PASSPORTS.map((p) => (
@@ -82,9 +100,10 @@ export function Planner({
           </SelectContent>
         </Select>{" "}
         {m.ask.to}{" "}
-        <Select value={dest} onValueChange={(v) => set("to", v)}>
+        <Select value={dest} onValueChange={(v) => go({ dest: v })}>
           <SelectTrigger className={trigger} aria-label={m.ask.to}>
             <SelectValue />
+            {GLUE}
           </SelectTrigger>
           <SelectContent>
             {DESTINATIONS.map((d) => (

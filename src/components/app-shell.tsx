@@ -1,14 +1,17 @@
 import Link from "next/link"
-import { CalendarCheck, Globe } from "lucide-react"
+import { CalendarCheck } from "lucide-react"
 import { getI18n } from "@/lib/i18n"
 import { DATA } from "@/lib/data"
 import { formatDate } from "@/lib/format"
-import { toggleLocale } from "@/app/actions"
+import { localePath } from "@/lib/site"
+import type { Locale } from "@/lib/types"
 import { BottomNav } from "@/components/bottom-nav"
-import { Button } from "@/components/ui/button"
+import { Disclaimer } from "@/components/disclaimer"
+import { LangSwitch } from "@/components/lang-switch"
+import { SiteFooter } from "@/components/site-footer"
 
-export async function AppShell({ children }: { children: React.ReactNode }) {
-  const { locale, m } = await getI18n()
+export function AppShell({ locale, children }: { locale: Locale; children: React.ReactNode }) {
+  const { m } = getI18n(locale)
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col">
       {/* A floating pill rather than a bar: the page runs edge to edge underneath
@@ -25,8 +28,9 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
               same reason: flex items follow the container's direction, which puts
               ".sy" before "fly". The 44px tap area is grown behind it instead. */}
           <Link
-            href="/"
+            href={localePath(locale, "/")}
             dir="ltr"
+            aria-label={m.meta.title}
             className="relative inline-block text-[19px] font-bold tracking-tight after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2 after:content-['']"
           >
             fly<span className="text-primary">.sy</span>
@@ -41,30 +45,22 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             aria-label={`${m.updated} ${formatDate(DATA.meta.updated, locale)}`}
           >
             <CalendarCheck className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
-            <span aria-hidden="true">{formatDate(DATA.meta.updated, locale)}</span>
+            <time dateTime={DATA.meta.updated} aria-hidden="true">
+              {formatDate(DATA.meta.updated, locale)}
+            </time>
           </span>
 
-          <form action={toggleLocale}>
-            <Button
-              type="submit"
-              variant="ghost"
-              size="sm"
-              // A real 44px control inside the pill, rather than an invisible tap area
-              // spilling out past the chrome the user can actually see.
-              className="h-11 gap-1.5 rounded-full px-3.5 text-[11.5px] font-medium tracking-wide"
-            >
-              {/* A globe, not the translate glyph: that one is two characters of
-                  detail and turns to mush at 14px. */}
-              <Globe className="size-3.5 shrink-0" aria-hidden="true" />
-              {m.lang}
-            </Button>
-          </form>
+          <LangSwitch />
         </div>
       </header>
 
       <p className="px-5 pt-1 text-[13px] leading-relaxed text-muted-foreground">{m.indep}</p>
-      <main className="flex-1 px-5 pb-28 pt-4">{children}</main>
+      <main className="flex-1 px-5 pt-4">{children}</main>
+      <div className="pb-28">
+        <SiteFooter locale={locale} />
+      </div>
       <BottomNav />
+      <Disclaimer />
     </div>
   )
 }

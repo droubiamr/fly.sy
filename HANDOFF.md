@@ -9,7 +9,8 @@ Start here, then README.md and CONTRIBUTING.md.
 - Owner: Amr (GitHub: `droubiamr`, repo `droubiamr/fly.sy`). Trilingual AR/EN/DE.
 - Audience: Syrian diaspora (Germany, Türkiye, Gulf, Lebanon, Jordan) and foreign travellers.
 - **Not** for travel agencies. **Not** official. No government affiliation, sells nothing, takes no commission.
-- Arabic-first (RTL default), English toggle. German is a planned third language.
+- Arabic-first (RTL default) at `/`, English at `/en`. German is a planned third language (add it to `LOCALES` in
+  `src/lib/site.ts`, `messages`, and the `languages` maps in `src/lib/seo.ts` and `src/app/sitemap.ts`).
 
 ## Decisions already made (don't reopen without asking)
 
@@ -44,8 +45,11 @@ src/lib/plan.ts        pure planner: ranks journeys by total time, blocks Türki
 src/lib/data.ts        typed JSON loader
 src/messages/index.ts  all UI strings, ar + en
 src/app/globals.css    design tokens — the whole look
-src/app/               routes: / (plan), /airlines, /crossings, /reports, /reports/new, /about
-src/components/        app-shell, bottom-nav, planner, world-map, flag, route-card, status-stamp, provenance, report-form, ui/ (shadcn)
+src/app/[lang]/(site)/ routes: / (plan), /from/[origin]/to/[city]/[passport?], /airlines, /airlines/[slug],
+                       /crossings, /crossings/[slug], /airports/[slug], /documents, /reports, /reports/new, /about
+src/app/               sitemap.ts, robots.ts, manifest.ts, icons; src/proxy.ts maps / → /ar internally
+src/components/        app-shell, bottom-nav, disclaimer (no-liability popup, once per browser), planner, world-map, flag,
+                       route-card, status-stamp, provenance, report-form, ui/ (shadcn)
 supabase/migrations/0001_reports.sql   reports table, RLS, public view without contact field
 tests/plan.test.ts     planner + data integrity tests
 ```

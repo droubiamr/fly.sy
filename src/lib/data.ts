@@ -8,7 +8,8 @@ import roads from "../../data/roads.json"
 import needs from "../../data/needs.json"
 import seedReports from "../../data/reports.seed.json"
 import meta from "../../data/meta.json"
-import type { Airline, Arrival, City, Entry, Needs, OriginDef, Region, Report, Roads, Source } from "./types"
+import type { Airline, Arrival, City, Entry, Needs, Origin, OriginDef, Passport, Region, Report, Roads, Source } from "./types"
+import { PASSPORT_SLUGS, slugify } from "./slugs"
 
 export const DATA = {
   meta: meta as { updated: string; contact: string },
@@ -49,3 +50,62 @@ export const DESTINATIONS = Object.entries(DATA.entries)
   .filter(([, e]) => e.kind === "air" && e.city)
   .filter(([, e], i, all) => all.findIndex(([, o]) => o.city === e.city) === i)
   .map(([entry, e]) => ({ id: e.city!, entry, name: e.name }))
+
+/* ---- URL slugs, derived from the English names so a rename is a data edit. ---- */
+
+const bySlug = <T,>(rec: Record<string, T>, name: (v: T) => string) => {
+  // Null-prototype maps: a slug like "constructor" from the URL must miss, not find Object.
+  const forward: Record<string, string> = Object.create(null)
+  const back: Record<string, string> = Object.create(null)
+  for (const [id, v] of Object.entries(rec)) {
+    const s = slugify(name(v))
+    forward[id] = s
+    back[s] = id
+  }
+  return { forward, back }
+}
+
+const ORIGIN = bySlug(Object.fromEntries(ORIGINS.map((o) => [o.id, o])), (o) => o.name.en)
+const ENTRY = bySlug(DATA.entries, (e) => e.name.en)
+const AIRLINE = bySlug(DATA.airlines, (a) => a.name.en)
+
+/** "turkiye", "united-arab-emirates": the country as it appears in /from/…. */
+export const originSlug = (id: Origin) => ORIGIN.forward[id]
+export const originFromSlug = (slug: string) => originById(ORIGIN.back[slug])
+export const entrySlug = (id: string) => ENTRY.forward[id]
+export const entryFromSlug = (slug: string) => ENTRY.back[slug]
+export const airlineSlug = (code: string) => AIRLINE.forward[code]
+export const airlineFromSlug = (slug: string) => AIRLINE.back[slug]
+
+export const destinationById = (id: string) => DESTINATIONS.find((d) => d.id === id)
+
+/** /from/turkiye/to/damascus, plus /visa-on-arrival or /pre-approval when the passport is not Syrian. */
+export const routePath = (from: Origin, dest: string, passport: Passport = "sy") =>
+  `/from/${originSlug(from)}/to/${dest}` + (passport === "sy" ? "" : `/${PASSPORT_SLUGS[passport]}`)
+
+/** Airports live under /airports, land crossings under /crossings. */
+export const entryPath = (id: string) => `${DATA.entries[id].kind === "air" ? "/airports" : "/crossings"}/${entrySlug(id)}`
+export const airlinePath = (code: string) => `/airlines/${airlineSlug(code)}`
+
+export const landEntries = () => Object.entries(DATA.entries).filter(([, e]) => e.kind === "land")
+export const airEntries = () => Object.entries(DATA.entries).filter(([, e]) => e.kind === "air")
+
+/** Arrivals through a given entry, visible ones only. */
+export const arrivalsVia = (entry: string) => DATA.arrivals.filter((a) => a.entry === entry && !a.hidden)
+/** Arrivals flown by a given carrier, visible ones only. */
+export const arrivalsBy = (airline: string) => DATA.arrivals.filter((a) => a.airline === airline && !a.hidden)
+
+/** The country a route page for this arrival starts from: the arrival's own, or the first of its group. */
+export const originForArrival = (a: Arrival): OriginDef =>
+  ORIGINS.find((o) => o.id === a.from) ?? ORIGINS.find((o) => o.group === a.from) ?? ORIGINS[0]
+
+/** The destination a journey through this entry lands at: the airport's city, or the nearest city with an airport. */
+export const destinationVia = (entry: string): string => {
+  const e = DATA.entries[entry]
+  if (e.city && destinationById(e.city)) return e.city
+  const ids = new Set(DESTINATIONS.map((d) => d.id))
+  const nearest = Object.entries(DATA.roads[entry] ?? {})
+    .filter(([c]) => ids.has(c))
+    .sort((a, b) => a[1] - b[1])[0]
+  return nearest?.[0] ?? "damascus"
+}

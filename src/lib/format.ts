@@ -26,3 +26,10 @@ export function formatMinutes(min: number | null, locale: Locale) {
   if (min < 60) return locale === "ar" ? `${min.toLocaleString(INTL_LOCALE.ar)} دقيقة` : `${min} min`
   return formatHours(Math.round((min / 60) * 10) / 10, locale)
 }
+
+/**
+ * The arrow between two places, pointing the way the sentence reads: "→" is
+ * not mirrored by the bidi algorithm, so on the Arabic site it would point
+ * back at the word before it.
+ */
+export const arrow = (locale: Locale) => (locale === "ar" ? "←" : "→")
