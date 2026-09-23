@@ -9,13 +9,39 @@
 //   src/app/opengraph-image.png    1200x630 share card: the mark beside the tagline
 //
 // sharp comes with Next, so this needs nothing installed beyond `npm install`.
-// The share card sets its text in IBM Plex Sans Arabic, which must be installed
-// on the machine running this (fontconfig finds it); otherwise it falls back to
-// whatever sans-serif is around and the card should not be committed. Only the
-// 500, 600 and 700 cuts are used, matching the site: the 400 cut is too thin.
+// The share card sets its Latin in Geist and its Arabic in IBM Plex Sans Arabic,
+// the same files the site serves from public/fonts, so nothing needs installing
+// on the machine running this. The libvips inside sharp cannot open woff2, so
+// each file is decoded to TTF in a temp folder and fontconfig is pointed there.
+// Only the 500, 600 and 700 cuts of Plex exist, matching the site.
 
-import { readFile, writeFile } from "node:fs/promises"
-import sharp from "sharp"
+import { mkdtemp, readdir, readFile, writeFile } from "node:fs/promises"
+import { tmpdir } from "node:os"
+import { join, resolve } from "node:path"
+import { decompress } from "wawoff2"
+
+const fontsDir = resolve("public/fonts")
+const fontsTmp = await mkdtemp(join(tmpdir(), "fly-sy-fonts-"))
+for (const name of await readdir(fontsDir)) {
+  if (!name.endsWith(".woff2")) continue
+  const ttf = await decompress(await readFile(join(fontsDir, name)))
+  await writeFile(join(fontsTmp, name.replace(/\.woff2$/, ".ttf")), ttf)
+}
+const fontsConf = join(fontsTmp, "fonts.conf")
+await writeFile(
+  fontsConf,
+  `<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <dir>${fontsTmp}</dir>
+  <cachedir>${fontsTmp}</cachedir>
+</fontconfig>
+`,
+)
+// sharp reads FONTCONFIG_FILE when it loads, so the import is dynamic to keep it
+// after the line that sets it.
+process.env.FONTCONFIG_FILE = fontsConf
+const sharp = (await import("sharp")).default
 
 const GREEN = "#0e5c3f"
 const GROUND = "#f5f6f3"
@@ -73,7 +99,7 @@ function ico(pngs) {
 function shareCard() {
   const R = 1130 // right edge of the text column
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"
-       font-family="IBM Plex Sans Arabic">
+       font-family="Geist, IBM Plex Sans Arabic">
     <rect width="1200" height="630" fill="${GROUND}"/>
     <g transform="translate(90 165) scale(3)">
       <rect width="100" height="100" rx="22" fill="${GREEN}"/>
@@ -82,7 +108,7 @@ function shareCard() {
     <text x="${R}" y="128" text-anchor="end" font-size="46" font-weight="700" fill="${INK}" letter-spacing="-1">fly<tspan fill="${GREEN}">.sy</tspan></text>
     <text x="${R}" y="318" direction="rtl" text-anchor="start" font-size="76" font-weight="700" fill="${INK}">كيف تصل إلى سوريا</text>
     <text x="${R}" y="378" direction="rtl" text-anchor="start" font-size="30" font-weight="500" fill="${MUTED}">كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها</text>
-    <text x="${R}" y="436" text-anchor="end" font-size="26" font-weight="500" fill="${MUTED}">How to get into Syria, with a source on every line.</text>
+    <text x="${R}" y="436" text-anchor="end" font-size="26" font-weight="400" fill="${MUTED}">How to get into Syria, with a source on every line.</text>
     <g transform="translate(${R} 500)" font-size="20" font-weight="500" fill="${MUTED}">
       <rect x="-198" y="0" width="198" height="50" rx="14" fill="none" stroke="${BORDER}" stroke-width="2"/>
       <text x="-99" y="33" text-anchor="middle" direction="rtl">مستقل · غير رسمي</text>

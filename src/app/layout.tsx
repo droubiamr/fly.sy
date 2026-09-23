@@ -52,16 +52,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Root app-router layout: this link applies to every route. next/font is avoided so builds work offline. */}
-        {/* Only the 500, 600 and 700 cuts are loaded: the thin 400 cut of Plex Sans Arabic reads poorly on screen, so
-            ordinary text at weight 400 falls to Medium (see --font-sans in globals.css). */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        {/* Root app-router layout: this applies to every route. The fonts live in public/fonts
+            (see the @font-face rules in globals.css), so no font CDN is contacted and builds work
+            offline. Preloading skips the wait for the stylesheet before the first-paint faces are
+            fetched: Geist everywhere, and the Plex Sans Arabic Medium cut on Arabic pages. */}
         <link
-          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@500;600;700&display=swap"
-          rel="stylesheet"
+          rel="preload"
+          href="/fonts/Geist-Variable.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
+        {locale === "ar" && (
+          <link
+            rel="preload"
+            href="/fonts/IBMPlexSansArabic-500-arabic.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+        )}
       </head>
       <body>
         <MessagesProvider locale={locale} m={m}>

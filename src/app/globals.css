@@ -1,6 +1,47 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Both faces are served from public/fonts, so nothing is fetched from a font CDN.
+   Geist (variable, one file) sets every Latin glyph. IBM Plex Sans Arabic sets
+   the Arabic script only: its files are the Arabic subset and the unicode-range
+   keeps it out of Latin text, so Geist always comes first even where Arabic
+   pages put it later. Plex is loaded in the 500, 600 and 700 cuts only, because
+   its 400 cut is too thin to read well on screen: ordinary Arabic text at weight
+   400 is served the Medium cut by the CSS rule for a missing weight (nearest
+   heavier cut up to 500 wins), so no override is needed. Geist keeps its
+   ordinary 400. */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/Geist-Variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/IBMPlexSansArabic-500-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+1EE00-1EEFF;
+}
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/IBMPlexSansArabic-600-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+1EE00-1EEFF;
+}
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/IBMPlexSansArabic-700-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+1EE00-1EEFF;
+}
+
 /* Dark follows the OS. An explicit .dark or .light class on <html> wins over it,
    so an in-app toggle can be added later without touching anything here. */
 @custom-variant dark {
@@ -135,12 +176,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  /* IBM Plex Sans Arabic, loaded in layout.tsx at weights 500, 600 and 700 only.
-     Its 400 cut is too thin to read well on screen, so it is not loaded: ordinary
-     text at weight 400 is served the Medium (500) cut. That is the CSS matching
-     rule for a missing weight, not a trick, so font-normal and the default weight
-     both land on Medium without any override here. */
-  --font-sans: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  /* Geist for Latin, Plex Sans Arabic for Arabic; the @font-face rules at the top
+     of this file say how the two split the text. */
+  --font-sans: "Geist", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
 
   /* Motion. The browser's built-in easings are too soft to read as deliberate,
      so ease-out and ease-in-out are replaced with stronger curves everywhere. */

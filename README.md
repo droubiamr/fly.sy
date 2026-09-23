@@ -70,12 +70,12 @@ paste the URL and anon key into `.env.local`.
 ## Design
 
 Direction "Passport": cool grey ground, passport-green accent, outlined *stamp* chips for status,
-IBM Plex Sans Arabic in weights 500, 600 and 700 only (the 400 cut is too thin on screen, so weight 400 is served Medium). Tokens are in `globals.css`; every component reads them, so restyling is one file.
+Geist for Latin and IBM Plex Sans Arabic for Arabic, both self-hosted from `public/fonts` (Plex in weights 500, 600 and 700 only: its 400 cut is too thin on screen, so Arabic at weight 400 is served Medium). Tokens are in `globals.css`; every component reads them, so restyling is one file.
 
 The brand mark is `src/app/icon.svg`: Syria's border from Natural Earth (public domain), in white on a passport-green tile. Everything raster
 (`favicon.ico`, `apple-icon.png`, the manifest icons in `public/`, `opengraph-image.png`) is generated from it
-by `npm run icons` and committed. The share card sets its text in IBM Plex Sans Arabic, so install the font locally
-before regenerating it.
+by `npm run icons` and committed. The share card sets its text in the same fonts as the site, read straight from
+`public/fonts`, so nothing needs installing before regenerating it.
 
 ## Licence
 
