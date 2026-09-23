@@ -118,6 +118,27 @@ export default async function AboutPage({ params }: Props) {
         </p>
       </section>
 
+      <section>
+        <h2 className="mb-2 text-sm font-semibold">{m.about.contact}</h2>
+        <p className="text-[13.5px] leading-relaxed text-muted-foreground">
+          {m.about.contactText}{" "}
+          {/* dir="ltr" keeps the address in reading order inside an Arabic sentence. */}
+          <a
+            href={`mailto:${DATA.meta.contact}`}
+            dir="ltr"
+            className="font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] hover:decoration-current"
+          >
+            {DATA.meta.contact}
+          </a>
+        </p>
+        {/* An open door for people who want to build it with us: its own card, so
+            the invitation reads as such and not as fine print under the address. */}
+        <div className="mt-3 rounded-2xl border bg-card px-5 py-4">
+          <p className="text-sm font-semibold">{m.about.join}</p>
+          <p className="mt-1 text-[13.5px] leading-relaxed text-muted-foreground">{m.about.joinText}</p>
+        </div>
+      </section>
+
       {/* The same words as the first-visit popup, kept here for anyone who
           dismissed it or whose browser dropped the flag. */}
       <section>

@@ -12,7 +12,7 @@ import type { Airline, Arrival, City, Entry, Needs, Origin, OriginDef, Region, R
 import { slugify } from "./slugs"
 
 export const DATA = {
-  meta: meta as { updated: string; reportContact: string },
+  meta: meta as { updated: string; contact: string },
   sources: sources as Record<string, Source>,
   airlines: airlines as Record<string, Airline>,
   cities: cities as City[],

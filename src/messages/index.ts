@@ -142,6 +142,11 @@ const messages = {
       sources: "المصادر",
       open: "مفتوح المصدر والبيانات",
       openText: "الكود والبيانات على GitHub. كل تعديل على البيانات هو commit مؤرّخ باسم من راجعه. البيانات برخصة CC BY-SA 4.0 والكود برخصة MIT، ويمكن إعادة استخدامهما مع الإشارة إلى المصدر.",
+      contact: "تواصل معنا",
+      contactText: "تصحيح، طريق لا نعرفه، أو سؤال: راسلنا على",
+      join: "حابب تبني fly.sy معنا؟",
+      joinText:
+        "إذا عندك خبرة برمجية backend أو تصميمية frontend وتقدر تفيد الموقع من خبراتك، حط إيدك بإيدنا وخلينا نزبط الموقع بشكل يليق بسوريا والسوريين وزوارها الأعزاء من كل أنحاء العالم!",
       fine: "هذا الموقع نقطة انطلاق للتحقق لا بديل عنه. الوضع يتغير بسرعة، والقواعد تُطبَّق أحياناً بشكل مختلف من موظف لآخر، وقد تكون معلومة صحيحة يوم مراجعتها وخاطئة اليوم. أكّد كل شيء مع شركة الطيران أو السفارة، ولا تشترِ تذكرة غير قابلة للاسترداد قبل أن تتأكد من أوراقك.",
     },
     disclaimer: {
@@ -359,6 +364,11 @@ const messages = {
       sources: "Sources",
       open: "Open source, open data",
       openText: "Code and data are on GitHub. Every data change is a dated commit with the reviewer's name on it. The data is licensed CC BY-SA 4.0 and the code MIT, so both can be reused with attribution.",
+      contact: "Contact",
+      contactText: "A correction, a route we don't know about, or a question: write to",
+      join: "Want to build fly.sy with us?",
+      joinText:
+        "If you have backend or frontend design experience and can help the site with your skills, join hands with us and let's make it worthy of Syria, Syrians, and their dear visitors from all over the world!",
       fine: "This site is a starting point for checking, not a substitute for it. Things change fast, rules are applied differently by different officials, and a line that was right when we checked it may be wrong today. Confirm everything with the airline or the embassy, and don't buy a non-refundable ticket before your paperwork is settled.",
     },
     disclaimer: {

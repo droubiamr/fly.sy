@@ -34,7 +34,7 @@ export default async function NewReportPage({ params }: Props) {
       <h1 className="text-2xl font-bold tracking-tight">{m.reports.form.title}</h1>
       <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{m.reports.form.lede}</p>
       <div className="mt-6">
-        <ReportForm configured={supabaseConfigured()} contactUrl={DATA.meta.reportContact} />
+        <ReportForm configured={supabaseConfigured()} contactUrl={`mailto:${DATA.meta.contact}`} />
       </div>
     </div>
   )
