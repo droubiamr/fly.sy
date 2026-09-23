@@ -76,7 +76,7 @@ Scripts: `npm run dev`, `npm test`, `npm run check` (lint + types + tests + buil
 - Seeded data is from news reporting and travel operators as of Sep 2026 — mostly `reported`, not `verified`. Road times are estimates. **All of it needs re-verifying by Amr** before launch.
 - 23 Sep 2026 airline pass: 22 carriers and 5 airports (Deir ez-Zor open; Latakia and Qamishli closed). Every air route was checked against the official airport flight boards (damairport.gov.sy, alpairport.gov.sy) and against Flightradar24 / FlightAware tracking of flights actually flown in September 2026; rows confirmed that way are `verified` with source `damairport`, `alpairport` or `tracker`, and carry the flight number and days in the note. Routes that were announced but never showed up on a board or in tracking are `unknown`/`unconfirmed` with the reason in the note.
 - Egypt stays a declared gap: no airline flies Cairo–Damascus, so the Egypt origin carries one honest 'connect via' row.
-- Report contact link in `data/meta.json` is a placeholder (`https://instagram.com/`).
+- Contact address is `info@fly.sy` (`contact` in `data/meta.json`); it is set up and receiving mail.
 
 ## Immediate next step — get it onto GitHub
 
@@ -109,7 +109,7 @@ Then: `npm install`, `npm run check`, `npm run dev`, open on phone.
 5. `/admin` moderation page behind Supabase Auth (needs a decision on how Amr signs in).
 6. Airlines tab: filter by arrival airport (Damascus / Aleppo); weekly frequency per route.
 7. German (`de`) as a third locale.
-8. Replace placeholder contact link; re-verify every seeded data row.
+8. Re-verify every seeded data row.
 
 ## Open decisions for Amr
 

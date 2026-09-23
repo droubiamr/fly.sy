@@ -11,7 +11,7 @@ import meta from "../../data/meta.json"
 import type { Airline, Arrival, City, Entry, Needs, OriginDef, Region, Report, Roads, Source } from "./types"
 
 export const DATA = {
-  meta: meta as { updated: string; reportContact: string },
+  meta: meta as { updated: string; contact: string },
   sources: sources as Record<string, Source>,
   airlines: airlines as Record<string, Airline>,
   cities: cities as City[],

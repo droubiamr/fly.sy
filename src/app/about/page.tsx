@@ -55,6 +55,21 @@ export default async function AboutPage() {
         <p className="text-[13.5px] leading-relaxed text-muted-foreground">{m.about.openText}</p>
       </section>
 
+      <section>
+        <h2 className="mb-2 text-sm font-semibold">{m.about.contact}</h2>
+        <p className="text-[13.5px] leading-relaxed text-muted-foreground">
+          {m.about.contactText}{" "}
+          {/* dir="ltr" keeps the address in reading order inside an Arabic sentence. */}
+          <a
+            href={`mailto:${DATA.meta.contact}`}
+            dir="ltr"
+            className="font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] hover:decoration-current"
+          >
+            {DATA.meta.contact}
+          </a>
+        </p>
+      </section>
+
       <p className="text-xs leading-relaxed text-muted-foreground">{m.about.fine}</p>
     </div>
   )
