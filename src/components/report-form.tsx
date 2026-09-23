@@ -15,7 +15,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 
 const PASSPORTS: Passport[] = ["sy", "voa", "res"]
 
-export function ReportForm({ configured, contactUrl }: { configured: boolean; contactUrl: string }) {
+export function ReportForm({ contactUrl }: { contactUrl: string }) {
   const locale = useLocale()
   const m = useMessages()
   const f = m.reports.form
@@ -31,14 +31,14 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
     )
   }
 
+  // No database behind this deployment: say so with the contact link instead of a generic error.
+  const notConfigured = state?.ok === false && state.error === "notConfigured"
   const errorText =
-    state && !state.ok
-      ? { invalid: f.errorInvalid, notConfigured: f.notConfigured, generic: f.errorGeneric }[state.error]
-      : null
+    state && !state.ok && !notConfigured ? (state.error === "invalid" ? f.errorInvalid : f.errorGeneric) : null
 
   return (
     <form action={action} className="flex flex-col gap-6" noValidate>
-      {!configured && (
+      {notConfigured && (
         <Alert>
           <AlertDescription>
             {f.notConfigured}{" "}
@@ -129,7 +129,7 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
         </Alert>
       )}
 
-      <Button type="submit" size="lg" disabled={pending || !configured} className="h-13 rounded-xl text-[15.5px] shadow-none">
+      <Button type="submit" size="lg" disabled={pending} className="h-13 rounded-xl text-[15.5px] shadow-none">
         {pending ? f.sending : f.submit}
       </Button>
     </form>

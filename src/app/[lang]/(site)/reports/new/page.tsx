@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { getI18n, requireLocale } from "@/lib/i18n"
-import { supabaseConfigured } from "@/lib/supabase/server"
 import { DATA } from "@/lib/data"
 import { pageMetadata } from "@/lib/seo"
 import type { Locale } from "@/lib/types"
@@ -34,7 +33,7 @@ export default async function NewReportPage({ params }: Props) {
       <h1 className="text-2xl font-bold tracking-tight">{m.reports.form.title}</h1>
       <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{m.reports.form.lede}</p>
       <div className="mt-6">
-        <ReportForm configured={supabaseConfigured()} contactUrl={`mailto:${DATA.meta.contact}`} />
+        <ReportForm contactUrl={`mailto:${DATA.meta.contact}`} />
       </div>
     </div>
   )

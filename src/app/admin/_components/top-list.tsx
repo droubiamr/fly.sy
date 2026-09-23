@@ -19,6 +19,7 @@ export function TopList({
   label = (k) => k,
   href,
   empty = "Nothing yet.",
+  external = true,
 }: {
   title: string
   Icon: LucideIcon
@@ -27,6 +28,8 @@ export function TopList({
   label?: (key: string) => string
   href?: (key: string) => string | undefined
   empty?: string
+  /** Links open in a new tab unless they stay inside the dashboard. */
+  external?: boolean
 }) {
   const items: Item[] = rows.map((r) => ({ ...r, label: label(r.key), href: href?.(r.key) }))
   const head = items.slice(0, SHOWN)
@@ -48,7 +51,7 @@ export function TopList({
         <>
           <ol className="flex flex-col gap-2.5">
             {head.map((it) => (
-              <Line key={it.key} item={it} total={total} />
+              <Line key={it.key} item={it} total={total} external={external} />
             ))}
           </ol>
           {rest.length > 0 && (
@@ -58,7 +61,7 @@ export function TopList({
               </summary>
               <ol className="flex flex-col gap-2.5">
                 {rest.map((it) => (
-                  <Line key={it.key} item={it} total={total} />
+                  <Line key={it.key} item={it} total={total} external={external} />
                 ))}
               </ol>
             </details>
@@ -69,13 +72,13 @@ export function TopList({
   )
 }
 
-function Line({ item, total }: { item: Item; total: number }) {
+function Line({ item, total, external }: { item: Item; total: number; external: boolean }) {
   const share = total > 0 ? item.views / total : 0
   return (
     <li className="flex flex-col gap-1">
       <div className="flex items-baseline gap-3 text-sm">
         {item.href ? (
-          <a href={item.href} target="_blank" rel="noreferrer" className="min-w-0 truncate hover:underline" title={item.label}>
+          <a href={item.href} {...(external ? { target: "_blank", rel: "noreferrer" } : {})} className="min-w-0 truncate hover:underline" title={item.label}>
             {item.label}
           </a>
         ) : (

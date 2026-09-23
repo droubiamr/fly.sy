@@ -1,5 +1,7 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare"
 import { NextResponse, userAgent, type NextRequest } from "next/server"
 import {
+  clientIp,
   countryFrom,
   deviceFrom,
   isVisitorId,
@@ -10,15 +12,16 @@ import {
   VISITOR_COOKIE,
   VISITOR_COOKIE_MAX_AGE,
 } from "@/lib/analytics"
-import { ADMIN_COOKIE, verifySession } from "@/lib/admin-token"
-import { adminPassword } from "@/lib/admin-auth"
+import { currentAdmin } from "@/lib/admin-auth"
+import { db } from "@/lib/db"
 import { SITE_URL } from "@/lib/site"
-import { supabaseAdmin } from "@/lib/supabase/admin"
+
+type Cf = { country?: string; region?: string; city?: string; asn?: number; asOrganization?: string }
 
 /**
  * Records one page view, sent by <VisitTracker> after each navigation. Always answers 204 so a failure here
  * never shows up on the page. Sets the first-party visitor cookie on the first view, except when the browser
- * sends Global Privacy Control, which gets an anonymous view and no cookie.
+ * sends Global Privacy Control, which gets a view without a visitor id.
  */
 export async function POST(req: NextRequest) {
   const done = () => new NextResponse(null, { status: 204, headers: { "Cache-Control": "no-store" } })
@@ -33,8 +36,7 @@ export async function POST(req: NextRequest) {
   if (ua.isBot || /headless|lighthouse|pingdom|uptimerobot|statuscake/i.test(ua.ua)) return done()
 
   // The owner's own browsing does not count while signed in to the dashboard.
-  const pw = adminPassword()
-  if (pw && (await verifySession(pw, req.cookies.get(ADMIN_COOKIE)?.value))) return done()
+  if (await currentAdmin()) return done()
 
   // A real view is well under a kilobyte.
   if (Number(req.headers.get("content-length") ?? 0) > 4096) return done()
@@ -69,20 +71,41 @@ export async function POST(req: NextRequest) {
     })
   }
 
-  const sb = supabaseAdmin()
-  if (!sb) return res
+  const d = db()
+  if (!d) return res
 
-  const { error } = await sb.from("page_views").insert({
-    path,
-    locale: localeOfPath(path),
-    source: sourceFrom(body.ref, body.utm, [new URL(SITE_URL).hostname, req.nextUrl.hostname]),
-    country: countryFrom(req.headers.get("cf-ipcountry")),
-    device: deviceFrom(ua.device.type),
-    browser: shortName(ua.browser.name),
-    os: shortName(ua.os.name),
-    visitor_id: visitorId,
-    new_visitor: newVisitor,
-  })
-  if (error) console.error("page view not recorded:", error.message)
+  let cf: Cf = {}
+  try {
+    cf = (getCloudflareContext().cf ?? {}) as Cf
+  } catch {}
+
+  try {
+    await d
+      .prepare(
+        `insert into page_views (ts, path, locale, source, ip, country, region, city, asn, as_org, user_agent, device, browser, os, visitor_id, new_visitor)
+         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .bind(
+        Date.now(),
+        path,
+        localeOfPath(path),
+        sourceFrom(body.ref, body.utm, [new URL(SITE_URL).hostname, req.nextUrl.hostname]),
+        clientIp(req.headers),
+        countryFrom(cf.country ?? req.headers.get("cf-ipcountry")),
+        cf.region?.slice(0, 80) ?? null,
+        cf.city?.slice(0, 80) ?? null,
+        typeof cf.asn === "number" ? cf.asn : null,
+        cf.asOrganization?.slice(0, 120) ?? null,
+        ua.ua ? ua.ua.slice(0, 500) : null,
+        deviceFrom(ua.device.type),
+        shortName(ua.browser.name),
+        shortName(ua.os.name),
+        visitorId,
+        newVisitor ? 1 : 0,
+      )
+      .run()
+  } catch (e) {
+    console.error("page view not recorded:", e)
+  }
   return res
 }

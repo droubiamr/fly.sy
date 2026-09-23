@@ -1,11 +1,12 @@
 import Link from "next/link"
-import { BarChart3, ExternalLink, LogOut, MessagesSquare } from "lucide-react"
+import { BarChart3, ExternalLink, LogOut, MessagesSquare, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logout } from "../actions"
 
 const TABS = [
   { href: "/admin", key: "traffic", label: "Traffic", Icon: BarChart3 },
   { href: "/admin/reports", key: "reports", label: "Reports", Icon: MessagesSquare },
+  { href: "/admin/security", key: "security", label: "Security", Icon: ShieldCheck },
 ] as const
 
 export function AdminHeader({ active, pending }: { active: (typeof TABS)[number]["key"]; pending: number }) {

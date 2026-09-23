@@ -21,9 +21,9 @@ Start here, then README.md and CONTRIBUTING.md.
 | UI direction | **B — "Passport"**: calm, light, cool-grey ground, passport-green `#0E5C3F` accent, outlined *stamp* chips for status, Readex Pro font |
 | Style rules | Icon-first, minimal text. Mobile-first. No gradients, shadows, emoji, left-border cards. 44px touch targets. Pre-built components, not hand-rolled |
 | Stack | Next.js 16 (App Router, Server Actions), TypeScript, Tailwind 4, shadcn/ui (Radix), lucide-react |
-| Community reports | Supabase (Postgres + RLS) with a moderation queue |
+| Community reports | Cloudflare D1, moderated at `/admin/reports` (moved from an unused Supabase setup, Sep 2026) |
 | Honesty model | Every fact has `source` + `confidence` + `seen`. Where there's no source, say so (`nosrc`) — never guess |
-| Visitor analytics | First-party, in Supabase, no third-party script. Visitor-id cookie set without a consent banner (owner's call, Sep 2026); Global Privacy Control honoured. See README |
+| Visitor analytics | First-party, in D1, no third-party script. Records IP, location, network and user agent; visitor-id cookie set without a consent banner. Legal compliance is the owner's to handle (owner's call, Sep 2026). See README |
 
 ## What we won't publish without a dated official source
 
@@ -51,9 +51,8 @@ src/app/[lang]/(site)/ routes: / (plan), /from/[origin]/to/[city] (?p=passport),
 src/app/               sitemap.ts, robots.ts, manifest.ts, icons; src/proxy.ts maps / → /ar internally
 src/components/        app-shell, bottom-nav, disclaimer (no-liability popup, once per browser), planner, world-map, flag,
                        route-card, status-stamp, provenance, report-form, ui/ (shadcn)
-supabase/migrations/0001_reports.sql   reports table, RLS, public view without contact field
-supabase/migrations/0002_analytics.sql page_views table (service role only) + analytics_summary() for the dashboard
-src/app/admin/         admin dashboard (own root layout, English): /admin traffic, /admin/reports moderation, /admin/login
+migrations/            D1 schema: 0001 reports + page_views, 0002 admin sessions, sign-in log, TOTP replay guard
+src/app/admin/         admin dashboard (own root layout, English): /admin traffic, /admin/reports, /admin/security, /admin/login
 src/app/api/track/     page-view endpoint; src/components/visit-tracker.tsx posts to it on every navigation
 tests/plan.test.ts     planner + data integrity tests; tests/analytics.test.ts tracking helpers + admin session tokens
 ```
@@ -80,7 +79,7 @@ Scripts: `npm run dev`, `npm test`, `npm run check` (lint + types + tests + buil
 ## Current state
 
 - Built, lint-clean, type-clean, 6 tests passing, production build passes, all routes return 200 on the built server.
-- **Not yet verified:** in a real browser on a phone, and the Supabase insert end to end.
+- **Not yet verified:** in a real browser on a phone, and on the deployed Worker with the production D1 database.
 - Seeded data is from news reporting and travel operators as of Sep 2026 — mostly `reported`, not `verified`. Road times are estimates. **All of it needs re-verifying by Amr** before launch.
 - 23 Sep 2026 airline pass: 22 carriers and 5 airports (Deir ez-Zor open; Latakia and Qamishli closed). Every air route was checked against the official airport flight boards (damairport.gov.sy, alpairport.gov.sy) and against Flightradar24 / FlightAware tracking of flights actually flown in September 2026; rows confirmed that way are `verified` with source `damairport`, `alpairport` or `tracker`, and carry the flight number and days in the note. Routes that were announced but never showed up on a board or in tracking are `unknown`/`unconfirmed` with the reason in the note.
 - Egypt stays a declared gap: no airline flies Cairo–Damascus, so the Egypt origin carries one honest 'connect via' row.
@@ -111,11 +110,11 @@ Then: `npm install`, `npm run check`, `npm run dev`, open on phone.
 ## Backlog, in order
 
 1. Verify on a real phone; fix anything at 390px width.
-2. Supabase: create project, run the migration, add `.env.local`, test a submission end to end.
+2. D1: `wrangler d1 create fly-sy`, paste the id into `wrangler.jsonc`, apply `migrations/` with `--remote`, test a submission.
 3. GitHub Actions running `npm run check` on every PR.
 4. Share button on each route card (copies the URL).
-5. ~~`/admin` moderation page~~ Done: `/admin` has traffic analytics and report moderation behind one
-   `ADMIN_PASSWORD`. Needs `0002_analytics.sql` run and `SUPABASE_SERVICE_ROLE_KEY` + `ADMIN_PASSWORD` set as secrets.
+5. ~~`/admin` moderation page~~ Done: traffic, reports and security behind Access + password + TOTP + Turnstile
+   (README → Admin sign-in). Needs the secrets from `npm run admin:setup`, a Turnstile widget, and an Access app.
 6. Airlines tab: filter by arrival airport (Damascus / Aleppo); weekly frequency per route.
 7. German (`de`) as a third locale.
 8. Re-verify every seeded data row.
@@ -124,5 +123,4 @@ Then: `npm install`, `npm run check`, `npm run dev`, open on phone.
 
 - Whether to name himself publicly on the site or stay behind a studio name + contact channel.
 - Monetization: if affiliate links are ever added, the "no commission" line in the independence notice must change.
-- Admin sign-in is a single password for now. Whether to move it to Cloudflare Access or Supabase Auth
-  (per-person accounts, no shared secret).
+- Whether admin sign-in should move to passkeys (WebAuthn) as the in-app factor; Access can already require them.

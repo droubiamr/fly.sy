@@ -1,7 +1,7 @@
 "use server"
 
 import { DATA } from "@/lib/data"
-import { supabase } from "@/lib/supabase/server"
+import { db } from "@/lib/db"
 
 export type SubmitState = { ok: true } | { ok: false; error: "invalid" | "notConfigured" | "generic" } | null
 
@@ -32,10 +32,19 @@ export async function submitReport(_prev: SubmitState, form: FormData): Promise<
     return { ok: false, error: "invalid" }
   }
 
-  const sb = supabase()
-  if (!sb) return { ok: false, error: "notConfigured" }
+  const d = db()
+  if (!d) return { ok: false, error: "notConfigured" }
 
-  const { error } = await sb.from("reports").insert({ entry, travelled_on, passport, note, contact, wait_minutes })
-  if (error) return { ok: false, error: "generic" }
+  try {
+    await d
+      .prepare(
+        "insert into reports (id, created_at, entry, travelled_on, wait_minutes, passport, note, contact) values (?, ?, ?, ?, ?, ?, ?, ?)",
+      )
+      .bind(crypto.randomUUID(), Date.now(), entry, travelled_on, wait_minutes, passport, note, contact)
+      .run()
+  } catch (e) {
+    console.error("report not saved:", e)
+    return { ok: false, error: "generic" }
+  }
   return { ok: true }
 }

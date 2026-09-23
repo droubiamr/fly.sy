@@ -2,6 +2,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import {
   change,
+  clientIp,
   countryFrom,
   deviceFrom,
   fillSeries,
@@ -12,7 +13,7 @@ import {
   rangeWindow,
   sourceFrom,
 } from "../src/lib/analytics.ts"
-import { signSession, verifySession, safeEqual, SESSION_TTL_MS } from "../src/lib/admin-token.ts"
+import { hashPassword, newSessionToken, safeEqual, tokenHash, totpFor, totpStep, verifyPassword, newTotpSecret } from "../src/lib/auth-crypto.ts"
 
 const OWN = ["fly.sy", "localhost"]
 
@@ -100,17 +101,44 @@ test("change is null with nothing to compare against", () => {
   assert.equal(change(15, 10), 0.5)
 })
 
-test("admin sessions: signed, expiring, and bound to the password", async () => {
-  const pw = "correct horse battery staple"
-  const now = Date.now()
-  const token = await signSession(pw, now)
-  assert.ok(await verifySession(pw, token, now))
-  assert.ok(!(await verifySession("another password!", token, now)))
-  assert.ok(!(await verifySession(pw, token, now + SESSION_TTL_MS + 1)))
-  const [v, exp, sig] = token.split(".")
-  assert.ok(!(await verifySession(pw, `${v}.${Number(exp) + 1000}.${sig}`, now)), "a stretched expiry must not verify")
-  assert.ok(!(await verifySession(pw, undefined, now)))
-  assert.ok(!(await verifySession(pw, "garbage", now)))
+test("client IP comes from Cloudflare's header and is only ever an address", () => {
+  const h = (o: Record<string, string>) => ({ get: (k: string) => o[k] ?? null })
+  assert.equal(clientIp(h({ "cf-connecting-ip": "203.0.113.7" })), "203.0.113.7")
+  assert.equal(clientIp(h({ "cf-connecting-ip": "2001:db8::1" })), "2001:db8::1")
+  assert.equal(clientIp(h({ "x-forwarded-for": "198.51.100.2, 10.0.0.1" })), "198.51.100.2")
+  assert.equal(clientIp(h({ "cf-connecting-ip": "<script>" })), null)
+  assert.equal(clientIp(h({})), null)
+})
+
+test("passwords: PBKDF2 at 100,000 iterations, salted, and only the right one verifies", async () => {
+  const stored = await hashPassword("correct horse battery staple")
+  assert.match(stored, /^pbkdf2-sha256:100000:[A-Za-z0-9_-]{22}:[A-Za-z0-9_-]{43}$/)
+  assert.notEqual(stored, await hashPassword("correct horse battery staple"), "salted")
+  assert.ok(await verifyPassword("correct horse battery staple", stored))
+  assert.ok(!(await verifyPassword("correct horse battery stapl", stored)))
+  assert.ok(!(await verifyPassword("anything", "not-a-hash")))
+  assert.ok(!(await verifyPassword("", stored)))
+})
+
+test("session tokens: 256 random bits, stored only as a hash", async () => {
+  const t = newSessionToken()
+  assert.match(t, /^[A-Za-z0-9_-]{43}$/)
+  assert.notEqual(t, newSessionToken())
+  assert.match(await tokenHash(t), /^[0-9a-f]{64}$/)
   assert.ok(await safeEqual("abc", "abc"))
   assert.ok(!(await safeEqual("abc", "abd")))
+})
+
+test("TOTP: the current code passes with one step of drift, anything else fails", () => {
+  const secret = newTotpSecret()
+  assert.match(secret, /^[A-Z2-7]{32}$/)
+  const now = Date.UTC(2026, 8, 23, 12, 0, 10)
+  const code = totpFor(secret).generate({ timestamp: now })
+  const step = Math.floor(now / 30000)
+  assert.equal(totpStep(secret, code, now), step)
+  assert.equal(totpStep(secret, code, now + 30000), step, "previous step still accepted, reported as its own step")
+  assert.equal(totpStep(secret, code, now + 90000), null, "too old")
+  assert.equal(totpStep(secret, "12345", now), null)
+  assert.equal(totpStep(secret, "abcdef", now), null)
+  assert.equal(totpStep("not base32!", code, now), null)
 })

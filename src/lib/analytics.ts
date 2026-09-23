@@ -51,6 +51,16 @@ export function countryFrom(header: string | null | undefined): string | null {
   return /^[A-Z]{2}$/.test(c) && c !== "XX" && c !== "T1" ? c : null
 }
 
+/**
+ * The visitor's IP address. Cloudflare sets CF-Connecting-IP on every request that reaches the Worker and
+ * overwrites any value a client sends; X-Forwarded-For is only for local development behind no proxy.
+ */
+export function clientIp(headers: { get(name: string): string | null }): string | null {
+  const raw = headers.get("cf-connecting-ip") ?? headers.get("x-forwarded-for")?.split(",")[0] ?? null
+  const ip = raw?.trim() ?? ""
+  return /^[0-9a-f.:]{2,45}$/i.test(ip) ? ip : null
+}
+
 /** Next's userAgent() leaves device.type undefined for desktop browsers. */
 export function deviceFrom(type: string | undefined): Device {
   if (!type) return "desktop"
