@@ -7,6 +7,10 @@ source is you, set `confidence: reported` — a maintainer upgrades to `verified
 
 ## Adding a route or crossing
 - Airlines: add the carrier to `data/airlines.json`, then one row per origin city in `data/arrivals.json`.
+  `from` is the ISO country code of an entry in `data/origins.json`, or a group such as `eu` that applies to
+  every country in it.
+- Countries: add one line to `data/origins.json` and its flag to `src/components/flag.tsx`. A country needs at
+  least one arrival row, otherwise it is an empty choice and `npm test` fails.
 - Crossings: add to `data/entries.json` with `kind: "land"`, then its road times to every city in
   `data/roads.json` (road legs are automatically labelled `source: est`).
 
