@@ -4,7 +4,7 @@ import { DATA } from "@/lib/data"
 import { getI18n, requireLocale } from "@/lib/i18n"
 import { arrow, formatDate } from "@/lib/format"
 import { pageMetadata } from "@/lib/seo"
-import { GITHUB_URL, breadcrumbLd, datasetLd, graph, organizationLd, webPageLd, websiteLd } from "@/lib/schema"
+import { breadcrumbLd, datasetLd, graph, organizationLd, webPageLd, websiteLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
 import type { Locale } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
@@ -105,16 +105,6 @@ export default async function AboutPage({ params }: Props) {
           <Link href={localePath(locale, "/documents")} className="text-primary underline-offset-4 hover:underline">
             {m.footer.documents} {arrow(locale)}
           </Link>
-        </p>
-      </section>
-
-      <section>
-        <h2 className="mb-2 text-sm font-semibold">{m.about.open}</h2>
-        <p className="max-w-prose text-[13.5px] leading-relaxed text-muted-foreground">{m.about.openText}</p>
-        <p className="mt-2 text-xs">
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-primary underline-offset-4 hover:underline">
-            github.com/droubiamr/fly.sy {arrow(locale)}
-          </a>
         </p>
       </section>
 

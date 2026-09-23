@@ -140,8 +140,6 @@ const messages = {
         },
       ],
       sources: "المصادر",
-      open: "مفتوح المصدر والبيانات",
-      openText: "الكود والبيانات على GitHub. كل تعديل على البيانات هو commit مؤرّخ باسم من راجعه. البيانات برخصة CC BY-SA 4.0 والكود برخصة MIT، ويمكن إعادة استخدامهما مع الإشارة إلى المصدر.",
       contact: "تواصل معنا",
       contactText: "تصحيح، طريق لا نعرفه، أو سؤال: راسلنا على",
       join: "حابب تبني fly.sy معنا؟",
@@ -161,8 +159,6 @@ const messages = {
     footer: {
       explore: "استكشف",
       documents: "الأوراق المطلوبة",
-      data: "البيانات مفتوحة برخصة CC BY-SA 4.0",
-      code: "الكود على GitHub",
       disclaimer: "غير رسمي. أكّد كل شيء مع شركة الطيران أو السفارة قبل السفر.",
     },
     notFound: {
@@ -362,8 +358,6 @@ const messages = {
         },
       ],
       sources: "Sources",
-      open: "Open source, open data",
-      openText: "Code and data are on GitHub. Every data change is a dated commit with the reviewer's name on it. The data is licensed CC BY-SA 4.0 and the code MIT, so both can be reused with attribution.",
       contact: "Contact",
       contactText: "A correction, a route we don't know about, or a question: write to",
       join: "Want to build fly.sy with us?",
@@ -383,8 +377,6 @@ const messages = {
     footer: {
       explore: "Explore",
       documents: "Documents you need",
-      data: "Data is open under CC BY-SA 4.0",
-      code: "Code on GitHub",
       disclaimer: "Unofficial. Confirm everything with the airline or embassy before you travel.",
     },
     notFound: {

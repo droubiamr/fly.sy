@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { getI18n } from "@/lib/i18n"
 import { localePath } from "@/lib/site"
-import { GITHUB_URL } from "@/lib/schema"
 import type { Locale } from "@/lib/types"
 
 /** Crawlable links to every section, so no page is more than one click from any other. */
@@ -26,18 +25,6 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             </Link>
           </li>
         ))}
-      </ul>
-      <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-        <li>
-          <a href={GITHUB_URL} rel="noopener" className="underline-offset-4 hover:underline">
-            {m.footer.code}
-          </a>
-        </li>
-        <li>
-          <a href={`${GITHUB_URL}/blob/main/data/LICENSE`} rel="noopener license" className="underline-offset-4 hover:underline">
-            {m.footer.data}
-          </a>
-        </li>
       </ul>
       <p className="mt-4 text-xs leading-relaxed">{m.footer.disclaimer}</p>
     </footer>
