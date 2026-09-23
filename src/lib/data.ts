@@ -3,11 +3,12 @@ import airlines from "../../data/airlines.json"
 import cities from "../../data/cities.json"
 import entries from "../../data/entries.json"
 import arrivals from "../../data/arrivals.json"
+import origins from "../../data/origins.json"
 import roads from "../../data/roads.json"
 import needs from "../../data/needs.json"
 import seedReports from "../../data/reports.seed.json"
 import meta from "../../data/meta.json"
-import type { Airline, Arrival, City, Entry, Needs, Report, Roads, Source } from "./types"
+import type { Airline, Arrival, City, Entry, Needs, OriginDef, Region, Report, Roads, Source } from "./types"
 
 export const DATA = {
   meta: meta as { updated: string; reportContact: string },
@@ -21,17 +22,14 @@ export const DATA = {
   seedReports: seedReports as Report[],
 }
 
-export const ORIGINS = [
-  { id: "tr", name: { ar: "تركيا", en: "Türkiye" } },
-  { id: "lb", name: { ar: "لبنان", en: "Lebanon" } },
-  { id: "jo", name: { ar: "الأردن", en: "Jordan" } },
-  { id: "gulf", name: { ar: "الخليج", en: "the Gulf" } },
-  { id: "iq", name: { ar: "العراق", en: "Iraq" } },
-  { id: "ru", name: { ar: "روسيا", en: "Russia" } },
-  { id: "ly", name: { ar: "ليبيا", en: "Libya" } },
-  { id: "am", name: { ar: "أرمينيا", en: "Armenia" } },
-  { id: "eu", name: { ar: "أوروبا", en: "Europe" } },
-] as const
+export const ORIGINS = origins as OriginDef[]
+/** Dropdown order: nearest first. */
+export const REGIONS: Region[] = ["near", "gulf", "europe", "other"]
+
+/** The region ids the planner used before origins were countries. Old shared links still resolve. */
+const LEGACY_ORIGINS: Record<string, string> = { tr: "TR", lb: "LB", jo: "JO", gulf: "AE", iq: "IQ", eu: "DE" }
+export const originById = (id: string | undefined) =>
+  ORIGINS.find((o) => o.id === id) ?? ORIGINS.find((o) => o.id === LEGACY_ORIGINS[id ?? ""])
 
 export const PASSPORTS = [
   { id: "sy", name: { ar: "جواز سوري", en: "a Syrian passport" } },

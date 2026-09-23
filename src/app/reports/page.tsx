@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { Plus, Check } from "lucide-react"
 import { DATA } from "@/lib/data"
@@ -5,6 +6,11 @@ import { getI18n } from "@/lib/i18n"
 import { formatDate, formatMinutes } from "@/lib/format"
 import { getPublishedReports } from "@/lib/reports"
 import { Button } from "@/components/ui/button"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n()
+  return { title: m.reports.title }
+}
 
 export const dynamic = "force-dynamic"
 

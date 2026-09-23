@@ -1,8 +1,15 @@
+import type { Metadata } from "next"
 import { DATA } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
 import { formatDate, formatHours } from "@/lib/format"
 import { StatusDot } from "@/components/status-stamp"
 import { CountryTag } from "@/components/country-tag"
+import { AirlineLogo } from "@/components/airline-logo"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n()
+  return { title: m.airlines.title }
+}
 
 export default async function AirlinesPage() {
   const { locale, m } = await getI18n()
@@ -23,13 +30,15 @@ export default async function AirlinesPage() {
             <li key={code}>
               <details className="group rounded-2xl border bg-card">
                 <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
+                  {/* Carriers with nothing flying are greyed rather than hidden: the
+                      list is also a record of who used to fly. */}
                   <span
                     className={
-                      "grid size-10 shrink-0 place-items-center rounded-[10px] text-sm font-bold tracking-wide " +
-                      (live ? "bg-secondary text-secondary-foreground" : "bg-muted text-muted-foreground")
+                      "size-10 shrink-0 rounded-[10px] border bg-background p-1.5 " +
+                      (live ? "" : "opacity-50 grayscale")
                     }
                   >
-                    {code}
+                    <AirlineLogo code={code} />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-2 font-semibold">

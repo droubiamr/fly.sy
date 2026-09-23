@@ -10,6 +10,7 @@ Not affiliated with any government body, airline or embassy. Sells nothing, take
 
 - **Next.js 16** (App Router, Server Actions) · **TypeScript** · **Tailwind CSS 4**
 - **shadcn/ui** components (source-owned in `src/components/ui`, on Radix)
+- **d3-geo** + **world-atlas** (Natural Earth) for the map, rendered to SVG on the server; **country-flag-icons** for flags
 - **Supabase** (Postgres + RLS) for community reports — optional; the site runs without it
 - Arabic-first, RTL by default, English via a cookie toggle. No i18n library: `src/messages/index.ts`
 
@@ -28,10 +29,13 @@ npm run dev
 | Path | What |
 |---|---|
 | `data/*.json` | **All sourced facts.** Editing these is how the site is updated. |
+| `data/origins.json` | The countries you can start from, with the hub airport the map draws the route from. |
 | `src/lib/plan.ts` | The route planner. Pure function, tested in `tests/`. |
 | `src/lib/data.ts` | Loads and types the JSON. |
 | `src/messages/index.ts` | UI strings, `ar` and `en`. |
 | `src/app/globals.css` | Design tokens. The whole look is these variables. |
+| `src/app/icon.svg` | The brand mark. `npm run icons` rebuilds the favicon, app icons and share card from it (`scripts/icons.mjs`). |
+| `src/app/manifest.ts`, `robots.ts`, `sitemap.ts` | Web app manifest, robots.txt and sitemap.xml. |
 | `supabase/migrations/` | Reports table, RLS and the public view. |
 
 ## Updating data (the weekly job)
@@ -67,6 +71,13 @@ paste the URL and anon key into `.env.local`.
 Direction "Passport": cool grey ground, passport-green accent, outlined *stamp* chips for status,
 Readex Pro. Tokens are in `globals.css`; every component reads them, so restyling is one file.
 
+The brand mark is `src/app/icon.svg`: Syria's border from Natural Earth (public domain), in white on a passport-green tile. Everything raster
+(`favicon.ico`, `apple-icon.png`, the manifest icons in `public/`, `opengraph-image.png`) is generated from it
+by `npm run icons` and committed. The share card sets its text in Readex Pro, so install the font locally
+before regenerating it.
+
 ## Licence
 
 Code: [MIT](LICENSE). Data (`data/`): [CC BY-SA 4.0](data/LICENSE).
+Map geometry is [Natural Earth](https://www.naturalearthdata.com/) (public domain) via `world-atlas` (ISC); flags are
+from `country-flag-icons` (MIT).

@@ -5,7 +5,20 @@ export type Status = "open" | "caution" | "closed" | "unknown"
 export type Confidence = "verified" | "reported" | "unconfirmed"
 export type Mode = "air" | "land"
 export type Passport = "sy" | "voa" | "res"
-export type Origin = "tr" | "lb" | "jo" | "gulf" | "iq" | "ru" | "ly" | "am" | "eu"
+/** ISO 3166-1 alpha-2 code of a country you can start from; see data/origins.json. */
+export type Origin = string
+export type Region = "near" | "gulf" | "europe" | "other"
+export type OriginDef = {
+  id: Origin
+  name: Text
+  /** UN M49 numeric code, as a string with its leading zeros: the id the world atlas uses. */
+  m49: string
+  /** [lng, lat] of the country's main airport: where the route on the map starts. */
+  hub: [number, number]
+  region: Region
+  /** Arrivals filed under this group apply to every country in it, e.g. "eu". */
+  group?: string
+}
 
 export type Source = { name: Text; kind: Text; use: Text }
 export type Airline = { name: Text; country: string }
@@ -27,7 +40,8 @@ export type Arrival = {
   city: Text
   country: string
   entry: string
-  from: Origin
+  /** An origin id, or a group shared by several origins (see OriginDef.group). */
+  from: string
   mode: Mode
   hours: number
   status: Status

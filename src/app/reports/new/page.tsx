@@ -1,7 +1,13 @@
+import type { Metadata } from "next"
 import { getI18n } from "@/lib/i18n"
 import { supabaseConfigured } from "@/lib/supabase/server"
 import { DATA } from "@/lib/data"
 import { ReportForm } from "@/components/report-form"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n()
+  return { title: m.reports.form.title }
+}
 
 export default async function NewReportPage() {
   const { m } = await getI18n()

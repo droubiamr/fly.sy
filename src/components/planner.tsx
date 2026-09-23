@@ -2,17 +2,19 @@
 
 import { useRouter, usePathname } from "next/navigation"
 import { useTransition } from "react"
-import { DATA, ORIGINS, PASSPORTS } from "@/lib/data"
+import { DATA, ORIGINS, PASSPORTS, REGIONS } from "@/lib/data"
 import type { Origin, Passport } from "@/lib/types"
 import { useLocale, useMessages } from "@/components/messages-provider"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Flag } from "@/components/flag"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
 const trigger =
-  "relative inline-flex h-auto w-auto gap-1.5 rounded-[10px] border-0 bg-secondary px-3 py-1 text-[inherit] font-bold text-secondary-foreground shadow-none data-[size=default]:h-auto" +
-  // The chip reads as part of the sentence, so it stays small. The tappable
-  // area is grown to 44px behind it, and the line height is opened up enough
-  // that the areas on neighbouring lines cannot overlap.
+  // No chip: the choice reads as a word in the sentence, set in the accent
+  // colour so the chevron and colour alone say it is tappable.
+  "relative inline-flex h-auto w-auto gap-1 rounded-md border-0 bg-transparent px-0.5 py-0 text-[inherit] font-bold text-primary shadow-none hover:bg-transparent dark:bg-transparent dark:hover:bg-transparent data-[size=default]:h-auto" +
+  // The tappable area is grown to 44px behind the word, and the line height
+  // is opened up enough that the areas on neighbouring lines cannot overlap.
   " after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2 after:content-['']"
 
 /** The sentence you fill in. Choices live in the URL so any answer is a link. */
@@ -38,10 +40,17 @@ export function Planner({ from, dest, passport }: { from: Origin; dest: string; 
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {ORIGINS.map((o) => (
-              <SelectItem key={o.id} value={o.id}>
-                {o.name[locale]}
-              </SelectItem>
+            {REGIONS.map((r) => (
+              <SelectGroup key={r}>
+                <SelectLabel>{m.regions[r]}</SelectLabel>
+                {ORIGINS.filter((o) => o.region === r).map((o) => (
+                  <SelectItem key={o.id} value={o.id}>
+                    {/* The flag rides inside ItemText, so the closed chip shows it too. */}
+                    <Flag code={o.id} className="h-3.5" />
+                    {o.name[locale]}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             ))}
           </SelectContent>
         </Select>{" "}

@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import { DATA } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
 import { Badge } from "@/components/ui/badge"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n()
+  return { title: m.tabs.about }
+}
 
 export default async function AboutPage() {
   const { locale, m } = await getI18n()

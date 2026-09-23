@@ -1,9 +1,15 @@
+import type { Metadata } from "next"
 import { DATA } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
 import { formatDate } from "@/lib/format"
 import { StatusStamp } from "@/components/status-stamp"
 import { CountryTag } from "@/components/country-tag"
 import { Provenance } from "@/components/provenance"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n()
+  return { title: m.crossings.title }
+}
 
 export default async function CrossingsPage() {
   const { locale, m } = await getI18n()
