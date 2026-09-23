@@ -24,7 +24,8 @@ const BORDER = "#e3e6e1"
 
 const source = await readFile("src/app/icon.svg", "utf8")
 // Everything drawn on top of the tile.
-const mark = source.match(/<g id="mark">[\s\S]*?<\/g>/)[0]
+// Greedy: the mark group is the last thing in the file, so this runs to its own close tag.
+const mark = source.match(/<g id="mark">[\s\S]*<\/g>/)[0]
 
 // The tile with its corner radius, as the SVG draws it.
 const tile = (size) => sharp(Buffer.from(source), { density: (72 * size) / 100 }).resize(size, size)
@@ -78,7 +79,6 @@ function shareCard() {
       <rect width="100" height="100" rx="22" fill="${GREEN}"/>
       ${mark}
     </g>
-    <text x="${R}" y="128" text-anchor="end" font-size="46" font-weight="700" fill="${INK}" letter-spacing="-1">fly<tspan fill="${GREEN}">.sy</tspan></text>
     <text x="${R}" y="318" direction="rtl" text-anchor="start" font-size="76" font-weight="700" fill="${INK}">كيف تصل إلى سوريا</text>
     <text x="${R}" y="378" direction="rtl" text-anchor="start" font-size="30" font-weight="400" fill="${MUTED}">كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها</text>
     <text x="${R}" y="436" text-anchor="end" font-size="26" font-weight="400" fill="${MUTED}">How to get into Syria, with a source on every line.</text>
