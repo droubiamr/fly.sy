@@ -8,7 +8,6 @@ import {
   routePath,
 } from "@/lib/data";
 import { fmt, getI18n } from "@/lib/i18n";
-import { formatHours } from "@/lib/format";
 import { airportReach, plan, type Journey, type Reach } from "@/lib/plan";
 import { localePath } from "@/lib/site";
 import type { Locale, OriginDef, Passport } from "@/lib/types";
@@ -65,7 +64,6 @@ export function PlanView({
   const live = journeys.sy.filter((j) => !j.blocked);
   const liveEntries = live.map((j) => j.entry);
   const city = cityById(dest)!;
-  const best = live.find((j) => j.totalHours != null);
   const href = (p: string) => localePath(locale, p);
   const chip =
     "inline-flex min-h-11 items-center gap-1.5 rounded-full border bg-card px-4 text-sm";
@@ -75,16 +73,6 @@ export function PlanView({
       <div className="flex flex-col gap-5">
         {heading}
         <Planner from={origin.id} dest={dest} reach={reach} />
-
-        {best && (
-          <p className="text-sm text-muted-foreground">
-            {fmt(m.route.fastest, {
-              mode: m.mode[best.mode],
-              entry: best.entryData.name[locale],
-              hours: formatHours(best.totalHours, locale),
-            })}
-          </p>
-        )}
 
         <WorldMap
           origin={origin}

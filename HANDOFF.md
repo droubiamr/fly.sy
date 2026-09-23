@@ -19,7 +19,7 @@ Start here, then README.md and CONTRIBUTING.md.
 | Audience | Public / consumers, not agencies |
 | Licence | Code MIT, data CC BY-SA 4.0 |
 | UI direction | **B — "Passport"**: calm, light, cool-grey ground, passport-green `#0E5C3F` accent, outlined *stamp* chips for status, Readex Pro font |
-| Style rules | Icon-first, minimal text. Mobile-first. No gradients, shadows, emoji, left-border cards. 44px touch targets. Pre-built components, not hand-rolled |
+| Style rules | Icon-first, minimal text: an icon always carries a short visible label, never a hover tooltip. Two layers only: the closed card is the answer, one tap opens sources and documents, and the control says what it opens. Hide content, never navigation. Mobile-first. No gradients, shadows, emoji, left-border cards. 44px touch targets. Pre-built components, not hand-rolled |
 | Stack | Next.js 16 (App Router, Server Actions), TypeScript, Tailwind 4, shadcn/ui (Radix), lucide-react |
 | Community reports | Supabase (Postgres + RLS) with a moderation queue |
 | Honesty model | Every fact has `source` + `confidence` + `seen`. Where there's no source, say so (`nosrc`) — never guess |

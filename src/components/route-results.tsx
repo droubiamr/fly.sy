@@ -12,12 +12,15 @@ import { cn } from "@/lib/utils"
 export function RouteResults({ journeys, dest, locale, m }: { journeys: Record<Passport, Journey[]>; dest: string; locale: Locale; m: Messages }) {
   const { passport } = usePassport()
   const list = journeys[passport]
+  // The list is already sorted by total time. The stamp goes to the first route
+  // that is known to run: a faster line nobody has confirmed does not earn it.
+  const fastest = list.findIndex((j) => !j.blocked && j.status === "open" && j.totalHours != null)
   if (list.length === 0) return <p className="rounded-xl border bg-card p-5 text-sm text-muted-foreground">{m.routesEmpty}</p>
   return (
     <ol className="flex flex-col gap-2.5">
       {list.map((j, i) => (
         <li key={`${j.entry}-${j.airline ?? j.city.en}-${i}`}>
-          <RouteCard journey={j} dest={dest} passport={passport} rank={i + 1} locale={locale} m={m} />
+          <RouteCard journey={j} dest={dest} passport={passport} fastest={i === fastest} locale={locale} m={m} />
         </li>
       ))}
     </ol>
