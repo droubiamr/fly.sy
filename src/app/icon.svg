@@ -1,12 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- fly.sy mark: Syria in white on the passport-green tile, with a plane cut
-       out of it heading north-east. The outline is the one the in-app map draws.
+  <!-- fly.sy mark: Syria in white on the passport-green tile, with a plane
+       taking off across its north-east border. The thin green gap around the
+       plane keeps the two shapes apart where they overlap.
+       Outline: Natural Earth via johan/world.geo.json (public domain).
+       Plane: lucide "plane" (ISC), the same icon set the app uses.
        This file is the source for every other icon: run `npm run icons`. -->
   <rect width="100" height="100" rx="22" fill="#0e5c3f"/>
   <g id="mark">
-    <path fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" d="M16.5,36.1L22.3,31.4L24.0,26.5L36.1,22.9L50.0,24.8L65.0,20.1L78.8,19.4L91.0,19.4L78.8,30.7L78.2,43.4L75.9,58.2L52.3,68.7L49.8,72.0L31.5,83.5L27.2,86.9L18.2,82.1L15.0,73.7L18.2,64.5L22.3,54.4L17.4,54.2L16.3,49.0L15.1,41.3Z"/>
-    <g transform="translate(54 44) rotate(45) scale(0.4) translate(-50 -50)">
-      <path fill="#0e5c3f" d="M50 2C55 2 58 8 58 16V33L95 56V67L58 54V72L70 81V90L50 85L30 90V81L42 72V54L5 67V56L42 33V16C42 8 45 2 50 2Z"/>
+    <path fill="#ffffff" stroke="#ffffff" stroke-width="3" stroke-linejoin="round" d="M43.7,71.9L24.2,84.8L13.2,80.0L13.0,79.9L14.3,78.1L14.2,73.1L16.6,66.5L22.0,61.9L20.4,57.2L16.0,56.5L15.0,47.3L17.5,42.3L20.1,39.6L22.8,37.0L23.3,30.2L26.6,32.6L37.5,29.2L42.8,31.5L50.9,31.4L62.4,26.9L67.7,27.1L79.0,25.2L73.9,32.8L68.5,35.8L69.4,44.6L65.7,59.3L43.7,71.9Z"/>
+    <g transform="translate(63 37) scale(2) translate(-12 -12)">
+      <path fill="#0e5c3f" stroke="#0e5c3f" stroke-width="3.2" stroke-linejoin="round" d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+      <path fill="#ffffff" d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
     </g>
   </g>
 </svg>
