@@ -55,6 +55,19 @@ export default async function AboutPage() {
         <p className="text-[13.5px] leading-relaxed text-muted-foreground">{m.about.openText}</p>
       </section>
 
+      {/* The same words as the first-visit popup, kept here for anyone who
+          dismissed it or whose browser dropped the flag. */}
+      <section>
+        <h2 className="mb-2 text-sm font-semibold">{m.disclaimer.title}</h2>
+        <div className="flex flex-col gap-3 rounded-2xl border bg-card px-5 py-4">
+          {m.disclaimer.body.map((p) => (
+            <p key={p} className="text-[13.5px] leading-relaxed">
+              {p}
+            </p>
+          ))}
+        </div>
+      </section>
+
       <p className="text-xs leading-relaxed text-muted-foreground">{m.about.fine}</p>
     </div>
   )
