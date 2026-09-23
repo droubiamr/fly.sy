@@ -132,7 +132,7 @@ Nothing is deleted automatically: to keep 13 months, run
 | [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/applications/configure-apps/self-hosted-public-app/) | Nobody reaches `/admin` without logging in to Access first (email one-time PIN, Google, GitHub, passkeys…). The app also verifies the Access JWT on every admin request with `jose`. |
 | [Turnstile](https://developers.cloudflare.com/turnstile/) | Bots are stopped before the password is looked at; the token is verified server-side, with host and action. |
 | Rate limit + lockout | Workers Rate Limiting binding: 5 tries a minute per IP. D1: 5 failures per IP, or 20 in total, within 15 minutes locks the form. |
-| Password | PBKDF2-SHA256, 100,000 iterations (the most Workers allow), random salt. Only the hash is a secret; breached passwords are refused at setup. |
+| Password | PBKDF2-SHA256, 100,000 iterations (the most Workers allow), random salt; breached passwords are refused at setup. Or, with no terminal, the password itself as the `ADMIN_PASSWORD` secret (Cloudflare secrets are write-only). |
 | Authenticator code | TOTP (RFC 6238) via `otpauth`. Each code is accepted once. |
 | Session | 256-bit random token in a `__Host-` cookie (Secure, HttpOnly, SameSite=Strict); only its SHA-256 is stored. 30 minutes idle, 8 hours absolute. See and revoke sessions at `/admin/security`. |
 | Page | Strict per-request nonce CSP, `frame-ancestors 'none'`, `no-store`, `noindex`. Every failure shows the same message; the reason goes to the sign-in log. |
@@ -142,7 +142,8 @@ Set up:
 1. `npm run admin:setup`: type a password (12+ characters). It prints `ADMIN_PASSWORD_HASH` and
    `ADMIN_TOTP_SECRET` with an `otpauth://` link; add that to your authenticator app.
 2. Cloudflare dashboard → Turnstile → add a widget for `fly.sy` → site key and secret key.
-3. Store all four as secrets:
+3. Store all four as secrets (or in the dashboard: Workers & Pages → fly-sy → Settings → Variables and Secrets;
+   without a terminal, use `ADMIN_PASSWORD` with the password itself instead of the hash):
    `npx wrangler secret put ADMIN_PASSWORD_HASH` (and `ADMIN_TOTP_SECRET`, `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`).
 4. Cloudflare Access (free up to 50 users): Zero Trust → Access → Applications → Add → Self-hosted. Domain
    `fly.sy`, path `admin*` (a path of `admin/*` would leave `/admin` itself open). Policy: Allow, your email.

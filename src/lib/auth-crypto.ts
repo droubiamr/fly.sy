@@ -59,6 +59,17 @@ export async function verifyPassword(password: string, stored: string): Promise<
   return (await safeEqual(got, m ? m[3] : "")) && m !== null
 }
 
+/**
+ * The admin password check. ADMIN_PASSWORD_HASH (from `npm run admin:setup`) is preferred; ADMIN_PASSWORD, the
+ * password itself typed into a Cloudflare secret field, is accepted so setup needs no terminal. Cloudflare secrets
+ * cannot be read back once saved. The PBKDF2 work is done either way, so both paths take the same time.
+ */
+export async function checkAdminPassword(input: string, cfg: { passwordHash: string; password: string }): Promise<boolean> {
+  const hashed = await verifyPassword(input, cfg.passwordHash || "none")
+  if (cfg.passwordHash) return hashed
+  return cfg.password.length >= 12 && (await safeEqual(input.slice(0, 256), cfg.password))
+}
+
 // ——— Session tokens ———
 
 /** 256 bits from the CSPRNG, for the cookie. Meaningless on its own: the session lives in D1. */

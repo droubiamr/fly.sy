@@ -32,12 +32,14 @@ export function authConfig() {
   const env = process.env
   const cfg = {
     passwordHash: env.ADMIN_PASSWORD_HASH ?? "",
+    password: env.ADMIN_PASSWORD ?? "",
     totpSecret: env.ADMIN_TOTP_SECRET ?? "",
     turnstileSiteKey: env.TURNSTILE_SITE_KEY ?? "",
     turnstileSecret: env.TURNSTILE_SECRET_KEY ?? "",
   }
   const missing = [
-    !cfg.passwordHash.startsWith("pbkdf2-sha256:") && "ADMIN_PASSWORD_HASH",
+    // Either the hash or the password itself (12+ characters) as a secret.
+    !cfg.passwordHash.startsWith("pbkdf2-sha256:") && cfg.password.length < 12 && "ADMIN_PASSWORD",
     !/^[A-Z2-7]{32,}$/.test(cfg.totpSecret) && "ADMIN_TOTP_SECRET",
     !cfg.turnstileSiteKey && "TURNSTILE_SITE_KEY",
     !cfg.turnstileSecret && "TURNSTILE_SECRET_KEY",

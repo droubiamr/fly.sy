@@ -5,7 +5,7 @@ import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { ABSOLUTE_MS, accessIdentity, authConfig, requireAdmin, SESSION_COOKIE } from "@/lib/admin-auth"
-import { newSessionToken, tokenHash, totpStep, verifyPassword } from "@/lib/auth-crypto"
+import { checkAdminPassword, newSessionToken, tokenHash, totpStep } from "@/lib/auth-crypto"
 import { clientIp, countryFrom } from "@/lib/analytics"
 import { db } from "@/lib/db"
 import { verifyTurnstile } from "@/lib/turnstile"
@@ -77,7 +77,7 @@ export async function login(_prev: LoginState, form: FormData): Promise<LoginSta
     host: (h.get("host") ?? "").split(":")[0],
   })
   // The password is checked even when Turnstile failed, so the answer takes as long either way.
-  const passwordOk = await verifyPassword(String(form.get("password") ?? ""), cfg.passwordHash)
+  const passwordOk = await checkAdminPassword(String(form.get("password") ?? ""), cfg)
   const step = totpStep(cfg.totpSecret, String(form.get("code") ?? "").replace(/\s/g, ""))
   if (!human || !passwordOk || step === null) {
     await record(false, !human ? "turnstile" : !passwordOk ? "password" : "totp")

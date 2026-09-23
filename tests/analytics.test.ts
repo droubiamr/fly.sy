@@ -13,7 +13,7 @@ import {
   rangeWindow,
   sourceFrom,
 } from "../src/lib/analytics.ts"
-import { hashPassword, newSessionToken, safeEqual, tokenHash, totpFor, totpStep, verifyPassword, newTotpSecret } from "../src/lib/auth-crypto.ts"
+import { checkAdminPassword, hashPassword, newSessionToken, safeEqual, tokenHash, totpFor, totpStep, verifyPassword, newTotpSecret } from "../src/lib/auth-crypto.ts"
 
 const OWN = ["fly.sy", "localhost"]
 
@@ -141,4 +141,14 @@ test("TOTP: the current code passes with one step of drift, anything else fails"
   assert.equal(totpStep(secret, "12345", now), null)
   assert.equal(totpStep(secret, "abcdef", now), null)
   assert.equal(totpStep("not base32!", code, now), null)
+})
+
+test("admin password: the hash wins when set; a plain secret works without one and must be 12+ characters", async () => {
+  const hash = await hashPassword("correct horse battery staple")
+  assert.ok(await checkAdminPassword("correct horse battery staple", { passwordHash: hash, password: "" }))
+  assert.ok(!(await checkAdminPassword("other password here", { passwordHash: hash, password: "other password here" })))
+  assert.ok(await checkAdminPassword("a long enough secret", { passwordHash: "", password: "a long enough secret" }))
+  assert.ok(!(await checkAdminPassword("a long enough secre", { passwordHash: "", password: "a long enough secret" })))
+  assert.ok(!(await checkAdminPassword("short", { passwordHash: "", password: "short" })))
+  assert.ok(!(await checkAdminPassword("", { passwordHash: "", password: "" })))
 })

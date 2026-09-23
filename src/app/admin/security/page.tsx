@@ -40,7 +40,11 @@ export default async function SecurityPage() {
     { on: accessConfigured(), label: "Cloudflare Access", note: "Access JWT required on every admin request" },
     { on: !cfg.missing.includes("TURNSTILE_SECRET_KEY"), label: "Turnstile", note: "Bots are stopped before the password is checked" },
     { on: !cfg.missing.includes("ADMIN_TOTP_SECRET"), label: "Authenticator code", note: "Each code works once" },
-    { on: !cfg.missing.includes("ADMIN_PASSWORD_HASH"), label: "Password hash", note: "PBKDF2-SHA256, 100,000 iterations" },
+    {
+      on: !cfg.missing.includes("ADMIN_PASSWORD"),
+      label: "Password",
+      note: cfg.passwordHash ? "Stored as a PBKDF2-SHA256 hash" : "Stored as a Cloudflare secret (write-only)",
+    },
     { on: hasLimiter(), label: "Rate limiter", note: "5 tries a minute per IP at the edge" },
     { on: true, label: "Lockout", note: "5 failures per IP or 20 in total within 15 minutes" },
   ]
