@@ -60,6 +60,8 @@ projected with `d3-geo` (Equal Earth), rendered to SVG on the server. The phone 
 no tiles, no third-party requests. The frame fits the chosen country's hub airport and Syria; the 50m atlas is used
 close in and the 110m one for Europe-sized frames. Flags are inline SVG from `country-flag-icons` (MIT), imported one
 by one in `flag.tsx` so only the origins' flags ship.
+Airline logos are static PNGs in `public/airlines/` (light and `dark/` variants, see the README there), rendered by
+`airline-logo.tsx`.
 
 **Adding an origin country:** one line in `data/origins.json` (`m49` is the UN numeric code the atlas uses, `hub` is
 `[lng, lat]` of the main airport), its flag in `flag.tsx`, and at least one arrival row (or a `group` it belongs to).

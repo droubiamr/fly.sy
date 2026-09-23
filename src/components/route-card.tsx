@@ -6,6 +6,7 @@ import type { Locale, Passport } from "@/lib/types"
 import type { Messages } from "@/messages"
 import { StatusStamp } from "@/components/status-stamp"
 import { Provenance } from "@/components/provenance"
+import { AirlineLogo } from "@/components/airline-logo"
 
 export function RouteCard({
   journey: j,
@@ -54,7 +55,14 @@ export function RouteCard({
           <span className="block font-semibold">
             {m.mode[j.mode]} · {j.entryData.name[locale]} → {city.name[locale]}
           </span>
-          <span className="mt-0.5 block text-[13px] text-muted-foreground">{operator}</span>
+          <span className="mt-0.5 flex items-center gap-1.5 text-[13px] text-muted-foreground">
+            {j.airline && (
+              <span className="size-4 shrink-0">
+                <AirlineLogo code={j.airline} />
+              </span>
+            )}
+            <span className="truncate">{operator}</span>
+          </span>
           <span className="mt-3 flex items-center gap-3">
             <span className="text-xl font-bold">{formatHours(j.totalHours, locale)}</span>
             <StatusStamp status={j.status} label={m.status[j.status]} />
@@ -65,9 +73,16 @@ export function RouteCard({
 
       <div className="border-t px-5 pb-5">
         <div className="flex gap-3 border-b py-4">
-          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground">
-            {j.mode === "air" ? <Plane className="size-4" /> : <Car className="size-4" />}
-          </span>
+          {/* The carrier's mark stands in for the plane icon when there is one. */}
+          {j.airline ? (
+            <span className="size-8 shrink-0 rounded-full border bg-background p-1">
+              <AirlineLogo code={j.airline} />
+            </span>
+          ) : (
+            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground">
+              {j.mode === "air" ? <Plane className="size-4" /> : <Car className="size-4" />}
+            </span>
+          )}
           <div className="min-w-0 flex-1">
             <p className="font-semibold">{operator}</p>
             <p className="mt-0.5 text-[13px] text-muted-foreground">
