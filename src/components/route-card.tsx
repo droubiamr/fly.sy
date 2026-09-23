@@ -1,5 +1,7 @@
+import Link from "next/link"
 import { Plane, Car, ArrowRight, MoveRight } from "lucide-react"
-import { DATA, cityById } from "@/lib/data"
+import { DATA, airlinePath, cityById, entryPath } from "@/lib/data"
+import { localePath } from "@/lib/site"
 import { arrow, formatHours } from "@/lib/format"
 import type { Journey } from "@/lib/plan"
 import type { Locale, Passport } from "@/lib/types"
@@ -84,9 +86,24 @@ export function RouteCard({
             </span>
           )}
           <div className="min-w-0 flex-1">
-            <p className="font-semibold">{operator}</p>
+            <p className="font-semibold">
+              {airline && j.airline ? (
+                <>
+                  <Link href={localePath(locale, airlinePath(j.airline))} className="underline-offset-4 hover:underline">
+                    {airline.name[locale]}
+                  </Link>{" "}
+                  · {j.city[locale]}
+                </>
+              ) : (
+                operator
+              )}
+            </p>
             <p className="mt-0.5 text-[13px] text-muted-foreground">
-              {m.to} {j.entryData.name[locale]} · {formatHours(j.hours, locale)}
+              {m.to}{" "}
+              <Link href={localePath(locale, entryPath(j.entry))} className="underline-offset-4 hover:underline">
+                {j.entryData.name[locale]}
+              </Link>{" "}
+              · {formatHours(j.hours, locale)}
             </p>
             {j.note && <p className="mt-1.5 text-[13px] leading-relaxed">{j.note[locale]}</p>}
             <Provenance confidence={j.confidence} source={j.source} seen={j.seen} locale={locale} m={m} />

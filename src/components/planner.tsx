@@ -1,8 +1,9 @@
 "use client"
 
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useTransition } from "react"
-import { DESTINATIONS, ORIGINS, PASSPORTS, REGIONS } from "@/lib/data"
+import { DESTINATIONS, ORIGINS, PASSPORTS, REGIONS, routePath } from "@/lib/data"
+import { localePath } from "@/lib/site"
 import type { Origin, Passport } from "@/lib/types"
 import type { Reach } from "@/lib/plan"
 import { useLocale, useMessages } from "@/components/messages-provider"
@@ -34,7 +35,7 @@ const trigger =
 // a break on either side of itself, and the chevron stays with the last word.
 const GLUE = "\u2060"
 
-/** The sentence you fill in. Choices live in the URL so any answer is a link. */
+/** The sentence you fill in. Every answer is its own page (/from/…/to/…), so any answer is a link. */
 export function Planner({
   from,
   dest,
@@ -48,22 +49,20 @@ export function Planner({
   reach: Record<string, Reach>
 }) {
   const router = useRouter()
-  const path = usePathname()
   const locale = useLocale()
   const m = useMessages()
   const [pending, start] = useTransition()
 
-  const set = (key: "from" | "to" | "p", value: string) => {
-    const q = new URLSearchParams({ from, to: dest, p: passport })
-    q.set(key, value)
-    start(() => router.replace(`${path}?${q}`, { scroll: false }))
+  const go = (next: { from?: Origin; dest?: string; passport?: Passport }) => {
+    const href = localePath(locale, routePath(next.from ?? from, next.dest ?? dest, next.passport ?? passport))
+    start(() => router.push(href, { scroll: false }))
   }
 
   return (
     <div className={cn("rounded-2xl border bg-card px-5 py-4 transition-opacity duration-200 ease-out", pending && "opacity-70")}>
       <p className="text-[21px] font-semibold leading-[2.2] tracking-tight">
         {m.ask.in}{" "}
-        <Select value={from} onValueChange={(v) => set("from", v)}>
+        <Select value={from} onValueChange={(v) => go({ from: v })}>
           <SelectTrigger className={trigger} aria-label={m.ask.in}>
             <SelectValue />
             {GLUE}
@@ -87,7 +86,7 @@ export function Planner({
           </SelectContent>
         </Select>{" "}
         {m.ask.with}{" "}
-        <Select value={passport} onValueChange={(v) => set("p", v)}>
+        <Select value={passport} onValueChange={(v) => go({ passport: v as Passport })}>
           <SelectTrigger className={trigger} aria-label={m.ask.with}>
             <SelectValue />
             {GLUE}
@@ -101,7 +100,7 @@ export function Planner({
           </SelectContent>
         </Select>{" "}
         {m.ask.to}{" "}
-        <Select value={dest} onValueChange={(v) => set("to", v)}>
+        <Select value={dest} onValueChange={(v) => go({ dest: v })}>
           <SelectTrigger className={trigger} aria-label={m.ask.to}>
             <SelectValue />
             {GLUE}

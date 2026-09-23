@@ -12,7 +12,7 @@ Not affiliated with any government body, airline or embassy. Sells nothing, take
 - **shadcn/ui** components (source-owned in `src/components/ui`, on Radix)
 - **d3-geo** + **world-atlas** (Natural Earth) for the map, rendered to SVG on the server; **country-flag-icons** for flags
 - **Supabase** (Postgres + RLS) for community reports — optional; the site runs without it
-- Arabic-first, RTL by default, English via a cookie toggle. No i18n library: `src/messages/index.ts`
+- Arabic-first, RTL by default, at the root of the site. English lives under `/en`. No i18n library: `src/messages/index.ts`
 
 ## Run it
 
@@ -23,6 +23,21 @@ npm run dev
 ```
 
 `npm run check` runs lint, type-check, tests and a production build. That's the bar for a PR.
+`npm run smoke` (after a build) starts the server and checks every sitemap URL the way a crawler would.
+
+## URLs and search
+
+- One URL per language: Arabic at `/…`, English at `/en/…`. Every page carries a self-canonical, `hreflang` for both
+  languages and `x-default` (Arabic). Google indexes each language separately; a cookie would have hidden English.
+- Every planner answer is a static page: `/from/turkiye/to/damascus`, plus `/visa-on-arrival` or `/pre-approval`
+  when the passport is not Syrian. Origins are the countries in `data/origins.json` (slug from the English name),
+  destinations the airport cities. Each crossing, airport and airline has a page too, and `/documents` holds the
+  paperwork. All of it is prerendered from `data/` at build time; only `/reports` renders per request.
+- `data/meta.json → updated` feeds `lastmod` in the sitemap and `dateModified` in the structured data, so bumping it
+  after a review pass is what tells search engines the site moved.
+- Structured data: `WebSite`, `Organization` and a `Dataset` (the CC BY-SA data) on the home and about pages;
+  `BreadcrumbList` and `WebPage` everywhere; `Airport`, `Place` and `Airline` on their pages.
+- Search Console: `public/google….html` serves the HTML-file verification. Submit `https://fly.sy/sitemap.xml`.
 
 ## Where things live
 
@@ -35,7 +50,11 @@ npm run dev
 | `src/messages/index.ts` | UI strings, `ar` and `en`. |
 | `src/app/globals.css` | Design tokens. The whole look is these variables. |
 | `src/app/icon.svg` | The brand mark. `npm run icons` rebuilds the favicon, app icons and share card from it (`scripts/icons.mjs`). |
-| `src/app/manifest.ts`, `robots.ts`, `sitemap.ts` | Web app manifest, robots.txt and sitemap.xml. |
+| `src/app/manifest.ts`, `robots.ts`, `sitemap.ts` | Web app manifest, robots.txt and sitemap.xml (every page, both languages, with hreflang). |
+| `src/lib/site.ts` | The canonical origin (`https://fly.sy`) and the locale → URL rules. |
+| `src/lib/seo.ts`, `src/lib/schema.ts` | Per-page metadata (canonical, hreflang, Open Graph) and JSON-LD builders. |
+| `src/proxy.ts` | Rewrites `/` → `/ar` internally; `/en` passes through. Old `?from=&to=` links redirect to their page. |
+| `scripts/smoke.mjs` | Walks the built site like a crawler: status, canonical, hreflang, JSON-LD, redirects, 404s. |
 | `supabase/migrations/` | Reports table, RLS and the public view. |
 
 ## Updating data (the weekly job)

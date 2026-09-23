@@ -4,7 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { MapPin, Plane, Landmark, MessagesSquare, Info } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useMessages } from "@/components/messages-provider"
+import { localePath, splitLocale } from "@/lib/site"
+import { useLocale, useMessages } from "@/components/messages-provider"
 
 const ITEMS = [
   { href: "/", key: "plan", Icon: MapPin },
@@ -15,7 +16,8 @@ const ITEMS = [
 ] as const
 
 export function BottomNav() {
-  const path = usePathname()
+  const { path } = splitLocale(usePathname())
+  const locale = useLocale()
   const m = useMessages()
   return (
     // A floating dock rather than a bar welded to the bottom edge. The wrapper
@@ -30,11 +32,16 @@ export function BottomNav() {
                    bg-card/72 p-2 backdrop-blur-lg backdrop-saturate-150"
       >
         {ITEMS.map(({ href, key, Icon }) => {
-          const active = href === "/" ? path === "/" : path.startsWith(href)
+          const active =
+            href === "/"
+              ? path === "/" || path.startsWith("/from/")
+              : href === "/crossings"
+                ? path.startsWith("/crossings") || path.startsWith("/airports") || path === "/documents"
+                : path.startsWith(href)
           return (
             <li key={href} className="min-w-0 flex-1">
               <Link
-                href={href}
+                href={localePath(locale, href)}
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   // Not rounded-full. A capsule that fills its row and is fully rounded ends

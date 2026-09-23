@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react"
 import { DATA } from "@/lib/data"
 import type { Passport } from "@/lib/types"
-import { submitReport, type SubmitState } from "@/app/reports/actions"
+import { submitReport, type SubmitState } from "@/app/[lang]/(site)/reports/actions"
 import { useLocale, useMessages } from "@/components/messages-provider"
 import { arrow } from "@/lib/format"
 import { Button } from "@/components/ui/button"

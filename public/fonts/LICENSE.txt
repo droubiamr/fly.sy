@@ -1,0 +1,3 @@
+Readex Pro — Copyright 2020 The Readex Project Authors (https://github.com/ThomasJockin/readexpro)
+Licensed under the SIL Open Font License, Version 1.1: https://openfontlicense.org
+The two .woff2 files here are the Arabic and Latin subsets served by Google Fonts, unchanged.
