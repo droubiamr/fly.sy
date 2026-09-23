@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next"
-import { DATA, DESTINATIONS, ORIGINS, PASSPORTS, airlinePath, entryPath, routePath } from "@/lib/data"
+import { DATA, DESTINATIONS, ORIGINS, airlinePath, entryPath, routePath } from "@/lib/data"
 import { absoluteUrl } from "@/lib/site"
 
 /** Every indexable path, language-neutral. The sitemap lists each once per language with hreflang alternates. */
@@ -14,9 +14,7 @@ export function sitePaths(): { path: string; priority: number }[] {
   ]
   for (const id of Object.keys(DATA.entries)) out.push({ path: entryPath(id), priority: 0.8 })
   for (const code of Object.keys(DATA.airlines)) out.push({ path: airlinePath(code), priority: 0.6 })
-  for (const o of ORIGINS)
-    for (const d of DESTINATIONS)
-      for (const p of PASSPORTS) out.push({ path: routePath(o.id, d.id, p.id), priority: p.id === "sy" ? 0.7 : 0.5 })
+  for (const o of ORIGINS) for (const d of DESTINATIONS) out.push({ path: routePath(o.id, d.id), priority: 0.7 })
   return out
 }
 

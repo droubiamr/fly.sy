@@ -193,10 +193,9 @@ const messages = {
       },
       route: {
         title: "من {origin} إلى {city}: كيف تصل، كم تستغرق، وما تحتاجه",
-        titlePassport: "من {origin} إلى {city} بـ{passport}: الطرق والأوراق",
         description:
-          "{n} من الطرق من {origin} إلى {city} لمن يحمل {passport}؛ أسرعها {mode} عبر {entry} بنحو {hours}. الحالة والأوراق المطلوبة ومصدر كل معلومة وتاريخ مراجعتها.",
-        descriptionNone: "لا نعرف طريقاً مفتوحاً من {origin} إلى {city} لمن يحمل {passport}. ما نعرفه، ومصدره، وتاريخ مراجعته.",
+          "{n} من الطرق من {origin} إلى {city}؛ أسرعها {mode} عبر {entry} بنحو {hours}. الحالة والأوراق المطلوبة لكل جواز، ومصدر كل معلومة وتاريخ مراجعتها.",
+        descriptionNone: "لا نعرف طريقاً مفتوحاً من {origin} إلى {city}. ما نعرفه، ومصدره، وتاريخ مراجعته.",
       },
       documents: {
         title: "الأوراق المطلوبة لدخول سوريا: للسوريين وللأجانب، جواً وبراً",
@@ -277,7 +276,7 @@ const messages = {
     },
     route: {
       title: "From {origin} to {city}",
-      lede: "Every way we know from {origin} to {city} with {passport}, ranked by total time. Each line carries its source and the date it was checked.",
+      lede: "Every way we know from {origin} to {city}, ranked by total time. Pick your passport to see what applies to you. Each line carries its source and the date it was checked.",
       fastest: "Fastest: {mode} via {entry}, about {hours} door to door.",
       passports: "Your passport changes the answer",
       otherDest: "Other destinations from {origin}",
@@ -411,10 +410,9 @@ const messages = {
       },
       route: {
         title: "{origin} to {city}: how to get there, how long it takes, what you need",
-        titlePassport: "{origin} to {city} with {passport}: routes and documents",
         description:
-          "{n} ways from {origin} to {city} with {passport}; the fastest is {mode} via {entry}, about {hours}. Status, documents, source and check date for each.",
-        descriptionNone: "We know of no open route from {origin} to {city} with {passport}. What we do know, its source, and when it was checked.",
+          "{n} ways from {origin} to {city}; the fastest is {mode} via {entry}, about {hours}. Status, documents for each passport, source and check date for every line.",
+        descriptionNone: "We know of no open route from {origin} to {city}. What we do know, its source, and when it was checked.",
       },
       documents: {
         title: "Documents to enter Syria: Syrians, visa on arrival and pre-approval, by air and land",

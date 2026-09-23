@@ -29,10 +29,14 @@ npm run dev
 
 - One URL per language: Arabic at `/…`, English at `/en/…`. Every page carries a self-canonical, `hreflang` for both
   languages and `x-default` (Arabic). Google indexes each language separately; a cookie would have hidden English.
-- Every planner answer is a static page: `/from/turkiye/to/damascus`, plus `/visa-on-arrival` or `/pre-approval`
-  when the passport is not Syrian. Origins are the countries in `data/origins.json` (slug from the English name),
-  destinations the airport cities. Each crossing, airport and airline has a page too, and `/documents` holds the
-  paperwork. All of it is prerendered from `data/` at build time; only `/reports` renders per request.
+- Every planner answer is a static page: `/from/turkiye/to/damascus`. Origins are the countries in
+  `data/origins.json` (slug from the English name), destinations the airport cities. The passport is a query on the
+  page (`?p=voa`, `?p=res`) that the browser applies, so it costs no request and no extra pages. Each crossing,
+  airport and airline has a page too, and `/documents` holds the paperwork. All of it is prerendered from `data/` at
+  build time; only `/reports` renders per request.
+- On Cloudflare the prerendered pages are served from the static assets bundle (`open-next.config.ts`), so the
+  Worker never renders them. `npm run deploy` populates that cache; without it every request would render the page,
+  world map included, and hit the Worker CPU limit (error 1102).
 - `data/meta.json → updated` feeds `lastmod` in the sitemap and `dateModified` in the structured data, so bumping it
   after a review pass is what tells search engines the site moved.
 - Structured data: `WebSite`, `Organization` and a `Dataset` (the CC BY-SA data) on the home and about pages;

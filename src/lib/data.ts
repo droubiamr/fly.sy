@@ -8,8 +8,8 @@ import roads from "../../data/roads.json"
 import needs from "../../data/needs.json"
 import seedReports from "../../data/reports.seed.json"
 import meta from "../../data/meta.json"
-import type { Airline, Arrival, City, Entry, Needs, Origin, OriginDef, Passport, Region, Report, Roads, Source } from "./types"
-import { PASSPORT_SLUGS, slugify } from "./slugs"
+import type { Airline, Arrival, City, Entry, Needs, Origin, OriginDef, Region, Report, Roads, Source } from "./types"
+import { slugify } from "./slugs"
 
 export const DATA = {
   meta: meta as { updated: string; reportContact: string },
@@ -79,9 +79,8 @@ export const airlineFromSlug = (slug: string) => AIRLINE.back[slug]
 
 export const destinationById = (id: string) => DESTINATIONS.find((d) => d.id === id)
 
-/** /from/turkiye/to/damascus, plus /visa-on-arrival or /pre-approval when the passport is not Syrian. */
-export const routePath = (from: Origin, dest: string, passport: Passport = "sy") =>
-  `/from/${originSlug(from)}/to/${dest}` + (passport === "sy" ? "" : `/${PASSPORT_SLUGS[passport]}`)
+/** /from/turkiye/to/damascus. The passport is a query on the page (?p=voa), never a segment. */
+export const routePath = (from: Origin, dest: string) => `/from/${originSlug(from)}/to/${dest}`
 
 /** Airports live under /airports, land crossings under /crossings. */
 export const entryPath = (id: string) => `${DATA.entries[id].kind === "air" ? "/airports" : "/crossings"}/${entrySlug(id)}`

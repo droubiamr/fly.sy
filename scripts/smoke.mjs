@@ -100,14 +100,17 @@ await redirect("/ar/about", "/about")
 // Old region ids map to a country (eu → Germany), cities without an airport land on Damascus.
 await redirect("/?from=lb&to=homs", "/from/lebanon/to/damascus")
 await redirect("/?from=LB&to=aleppo", "/from/lebanon/to/aleppo")
-await redirect("/en?from=eu&to=aleppo&p=voa", "/en/from/germany/to/aleppo/visa-on-arrival")
+await redirect("/en?from=eu&to=aleppo&p=voa", "/en/from/germany/to/aleppo?p=voa")
+await redirect("/from/lebanon/to/damascus/visa-on-arrival", "/from/lebanon/to/damascus?p=voa")
+await redirect("/en/from/lebanon/to/damascus/pre-approval", "/en/from/lebanon/to/damascus?p=res")
+await redirect("/from/lebanon/to/damascus/syrian-passport", "/from/lebanon/to/damascus")
 await redirect("/?from=nope", "/from/turkiye/to/damascus")
 await redirect("/?from=constructor&p=__proto__", "/from/turkiye/to/damascus")
 await redirect("/ar?from=LB&to=aleppo", "/from/lebanon/to/aleppo")
 
 // A 404 under a dynamic root layout is served in Next's own bare document, so what is
 // checked is the status and that the bilingual page (both languages) is what came back.
-for (const path of ["/nope", "/en/nope", "/crossings/nope", "/en/from/mars/to/damascus", "/from/lebanon/to/homs", "/from/lebanon/to/damascus/syrian-passport", "/nope.txt", "/airlines/constructor", "/en/airlines/__proto__", "/crossings/toString", "/from/constructor/to/damascus"]) {
+for (const path of ["/nope", "/en/nope", "/crossings/nope", "/en/from/mars/to/damascus", "/from/lebanon/to/homs", "/from/lebanon/to/damascus/nope", "/nope.txt", "/airlines/constructor", "/en/airlines/__proto__", "/crossings/toString", "/from/constructor/to/damascus"]) {
   const r = await get(ORIGIN + path)
   const html = await r.text()
   check(r.status === 404, `${path} is 404 (got ${r.status})`)

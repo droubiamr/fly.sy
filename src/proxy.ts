@@ -22,7 +22,19 @@ export function proxy(req: NextRequest) {
       const dest = to && DESTINATIONS.some((d) => d.id === to) ? to : "damascus"
       const p = q.get("p")
       const passport = p === "voa" || p === "res" ? p : passportFromSlug(p ?? "") ?? "sy"
-      url.pathname = (pathname === "/en" ? "/en" : "") + routePath(origin.id, dest, passport)
+      url.pathname = (pathname === "/en" ? "/en" : "") + routePath(origin.id, dest)
+      if (passport !== "sy") url.searchParams.set("p", passport)
+      return NextResponse.redirect(url, 308)
+    }
+  }
+  // Passport pages were briefly their own URLs (/…/visa-on-arrival); the passport is a query now.
+  const seg = pathname.match(/^(\/en)?(\/from\/[^/]+\/to\/[^/]+)\/([^/]+)\/?$/)
+  if (seg) {
+    const passport = passportFromSlug(seg[3])
+    if (passport) {
+      const url = req.nextUrl.clone()
+      url.pathname = (seg[1] ?? "") + seg[2]
+      if (passport !== "sy") url.searchParams.set("p", passport)
       return NextResponse.redirect(url, 308)
     }
   }

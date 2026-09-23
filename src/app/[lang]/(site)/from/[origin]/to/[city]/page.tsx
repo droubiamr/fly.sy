@@ -5,7 +5,7 @@ import { RoutePage, routeMetadata, routeParams, type RouteParams } from "@/compo
 type Props = { params: Promise<RouteParams> }
 
 export function generateStaticParams() {
-  return LOCALES.flatMap((lang) => routeParams(false).map((p) => ({ lang, ...p })))
+  return LOCALES.flatMap((lang) => routeParams().map((p) => ({ lang, ...p })))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

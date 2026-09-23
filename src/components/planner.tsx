@@ -1,6 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { passportQuery, usePassport } from "@/components/passport-state"
 import { useTransition } from "react"
 import { DESTINATIONS, ORIGINS, PASSPORTS, REGIONS, routePath } from "@/lib/data"
 import { localePath } from "@/lib/site"
@@ -39,22 +40,23 @@ const GLUE = "\u2060"
 export function Planner({
   from,
   dest,
-  passport,
   reach,
 }: {
   from: Origin
   dest: string
-  passport: Passport
-  /** Per airport code: reachable direct, only with a connection, or not at all (greyed out). */
-  reach: Record<string, Reach>
+  /** Per passport, per airport code: reachable direct, only with a connection, or not at all (greyed out). */
+  reach: Record<Passport, Record<string, Reach>>
 }) {
   const router = useRouter()
   const locale = useLocale()
   const m = useMessages()
+  const { passport, setPassport } = usePassport()
   const [pending, start] = useTransition()
 
-  const go = (next: { from?: Origin; dest?: string; passport?: Passport }) => {
-    const href = localePath(locale, routePath(next.from ?? from, next.dest ?? dest, next.passport ?? passport))
+  // Origin and destination are pages; the passport is state on the page, so
+  // changing it swaps the answer in place without fetching anything.
+  const go = (next: { from?: Origin; dest?: string }) => {
+    const href = localePath(locale, routePath(next.from ?? from, next.dest ?? dest)) + passportQuery(passport)
     start(() => router.push(href, { scroll: false }))
   }
 
@@ -86,7 +88,7 @@ export function Planner({
           </SelectContent>
         </Select>{" "}
         {m.ask.with}{" "}
-        <Select value={passport} onValueChange={(v) => go({ passport: v as Passport })}>
+        <Select value={passport} onValueChange={(v) => setPassport(v as Passport)}>
           <SelectTrigger className={trigger} aria-label={m.ask.with}>
             <SelectValue />
             {GLUE}
@@ -107,7 +109,7 @@ export function Planner({
           </SelectTrigger>
           <SelectContent>
             {DESTINATIONS.map((d) => (
-              <SelectItem key={d.id} value={d.id} disabled={reach[d.entry] === "none"} hint={reach[d.entry] === "via" ? m.ask.via : undefined}>
+              <SelectItem key={d.id} value={d.id} disabled={reach[passport][d.entry] === "none"} hint={reach[passport][d.entry] === "via" ? m.ask.via : undefined}>
                 {d.name[locale]}
               </SelectItem>
             ))}

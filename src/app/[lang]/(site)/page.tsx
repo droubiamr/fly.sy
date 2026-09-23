@@ -41,7 +41,6 @@ export default async function HomePage({ params }: Props) {
         locale={lang}
         origin={origin}
         dest="damascus"
-        passport="sy"
         heading={<h1 className="text-2xl font-bold tracking-tight">{m.homeTitle}</h1>}
       />
     </>
