@@ -1,7 +1,8 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  // The airlines tab became the flights section; keep old links working.
+  redirects: async () => [{ source: "/airlines", destination: "/flights", permanent: true }],
+}
 
-export default nextConfig;
+export default nextConfig

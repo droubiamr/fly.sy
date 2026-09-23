@@ -1,12 +1,15 @@
 import type { Metadata, Viewport } from "next"
 import { getI18n } from "@/lib/i18n"
+import { SITE_URL } from "@/lib/site"
 import { AppShell } from "@/components/app-shell"
 import { MessagesProvider } from "@/components/messages-provider"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "fly.sy — كيف تصل إلى سوريا",
+  metadataBase: new URL(SITE_URL),
+  title: { default: "fly.sy — كيف تصل إلى سوريا", template: "%s · fly.sy" },
   description: "كل طريق إلى سوريا، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
+  applicationName: "fly.sy",
 }
 
 export const viewport: Viewport = {

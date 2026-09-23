@@ -30,10 +30,7 @@ export const ORIGINS = [
   { id: "eu", name: { ar: "أوروبا", en: "Europe" } },
 ] as const
 
-export const PASSPORTS = [
-  { id: "sy", name: { ar: "جواز سوري", en: "a Syrian passport" } },
-  { id: "voa", name: { ar: "جواز يأخذ تأشيرة عند الوصول", en: "a visa-on-arrival passport" } },
-  { id: "res", name: { ar: "جواز يحتاج موافقة مسبقة", en: "a passport needing pre-approval" } },
-] as const
+/** Passport kinds, in display order. Their labels live in the messages, next to the other UI strings. */
+export const PASSPORTS = ["sy", "voa", "res"] as const
 
 export const cityById = (id: string) => DATA.cities.find((c) => c.id === id)

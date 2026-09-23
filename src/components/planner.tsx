@@ -32,9 +32,9 @@ export function Planner({ from, dest, passport }: { from: Origin; dest: string; 
   return (
     <div className={cn("rounded-2xl border bg-card px-5 py-4 transition-opacity duration-200 ease-out", pending && "opacity-70")}>
       <p className="text-[21px] font-semibold leading-[2.2] tracking-tight">
-        {m.ask.in}{" "}
+        {m.home.ask.in}{" "}
         <Select value={from} onValueChange={(v) => set("from", v)}>
-          <SelectTrigger className={trigger} aria-label={m.ask.in}>
+          <SelectTrigger className={trigger} aria-label={m.home.ask.in}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -45,22 +45,22 @@ export function Planner({ from, dest, passport }: { from: Origin; dest: string; 
             ))}
           </SelectContent>
         </Select>{" "}
-        {m.ask.with}{" "}
+        {m.home.ask.with}{" "}
         <Select value={passport} onValueChange={(v) => set("p", v)}>
-          <SelectTrigger className={trigger} aria-label={m.ask.with}>
+          <SelectTrigger className={trigger} aria-label={m.home.ask.with}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             {PASSPORTS.map((p) => (
-              <SelectItem key={p.id} value={p.id}>
-                {p.name[locale]}
+              <SelectItem key={p} value={p}>
+                {m.passports[p]}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>{" "}
-        {m.ask.to}{" "}
+        {m.home.ask.to}{" "}
         <Select value={dest} onValueChange={(v) => set("to", v)}>
-          <SelectTrigger className={trigger} aria-label={m.ask.to}>
+          <SelectTrigger className={trigger} aria-label={m.home.ask.to}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

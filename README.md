@@ -32,7 +32,28 @@ npm run dev
 | `src/lib/data.ts` | Loads and types the JSON. |
 | `src/messages/index.ts` | UI strings, `ar` and `en`. |
 | `src/app/globals.css` | Design tokens. The whole look is these variables. |
+| `src/lib/nav.ts` | The site's sections, in order. Feeds the header nav, the mobile dock and the sitemap. |
+| `src/lib/entries.ts` | Helpers behind the per-entry-point pages (arrivals through, roads from). Tested. |
 | `supabase/migrations/` | Reports table, RLS and the public view. |
+
+## Site structure
+
+Modelled on how the good destination guides do it: a route planner up front (Rome2rio-style), one page
+per border crossing and airport with dated traveller reports on it (Caravanistan-style), and a
+passport-first papers page (Sherpa-style).
+
+| Route | What |
+|---|---|
+| `/` | Plan: the fill-in sentence (origin · passport · destination), the map, ranked routes, entry-point status today, latest experiences. State lives in the URL. |
+| `/flights` | Airports and their status, routes into each one, an airline directory. Also `/flights/DAM`, `/flights/ALP`. |
+| `/crossings` | Every land crossing with status and note. Also `/crossings/JDE` etc. |
+| `/flights/[id]`, `/crossings/[id]` | One entry point: status, who arrives through it, road hours to every city, what you need per passport, experiences there. |
+| `/visa` | Papers by passport (`?p=sy|voa|res`) and by mode, plus the declared gaps. |
+| `/reports`, `/reports/new` | Community reports, filterable by entry point (`?entry=`); the form prefills from `?entry=`. |
+| `/about` | Confidence levels, source registry, open-source notice. |
+
+Navigation: five sections in the header from tablet width up and in a floating dock on phones. About lives in
+the header and the footer. `/airlines` redirects to `/flights`.
 
 ## Updating data (the weekly job)
 

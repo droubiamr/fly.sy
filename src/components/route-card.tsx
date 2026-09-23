@@ -6,6 +6,7 @@ import type { Locale, Passport } from "@/lib/types"
 import type { Messages } from "@/messages"
 import { StatusStamp } from "@/components/status-stamp"
 import { Provenance } from "@/components/provenance"
+import { NeedsList } from "@/components/needs-list"
 
 export function RouteCard({
   journey: j,
@@ -94,14 +95,7 @@ export function RouteCard({
 
         <div className="rounded-xl bg-muted px-4 py-3">
           <p className="text-[13px] font-semibold">{m.need}</p>
-          <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
-            {needs.map((n, i) => (
-              <li key={i}>
-                {n.text[locale]}
-                <Provenance source={n.source} locale={locale} m={m} />
-              </li>
-            ))}
-          </ul>
+          <NeedsList needs={needs} locale={locale} m={m} className="mt-2" />
         </div>
       </div>
     </details>

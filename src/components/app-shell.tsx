@@ -5,12 +5,14 @@ import { DATA } from "@/lib/data"
 import { formatDate } from "@/lib/format"
 import { toggleLocale } from "@/app/actions"
 import { BottomNav } from "@/components/bottom-nav"
+import { HeaderNav } from "@/components/header-nav"
+import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const { locale, m } = await getI18n()
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col">
+    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
       {/* A floating pill rather than a bar: the page runs edge to edge underneath
           it and shows through, so the chrome reads as a layer above the content
           instead of a strip carved out of it. Sticks below the notch, not under
@@ -32,10 +34,13 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             fly<span className="text-primary">.sy</span>
           </Link>
 
+          {/* On a phone the sections live in the dock at the bottom of the screen.
+              From tablet width up there is room for them here, and a dock floating
+              in the middle of a wide screen would look like a stray widget. */}
+          <HeaderNav />
+
           {/* Icon first, and the label lives in aria-label: "آخر تحديث ٢٠ أيلول"
-              would crowd the pill, and the calendar already says what the date is.
-              Text on a translucent surface needs more weight and contrast than
-              flat muted grey, or it dissolves into whatever scrolls behind it. */}
+              would crowd the pill, and the calendar already says what the date is. */}
           <span
             className="ms-auto inline-flex items-center gap-1.5 text-[11.5px] font-medium tracking-wide text-foreground/75"
             aria-label={`${m.updated} ${formatDate(DATA.meta.updated, locale)}`}
@@ -49,12 +54,8 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
               type="submit"
               variant="ghost"
               size="sm"
-              // A real 44px control inside the pill, rather than an invisible tap area
-              // spilling out past the chrome the user can actually see.
               className="h-11 gap-1.5 rounded-full px-3.5 text-[11.5px] font-medium tracking-wide"
             >
-              {/* A globe, not the translate glyph: that one is two characters of
-                  detail and turns to mush at 14px. */}
               <Globe className="size-3.5 shrink-0" aria-hidden="true" />
               {m.lang}
             </Button>
@@ -62,8 +63,8 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <p className="px-5 pt-1 text-[13px] leading-relaxed text-muted-foreground">{m.indep}</p>
-      <main className="flex-1 px-5 pb-28 pt-4">{children}</main>
+      <main className="flex-1 px-5 pt-4 pb-8">{children}</main>
+      <SiteFooter />
       <BottomNav />
     </div>
   )

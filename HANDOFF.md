@@ -42,13 +42,22 @@ src/lib/plan.ts        pure planner: ranks journeys by total time, blocks Türki
 src/lib/data.ts        typed JSON loader
 src/messages/index.ts  all UI strings, ar + en
 src/app/globals.css    design tokens — the whole look
-src/app/               routes: / (plan), /airlines, /crossings, /reports, /reports/new, /about
-src/components/        app-shell, bottom-nav, planner, syria-map, route-card, status-stamp, provenance, report-form, ui/ (shadcn)
+src/lib/nav.ts         the five sections + about, in order (header nav, dock, sitemap all read it)
+src/lib/entries.ts     helpers for the per-entry-point pages, tested
+src/app/               / (plan), /flights (+ /flights/[id]), /crossings (+ /crossings/[id]), /visa,
+                       /reports, /reports/new, /about, not-found, sitemap.ts, robots.ts
+src/components/        app-shell, header-nav (md+), bottom-nav (phone), site-footer, page-header, section,
+                       planner, syria-map, route-card, entry-page (shared by airport + crossing pages),
+                       entry-list, arrival-row, needs-list, report-list, status-stamp, provenance, report-form, ui/
 supabase/migrations/0001_reports.sql   reports table, RLS, public view without contact field
 tests/plan.test.ts     planner + data integrity tests
 ```
 
-Planner state lives in the URL (`/?from=eu&to=homs&p=sy`) so every answer is shareable.
+Planner state lives in the URL (`/?from=eu&to=homs&p=sy`) so every answer is shareable. So do the visa page's
+passport (`/visa?p=voa`) and the reports filter (`/reports?entry=NAS`).
+
+Site structure (Sep 2026 restructure): a planner up front, one page per crossing and airport with the
+traveller reports for it, and a passport-first papers page. See README → "Site structure".
 
 Scripts: `npm run dev`, `npm test`, `npm run check` (lint + types + tests + build — the bar for any change).
 

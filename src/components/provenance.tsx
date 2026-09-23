@@ -1,4 +1,5 @@
 import { DATA } from "@/lib/data"
+import { cn } from "@/lib/utils"
 import { formatDate } from "@/lib/format"
 import type { Confidence, Locale } from "@/lib/types"
 import type { Messages } from "@/messages"
@@ -10,16 +11,18 @@ export function Provenance({
   seen,
   locale,
   m,
+  className,
 }: {
   confidence?: Confidence
   source: string
   seen?: string
   locale: Locale
   m: Messages
+  className?: string
 }) {
   const src = DATA.sources[source]
   return (
-    <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+    <p className={cn("mt-1.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground", className)}>
       {confidence && <span>{m.confidence[confidence]}</span>}
       {confidence && <span aria-hidden="true">·</span>}
       <span>

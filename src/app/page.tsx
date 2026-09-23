@@ -1,15 +1,23 @@
 import { DATA, ORIGINS, PASSPORTS } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
+import { pageMetadata } from "@/lib/metadata"
 import { plan } from "@/lib/plan"
+import { getPublishedReports } from "@/lib/reports"
 import type { Origin, Passport } from "@/lib/types"
+import { PageHeader } from "@/components/page-header"
+import { Section } from "@/components/section"
 import { Planner } from "@/components/planner"
 import { SyriaMap } from "@/components/syria-map"
 import { RouteCard } from "@/components/route-card"
+import { EntryList } from "@/components/entry-list"
+import { ReportList } from "@/components/report-list"
 
 type Search = { from?: string; to?: string; p?: string }
 
 const pick = <T extends string>(v: string | undefined, allowed: readonly T[], fallback: T): T =>
   allowed.includes(v as T) ? (v as T) : fallback
+
+export const generateMetadata = () => pageMetadata((m) => ({ title: m.home.title, description: m.home.lede }))
 
 export default async function PlanPage({ searchParams }: { searchParams: Promise<Search> }) {
   const sp = await searchParams
@@ -17,28 +25,24 @@ export default async function PlanPage({ searchParams }: { searchParams: Promise
 
   const from = pick(sp.from, ORIGINS.map((o) => o.id), "tr" as Origin)
   const dest = pick(sp.to, DATA.cities.map((c) => c.id), "damascus")
-  const passport = pick(sp.p, PASSPORTS.map((p) => p.id), "sy" as Passport)
+  const passport = pick(sp.p, PASSPORTS, "sy" as Passport)
 
   const journeys = plan({ arrivals: DATA.arrivals, entries: DATA.entries, roads: DATA.roads, from, dest, passport })
   const liveEntries = journeys.filter((j) => !j.blocked).map((j) => j.entry)
+  const latest = (await getPublishedReports()).slice(0, 3)
 
   return (
-    <div className="flex flex-col gap-5">
-      <h1 className="sr-only">fly.sy</h1>
-      <Planner from={from} dest={dest} passport={passport} />
+    <div className="flex flex-col gap-8">
+      <PageHeader title={m.home.title} lede={m.home.lede} />
 
-      <SyriaMap dest={dest} liveEntries={liveEntries} locale={locale} />
+      <div className="flex flex-col gap-5">
+        <Planner from={from} dest={dest} passport={passport} />
+        <SyriaMap dest={dest} liveEntries={liveEntries} locale={locale} />
+      </div>
 
-      <section aria-labelledby="routes-h">
-        <div className="mb-2.5 flex items-baseline justify-between">
-          <h2 id="routes-h" className="text-[15px] font-semibold">
-            {m.routes}
-          </h2>
-          <span className="text-xs text-muted-foreground">{m.estimates}</span>
-        </div>
-
+      <Section id="routes-h" title={m.home.routes} aside={m.home.estimates}>
         {journeys.length === 0 ? (
-          <p className="rounded-xl border bg-card p-5 text-sm text-muted-foreground">{m.routesEmpty}</p>
+          <p className="rounded-2xl border border-dashed px-5 py-6 text-center text-sm text-muted-foreground">{m.home.routesEmpty}</p>
         ) : (
           <ol className="flex flex-col gap-2.5">
             {journeys.map((j, i) => (
@@ -48,7 +52,15 @@ export default async function PlanPage({ searchParams }: { searchParams: Promise
             ))}
           </ol>
         )}
-      </section>
+      </Section>
+
+      <Section id="board-h" title={m.home.board} more={{ href: "/crossings", label: m.home.boardAll }}>
+        <EntryList entries={Object.entries(DATA.entries)} locale={locale} m={m} />
+      </Section>
+
+      <Section id="latest-h" title={m.home.latest} more={{ href: "/reports", label: m.home.latestAll }}>
+        <ReportList reports={latest} locale={locale} m={m} empty={m.reports.empty} />
+      </Section>
     </div>
   )
 }

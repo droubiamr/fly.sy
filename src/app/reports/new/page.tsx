@@ -1,17 +1,23 @@
 import { getI18n } from "@/lib/i18n"
+import { pageMetadata } from "@/lib/metadata"
 import { supabaseConfigured } from "@/lib/supabase/server"
 import { DATA } from "@/lib/data"
+import { PageHeader } from "@/components/page-header"
 import { ReportForm } from "@/components/report-form"
 
-export default async function NewReportPage() {
+export const generateMetadata = () => pageMetadata((m) => ({ title: m.reports.form.title, description: m.reports.form.lede }))
+
+export default async function NewReportPage({ searchParams }: { searchParams: Promise<{ entry?: string }> }) {
+  const { entry } = await searchParams
   const { m } = await getI18n()
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">{m.reports.form.title}</h1>
-      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{m.reports.form.lede}</p>
-      <div className="mt-6">
-        <ReportForm configured={supabaseConfigured()} contactUrl={DATA.meta.reportContact} />
-      </div>
+      <PageHeader back={{ href: "/reports", label: m.reports.title }} title={m.reports.form.title} lede={m.reports.form.lede} />
+      <ReportForm
+        configured={supabaseConfigured()}
+        contactUrl={DATA.meta.reportContact}
+        defaultEntry={entry && DATA.entries[entry] ? entry : undefined}
+      />
     </div>
   )
 }

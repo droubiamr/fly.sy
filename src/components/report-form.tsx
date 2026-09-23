@@ -14,12 +14,20 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 
 const PASSPORTS: Passport[] = ["sy", "voa", "res"]
 
-export function ReportForm({ configured, contactUrl }: { configured: boolean; contactUrl: string }) {
+export function ReportForm({
+  configured,
+  contactUrl,
+  defaultEntry = "JDE",
+}: {
+  configured: boolean
+  contactUrl: string
+  defaultEntry?: string
+}) {
   const locale = useLocale()
   const m = useMessages()
   const f = m.reports.form
   const [state, action, pending] = useActionState<SubmitState, FormData>(submitReport, null)
-  const [entry, setEntry] = useState<string>("JDE")
+  const [entry, setEntry] = useState<string>(defaultEntry)
   const [passport, setPassport] = useState<Passport>("sy")
 
   if (state?.ok) {
@@ -88,7 +96,7 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
               value={p}
               className="h-11 rounded-[10px] border-0 bg-muted text-sm font-medium data-[state=on]:bg-foreground data-[state=on]:text-background"
             >
-              {f.passports[p]}
+              {m.passportShort[p]}
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
