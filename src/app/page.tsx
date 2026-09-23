@@ -1,9 +1,9 @@
-import { DATA, ORIGINS, PASSPORTS } from "@/lib/data"
+import { DATA, ORIGINS, PASSPORTS, originById } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
 import { plan } from "@/lib/plan"
-import type { Origin, Passport } from "@/lib/types"
+import type { Passport } from "@/lib/types"
 import { Planner } from "@/components/planner"
-import { SyriaMap } from "@/components/syria-map"
+import { WorldMap } from "@/components/world-map"
 import { RouteCard } from "@/components/route-card"
 
 type Search = { from?: string; to?: string; p?: string }
@@ -15,19 +15,20 @@ export default async function PlanPage({ searchParams }: { searchParams: Promise
   const sp = await searchParams
   const { locale, m } = await getI18n()
 
-  const from = pick(sp.from, ORIGINS.map((o) => o.id), "tr" as Origin)
+  // Türkiye by default: it hosts the most Syrians abroad. Old links carry region ids; originById maps them.
+  const origin = originById(sp.from) ?? originById("TR") ?? ORIGINS[0]
   const dest = pick(sp.to, DATA.cities.map((c) => c.id), "damascus")
   const passport = pick(sp.p, PASSPORTS.map((p) => p.id), "sy" as Passport)
 
-  const journeys = plan({ arrivals: DATA.arrivals, entries: DATA.entries, roads: DATA.roads, from, dest, passport })
+  const journeys = plan({ arrivals: DATA.arrivals, entries: DATA.entries, roads: DATA.roads, from: origin, dest, passport })
   const liveEntries = journeys.filter((j) => !j.blocked).map((j) => j.entry)
 
   return (
     <div className="flex flex-col gap-5">
       <h1 className="sr-only">fly.sy</h1>
-      <Planner from={from} dest={dest} passport={passport} />
+      <Planner from={origin.id} dest={dest} passport={passport} />
 
-      <SyriaMap dest={dest} liveEntries={liveEntries} locale={locale} />
+      <WorldMap origin={origin} dest={dest} liveEntries={liveEntries} locale={locale} />
 
       <section aria-labelledby="routes-h">
         <div className="mb-2.5 flex items-baseline justify-between">

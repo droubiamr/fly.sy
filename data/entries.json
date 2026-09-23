@@ -2,14 +2,14 @@
   "DAM":{"kind":"air","name":{"ar":"مطار دمشق","en":"Damascus airport"},"lat":33.41,"lng":36.51,"status":"open","source":"gaca","seen":"2026-09-20"},
   "ALP":{"kind":"air","name":{"ar":"مطار حلب","en":"Aleppo airport"},"lat":36.18,"lng":37.22,"status":"open","source":"gaca","seen":"2026-09-20"},
   "JDE":{"kind":"land","name":{"ar":"جديدة يابوس","en":"Jdeidet Yabous"},"lat":33.62,"lng":36.03,"status":"open","source":"ports","seen":"2026-09-20","country":"LB",
-    "note":{"ar":"أُعيد فتحه في ٩ نيسان ٢٠٢٦ بعد إغلاق احترازي، ويعمل ٢٤ ساعة. يُغلق ويُفتح حسب الوضع الأمني — تحقق يوم سفرك.","en":"Reopened 9 April 2026 after a precautionary closure, open 24 hours. It closes and reopens with the security situation — check on the day."}},
+    "note":{"ar":"أُعيد فتحه في 9 نيسان 2026 بعد إغلاق احترازي، ويعمل 24 ساعة. يُغلق ويُفتح حسب الوضع الأمني — تحقق يوم سفرك.","en":"Reopened 9 April 2026 after a precautionary closure, open 24 hours. It closes and reopens with the security situation — check on the day."}},
   "ARI":{"kind":"land","name":{"ar":"العريضة","en":"Al-Arida"},"lat":34.65,"lng":35.98,"status":"open","source":"ports","seen":"2026-09-20","country":"LB",
     "note":{"ar":"أهدأ من جديدة يابوس ومناسب لمن يقصد الساحل.","en":"Quieter than Jdeidet Yabous, convenient for the coast."}},
   "JOU":{"kind":"land","name":{"ar":"جوسية","en":"Joussieh"},"lat":34.53,"lng":36.42,"status":"open","source":"sana","seen":"2026-09-20","country":"LB"},
   "NAS":{"kind":"land","name":{"ar":"نصيب","en":"Nasib"},"lat":32.68,"lng":36.32,"status":"open","source":"sana","seen":"2026-09-20","country":"JO",
-    "note":{"ar":"٢٫٢ مليون مسافر في النصف الأول من ٢٠٢٦، مفتوح ٢٤ ساعة. العبور قد يأخذ ساعات طويلة وأحياناً يوماً كاملاً.","en":"2.2 million travellers in the first half of 2026, open 24 hours. Crossing can take many hours, sometimes a full day."}},
+    "note":{"ar":"2.2 مليون مسافر في النصف الأول من 2026، مفتوح 24 ساعة. العبور قد يأخذ ساعات طويلة وأحياناً يوماً كاملاً.","en":"2.2 million travellers in the first half of 2026, open 24 hours. Crossing can take many hours, sometimes a full day."}},
   "BAB":{"kind":"land","name":{"ar":"باب الهوى","en":"Bab al-Hawa"},"lat":36.23,"lng":36.68,"status":"open","source":"ports","seen":"2026-09-20","country":"TR","syriansOnly":true,
     "note":{"ar":"للسوريين والأتراك وحاملي الجنسيتين. الأجانب عموماً لا يُسمح لهم بالعبور من الجانب التركي.","en":"For Syrians, Turkish citizens and dual nationals. Foreign visitors are generally not admitted from the Turkish side."}},
   "BKM":{"kind":"land","name":{"ar":"البوكمال","en":"Abu Kamal"},"lat":34.45,"lng":40.92,"status":"caution","source":"press","seen":"2026-09-20","country":"IQ",
-    "note":{"ar":"أُعيد فتحه في حزيران ٢٠٢٥. ممكن لكنه نادر للمسافرين، والشرق يبقى حساساً أمنياً.","en":"Reopened June 2025. Possible but rarely used by travellers, and the east remains security-sensitive."}}
+    "note":{"ar":"أُعيد فتحه في حزيران 2025. ممكن لكنه نادر للمسافرين، والشرق يبقى حساساً أمنياً.","en":"Reopened June 2025. Possible but rarely used by travellers, and the east remains security-sensitive."}}
 }

@@ -7,7 +7,7 @@
     "voa":[
       {"source":"gov","text":{"ar":"جواز صالح ستة أشهر بعد عودتك، وفيه صفحتان فارغتان.","en":"A passport valid six months past your return, with two blank pages."}},
       {"source":"ops","text":{"ar":"أهم نقطة: حتى لو كانت جنسيتك مؤهلة للتأشيرة عند الوصول، أنظمة بعض شركات الطيران لم تُحدَّث وقد ترفض إركابك دون موافقة مسبقة. المصادر متضاربة — اتصل بالسفارة واطلب الجواب كتابةً.","en":"The big one: even if your nationality qualifies for a visa on arrival, some airlines' systems aren't updated and staff may refuse to board you without prior approval. Sources contradict each other — call the embassy and ask in writing."}},
-      {"source":"gov","text":{"ar":"الرسم نقداً بالدولار عند الوصول، تقريباً بين ٢٥ و٤٠٠ دولار حسب الجنسية، بموجب القرار ١٢٨ منذ ٦ تموز ٢٠٢٥.","en":"The fee is US-dollar cash on arrival, roughly $25–$400 by nationality, under Decision 128 since 6 July 2025."}},
+      {"source":"gov","text":{"ar":"الرسم نقداً بالدولار عند الوصول، تقريباً بين 25 و400 دولار حسب الجنسية، بموجب القرار 128 منذ 6 تموز 2025.","en":"The fee is US-dollar cash on arrival, roughly $25–$400 by nationality, under Decision 128 since 6 July 2025."}},
       {"source":"ops","text":{"ar":"ختم دخول إلى إسرائيل في جوازك قد يمنع منحك التأشيرة.","en":"An Israeli entry stamp may block the visa."}}
     ],
     "res":[
@@ -17,7 +17,7 @@
   },
   "land":{
     "sy":[
-      {"source":"sana","text":{"ar":"نحو ٣٩١ ألف عودة طوعية عبر المعابر في النصف الأول من ٢٠٢٦، أكثر من ٢٤ ألفاً منها عبر نصيب.","en":"Around 391,000 voluntary returns through the crossings in the first half of 2026, over 24,000 through Nasib."}},
+      {"source":"sana","text":{"ar":"نحو 391 ألف عودة طوعية عبر المعابر في النصف الأول من 2026، أكثر من 24 ألفاً منها عبر نصيب.","en":"Around 391,000 voluntary returns through the crossings in the first half of 2026, over 24,000 through Nasib."}},
       {"source":"nosrc","text":{"ar":"المقيمون في تركيا: وضع الإقامة أو الحماية المؤقتة هو ما يحدد إمكانية العودة. لا مصدر رسمي محدّث لدينا — تحقق قبل السفر.","en":"If you live in Türkiye, residence or temporary-protection status decides whether you can return. We have no current official source — check before you travel."}}
     ],
     "voa":[
