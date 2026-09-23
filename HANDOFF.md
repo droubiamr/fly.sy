@@ -23,6 +23,7 @@ Start here, then README.md and CONTRIBUTING.md.
 | Stack | Next.js 16 (App Router, Server Actions), TypeScript, Tailwind 4, shadcn/ui (Radix), lucide-react |
 | Community reports | Supabase (Postgres + RLS) with a moderation queue |
 | Honesty model | Every fact has `source` + `confidence` + `seen`. Where there's no source, say so (`nosrc`) — never guess |
+| Visitor analytics | First-party, in Supabase, no third-party script. Visitor-id cookie set without a consent banner (owner's call, Sep 2026); Global Privacy Control honoured. See README |
 
 ## What we won't publish without a dated official source
 
@@ -51,7 +52,10 @@ src/app/               sitemap.ts, robots.ts, manifest.ts, icons; src/proxy.ts m
 src/components/        app-shell, bottom-nav, disclaimer (no-liability popup, once per browser), planner, world-map, flag,
                        route-card, status-stamp, provenance, report-form, ui/ (shadcn)
 supabase/migrations/0001_reports.sql   reports table, RLS, public view without contact field
-tests/plan.test.ts     planner + data integrity tests
+supabase/migrations/0002_analytics.sql page_views table (service role only) + analytics_summary() for the dashboard
+src/app/admin/         admin dashboard (own root layout, English): /admin traffic, /admin/reports moderation, /admin/login
+src/app/api/track/     page-view endpoint; src/components/visit-tracker.tsx posts to it on every navigation
+tests/plan.test.ts     planner + data integrity tests; tests/analytics.test.ts tracking helpers + admin session tokens
 ```
 
 Planner state lives in the URL (`/?from=DE&to=homs&p=sy`) so every answer is shareable. `from` is an ISO country
@@ -110,7 +114,8 @@ Then: `npm install`, `npm run check`, `npm run dev`, open on phone.
 2. Supabase: create project, run the migration, add `.env.local`, test a submission end to end.
 3. GitHub Actions running `npm run check` on every PR.
 4. Share button on each route card (copies the URL).
-5. `/admin` moderation page behind Supabase Auth (needs a decision on how Amr signs in).
+5. ~~`/admin` moderation page~~ Done: `/admin` has traffic analytics and report moderation behind one
+   `ADMIN_PASSWORD`. Needs `0002_analytics.sql` run and `SUPABASE_SERVICE_ROLE_KEY` + `ADMIN_PASSWORD` set as secrets.
 6. Airlines tab: filter by arrival airport (Damascus / Aleppo); weekly frequency per route.
 7. German (`de`) as a third locale.
 8. Re-verify every seeded data row.
@@ -119,4 +124,5 @@ Then: `npm install`, `npm run check`, `npm run dev`, open on phone.
 
 - Whether to name himself publicly on the site or stay behind a studio name + contact channel.
 - Monetization: if affiliate links are ever added, the "no commission" line in the independence notice must change.
-- Auth method for the admin page.
+- Admin sign-in is a single password for now. Whether to move it to Cloudflare Access or Supabase Auth
+  (per-person accounts, no shared secret).

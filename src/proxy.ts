@@ -10,6 +10,8 @@ import { passportFromSlug } from "@/lib/slugs"
  */
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
+  // The admin dashboard and the API are English-only and sit outside the localized tree.
+  if (/^\/(admin|api)(\/|$)/.test(pathname)) return NextResponse.next()
   // Old planner links carried the answer as a query string; each answer is a page now.
   // Checked before the /ar strip so such a link redirects once, not twice.
   if (pathname === "/" || pathname === "/en" || pathname === "/ar") {

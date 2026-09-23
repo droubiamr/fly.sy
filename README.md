@@ -11,7 +11,7 @@ Not affiliated with any government body, airline or embassy. Sells nothing, take
 - **Next.js 16** (App Router, Server Actions) · **TypeScript** · **Tailwind CSS 4**
 - **shadcn/ui** components (source-owned in `src/components/ui`, on Radix)
 - **d3-geo** + **world-atlas** (Natural Earth) for the map, rendered to SVG on the server; **country-flag-icons** for flags
-- **Supabase** (Postgres + RLS) for community reports — optional; the site runs without it
+- **Supabase** (Postgres + RLS) for community reports and visitor analytics — optional; the site runs without it
 - Arabic-first, RTL by default, at the root of the site. English lives under `/en`. No i18n library: `src/messages/index.ts`
 
 ## Run it
@@ -59,7 +59,10 @@ npm run dev
 | `src/lib/seo.ts`, `src/lib/schema.ts` | Per-page metadata (canonical, hreflang, Open Graph) and JSON-LD builders. |
 | `src/proxy.ts` | Rewrites `/` → `/ar` internally; `/en` passes through. Old `?from=&to=` links redirect to their page. |
 | `scripts/smoke.mjs` | Walks the built site like a crawler: status, canonical, hreflang, JSON-LD, redirects, 404s. |
-| `supabase/migrations/` | Reports table, RLS and the public view. |
+| `supabase/migrations/` | Reports table, RLS and the public view (`0001`); page views and the dashboard query (`0002`). |
+| `src/app/admin/` | The admin dashboard: traffic at `/admin`, report moderation at `/admin/reports`. Its own root layout, English. |
+| `src/app/api/track/route.ts`, `src/components/visit-tracker.tsx` | Page-view tracking: the component posts each navigation, the route stores it. |
+| `src/lib/analytics.ts` | Pure helpers behind tracking and the dashboard (path, source, country, ranges). Tested in `tests/`. |
 
 ## Updating data (the weekly job)
 
@@ -88,7 +91,39 @@ Submissions land in Supabase as `pending`. Nothing is public until someone with 
 Editor-verified seed reports in `data/reports.seed.json` keep the feed alive on a fresh deploy.
 
 Set up: create a Supabase project, run `supabase/migrations/0001_reports.sql` in the SQL editor,
-paste the URL and anon key into `.env.local`.
+paste the URL and anon key into `.env.local`. Moderate at `/admin/reports` (see below): publish, reject, or send
+back to pending. The contact field shows there and nowhere else.
+
+## Visitor analytics and the admin dashboard
+
+First-party only: no third-party script, no request to anyone but the site itself. Every navigation posts
+`{ path, referrer, utm_source }` to `/api/track`, which writes one row to `page_views` with the service role.
+
+| Stored | Not stored |
+|---|---|
+| Path (no query string), language, time | IP address |
+| Source: `utm_source`, else the referring host | Full referrer URL, anything typed into the page |
+| Country, from Cloudflare's `cf-ipcountry` | City, precise location |
+| Device type, browser and OS name | The raw user agent |
+| `fsy_vid`: a random UUID in an httpOnly first-party cookie (400 days) | Anything that identifies a person |
+
+- Returning visitors are recognised by the `fsy_vid` cookie. Browsers that send Global Privacy Control get no
+  cookie and are counted as anonymous page views.
+- Bots and headless browsers are dropped, and so are your own visits while you are signed in to `/admin`.
+- The table has RLS on and no policies: the public can neither read nor write it.
+- Nothing is deleted automatically. To keep, say, 13 months, schedule
+  `delete from page_views where created_at < now() - interval '13 months'` with Supabase's pg_cron.
+
+Set up, after the reports setup above:
+
+1. Run `supabase/migrations/0002_analytics.sql` in the SQL editor.
+2. Add `SUPABASE_SERVICE_ROLE_KEY` (Project Settings → API → `service_role`, a secret) and `ADMIN_PASSWORD`
+   (12 characters or more) to `.env.local`. On Cloudflare: `npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY` and
+   `npx wrangler secret put ADMIN_PASSWORD`.
+3. Open `/admin` and sign in. The session lasts 7 days; changing the password signs every session out.
+
+`/admin` is `noindex` and disallowed in robots.txt. A failed sign-in costs a second, but there is no lockout, so for
+a public deployment also put `/admin*` behind Cloudflare Access or a WAF rate-limiting rule.
 
 ## Design
 
