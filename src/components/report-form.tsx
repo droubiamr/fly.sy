@@ -5,6 +5,7 @@ import { DATA } from "@/lib/data"
 import type { Passport } from "@/lib/types"
 import { submitReport, type SubmitState } from "@/app/reports/actions"
 import { useLocale, useMessages } from "@/components/messages-provider"
+import { arrow } from "@/lib/format"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -45,7 +46,7 @@ export function ReportForm({ configured, contactUrl }: { configured: boolean; co
               href={contactUrl}
               className="relative inline-flex font-medium underline underline-offset-4 after:absolute after:top-1/2 after:left-1/2 after:size-11 after:-translate-x-1/2 after:-translate-y-1/2 after:content-['']"
             >
-              →
+              {arrow(locale)}
             </a>
           </AlertDescription>
         </Alert>

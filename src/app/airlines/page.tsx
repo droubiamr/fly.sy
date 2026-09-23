@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { DATA } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
-import { formatDate, formatHours } from "@/lib/format"
+import { arrow, formatDate, formatHours } from "@/lib/format"
 import { StatusDot, StatusStamp } from "@/components/status-stamp"
 import { CountryTag } from "@/components/country-tag"
 import { AirlineLogo } from "@/components/airline-logo"
@@ -56,7 +56,7 @@ export default async function AirlinesPage() {
                       <li key={i} className="flex flex-wrap items-center gap-x-2 gap-y-1 border-b py-2.5 text-sm last:border-0">
                         <StatusDot status={h.status} />
                         <span>{h.city[locale]}</span>
-                        <span className="text-xs text-muted-foreground">→</span>
+                        <span className="text-xs text-muted-foreground">{arrow(locale)}</span>
                         <span>{DATA.entries[h.entry].name[locale]}</span>
                         <span className="ms-auto text-[13px] text-muted-foreground">{formatHours(h.hours, locale)}</span>
                         <span className="w-full ps-4 text-xs text-muted-foreground">

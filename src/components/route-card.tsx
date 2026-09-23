@@ -1,6 +1,6 @@
 import { Plane, Car, ArrowRight, MoveRight } from "lucide-react"
 import { DATA, cityById } from "@/lib/data"
-import { formatHours } from "@/lib/format"
+import { arrow, formatHours } from "@/lib/format"
 import type { Journey } from "@/lib/plan"
 import type { Locale, Passport } from "@/lib/types"
 import type { Messages } from "@/messages"
@@ -34,7 +34,7 @@ export function RouteCard({
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="font-semibold">
-              {m.mode[j.mode]} · {j.entryData.name[locale]} → {city.name[locale]}
+              {m.mode[j.mode]} · {j.entryData.name[locale]} {arrow(locale)} {city.name[locale]}
             </p>
             <p className="mt-0.5 text-[13px] text-muted-foreground">{operator}</p>
           </div>
@@ -53,7 +53,7 @@ export function RouteCard({
         <span className="pt-0.5 text-xs font-bold text-muted-foreground">{rank}</span>
         <span className="min-w-0 flex-1">
           <span className="block font-semibold">
-            {m.mode[j.mode]} · {j.entryData.name[locale]} → {city.name[locale]}
+            {m.mode[j.mode]} · {j.entryData.name[locale]} {arrow(locale)} {city.name[locale]}
           </span>
           <span className="mt-0.5 flex items-center gap-1.5 text-[13px] text-muted-foreground">
             {j.airline && (
@@ -99,7 +99,7 @@ export function RouteCard({
           </span>
           <div className="min-w-0 flex-1">
             <p className="font-semibold">
-              {m.road} · {j.entryData.name[locale]} → {city.name[locale]}
+              {m.road} · {j.entryData.name[locale]} {arrow(locale)} {city.name[locale]}
             </p>
             <p className="mt-0.5 text-[13px] text-muted-foreground">{formatHours(j.roadHours, locale)}</p>
             {j.entryData.note && <p className="mt-1.5 text-[13px] leading-relaxed">{j.entryData.note[locale]}</p>}

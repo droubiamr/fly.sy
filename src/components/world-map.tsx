@@ -5,6 +5,7 @@ import type { GeometryCollection, Topology } from "topojson-specification"
 import atlas110 from "world-atlas/countries-110m.json"
 import atlas50 from "world-atlas/countries-50m.json"
 import { DATA, cityById } from "@/lib/data"
+import { arrow } from "@/lib/format"
 import type { Locale, OriginDef } from "@/lib/types"
 
 // Natural Earth via the world-atlas package (public domain data, ISC package).
@@ -178,7 +179,7 @@ export function WorldMap({ origin, dest, liveEntries, locale }: { origin: Origin
         viewBox={`0 0 ${W} ${H}`}
         className="block h-auto w-full"
         role="img"
-        aria-label={`${origin.name[locale]} → ${city.name[locale]}`}
+        aria-label={`${origin.name[locale]} ${arrow(locale)} ${city.name[locale]}`}
         // Left-to-right geometry regardless of page direction: an anchor of
         // "start" is the left edge, and the label sits where it was measured.
         style={{ direction: "ltr" }}

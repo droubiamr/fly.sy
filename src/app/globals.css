@@ -164,6 +164,22 @@
     padding-top: env(safe-area-inset-top, 0px);
   }
 
+  /* The page scrolls up and down and nothing else. Anything that ends up wider
+     than the screen (one unbreakable word is enough) makes a phone widen its
+     layout viewport to fit it: the page can then be dragged sideways, the
+     scrollbar comes and goes, and the sticky header drifts. Clipping the
+     overflow at the root closes that door for good, whatever a future
+     component does. `clip` rather than `hidden` on the body: it does not turn
+     the body into a scroll container, so position: sticky keeps working and
+     the browser stays the one thing that scrolls. On <html> the value reaches
+     the viewport itself, which is what stops the sideways pan on iOS. */
+  html {
+    overflow-x: hidden;
+  }
+  body {
+    overflow-x: clip;
+  }
+
   /* Skips the browser's wait-and-see for a double-tap, so taps fire at once. */
   button,
   a,

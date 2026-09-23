@@ -18,6 +18,13 @@ source is you, set `confidence: reported` — a maintainer upgrades to `verified
 `npm run check` must pass. Reuse `src/components/ui` (shadcn) and the shared components; don't add
 a second button, card or status chip. New logic gets a test in `tests/`.
 
+The site is RTL first. Use logical Tailwind classes (`ps-`/`pe-`, `ms-`/`me-`, `start-`/`end-`,
+`text-start`), never `pl-`/`pr-`/`left-`/`right-`; flip directional icons with `rtl:rotate-180` and
+put a "→" between places through `arrow(locale)` in `src/lib/format.ts`. Radix primitives read the
+direction from the `Direction.Provider` in `messages-provider.tsx`, not from the document, so keep
+new ones inside it. Nothing may be wider than the screen: a phone widens its layout viewport to fit
+an overflowing element and the whole page starts panning sideways.
+
 ## What we won't publish
 Lists of restricted nationalities, military-service rules, or anything about asylum status in a
 specific country — unless it comes with a dated, published official source. A declared gap beats a guess.
