@@ -26,7 +26,7 @@ export default async function LoginPage() {
           fly<span className="text-primary">.sy</span>
         </p>
         <h1 className="mt-1 mb-6 text-sm text-muted-foreground">Admin dashboard</h1>
-        <LoginForm enabled={cfg.missing.length === 0} siteKey={cfg.turnstileSiteKey} action={TURNSTILE_ACTION} />
+        <LoginForm enabled={cfg.missing.length === 0} missing={cfg.missing} siteKey={cfg.turnstileSiteKey} action={TURNSTILE_ACTION} />
       </div>
     </main>
   )

@@ -30,13 +30,16 @@ export type AdminSession = {
 /** What sign-in needs before it will run at all. Missing entries switch the form off. */
 export function authConfig() {
   const env = process.env
+  // Forgive what pasting into a dashboard field tends to add: surrounding spaces and line breaks, and an
+  // authenticator key typed in lower case or in groups. The password keeps inner and leading spaces.
   const cfg = {
-    passwordHash: env.ADMIN_PASSWORD_HASH ?? "",
-    password: env.ADMIN_PASSWORD ?? "",
-    totpSecret: env.ADMIN_TOTP_SECRET ?? "",
-    turnstileSiteKey: env.TURNSTILE_SITE_KEY ?? "",
-    turnstileSecret: env.TURNSTILE_SECRET_KEY ?? "",
+    passwordHash: (env.ADMIN_PASSWORD_HASH ?? "").trim(),
+    password: (env.ADMIN_PASSWORD ?? "").replace(/[\r\n]+$/, ""),
+    totpSecret: (env.ADMIN_TOTP_SECRET ?? "").replace(/[\s-]/g, "").toUpperCase(),
+    turnstileSiteKey: (env.TURNSTILE_SITE_KEY ?? "").trim(),
+    turnstileSecret: (env.TURNSTILE_SECRET_KEY ?? "").trim(),
   }
+  // Names only: this list is shown on the sign-in page while sign-in is off, so it must never carry a value.
   const missing = [
     // Either the hash or the password itself (12+ characters) as a secret.
     !cfg.passwordHash.startsWith("pbkdf2-sha256:") && cfg.password.length < 12 && "ADMIN_PASSWORD",

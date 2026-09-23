@@ -24,7 +24,18 @@ const MESSAGE = {
   disabled: "Sign-in is switched off on this deployment.",
 } as const
 
-export function LoginForm({ enabled, siteKey, action: turnstileAction }: { enabled: boolean; siteKey: string; action: string }) {
+export function LoginForm({
+  enabled,
+  missing = [],
+  siteKey,
+  action: turnstileAction,
+}: {
+  enabled: boolean
+  /** Names of the settings that are absent or invalid, never their values. Shown only while sign-in is off. */
+  missing?: string[]
+  siteKey: string
+  action: string
+}) {
   const [state, action, pending] = useActionState<LoginState, FormData>(login, null)
   const box = useRef<HTMLDivElement>(null)
   const widget = useRef<string | null>(null)
@@ -89,6 +100,11 @@ export function LoginForm({ enabled, siteKey, action: turnstileAction }: { enabl
       {error && (
         <p id="login-error" role="alert" className="text-sm text-destructive">
           {MESSAGE[error]}
+          {error === "disabled" && missing.length > 0 && (
+            <span className="mt-1 block text-muted-foreground">
+              Missing or invalid in the Worker&apos;s Variables and Secrets: {missing.join(", ")}
+            </span>
+          )}
         </p>
       )}
       <Button type="submit" disabled={pending || !enabled} className="h-11 rounded-full text-[15px]">
