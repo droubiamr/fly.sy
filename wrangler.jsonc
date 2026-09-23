@@ -27,5 +27,23 @@
       "namespace_id": "1001",
       "simple": { "limit": 5, "period": 60 }
     }
-  ]
+  ],
+  // Preview builds (every branch other than main, via `wrangler preview`) must name their own bindings.
+  // They share the production database, so a preview's visits and reports land in the real tables; point
+  // database_id at a separate D1 database if that ever matters. The rate limiter gets its own namespace.
+  "previews": {
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_id": "1ade1e7c-0c2c-476a-8d4e-071a02b0a5c9"
+      }
+    ],
+    "ratelimits": [
+      {
+        "name": "LOGIN_LIMITER",
+        "namespace_id": "1002",
+        "simple": { "limit": 5, "period": 60 }
+      }
+    ]
+  }
 }
