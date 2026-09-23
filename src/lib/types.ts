@@ -20,7 +20,13 @@ export type OriginDef = {
   group?: string
 }
 
-export type Source = { name: Text; kind: Text; use: Text }
+export type Source = {
+  name: Text
+  kind: Text
+  use: Text
+  /** Where the source publishes: an https URL, or a site path such as "/reports". Absent for sources with no single home. */
+  url?: string
+}
 export type Airline = { name: Text; country: string }
 export type City = { id: string; name: Text; lat: number; lng: number }
 export type Entry = {

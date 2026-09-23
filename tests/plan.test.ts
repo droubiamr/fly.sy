@@ -59,6 +59,8 @@ test("real data: every arrival's entry and every road destination exist", async 
   }
   for (const a of DATA.arrivals) assert.ok(DATA.sources[a.source], `source ${a.source}`)
   for (const a of DATA.arrivals) if (a.airline) assert.ok(DATA.airlines[a.airline], `airline ${a.airline}`)
+  for (const [id, s] of Object.entries(DATA.sources as Record<string, { url?: string }>))
+    if (s.url) assert.match(s.url, /^(https:\/\/|\/)/, `source ${id} url must be https or a site path`)
 })
 
 test("real data: every origin is a country on the map and has at least one route; every arrival origin resolves", async () => {

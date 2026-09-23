@@ -45,7 +45,7 @@ Each record in `data/` carries:
 ```
 status:      open | caution | closed | unknown
 confidence:  verified | reported | unconfirmed
-source:      a key from data/sources.json
+source:      a key from data/sources.json (give a source a `url`, https or a site path, and its name becomes a link)
 seen:        YYYY-MM-DD — bump it every time you re-check, even if nothing changed
 ```
 
