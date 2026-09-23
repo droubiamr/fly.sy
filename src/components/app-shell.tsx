@@ -32,7 +32,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             fly<span className="text-primary">.sy</span>
           </Link>
 
-          {/* Icon first, and the label lives in aria-label: "آخر تحديث ٢٠ أيلول"
+          {/* Icon first, and the label lives in aria-label: "آخر تحديث 20 أيلول"
               would crowd the pill, and the calendar already says what the date is.
               Text on a translucent surface needs more weight and contrast than
               flat muted grey, or it dissolves into whatever scrolls behind it. */}
