@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { plan } from "../src/lib/plan.ts"
+import { airportReach, plan } from "../src/lib/plan.ts"
 import type { Arrival, Entry, OriginDef, Roads } from "../src/lib/types.ts"
 
 const entries: Record<string, Entry> = {
@@ -45,6 +45,28 @@ test("sorts by total hours, blocked last", () => {
 test("unknown road time yields null total and sorts after known", () => {
   const r = plan({ arrivals, entries, roads, from: TR, dest: "qamishli", passport: "sy" })
   assert.ok(r.every((j) => j.totalHours === null))
+})
+
+test("airportReach: direct from here, via when only others fly there, none when closed or blocked", () => {
+  const es: Record<string, Entry> = {
+    ...entries,
+    ALP: { ...entries.DAM, name: { ar: "حلب", en: "Aleppo" } },
+    LTK: { ...entries.DAM, status: "closed" },
+    KAC: { ...entries.DAM, syriansOnly: true },
+    NOF: { ...entries.DAM },
+  }
+  const as: Arrival[] = [
+    ...arrivals,
+    { ...base, airline: null, entry: "ALP", mode: "air", hours: 1, from: "LB" },
+    { ...base, airline: null, entry: "KAC", mode: "air", hours: 2 },
+  ]
+  const sy = airportReach({ arrivals: as, entries: es, from: TR, passport: "sy" })
+  assert.deepEqual(sy, { DAM: "direct", ALP: "via", LTK: "none", KAC: "direct", NOF: "none" })
+  const voa = airportReach({ arrivals: as, entries: es, from: TR, passport: "voa" })
+  assert.equal(voa.KAC, "none")
+  const de = airportReach({ arrivals: as, entries: es, from: { id: "DE", group: "eu" }, passport: "sy" })
+  assert.equal(de.DAM, "direct")
+  assert.equal(de.ALP, "via")
 })
 
 test("real data: every arrival's entry and every road destination exist", async () => {

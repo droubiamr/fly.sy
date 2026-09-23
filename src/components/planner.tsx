@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation"
 import { useTransition } from "react"
 import { DESTINATIONS, ORIGINS, PASSPORTS, REGIONS } from "@/lib/data"
 import type { Origin, Passport } from "@/lib/types"
+import type { Reach } from "@/lib/plan"
 import { useLocale, useMessages } from "@/components/messages-provider"
 import { Flag } from "@/components/flag"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -20,7 +21,18 @@ const trigger =
   " after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2 after:content-['']"
 
 /** The sentence you fill in. Choices live in the URL so any answer is a link. */
-export function Planner({ from, dest, passport }: { from: Origin; dest: string; passport: Passport }) {
+export function Planner({
+  from,
+  dest,
+  passport,
+  reach,
+}: {
+  from: Origin
+  dest: string
+  passport: Passport
+  /** Per airport code: reachable direct, only with a connection, or not at all (greyed out). */
+  reach: Record<string, Reach>
+}) {
   const router = useRouter()
   const path = usePathname()
   const locale = useLocale()
@@ -75,9 +87,9 @@ export function Planner({ from, dest, passport }: { from: Origin; dest: string; 
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {DESTINATIONS.map((c) => (
-              <SelectItem key={c.id} value={c.id}>
-                {c.name[locale]}
+            {DESTINATIONS.map((d) => (
+              <SelectItem key={d.id} value={d.id} disabled={reach[d.entry] === "none"} hint={reach[d.entry] === "via" ? m.ask.via : undefined}>
+                {d.name[locale]}
               </SelectItem>
             ))}
           </SelectContent>

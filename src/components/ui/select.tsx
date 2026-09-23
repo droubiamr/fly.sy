@@ -102,8 +102,12 @@ function SelectLabel({
 function SelectItem({
   className,
   children,
+  hint,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+}: React.ComponentProps<typeof SelectPrimitive.Item> & {
+  /** Shown at the end of the row only, never in the closed trigger, since it sits outside ItemText. */
+  hint?: React.ReactNode
+}) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
@@ -122,6 +126,7 @@ function SelectItem({
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      {hint != null && <span className="ms-auto text-xs text-muted-foreground">{hint}</span>}
     </SelectPrimitive.Item>
   )
 }

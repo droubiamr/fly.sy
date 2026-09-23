@@ -36,3 +36,24 @@ export function plan(input: PlanInput): Journey[] {
     (x, y) => Number(x.blocked) - Number(y.blocked) || (x.totalHours ?? Infinity) - (y.totalHours ?? Infinity),
   )
 }
+
+export type Reach = "direct" | "via" | "none"
+
+/** For every airport: "direct" when a flight from `from` lands there, "via"
+ *  when only flights from elsewhere do (so a connection is possible), "none"
+ *  when it is closed, closed to this passport, or nothing flies there. */
+export function airportReach(input: Omit<PlanInput, "roads" | "dest">): Record<string, Reach> {
+  const { id, group } = input.from
+  const out: Record<string, Reach> = {}
+  for (const [code, e] of Object.entries(input.entries)) {
+    if (e.kind !== "air") continue
+    const blocked = Boolean(e.syriansOnly && input.passport !== "sy")
+    if (e.status === "closed" || blocked) {
+      out[code] = "none"
+      continue
+    }
+    const flights = input.arrivals.filter((a) => a.entry === code && a.mode === "air" && !a.hidden && a.status !== "closed")
+    out[code] = flights.some((a) => a.from === id || a.from === group) ? "direct" : flights.length ? "via" : "none"
+  }
+  return out
+}

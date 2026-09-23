@@ -1,6 +1,6 @@
 import { DATA, DESTINATIONS, ORIGINS, PASSPORTS, originById } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
-import { plan } from "@/lib/plan"
+import { airportReach, plan } from "@/lib/plan"
 import type { Passport } from "@/lib/types"
 import { Planner } from "@/components/planner"
 import { WorldMap } from "@/components/world-map"
@@ -22,12 +22,13 @@ export default async function PlanPage({ searchParams }: { searchParams: Promise
   const passport = pick(sp.p, PASSPORTS.map((p) => p.id), "sy" as Passport)
 
   const journeys = plan({ arrivals: DATA.arrivals, entries: DATA.entries, roads: DATA.roads, from: origin, dest, passport })
+  const reach = airportReach({ arrivals: DATA.arrivals, entries: DATA.entries, from: origin, passport })
   const liveEntries = journeys.filter((j) => !j.blocked).map((j) => j.entry)
 
   return (
     <div className="flex flex-col gap-5">
       <h1 className="sr-only">fly.sy</h1>
-      <Planner from={origin.id} dest={dest} passport={passport} />
+      <Planner from={origin.id} dest={dest} passport={passport} reach={reach} />
 
       <WorldMap origin={origin} dest={dest} liveEntries={liveEntries} locale={locale} />
 
