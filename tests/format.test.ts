@@ -20,3 +20,12 @@ test("English output is unchanged", () => {
   assert.equal(formatMinutes(45, "en"), "45 min")
   assert.equal(formatMinutes(90, "en"), "~1.5 h")
 })
+
+test("data files carry Western digits only, Arabic text included", async () => {
+  const { readdirSync, readFileSync } = await import("node:fs")
+  for (const f of readdirSync("data").filter((f) => f.endsWith(".json"))) {
+    const text = readFileSync(`data/${f}`, "utf8")
+    const hit = text.match(/[٠-٩۰-۹٫٬]/)
+    assert.equal(hit, null, `data/${f} contains an Eastern Arabic digit or separator: ${hit?.[0]}`)
+  }
+})

@@ -1,7 +1,8 @@
 import type { Locale } from "./types"
 
-// Arabic month names, Western (0-9) digits: "ar-SY" alone renders ٠-٩, which the
-// site avoids everywhere. `nu-latn` keeps the locale's words and only swaps digits.
+// Arabic month names, Western (0-9) digits. Plain "ar-SY" renders Eastern Arabic
+// numerals, which the site avoids everywhere; `nu-latn` keeps the locale's words
+// and only swaps the digits.
 const INTL_LOCALE: Record<Locale, string> = { ar: "ar-SY-u-nu-latn", en: "en-GB" }
 
 export function formatDate(iso: string, locale: Locale) {
