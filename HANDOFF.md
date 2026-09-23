@@ -17,7 +17,7 @@ Start here, then README.md and CONTRIBUTING.md.
 |---|---|
 | Audience | Public / consumers, not agencies |
 | Licence | Code MIT, data CC BY-SA 4.0 |
-| UI direction | **B — "Passport"**: calm, light, cool-grey ground, passport-green `#0E5C3F` accent, outlined *stamp* chips for status, Readex Pro font |
+| UI direction | **B — "Passport"**: calm, light, cool-grey ground, passport-green `#0E5C3F` accent, outlined *stamp* chips for status, IBM Plex Sans Arabic font (weights 500/600/700 only; 400 is served Medium) |
 | Style rules | Icon-first, minimal text. Mobile-first. No gradients, shadows, emoji, left-border cards. 44px touch targets. Pre-built components, not hand-rolled |
 | Stack | Next.js 16 (App Router, Server Actions), TypeScript, Tailwind 4, shadcn/ui (Radix), lucide-react |
 | Community reports | Supabase (Postgres + RLS) with a moderation queue |

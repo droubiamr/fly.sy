@@ -55,9 +55,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Root app-router layout: this link applies to every route. next/font is avoided so builds work offline. */}
+        {/* Only the 500, 600 and 700 cuts are loaded: the thin 400 cut of Plex Sans Arabic reads poorly on screen, so
+            ordinary text at weight 400 falls to Medium (see --font-sans in globals.css). */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>

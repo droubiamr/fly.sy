@@ -135,7 +135,12 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: "Readex Pro", ui-sans-serif, system-ui, sans-serif;
+  /* IBM Plex Sans Arabic, loaded in layout.tsx at weights 500, 600 and 700 only.
+     Its 400 cut is too thin to read well on screen, so it is not loaded: ordinary
+     text at weight 400 is served the Medium (500) cut. That is the CSS matching
+     rule for a missing weight, not a trick, so font-normal and the default weight
+     both land on Medium without any override here. */
+  --font-sans: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
 
   /* Motion. The browser's built-in easings are too soft to read as deliberate,
      so ease-out and ease-in-out are replaced with stronger curves everywhere. */
