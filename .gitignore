@@ -48,3 +48,7 @@ next-env.d.ts
 
 # local env
 .env.local
+
+# Written by the Next.js install and dev steps, not project files
+AGENTS.md
+CLAUDE.md
