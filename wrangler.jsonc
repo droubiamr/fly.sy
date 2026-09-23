@@ -15,7 +15,7 @@
     {
       "binding": "DB",
       "database_name": "fly-sy",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "1ade1e7c-0c2c-476a-8d4e-071a02b0a5c9",
       "migrations_dir": "migrations"
     }
   ],
