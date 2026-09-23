@@ -5,7 +5,7 @@ export type Status = "open" | "caution" | "closed" | "unknown"
 export type Confidence = "verified" | "reported" | "unconfirmed"
 export type Mode = "air" | "land"
 export type Passport = "sy" | "voa" | "res"
-export type Origin = "tr" | "lb" | "jo" | "gulf" | "iq" | "eu"
+export type Origin = "tr" | "lb" | "jo" | "gulf" | "iq" | "ru" | "ly" | "eu"
 
 export type Source = { name: Text; kind: Text; use: Text }
 export type Airline = { name: Text; country: string }

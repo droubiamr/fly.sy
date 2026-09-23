@@ -27,6 +27,8 @@ export const ORIGINS = [
   { id: "jo", name: { ar: "الأردن", en: "Jordan" } },
   { id: "gulf", name: { ar: "الخليج", en: "the Gulf" } },
   { id: "iq", name: { ar: "العراق", en: "Iraq" } },
+  { id: "ru", name: { ar: "روسيا", en: "Russia" } },
+  { id: "ly", name: { ar: "ليبيا", en: "Libya" } },
   { id: "eu", name: { ar: "أوروبا", en: "Europe" } },
 ] as const
 
