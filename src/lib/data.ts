@@ -38,3 +38,14 @@ export const PASSPORTS = [
 ] as const
 
 export const cityById = (id: string) => DATA.cities.find((c) => c.id === id)
+
+/**
+ * What the destination picker offers: every airport, open or not, in entries.json
+ * order, shown by its own name. The value is the city it serves, which is what
+ * the planner routes to and what the URL carries, so one city with two airports
+ * would appear once, under the first.
+ */
+export const DESTINATIONS = Object.values(DATA.entries)
+  .filter((e) => e.kind === "air" && e.city)
+  .filter((e, i, all) => all.findIndex((o) => o.city === e.city) === i)
+  .map((e) => ({ id: e.city!, name: e.name }))

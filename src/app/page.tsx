@@ -1,4 +1,4 @@
-import { DATA, ORIGINS, PASSPORTS, originById } from "@/lib/data"
+import { DATA, DESTINATIONS, ORIGINS, PASSPORTS, originById } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
 import { plan } from "@/lib/plan"
 import type { Passport } from "@/lib/types"
@@ -17,7 +17,8 @@ export default async function PlanPage({ searchParams }: { searchParams: Promise
 
   // Türkiye by default: it hosts the most Syrians abroad. Old links carry region ids; originById maps them.
   const origin = originById(sp.from) ?? originById("TR") ?? ORIGINS[0]
-  const dest = pick(sp.to, DATA.cities.map((c) => c.id), "damascus")
+  // Only cities with an airport are offered, by airport name; an old link to any other city lands on Damascus.
+  const dest = pick(sp.to, DESTINATIONS.map((c) => c.id), "damascus")
   const passport = pick(sp.p, PASSPORTS.map((p) => p.id), "sy" as Passport)
 
   const journeys = plan({ arrivals: DATA.arrivals, entries: DATA.entries, roads: DATA.roads, from: origin, dest, passport })

@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation"
 import { useTransition } from "react"
-import { DATA, ORIGINS, PASSPORTS, REGIONS } from "@/lib/data"
+import { DESTINATIONS, ORIGINS, PASSPORTS, REGIONS } from "@/lib/data"
 import type { Origin, Passport } from "@/lib/types"
 import { useLocale, useMessages } from "@/components/messages-provider"
 import { Flag } from "@/components/flag"
@@ -75,7 +75,7 @@ export function Planner({ from, dest, passport }: { from: Origin; dest: string; 
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {DATA.cities.map((c) => (
+            {DESTINATIONS.map((c) => (
               <SelectItem key={c.id} value={c.id}>
                 {c.name[locale]}
               </SelectItem>

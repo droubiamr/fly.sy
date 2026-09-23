@@ -56,6 +56,7 @@ Rules:
 3. Bump `seen` when you review a line. A fresh date on an unchanged fact is the signal the site is alive.
 4. Update `data/meta.json` → `updated` after each review pass.
 5. `npm test` checks referential integrity (every entry, road, source and airline id resolves).
+6. Every airport in `entries.json` names its `city`. The destination picker lists the airports by name and routes to that city.
 
 ## Community reports
 

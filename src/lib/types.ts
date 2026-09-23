@@ -37,6 +37,8 @@ export type Entry = {
   status: Status
   source: string
   seen: string
+  /** Air entries only: the id in cities.json of the city the airport serves. The destination picker lists airports and routes to this city. */
+  city?: string
   country?: string
   syriansOnly?: boolean
   note?: Text
