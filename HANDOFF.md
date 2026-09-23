@@ -45,7 +45,8 @@ src/lib/data.ts        typed JSON loader
 src/messages/index.ts  all UI strings, ar + en
 src/app/globals.css    design tokens — the whole look
 src/app/               routes: / (plan), /airlines, /crossings, /reports, /reports/new, /about
-src/components/        app-shell, bottom-nav, planner, world-map, flag, route-card, status-stamp, provenance, report-form, ui/ (shadcn)
+src/components/        app-shell, bottom-nav, disclaimer (no-liability popup, once per browser), planner, world-map, flag,
+                       route-card, status-stamp, provenance, report-form, ui/ (shadcn)
 supabase/migrations/0001_reports.sql   reports table, RLS, public view without contact field
 tests/plan.test.ts     planner + data integrity tests
 ```

@@ -5,6 +5,7 @@ import { DATA } from "@/lib/data"
 import { formatDate } from "@/lib/format"
 import { toggleLocale } from "@/app/actions"
 import { BottomNav } from "@/components/bottom-nav"
+import { Disclaimer } from "@/components/disclaimer"
 import { Button } from "@/components/ui/button"
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
@@ -65,6 +66,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       <p className="px-5 pt-1 text-[13px] leading-relaxed text-muted-foreground">{m.indep}</p>
       <main className="flex-1 px-5 pb-28 pt-4">{children}</main>
       <BottomNav />
+      <Disclaimer />
     </div>
   )
 }

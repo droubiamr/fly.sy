@@ -71,6 +71,15 @@ const messages = {
       openText: "الكود والبيانات على GitHub. كل تعديل على البيانات هو commit مؤرّخ باسم من راجعه.",
       fine: "هذا الموقع نقطة انطلاق للتحقق لا بديل عنه. الوضع يتغير بسرعة، والقواعد تُطبَّق أحياناً بشكل مختلف من موظف لآخر، وقد تكون معلومة صحيحة يوم مراجعتها وخاطئة اليوم. أكّد كل شيء مع شركة الطيران أو السفارة، ولا تشترِ تذكرة غير قابلة للاسترداد قبل أن تتأكد من أوراقك.",
     },
+    disclaimer: {
+      title: "قبل أن تخطط",
+      body: [
+        "fly.sy يعطيك فكرة عمّا تتوقعه. نجمع المعلومات ونعرض مصدر كل سطر، ولا نتحمّل أي مسؤولية عن هذه المعلومات ولا عن أي شيء يترتب عليها.",
+        "أنت، كزائر أو مسافر، مسؤول عن التأكد من كل شيء من المصادر نفسها أو من الجهات المعنية: شركة الطيران، المطار، السفارة، المعبر.",
+        "المعلومات محدّثة في العادة، لكننا لا نتحمّل أي مسؤولية عنها.",
+      ],
+      accept: "فهمت",
+    },
     lang: "English",
   },
   en: {
@@ -141,6 +150,15 @@ const messages = {
       open: "Open source",
       openText: "Code and data are on GitHub. Every data change is a dated commit with the reviewer's name on it.",
       fine: "This site is a starting point for checking, not a substitute for it. Things change fast, rules are applied differently by different officials, and a line that was right when we checked it may be wrong today. Confirm everything with the airline or the embassy, and don't buy a non-refundable ticket before your paperwork is settled.",
+    },
+    disclaimer: {
+      title: "Before you plan",
+      body: [
+        "fly.sy gives you an idea of what to expect. We collect information and show you where every line came from. We accept no liability for that information or for anything that happens because of it.",
+        "As a visitor or traveller, you are responsible for confirming everything with the same sources or with the officials concerned: the airline, the airport, the embassy, the crossing.",
+        "The information is usually up to date, but we hold no responsibility for it.",
+      ],
+      accept: "I understand",
     },
     lang: "العربية",
   },
