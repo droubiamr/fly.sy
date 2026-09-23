@@ -148,5 +148,5 @@ export async function moderate(form: FormData) {
   } catch (e) {
     console.error("report not updated:", e)
   }
-  revalidatePath("/admin/reports")
+  revalidatePath("/admin/experiences")
 }

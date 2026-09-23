@@ -21,7 +21,7 @@ Start here, then README.md and CONTRIBUTING.md.
 | UI direction | **B — "Passport"**: calm, light, cool-grey ground, passport-green `#0E5C3F` accent, outlined *stamp* chips for status, Readex Pro font |
 | Style rules | Icon-first, minimal text. Mobile-first. No gradients, shadows, emoji, left-border cards. 44px touch targets. Pre-built components, not hand-rolled |
 | Stack | Next.js 16 (App Router, Server Actions), TypeScript, Tailwind 4, shadcn/ui (Radix), lucide-react |
-| Community reports | Cloudflare D1, moderated at `/admin/reports` (moved from an unused Supabase setup, Sep 2026) |
+| Community reports | Cloudflare D1, moderated at `/admin/experiences` (moved from an unused Supabase setup, Sep 2026) |
 | Honesty model | Every fact has `source` + `confidence` + `seen`. Where there's no source, say so (`nosrc`) — never guess |
 | Visitor analytics | First-party, in D1, no third-party script. Records IP, location, network and user agent; visitor-id cookie set without a consent banner. Legal compliance is the owner's to handle (owner's call, Sep 2026). See README |
 
@@ -52,7 +52,7 @@ src/app/               sitemap.ts, robots.ts, manifest.ts, icons; src/proxy.ts m
 src/components/        app-shell, bottom-nav, disclaimer (no-liability popup, once per browser), planner, world-map, flag,
                        route-card, status-stamp, provenance, report-form, ui/ (shadcn)
 migrations/            D1 schema: 0001 reports + page_views, 0002 admin sessions, sign-in log, TOTP replay guard
-src/app/admin/         admin dashboard (own root layout, English): /admin traffic, /admin/reports, /admin/security, /admin/login
+src/app/admin/         admin dashboard (own root layout, English): /admin traffic, /admin/experiences, /admin/security, /admin/login
 src/app/api/track/     page-view endpoint; src/components/visit-tracker.tsx posts to it on every navigation
 tests/plan.test.ts     planner + data integrity tests; tests/analytics.test.ts tracking helpers + admin session tokens
 ```

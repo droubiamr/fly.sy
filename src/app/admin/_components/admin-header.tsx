@@ -5,7 +5,7 @@ import { logout } from "../actions"
 
 const TABS = [
   { href: "/admin", key: "traffic", label: "Traffic", Icon: BarChart3 },
-  { href: "/admin/reports", key: "reports", label: "Reports", Icon: MessagesSquare },
+  { href: "/admin/experiences", key: "experiences", label: "Experiences", Icon: MessagesSquare },
   { href: "/admin/security", key: "security", label: "Security", Icon: ShieldCheck },
 ] as const
 
@@ -30,7 +30,7 @@ export function AdminHeader({ active, pending }: { active: (typeof TABS)[number]
             >
               <Icon className="size-4" aria-hidden="true" />
               <span className="max-sm:sr-only">{label}</span>
-              {key === "reports" && pending > 0 && (
+              {key === "experiences" && pending > 0 && (
                 <span className="rounded-full bg-primary px-1.5 text-[11px] leading-5 font-bold text-primary-foreground">
                   {pending}
                   <span className="sr-only"> pending</span>

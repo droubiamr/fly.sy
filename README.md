@@ -63,7 +63,7 @@ npm run dev
 | `migrations/` | D1 schema: reports and page views (`0001`), admin sessions and the sign-in log (`0002`). |
 | `src/lib/db.ts` | The D1 binding (`DB`), typed. |
 | `src/lib/admin-auth.ts`, `src/lib/auth-crypto.ts`, `src/app/admin/actions.ts` | Admin sign-in: Access check, sessions, password hashing, TOTP, lockout. |
-| `src/app/admin/` | The admin dashboard: traffic at `/admin`, report moderation at `/admin/reports`. Its own root layout, English. |
+| `src/app/admin/` | The admin dashboard: traffic at `/admin`, report moderation at `/admin/experiences`. Its own root layout, English. |
 | `src/app/api/track/route.ts`, `src/components/visit-tracker.tsx` | Page-view tracking: the component posts each navigation, the route stores it. |
 | `src/lib/analytics.ts` | Pure helpers behind tracking and the dashboard (path, source, country, ranges). Tested in `tests/`. |
 
@@ -89,7 +89,7 @@ Rules:
 
 ## Community reports
 
-Submissions land in D1 as `pending`. Nothing is public until it is published at `/admin/reports`, where you can
+Submissions land in D1 as `pending`. Nothing is public until it is published at `/admin/experiences`, where you can
 also reject a report or send it back to pending. The public feed never selects the `contact` column; only the
 moderation page shows it. Editor-verified seed reports in `data/reports.seed.json` keep the feed alive on a
 fresh deploy.

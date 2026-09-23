@@ -14,7 +14,7 @@ import { SetupNotice } from "../_components/setup-notice"
 
 export const dynamic = "force-dynamic"
 
-export const metadata: Metadata = { title: "Reports" }
+export const metadata: Metadata = { title: "Experiences" }
 
 type Props = { searchParams: Promise<{ status?: string }> }
 
@@ -27,7 +27,7 @@ const isStatus = (v: unknown): v is ReportStatus => v === "pending" || v === "pu
 const en = getMessages("en")
 const submitted = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" })
 
-export default async function ReportsAdminPage({ searchParams }: Props) {
+export default async function ExperiencesAdminPage({ searchParams }: Props) {
   await requireAdmin()
   const { status: raw } = await searchParams
   const status = isStatus(raw) ? raw : "pending"
@@ -35,15 +35,15 @@ export default async function ReportsAdminPage({ searchParams }: Props) {
 
   return (
     <>
-      <AdminHeader active="reports" pending={queue.ok ? queue.counts.pending : 0} />
+      <AdminHeader active="experiences" pending={queue.ok ? queue.counts.pending : 0} />
       <main className="mx-auto flex max-w-3xl flex-col gap-5 px-4 py-6 sm:px-6">
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="me-auto text-2xl font-bold tracking-tight">Traveller reports</h1>
+          <h1 className="me-auto text-2xl font-bold tracking-tight">Traveller experiences</h1>
           <nav aria-label="Status" className="inline-flex rounded-full border bg-card p-1">
             {TABS.map((t) => (
               <Link
                 key={t.status}
-                href={t.status === "pending" ? "/admin/reports" : `/admin/reports?status=${t.status}`}
+                href={t.status === "pending" ? "/admin/experiences" : `/admin/experiences?status=${t.status}`}
                 aria-current={t.status === status ? "true" : undefined}
                 className={cn(
                   "inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
@@ -61,7 +61,7 @@ export default async function ReportsAdminPage({ searchParams }: Props) {
           <SetupNotice reason={queue.reason} message={queue.message} />
         ) : queue.reports.length === 0 ? (
           <p className="rounded-xl border bg-card px-4 py-10 text-center text-sm text-muted-foreground">
-            {status === "pending" ? "Nothing waiting. New submissions from /reports/new land here." : "None."}
+            {status === "pending" ? "Nothing waiting. New experiences sent from the site land here." : "None."}
           </p>
         ) : (
           <ul className="flex flex-col gap-3">
