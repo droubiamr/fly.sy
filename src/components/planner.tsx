@@ -11,8 +11,10 @@ import { cn } from "@/lib/utils"
 
 const trigger =
   // No chip: the choice reads as a word in the sentence, set in the accent
-  // colour so the chevron and colour alone say it is tappable.
-  "relative inline-flex h-auto w-auto gap-1 rounded-md border-0 bg-transparent px-0.5 py-0 text-[inherit] font-bold text-primary shadow-none hover:bg-transparent dark:bg-transparent dark:hover:bg-transparent data-[size=default]:h-auto" +
+  // colour so the chevron and colour alone say it is tappable. Size and weight
+  // are inherited (with type hints, so tailwind-merge drops the base text-sm and
+  // font-medium) and the labels and choices read as one sentence in one face.
+  "relative inline-flex h-auto w-auto gap-1 rounded-md border-0 bg-transparent px-0.5 py-0 text-[length:inherit] font-[weight:inherit] text-primary shadow-none hover:bg-transparent dark:bg-transparent dark:hover:bg-transparent data-[size=default]:h-auto" +
   // The tappable area is grown to 44px behind the word, and the line height
   // is opened up enough that the areas on neighbouring lines cannot overlap.
   " after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2 after:content-['']"
