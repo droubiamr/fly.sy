@@ -1,0 +1,25 @@
+[
+  {"id":"TR","name":{"ar":"تركيا","en":"Türkiye"},"m49":"792","hub":[28.75,41.26],"region":"near"},
+  {"id":"LB","name":{"ar":"لبنان","en":"Lebanon"},"m49":"422","hub":[35.49,33.82],"region":"near"},
+  {"id":"JO","name":{"ar":"الأردن","en":"Jordan"},"m49":"400","hub":[35.99,31.72],"region":"near"},
+  {"id":"IQ","name":{"ar":"العراق","en":"Iraq"},"m49":"368","hub":[44.23,33.26],"region":"near"},
+
+  {"id":"AE","name":{"ar":"الإمارات","en":"United Arab Emirates"},"m49":"784","hub":[55.36,25.25],"region":"gulf"},
+  {"id":"QA","name":{"ar":"قطر","en":"Qatar"},"m49":"634","hub":[51.61,25.27],"region":"gulf"},
+  {"id":"KW","name":{"ar":"الكويت","en":"Kuwait"},"m49":"414","hub":[47.97,29.23],"region":"gulf"},
+  {"id":"SA","name":{"ar":"السعودية","en":"Saudi Arabia"},"m49":"682","hub":[46.70,24.96],"region":"gulf"},
+
+  {"id":"DE","name":{"ar":"ألمانيا","en":"Germany"},"m49":"276","hub":[8.57,50.03],"region":"europe","group":"eu"},
+  {"id":"AT","name":{"ar":"النمسا","en":"Austria"},"m49":"040","hub":[16.57,48.11],"region":"europe","group":"eu"},
+  {"id":"NL","name":{"ar":"هولندا","en":"Netherlands"},"m49":"528","hub":[4.76,52.31],"region":"europe","group":"eu"},
+  {"id":"SE","name":{"ar":"السويد","en":"Sweden"},"m49":"752","hub":[17.92,59.65],"region":"europe","group":"eu"},
+  {"id":"DK","name":{"ar":"الدنمارك","en":"Denmark"},"m49":"208","hub":[12.66,55.62],"region":"europe","group":"eu"},
+  {"id":"NO","name":{"ar":"النرويج","en":"Norway"},"m49":"578","hub":[11.10,60.19],"region":"europe","group":"eu"},
+  {"id":"FR","name":{"ar":"فرنسا","en":"France"},"m49":"250","hub":[2.55,49.01],"region":"europe","group":"eu"},
+  {"id":"GB","name":{"ar":"بريطانيا","en":"United Kingdom"},"m49":"826","hub":[-0.46,51.47],"region":"europe","group":"eu"},
+  {"id":"CH","name":{"ar":"سويسرا","en":"Switzerland"},"m49":"756","hub":[8.55,47.46],"region":"europe","group":"eu"},
+  {"id":"BE","name":{"ar":"بلجيكا","en":"Belgium"},"m49":"056","hub":[4.48,50.90],"region":"europe","group":"eu"},
+
+  {"id":"EG","name":{"ar":"مصر","en":"Egypt"},"m49":"818","hub":[31.41,30.12],"region":"other"},
+  {"id":"RU","name":{"ar":"روسيا","en":"Russia"},"m49":"643","hub":[37.41,55.97],"region":"other"}
+]

@@ -197,6 +197,36 @@
   }
 }
 
+/* The route on the map draws itself from the country to the border, and the
+   pins settle in behind it. State change, not decoration: it says "this is
+   the new answer" when the country is switched. Reduced motion collapses both
+   to a fade through the rule above. */
+@keyframes map-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes map-rise {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.map-arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: map-draw 700ms var(--ease-out) 150ms forwards;
+}
+.map-rise {
+  opacity: 0;
+  animation: map-rise 300ms var(--ease-out) 500ms forwards;
+}
+
 /* Deliberately outside every layer. iOS zooms the page in when a focused field's
    text is under 16px and never zooms back out, and a utility class setting a
    smaller size would otherwise win over a rule in @layer base. Touch pointers

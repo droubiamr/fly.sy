@@ -2,10 +2,11 @@
 
 import { useRouter, usePathname } from "next/navigation"
 import { useTransition } from "react"
-import { DATA, ORIGINS, PASSPORTS } from "@/lib/data"
+import { DATA, ORIGINS, PASSPORTS, REGIONS } from "@/lib/data"
 import type { Origin, Passport } from "@/lib/types"
 import { useLocale, useMessages } from "@/components/messages-provider"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Flag } from "@/components/flag"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
 const trigger =
@@ -38,10 +39,17 @@ export function Planner({ from, dest, passport }: { from: Origin; dest: string; 
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {ORIGINS.map((o) => (
-              <SelectItem key={o.id} value={o.id}>
-                {o.name[locale]}
-              </SelectItem>
+            {REGIONS.map((r) => (
+              <SelectGroup key={r}>
+                <SelectLabel>{m.regions[r]}</SelectLabel>
+                {ORIGINS.filter((o) => o.region === r).map((o) => (
+                  <SelectItem key={o.id} value={o.id}>
+                    {/* The flag rides inside ItemText, so the closed chip shows it too. */}
+                    <Flag code={o.id} className="h-3.5" />
+                    {o.name[locale]}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             ))}
           </SelectContent>
         </Select>{" "}

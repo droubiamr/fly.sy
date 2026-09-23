@@ -35,28 +35,44 @@ data/*.json            all sourced facts (the weekly edit)
   airlines.json        carriers by IATA code
   entries.json         airports + land crossings (status, source, seen, note)
   arrivals.json        routes into Syria: airline, origin city, entry, hours, status, confidence
+  origins.json         countries you can start from: ISO code, names, atlas id, hub airport, region
   roads.json           estimated road hours entry → city
   needs.json           documents by mode (air/land) × passport (sy/voa/res)
   cities.json, meta.json, reports.seed.json
-src/lib/plan.ts        pure planner: ranks journeys by total time, blocks Türkiye crossings for non-Syrians
+src/lib/plan.ts        pure planner: ranks journeys by total time, blocks Türkiye crossings for non-Syrians;
+                       an arrival filed under a group ("eu") applies to every country in that group
 src/lib/data.ts        typed JSON loader
 src/messages/index.ts  all UI strings, ar + en
 src/app/globals.css    design tokens — the whole look
 src/app/               routes: / (plan), /airlines, /crossings, /reports, /reports/new, /about
-src/components/        app-shell, bottom-nav, planner, syria-map, route-card, status-stamp, provenance, report-form, ui/ (shadcn)
+src/components/        app-shell, bottom-nav, planner, world-map, flag, route-card, status-stamp, provenance, report-form, ui/ (shadcn)
 supabase/migrations/0001_reports.sql   reports table, RLS, public view without contact field
 tests/plan.test.ts     planner + data integrity tests
 ```
 
-Planner state lives in the URL (`/?from=eu&to=homs&p=sy`) so every answer is shareable.
+Planner state lives in the URL (`/?from=DE&to=homs&p=sy`) so every answer is shareable. `from` is an ISO country
+code; the old region ids (`eu`, `gulf`, `tr`…) still resolve so shared links keep working.
+
+## The map
+
+`world-map.tsx` is a server component: Natural Earth coastlines from the `world-atlas` package (public domain data),
+projected with `d3-geo` (Equal Earth), rendered to SVG on the server. The phone gets ~30KB of SVG and no map script,
+no tiles, no third-party requests. The frame fits the chosen country's hub airport and Syria; the 50m atlas is used
+close in and the 110m one for Europe-sized frames. Flags are inline SVG from `country-flag-icons` (MIT), imported one
+by one in `flag.tsx` so only the origins' flags ship.
+
+**Adding an origin country:** one line in `data/origins.json` (`m49` is the UN numeric code the atlas uses, `hub` is
+`[lng, lat]` of the main airport), its flag in `flag.tsx`, and at least one arrival row (or a `group` it belongs to).
+`npm test` checks all three.
 
 Scripts: `npm run dev`, `npm test`, `npm run check` (lint + types + tests + build — the bar for any change).
 
 ## Current state
 
-- Built, lint-clean, type-clean, 4 tests passing, production build passes, all routes return 200 on the built server.
+- Built, lint-clean, type-clean, 6 tests passing, production build passes, all routes return 200 on the built server.
 - **Not yet verified:** in a real browser on a phone, and the Supabase insert end to end.
 - Seeded data is from news reporting and travel operators as of Sep 2026 — mostly `reported`, not `verified`. Road times are estimates. **All of it needs re-verifying by Amr** before launch.
+- Egypt, Saudi Arabia, Russia and Iraq-by-air are listed only as **declared gaps**: one Syrian Air row each, `status: unknown`, `source: nosrc`, taken from the airline's published network and checked against nothing. They need a real source or they should come out.
 - Report contact link in `data/meta.json` is a placeholder (`https://instagram.com/`).
 
 ## Immediate next step — get it onto GitHub
