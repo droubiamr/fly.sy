@@ -69,7 +69,7 @@ paste the URL and anon key into `.env.local`.
 Direction "Passport": cool grey ground, passport-green accent, outlined *stamp* chips for status,
 Readex Pro. Tokens are in `globals.css`; every component reads them, so restyling is one file.
 
-The brand mark is `src/app/icon.svg`: Syria's border from Natural Earth (public domain), in white on a passport-green tile, with the wordmark bottom right. Everything raster
+The brand mark is `src/app/icon.svg`: Syria's border from Natural Earth (public domain), in white on a passport-green tile. Everything raster
 (`favicon.ico`, `apple-icon.png`, the manifest icons in `public/`, `opengraph-image.png`) is generated from it
 by `npm run icons` and committed. The share card sets its text in Readex Pro, so install the font locally
 before regenerating it.
