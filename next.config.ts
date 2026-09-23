@@ -1,4 +1,5 @@
 import type { NextConfig } from "next"
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare"
 
 /* Sent on every response. HSTS only matters once the site is on HTTPS, which Cloudflare provides. */
 const securityHeaders = [
@@ -20,3 +21,7 @@ const nextConfig: NextConfig = {
 }
 
 export default nextConfig
+
+// `next dev` gets the wrangler.jsonc bindings (D1, the rate limiter) from a local Miniflare, so the database
+// works without deploying. Development only: the build and the Worker never need it.
+if (process.env.NODE_ENV === "development") initOpenNextCloudflareForDev()

@@ -9,6 +9,7 @@ import { BottomNav } from "@/components/bottom-nav"
 import { Disclaimer } from "@/components/disclaimer"
 import { LangSwitch } from "@/components/lang-switch"
 import { SiteFooter } from "@/components/site-footer"
+import { VisitTracker } from "@/components/visit-tracker"
 
 export function AppShell({ locale, children }: { locale: Locale; children: React.ReactNode }) {
   const { m } = getI18n(locale)
@@ -61,6 +62,7 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
       </div>
       <BottomNav />
       <Disclaimer />
+      <VisitTracker />
     </div>
   )
 }

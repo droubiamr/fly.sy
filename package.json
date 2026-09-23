@@ -11,17 +11,19 @@
     "check": "npm run lint && npx tsc --noEmit && npm test && npm run build",
     "icons": "node scripts/icons.mjs",
     "preview": "opennextjs-cloudflare build && wrangler dev",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "admin:setup": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin-setup.mjs",
+    "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.12.7",
-    "@supabase/supabase-js": "^2.116.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "country-flag-icons": "^1.6.20",
     "d3-geo": "^3.1.1",
+    "jose": "^6.2.12",
     "lucide-react": "^1.47.0",
     "next": "16.3.5",
+    "otpauth": "^9.5.2",
     "radix-ui": "^1.6.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",

@@ -10,6 +10,9 @@ import { passportFromSlug } from "@/lib/slugs"
  */
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
+  // The admin dashboard and the API are English-only and sit outside the localized tree.
+  if (/^\/admin(\/|$)/.test(pathname)) return adminHeaders(req)
+  if (/^\/api(\/|$)/.test(pathname)) return NextResponse.next()
   // Old planner links carried the answer as a query string; each answer is a page now.
   // Checked before the /ar strip so such a link redirects once, not twice.
   if (pathname === "/" || pathname === "/en" || pathname === "/ar") {
@@ -47,6 +50,40 @@ export function proxy(req: NextRequest) {
   const url = req.nextUrl.clone()
   url.pathname = `/ar${pathname}`
   return NextResponse.rewrite(url)
+}
+
+/**
+ * A strict Content-Security-Policy for the admin pages, with a fresh nonce per request as in the Next.js CSP
+ * guide: Next puts the nonce on its own scripts, the login page on the Turnstile script, and nothing else
+ * runs. Turnstile's challenge is the one frame allowed. Nothing admin is cached or indexed.
+ */
+function adminHeaders(req: NextRequest) {
+  const nonce = btoa(crypto.randomUUID())
+  const dev = process.env.NODE_ENV === "development"
+  const csp = [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${dev ? " 'unsafe-eval'" : ""}`,
+    // Inline style attributes carry the chart's bar heights; a nonce cannot cover attributes.
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data:",
+    "font-src 'self'",
+    "connect-src 'self'",
+    "frame-src https://challenges.cloudflare.com",
+    "object-src 'none'",
+    "base-uri 'none'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    ...(dev ? [] : ["upgrade-insecure-requests"]),
+  ].join("; ")
+  const requestHeaders = new Headers(req.headers)
+  requestHeaders.set("x-nonce", nonce)
+  requestHeaders.set("Content-Security-Policy", csp)
+  const res = NextResponse.next({ request: { headers: requestHeaders } })
+  res.headers.set("Content-Security-Policy", csp)
+  res.headers.set("Cache-Control", "no-store")
+  res.headers.set("X-Robots-Tag", "noindex, nofollow")
+  res.headers.set("Cross-Origin-Opener-Policy", "same-origin")
+  return res
 }
 
 export const config = {
