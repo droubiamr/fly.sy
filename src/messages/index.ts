@@ -71,6 +71,9 @@ const messages = {
       openText: "الكود والبيانات على GitHub. كل تعديل على البيانات هو commit مؤرّخ باسم من راجعه.",
       contact: "تواصل معنا",
       contactText: "تصحيح، طريق لا نعرفه، أو سؤال: راسلنا على",
+      join: "هل تصمّم أو تبرمج للويب؟",
+      joinText:
+        "نسعد بمساعدتك في تشكيل هذا الموقع. راسلنا على البريد نفسه وأخبرنا بما تحب أن تعمل عليه. ساعدنا نقدّم للسوريين تجربة رائعة ومصدر معلومات يليق بسوريا الجميلة.",
       fine: "هذا الموقع نقطة انطلاق للتحقق لا بديل عنه. الوضع يتغير بسرعة، والقواعد تُطبَّق أحياناً بشكل مختلف من موظف لآخر، وقد تكون معلومة صحيحة يوم مراجعتها وخاطئة اليوم. أكّد كل شيء مع شركة الطيران أو السفارة، ولا تشترِ تذكرة غير قابلة للاسترداد قبل أن تتأكد من أوراقك.",
     },
     lang: "English",
@@ -144,6 +147,9 @@ const messages = {
       openText: "Code and data are on GitHub. Every data change is a dated commit with the reviewer's name on it.",
       contact: "Contact",
       contactText: "A correction, a route we don't know about, or a question: write to",
+      join: "Do you design or build for the web?",
+      joinText:
+        "We'd love your help shaping this site. Write to the same address and tell us what you'd like to work on. Help us give Syrians a great experience, and a source of information worth our beautiful Syria.",
       fine: "This site is a starting point for checking, not a substitute for it. Things change fast, rules are applied differently by different officials, and a line that was right when we checked it may be wrong today. Confirm everything with the airline or the embassy, and don't buy a non-refundable ticket before your paperwork is settled.",
     },
     lang: "العربية",

@@ -68,6 +68,12 @@ export default async function AboutPage() {
             {DATA.meta.contact}
           </a>
         </p>
+        {/* An open door for people who want to build it with us: its own card, so
+            the invitation reads as such and not as fine print under the address. */}
+        <div className="mt-3 rounded-2xl border bg-card px-5 py-4">
+          <p className="text-sm font-semibold">{m.about.join}</p>
+          <p className="mt-1 text-[13.5px] leading-relaxed text-muted-foreground">{m.about.joinText}</p>
+        </div>
       </section>
 
       <p className="text-xs leading-relaxed text-muted-foreground">{m.about.fine}</p>
