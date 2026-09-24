@@ -20,8 +20,8 @@ export function Provenance({
 }) {
   const src = DATA.sources[source]
   return (
-    <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
-      {confidence && <span>{m.confidence[confidence]}</span>}
+    <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-[15px] leading-relaxed text-muted-foreground">
+      {confidence && <span className="font-semibold">{m.confidence[confidence]}</span>}
       {confidence && <span aria-hidden="true">·</span>}
       <span>
         {m.source}: {src ? <SourceLink source={src} locale={locale}>{src.name[locale]}</SourceLink> : source}

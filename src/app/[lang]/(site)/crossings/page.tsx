@@ -32,24 +32,24 @@ export default async function CrossingsPage({ params }: Props) {
     { name: m.tabs.crossings, path: "/crossings" },
   ]
   const Card = ({ id, e }: { id: string; e: (typeof DATA.entries)[string] }) => (
-    <li className="rounded-2xl border bg-card px-5 py-4">
+    <li className="rounded-2xl border-[1.5px] bg-card px-5 py-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="flex items-center gap-2 font-semibold">
+          <h3 className="flex items-center gap-2 text-xl font-bold leading-snug">
             {e.country && <CountryTag code={e.country} />}
             <Link href={href(entryPath(id))} className="underline-offset-4 hover:underline">
               {e.name[locale]}
             </Link>
           </h3>
-          <p className="mt-0.5 text-xs text-muted-foreground">
+          <p className="mt-1 text-[15px] text-muted-foreground">
             {m.checked} <time dateTime={e.seen}>{formatDate(e.seen, locale)}</time>
           </p>
         </div>
         <StatusStamp status={e.status} label={m.status[e.status]} />
       </div>
-      {e.note && <p className="mt-3 text-[13.5px] leading-relaxed">{e.note[locale]}</p>}
+      {e.note && <p className="mt-3 text-[17px] leading-relaxed">{e.note[locale]}</p>}
       <Provenance source={e.source} locale={locale} m={m} />
-      <p className="mt-2 text-xs text-muted-foreground">
+      <p className="mt-2 text-[15px] text-muted-foreground">
         {m.entry.via} {e.name[locale]}: {arrivalsVia(id).map((a) => a.city[locale]).join(" · ") || m.entry.viaEmpty}
       </p>
     </li>
@@ -58,9 +58,9 @@ export default async function CrossingsPage({ params }: Props) {
     <div>
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path: "/crossings", name: m.crossings.title, description: m.seo.crossings.description }))} />
       <Breadcrumbs locale={locale} items={crumbs} />
-      <h1 className="text-2xl font-bold tracking-tight">{m.crossings.title}</h1>
-      <p className="mt-2 mb-4 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.crossings.lede}</p>
-      <ul className="flex flex-col gap-2.5">
+      <h1 className="text-[28px] font-bold leading-tight tracking-tight">{m.crossings.title}</h1>
+      <p className="mt-2 mb-4 max-w-prose text-[17px] leading-relaxed text-muted-foreground">{m.crossings.lede}</p>
+      <ul className="flex flex-col gap-3">
         {landEntries().map(([id, e]) => (
           <Card key={id} id={id} e={e} />
         ))}
@@ -69,8 +69,8 @@ export default async function CrossingsPage({ params }: Props) {
         <h2 id="ap-h" className="text-xl font-bold tracking-tight">
           {m.crossings.airports}
         </h2>
-        <p className="mt-1 mb-3 text-sm text-muted-foreground">{m.crossings.airportsLede}</p>
-        <ul className="flex flex-col gap-2.5">
+        <p className="mt-1 mb-3 text-[17px] text-muted-foreground">{m.crossings.airportsLede}</p>
+        <ul className="flex flex-col gap-3">
           {airEntries().map(([id, e]) => (
             <Card key={id} id={id} e={e} />
           ))}

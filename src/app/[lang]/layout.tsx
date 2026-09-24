@@ -52,8 +52,8 @@ export const viewport: Viewport = {
   // One value per scheme, matched to the colour at the very top of the page.
   // A single value gives one scheme a status bar that does not belong to it.
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f6f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b1512" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#111e1a" },
   ],
 }
 

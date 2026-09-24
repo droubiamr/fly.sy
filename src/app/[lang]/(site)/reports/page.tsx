@@ -38,30 +38,37 @@ export default async function ReportsPage({ params }: Props) {
     <div>
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path: "/reports", name: m.reports.title, description: m.seo.reports.description }))} />
       <Breadcrumbs locale={locale} items={crumbs} />
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">{m.reports.title}</h1>
-          <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.reports.lede}</p>
-        </div>
+      <div className="mb-5">
+        <h1 className="text-[28px] font-bold leading-tight tracking-tight">{m.reports.title}</h1>
+        <p className="mt-2 max-w-prose text-lg leading-relaxed text-muted-foreground">{m.reports.lede}</p>
       </div>
 
+      {/* The call to action sits in the flow, first, where it is read: a floating
+          button over the list hid the last report and was mistaken for a badge. */}
+      <Button asChild className="mb-5 h-16 w-full rounded-xl text-xl font-bold shadow-none">
+        <Link href={localePath(locale, "/reports/new")}>
+          <Plus className="size-6" strokeWidth={2.6} />
+          {m.reports.add}
+        </Link>
+      </Button>
+
       {reports.length === 0 ? (
-        <p className="rounded-2xl border bg-card p-5 text-sm text-muted-foreground">{m.reports.empty}</p>
+        <p className="rounded-2xl border-[1.5px] bg-card p-5 text-lg text-muted-foreground">{m.reports.empty}</p>
       ) : (
-        <ul className="divide-y rounded-2xl border bg-card px-5">
+        <ul className="divide-y rounded-2xl border-[1.5px] bg-card px-5">
           {reports.map((r) => {
             const entry = DATA.entries[r.entry]
             const note = typeof r.note === "string" ? r.note : r.note[locale]
             const wait = formatMinutes(r.wait_minutes, locale)
             return (
               <li key={r.id} className="py-4">
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] text-muted-foreground">
                   {entry ? (
-                    <Link href={localePath(locale, entryPath(r.entry))} className="rounded-md bg-muted px-2 py-0.5 font-medium text-foreground">
+                    <Link href={localePath(locale, entryPath(r.entry))} className="rounded-lg bg-muted px-2.5 py-0.5 text-base font-semibold text-foreground">
                       {entry.name[locale]}
                     </Link>
                   ) : (
-                    <span className="rounded-md bg-muted px-2 py-0.5 font-medium text-foreground">{r.entry}</span>
+                    <span className="rounded-lg bg-muted px-2.5 py-0.5 text-base font-semibold text-foreground">{r.entry}</span>
                   )}
                   <time dateTime={r.travelled_on}>{formatDate(r.travelled_on, locale)}</time>
                   <span>· {m.reports.form.passports[r.passport]}</span>
@@ -71,25 +78,17 @@ export default async function ReportsPage({ params }: Props) {
                     </span>
                   )}
                   <span className="ms-auto inline-flex items-center gap-1 font-medium text-primary">
-                    <Check className="size-3" strokeWidth={3} aria-hidden="true" />
+                    <Check className="size-4" strokeWidth={3} aria-hidden="true" />
                     {r.editor_verified ? m.reports.editor : m.reports.community}
                   </span>
                 </div>
-                <p className="mt-2 text-[14.5px] leading-relaxed">{note}</p>
+                <p className="mt-2 text-[17px] leading-relaxed">{note}</p>
               </li>
             )
           })}
         </ul>
       )}
 
-      <div className="fixed inset-x-0 bottom-[calc(76px+env(safe-area-inset-bottom,0px))] z-10 mx-auto flex max-w-2xl justify-end px-5">
-        <Button asChild size="lg" className="h-12 rounded-full px-5 shadow-none">
-          <Link href={localePath(locale, "/reports/new")}>
-            <Plus className="size-5" strokeWidth={2.4} />
-            {m.reports.add}
-          </Link>
-        </Button>
-      </div>
     </div>
   )
 }

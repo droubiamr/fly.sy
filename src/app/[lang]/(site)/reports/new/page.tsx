@@ -30,8 +30,8 @@ export default async function NewReportPage({ params }: Props) {
           { name: m.reports.add, path: "/reports/new" },
         ]}
       />
-      <h1 className="text-2xl font-bold tracking-tight">{m.reports.form.title}</h1>
-      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{m.reports.form.lede}</p>
+      <h1 className="text-[28px] font-bold leading-tight tracking-tight">{m.reports.form.title}</h1>
+      <p className="mt-1 text-[17px] leading-relaxed text-muted-foreground">{m.reports.form.lede}</p>
       <div className="mt-6">
         <ReportForm contactUrl={`mailto:${DATA.meta.contact}`} />
       </div>

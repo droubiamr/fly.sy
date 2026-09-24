@@ -50,14 +50,16 @@
   --secondary: #e8f1ec;
   --secondary-foreground: #0e5c3f;
   --muted: #edefec;
-  --muted-foreground: #5c6b65;
+  /* 8.6:1 on white. The old #5c6b65 was 5.2:1, which older eyes read as haze. */
+  --muted-foreground: #3f4c46;
   --accent: #e8f1ec;
   --accent-foreground: #0e5c3f;
   --destructive: #b3261e;
-  --border: #e3e6e1;
-  --input: #d8ddd8;
+  --border: #d5dcd8;
+  /* Control borders must be seen, not sensed: 3:1 against the card. */
+  --input: #8c9a93;
   --ring: #0e5c3f;
-  --radius: 0.75rem;
+  --radius: 0.875rem;
 
   --status-open: #0e5c3f;
   --status-caution: #9a6200;
@@ -86,12 +88,12 @@
     --secondary: #133a28;
     --secondary-foreground: #5cc98c;
     --muted: #1a2a26;
-    --muted-foreground: #a9bdb6;
+    --muted-foreground: #b4c6bf;
     --accent: #133a28;
     --accent-foreground: #5cc98c;
     --destructive: #f0817c;
-    --border: #233833;
-    --input: #2c453d;
+    --border: #2a403a;
+    --input: #5f7a70;
     --ring: #5cc98c;
 
     --status-open: #5cc98c;
@@ -115,12 +117,12 @@
   --secondary: #133a28;
   --secondary-foreground: #5cc98c;
   --muted: #1a2a26;
-  --muted-foreground: #a9bdb6;
+  --muted-foreground: #b4c6bf;
   --accent: #133a28;
   --accent-foreground: #5cc98c;
   --destructive: #f0817c;
-  --border: #233833;
-  --input: #2c453d;
+  --border: #2a403a;
+  --input: #5f7a70;
   --ring: #5cc98c;
 
   --status-open: #5cc98c;
@@ -182,6 +184,9 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: "tnum" 1;
+    /* 18px body with a 1.5 line height. Nothing on the site is set below 15px. */
+    font-size: 18px;
+    line-height: 1.5;
     padding-top: env(safe-area-inset-top, 0px);
   }
 

@@ -41,7 +41,12 @@ export default async function HomePage({ params }: Props) {
         locale={lang}
         origin={origin}
         dest="damascus"
-        heading={<h1 className="text-2xl font-bold tracking-tight">{m.homeTitle}</h1>}
+        heading={
+          <div>
+            <h1 className="text-[28px] font-bold leading-tight tracking-tight">{m.hero.title}</h1>
+            <p className="mt-2 text-lg leading-relaxed text-muted-foreground">{m.hero.lede}</p>
+          </div>
+        }
       />
     </>
   )
