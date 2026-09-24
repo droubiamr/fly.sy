@@ -156,10 +156,8 @@ For local development put the same four values in `.env.local`, using Cloudflare
 
 ## Design
 
-Direction "Passport": cool grey ground, passport-green accent, Readex Pro. Laid out for older readers first:
-18px body and nothing under 15px, controls with visible borders and 56–64px targets, a word next to every icon,
-status as colour + word + icon, solid header and tab bar. Tokens are in `globals.css`; every component reads them,
-so restyling is one file.
+Direction "Passport": cool grey ground, passport-green accent, outlined *stamp* chips for status,
+Readex Pro. Tokens are in `globals.css`; every component reads them, so restyling is one file.
 
 The brand mark is `src/app/icon.svg`: Syria's border from Natural Earth (public domain), in white on a passport-green tile. Everything raster
 (`favicon.ico`, `apple-icon.png`, the manifest icons in `public/`, `opengraph-image.png`) is generated from it

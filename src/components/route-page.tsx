@@ -64,8 +64,8 @@ export function RoutePage(p: RouteParams) {
         heading={
           <div>
             <Breadcrumbs locale={locale} items={crumbs} />
-            <h1 className="text-[28px] font-bold leading-tight tracking-tight">{title}</h1>
-            <p className="mt-2 max-w-prose text-lg leading-relaxed text-muted-foreground">{fmt(m.route.lede, vars)}</p>
+            <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+            <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{fmt(m.route.lede, vars)}</p>
           </div>
         }
       />

@@ -11,20 +11,8 @@ const messages = {
     },
     tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", reports: "تجارب", about: "عن الموقع" },
     indep: "موقع مستقل، غير رسمي، لا يتبع أي جهة حكومية ولا يمثّل أي شركة طيران أو سفارة. يُحدَّث يدوياً ومن تجارب الناس.",
-    updated: "آخر مراجعة للمعلومات",
-    hero: { title: "كيف أصل إلى سوريا؟", lede: "اختر ثلاثة أشياء، ونعرض لك كل الطرق المتاحة اليوم." },
-    ask: { in: "أين أنت الآن؟", with: "أي جواز تحمل؟", to: "إلى أي مدينة؟", go: "أظهر لي الطرق", via: "برحلة موصولة" },
-    search: { yours: "بحثك", change: "تغيير" },
-    // Arabic counts 1, 2, 3–10 and 11+ differently; count() picks the form.
-    routesCount: { one: "طريق واحد", two: "طريقان", few: "{n} طرق", many: "{n} طريقاً" },
-    fastestFirst: "الأسرع أولاً.",
-    fastest: "الأسرع",
-    details: "التفاصيل وما تحتاجه",
-    hideDetails: "إخفاء التفاصيل",
-    overlandVia: "براً عبر",
-    steps: { fly: "الطيران", drive: "الطريق البري", need: "ما تحتاجه معك" },
-    byCar: "بالسيارة",
-    map: "على الخريطة",
+    updated: "آخر تحديث",
+    ask: { in: "أنا في", with: "ومعي", to: "وأريد الوصول إلى", via: "برحلة موصولة" },
     regions: { near: "جوار سوريا", gulf: "الخليج", europe: "أوروبا", other: "أماكن أخرى" },
     status: { open: "يعمل", caution: "بشروط", closed: "مغلق", unknown: "غير معروف" },
     confidence: { verified: "متحقق", reported: "من تقارير", unconfirmed: "غير متحقق" },
@@ -33,7 +21,7 @@ const messages = {
     source: "المصدر",
     routes: "الطرق المتاحة",
     routesEmpty: "لا نعرف طريقاً من هنا. إن كنت تعرف واحداً، أخبرنا.",
-    estimates: "الأزمنة تقديرية، وتشمل عادةً انتظار المعبر.",
+    estimates: "الأزمنة تقديرية وتشمل عادةً انتظار المعبر",
     road: "الطريق البري",
     to: "إلى",
     need: "ما تحتاجه على هذا الطريق",
@@ -46,8 +34,7 @@ const messages = {
     airlines: {
       title: "من يطير إلى سوريا",
       lede: "كل شركة طيران تهبط اليوم في دمشق أو حلب أو دير الزور، ومن أين، وكم تستغرق الرحلة، ومدى ثقتنا بالمعلومة.",
-      empty: "لا رحلات معروفة الآن.",
-      count: { one: "وجهة واحدة", two: "وجهتان", few: "{n} وجهات", many: "{n} وجهة" },
+      empty: "لا خطوط معروفة.",
       routes: "الخطوط إلى سوريا",
       country: "دولة الشركة",
       more: "شركات أخرى تطير إلى سوريا",
@@ -246,19 +233,8 @@ const messages = {
     },
     tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", reports: "Reports", about: "About" },
     indep: "Independent and unofficial. Not part of any government body; represents no airline or embassy. Updated by hand and from people's real experiences.",
-    updated: "Information last checked",
-    hero: { title: "How do I get into Syria?", lede: "Pick three things and we show every route that works today." },
-    ask: { in: "Where are you now?", with: "Which passport do you hold?", to: "Which city are you going to?", go: "Show me my routes", via: "with a connection" },
-    search: { yours: "Your search", change: "Change" },
-    routesCount: { one: "1 route", two: "2 routes", few: "{n} routes", many: "{n} routes" },
-    fastestFirst: "Fastest first.",
-    fastest: "Fastest",
-    details: "Details and what you need",
-    hideDetails: "Hide details",
-    overlandVia: "Overland via",
-    steps: { fly: "The flight", drive: "The road", need: "What to bring" },
-    byCar: "by car",
-    map: "On the map",
+    updated: "Last updated",
+    ask: { in: "I'm in", with: "with", to: "heading to", via: "with a connection" },
     regions: { near: "Around Syria", gulf: "The Gulf", europe: "Europe", other: "Elsewhere" },
     status: { open: "Operating", caution: "Conditional", closed: "Closed", unknown: "Unknown" },
     confidence: { verified: "verified", reported: "reported", unconfirmed: "unconfirmed" },
@@ -267,7 +243,7 @@ const messages = {
     source: "Source",
     routes: "Your routes",
     routesEmpty: "We know of no route from here. If you know one, tell us.",
-    estimates: "Times are estimates and usually include waiting at the crossing.",
+    estimates: "Times are estimates and usually include waiting at the crossing",
     road: "Road",
     to: "to",
     need: "What you need on this route",
@@ -280,8 +256,7 @@ const messages = {
     airlines: {
       title: "Who flies to Syria",
       lede: "Every airline landing in Damascus, Aleppo or Deir ez-Zor today, from where, how long the flight takes, and how sure we are.",
-      empty: "No known flights right now.",
-      count: { one: "1 destination", two: "2 destinations", few: "{n} destinations", many: "{n} destinations" },
+      empty: "No known routes.",
       routes: "Routes to Syria",
       country: "Home country",
       more: "Other airlines flying to Syria",
@@ -474,8 +449,4 @@ const messages = {
 } as const
 
 export type Messages = (typeof messages)["ar"]
-export type Plural = { one: string; two: string; few: string; many: string }
-/** Picks the Arabic counting form (1, 2, 3–10, 11+); English forms just repeat. */
-export const count = (n: number, p: Plural) =>
-  (n === 1 ? p.one : n === 2 ? p.two : n >= 3 && n <= 10 ? p.few : p.many).replace("{n}", String(n))
 export const getMessages = (locale: Locale): Messages => messages[locale] as unknown as Messages

@@ -19,7 +19,7 @@ Start here, then README.md and CONTRIBUTING.md.
 | Audience | Public / consumers, not agencies |
 | Licence | Code MIT, data CC BY-SA 4.0 |
 | UI direction | **B — "Passport"**: calm, light, cool-grey ground, passport-green `#0E5C3F` accent, outlined *stamp* chips for status, Readex Pro font |
-| Style rules | Built for older readers first (Sep 2026 rework after a usability test). Body 18px, nothing under 15px. Every icon has a word. Controls look like controls: 2px borders, 56–64px tall, full width. Status is colour + word + icon. Solid header and tab bar, no blur. Nothing hides behind a chevron: expanders carry a visible "details" button. Mobile-first. No gradients, shadows, emoji, left-border cards. Pre-built components, not hand-rolled |
+| Style rules | Icon-first, minimal text. Mobile-first. No gradients, shadows, emoji, left-border cards. 44px touch targets. Pre-built components, not hand-rolled |
 | Stack | Next.js 16 (App Router, Server Actions), TypeScript, Tailwind 4, shadcn/ui (Radix), lucide-react |
 | Community reports | Cloudflare D1, moderated at `/admin/experiences` (moved from an unused Supabase setup, Sep 2026) |
 | Honesty model | Every fact has `source` + `confidence` + `seen`. Where there's no source, say so (`nosrc`) — never guess |
@@ -57,9 +57,7 @@ src/app/api/track/     page-view endpoint; src/components/visit-tracker.tsx post
 tests/plan.test.ts     planner + data integrity tests; tests/analytics.test.ts tracking helpers + admin session tokens
 ```
 
-The home page asks three labelled questions (country, passport, city) with native `<select>`s and one button; the
-answer is the route list underneath, fastest first, each route expanding into three steps (the leg in, the road, the
-paperwork). The map sits under the list. Every answer is its own page (`/from/turkiye/to/damascus?p=voa`), so it is shareable. `from` is an ISO country
+Planner state lives in the URL (`/?from=DE&to=homs&p=sy`) so every answer is shareable. `from` is an ISO country
 code; the old region ids (`eu`, `gulf`, `tr`…) still resolve so shared links keep working.
 
 ## The map

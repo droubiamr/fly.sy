@@ -1,30 +1,14 @@
 import Link from "next/link"
-import { Plane, Car, Clock, ChevronDown, SquareCheck } from "lucide-react"
+import { Plane, Car, ArrowRight, MoveRight } from "lucide-react"
 import { DATA, airlinePath, cityById, entryPath } from "@/lib/data"
 import { localePath } from "@/lib/site"
-import { formatHours } from "@/lib/format"
+import { arrow, formatHours } from "@/lib/format"
 import type { Journey } from "@/lib/plan"
 import type { Locale, Passport } from "@/lib/types"
 import type { Messages } from "@/messages"
 import { StatusStamp } from "@/components/status-stamp"
 import { Provenance } from "@/components/provenance"
 import { AirlineLogo } from "@/components/airline-logo"
-import { cn } from "@/lib/utils"
-
-function Step({ n, title, last, children }: { n: number; title: string; last?: boolean; children: React.ReactNode }) {
-  return (
-    <div className="flex gap-3.5">
-      <div className="flex flex-col items-center">
-        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-lg font-bold text-primary-foreground">{n}</span>
-        {!last && <span className="my-1.5 w-[3px] flex-1 rounded-full bg-border" aria-hidden="true" />}
-      </div>
-      <div className={cn("min-w-0 flex-1", !last && "pb-6")}>
-        <p className="text-base font-bold text-primary">{title}</p>
-        {children}
-      </div>
-    </div>
-  )
-}
 
 export function RouteCard({
   journey: j,
@@ -43,127 +27,114 @@ export function RouteCard({
 }) {
   const city = cityById(dest)!
   const airline = j.airline ? DATA.airlines[j.airline] : null
-  const entry = j.entryData.name[locale]
-  const href = (x: string) => localePath(locale, x)
-  // The card leads with the name a traveller would search for: the airline, or
-  // the crossing when it is a road trip.
-  const name = airline ? airline.name[locale] : `${m.overlandVia} ${entry}`
-  const route = airline ? `${m.fromCity} ${j.city[locale]} ${m.to} ${entry}` : `${m.fromCity} ${j.city[locale]} ${m.to} ${city.name[locale]}`
+  const operator = airline ? `${airline.name[locale]} · ${j.city[locale]}` : `${m.fromCity} ${j.city[locale]}`
   const needs = DATA.needs[j.entryData.kind][passport]
-  // "Fastest" only when the route is known to run: the quickest line on paper is
-  // often the one nobody has seen fly, and the tag would vouch for it.
-  const fastest = rank === 1 && !j.blocked && j.totalHours != null && j.status === "open"
-  const link = "underline decoration-muted-foreground/40 underline-offset-[3px] hover:decoration-current"
-
-  const mark = j.airline ? (
-    <span className="size-12 shrink-0 rounded-full border-[1.5px] bg-background p-1.5">
-      <AirlineLogo code={j.airline} />
-    </span>
-  ) : (
-    <span className="grid size-12 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground">
-      {j.mode === "air" ? <Plane className="size-6" /> : <Car className="size-6" />}
-    </span>
-  )
-
-  const head = (
-    <>
-      <div className="flex items-center gap-3">
-        {mark}
-        <div className="min-w-0 flex-1">
-          <p className="text-xl font-bold leading-snug">{name}</p>
-          <p className="mt-0.5 text-[17px] leading-snug text-muted-foreground">{route}</p>
-        </div>
-      </div>
-      <div className="mt-3.5 flex items-center justify-between gap-3">
-        <span className="inline-flex items-center gap-2 text-lg font-bold">
-          <Clock className="size-6 shrink-0 text-primary" aria-hidden="true" />
-          {formatHours(j.totalHours, locale)}
-        </span>
-        {j.blocked ? <StatusStamp status="closed" label={m.blocked} /> : <StatusStamp status={j.status} label={m.status[j.status]} />}
-      </div>
-    </>
-  )
 
   if (j.blocked) {
     return (
-      <div className="rounded-2xl border-[1.5px] bg-card px-4 py-4 opacity-80">
-        {head}
-        <p className="mt-3 text-[17px] leading-relaxed text-destructive">{m.blockedWhy}</p>
+      <div className="rounded-2xl border bg-card px-5 py-4 opacity-70">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="font-semibold">
+              {m.mode[j.mode]} · {j.entryData.name[locale]} {arrow(locale)} {city.name[locale]}
+            </p>
+            <p className="mt-0.5 text-[13px] text-muted-foreground">{operator}</p>
+          </div>
+          <StatusStamp status="closed" label={m.blocked} />
+        </div>
+        <p className="mt-3 text-[13px] text-destructive">{m.blockedWhy}</p>
       </div>
     )
   }
 
   return (
-    <details className={cn("group relative rounded-2xl border-[1.5px] bg-card", fastest && "border-2 border-primary")}>
-      {fastest && (
-        <span className="absolute -top-3.5 start-4 rounded-lg bg-primary px-3 py-0.5 text-sm font-bold text-primary-foreground">{m.fastest}</span>
-      )}
-      {/* The whole top of the card opens it, but the button at its foot is what
-          says so. A 16px chevron in the corner told nobody anything. */}
-      <summary className="cursor-pointer list-none rounded-2xl px-4 pt-5 pb-4 transition-colors duration-100 ease-out active:bg-muted [&::-webkit-details-marker]:hidden">
-        {head}
-        <span
-          className="mt-4 flex h-13 w-full items-center justify-center gap-2 rounded-xl border-2 border-primary text-lg font-bold text-primary"
-          aria-hidden="true"
-        >
-          <span className="group-open:hidden">{m.details}</span>
-          <span className="hidden group-open:inline">{m.hideDetails}</span>
-          <ChevronDown className="size-6 transition-transform duration-200 ease-out group-open:rotate-180" strokeWidth={2.6} />
+    <details className="group rounded-2xl border bg-card open:bg-card">
+      {/* A full-width row answers a press the way a native list row does, with a
+          background, not a scale. */}
+      <summary className="flex cursor-pointer list-none items-start gap-3 rounded-2xl px-5 py-4 transition-colors duration-100 ease-out active:bg-muted [&::-webkit-details-marker]:hidden">
+        <span className="pt-0.5 text-xs font-bold text-muted-foreground">{rank}</span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold">
+            {m.mode[j.mode]} · {j.entryData.name[locale]} {arrow(locale)} {city.name[locale]}
+          </span>
+          <span className="mt-0.5 flex items-center gap-1.5 text-[13px] text-muted-foreground">
+            {j.airline && (
+              <span className="size-4 shrink-0">
+                <AirlineLogo code={j.airline} />
+              </span>
+            )}
+            <span className="truncate">{operator}</span>
+          </span>
+          <span className="mt-3 flex items-center gap-3">
+            <span className="text-xl font-bold">{formatHours(j.totalHours, locale)}</span>
+            <StatusStamp status={j.status} label={m.status[j.status]} />
+          </span>
         </span>
+        <MoveRight className="mt-1 size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-out group-open:rotate-90 rtl:rotate-180 rtl:group-open:rotate-90" aria-hidden="true" />
       </summary>
 
-      <div className="border-t-[1.5px] px-4 pt-5 pb-5">
-        <Step n={1} title={m.steps[j.mode === "air" ? "fly" : "drive"]}>
-          <p className="mt-0.5 text-lg font-bold leading-snug">
-            {airline && j.airline ? (
-              <>
-                <Link href={href(airlinePath(j.airline))} className={link}>
-                  {airline.name[locale]}
-                </Link>{" "}
-                {m.fromCity} {j.city[locale]} {m.to}{" "}
-              </>
-            ) : (
-              <>
-                {m.fromCity} {j.city[locale]} {m.to}{" "}
-              </>
-            )}
-            <Link href={href(entryPath(j.entry))} className={link}>
-              {entry}
-            </Link>
-          </p>
-          <p className="mt-1.5 flex items-center gap-2 text-[17px]">
-            <Clock className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
-            {formatHours(j.hours, locale)}
-          </p>
-          {j.note && <p className="mt-2 text-base leading-relaxed">{j.note[locale]}</p>}
-          <Provenance confidence={j.confidence} source={j.source} seen={j.seen} locale={locale} m={m} />
-        </Step>
+      <div className="border-t px-5 pb-5">
+        <div className="flex gap-3 border-b py-4">
+          {/* The carrier's mark stands in for the plane icon when there is one. */}
+          {j.airline ? (
+            <span className="size-8 shrink-0 rounded-full border bg-background p-1">
+              <AirlineLogo code={j.airline} />
+            </span>
+          ) : (
+            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground">
+              {j.mode === "air" ? <Plane className="size-4" /> : <Car className="size-4" />}
+            </span>
+          )}
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold">
+              {airline && j.airline ? (
+                <>
+                  <Link href={localePath(locale, airlinePath(j.airline))} className="underline-offset-4 hover:underline">
+                    {airline.name[locale]}
+                  </Link>{" "}
+                  · {j.city[locale]}
+                </>
+              ) : (
+                operator
+              )}
+            </p>
+            <p className="mt-0.5 text-[13px] text-muted-foreground">
+              {m.to}{" "}
+              <Link href={localePath(locale, entryPath(j.entry))} className="underline-offset-4 hover:underline">
+                {j.entryData.name[locale]}
+              </Link>{" "}
+              · {formatHours(j.hours, locale)}
+            </p>
+            {j.note && <p className="mt-1.5 text-[13px] leading-relaxed">{j.note[locale]}</p>}
+            <Provenance confidence={j.confidence} source={j.source} seen={j.seen} locale={locale} m={m} />
+          </div>
+        </div>
 
-        <Step n={2} title={m.steps.drive}>
-          <p className="mt-0.5 text-lg font-bold leading-snug">
-            {m.fromCity} {entry} {m.to} {city.name[locale]}
-          </p>
-          <p className="mt-1.5 flex items-center gap-2 text-[17px]">
-            <Clock className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
-            {formatHours(j.roadHours, locale)} {m.byCar}
-          </p>
-          {j.entryData.note && <p className="mt-2 text-base leading-relaxed">{j.entryData.note[locale]}</p>}
-          <Provenance source="est" locale={locale} m={m} />
-        </Step>
+        <div className="flex gap-3 py-4">
+          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground">
+            <ArrowRight className="size-4 rtl:rotate-180" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold">
+              {m.road} · {j.entryData.name[locale]} {arrow(locale)} {city.name[locale]}
+            </p>
+            <p className="mt-0.5 text-[13px] text-muted-foreground">{formatHours(j.roadHours, locale)}</p>
+            {j.entryData.note && <p className="mt-1.5 text-[13px] leading-relaxed">{j.entryData.note[locale]}</p>}
+            <Provenance source="est" locale={locale} m={m} />
+          </div>
+        </div>
 
-        <Step n={3} title={m.steps.need} last>
-          <ul className="mt-2 flex flex-col gap-4">
+        <div className="rounded-xl bg-muted px-4 py-3">
+          <p className="text-[13px] font-semibold">{m.need}</p>
+          <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
             {needs.map((n, i) => (
-              <li key={i} className="flex gap-3">
-                <SquareCheck className="mt-0.5 size-7 shrink-0 text-primary" strokeWidth={2} aria-hidden="true" />
-                <div className="min-w-0">
-                  <p className="text-base leading-relaxed">{n.text[locale]}</p>
-                  <Provenance source={n.source} locale={locale} m={m} />
-                </div>
+              <li key={i}>
+                {n.text[locale]}
+                <Provenance source={n.source} locale={locale} m={m} />
               </li>
             ))}
           </ul>
-        </Step>
+        </div>
       </div>
     </details>
   )

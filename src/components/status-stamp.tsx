@@ -1,39 +1,23 @@
-import { Check, X, TriangleAlert, CircleHelp } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Status } from "@/lib/types"
 
-// Colour, word and icon together: a red word alone is invisible to a colour-blind
-// reader and a lone icon means nothing to an older one. Filled, not outlined, so
-// the status is the loudest thing on the card after the name.
-const TONE: Record<Status, { cls: string; Icon: typeof Check }> = {
-  open: { cls: "bg-status-open/15 text-status-open", Icon: Check },
-  caution: { cls: "bg-status-caution/15 text-status-caution", Icon: TriangleAlert },
-  closed: { cls: "bg-status-closed/15 text-status-closed", Icon: X },
-  unknown: { cls: "bg-status-unknown/15 text-status-unknown", Icon: CircleHelp },
+const TONE: Record<Status, string> = {
+  open: "border-status-open text-status-open",
+  caution: "border-status-caution text-status-caution",
+  closed: "border-status-closed text-status-closed",
+  unknown: "border-status-unknown text-status-unknown",
 }
 
-export function StatusStamp({
-  status,
-  label,
-  size = "default",
-  className,
-}: {
-  status: Status
-  label: string
-  size?: "default" | "sm"
-  className?: string
-}) {
-  const { cls, Icon } = TONE[status]
+/** The passport-stamp status chip: outlined, never filled. */
+export function StatusStamp({ status, label, className }: { status: Status; label: string; className?: string }) {
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center gap-1.5 rounded-lg font-bold whitespace-nowrap",
-        size === "sm" ? "h-8 px-2.5 text-[15px]" : "h-9 px-3 text-base",
-        cls,
+        "inline-flex shrink-0 items-center rounded-md border-[1.5px] px-2 py-0.5 text-[11px] font-bold tracking-wide",
+        TONE[status],
         className,
       )}
     >
-      <Icon className={size === "sm" ? "size-4" : "size-5"} strokeWidth={2.8} aria-hidden="true" />
       {label}
     </span>
   )

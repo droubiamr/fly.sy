@@ -33,9 +33,9 @@ export const originById = (id: string | undefined) =>
   ORIGINS.find((o) => o.id === id) ?? ORIGINS.find((o) => o.id === LEGACY_ORIGINS[id ?? ""])
 
 export const PASSPORTS = [
-  { id: "sy", name: { ar: "جواز سوري", en: "Syrian passport" } },
-  { id: "voa", name: { ar: "جواز أجنبي، تأشيرة عند الوصول", en: "Foreign passport, visa on arrival" } },
-  { id: "res", name: { ar: "جواز أجنبي، موافقة مسبقة", en: "Foreign passport, pre-approval needed" } },
+  { id: "sy", name: { ar: "جواز سوري", en: "a Syrian passport" } },
+  { id: "voa", name: { ar: "جواز يأخذ تأشيرة عند الوصول", en: "a visa-on-arrival passport" } },
+  { id: "res", name: { ar: "جواز يحتاج موافقة مسبقة", en: "a passport needing pre-approval" } },
 ] as const
 
 export const cityById = (id: string) => DATA.cities.find((c) => c.id === id)

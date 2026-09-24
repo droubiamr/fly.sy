@@ -53,14 +53,14 @@ export function ReportForm({ contactUrl }: { contactUrl: string }) {
       )}
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 text-lg font-semibold">{f.entry}</legend>
+        <legend className="text-[13.5px] font-semibold">{f.entry}</legend>
         <input type="hidden" name="entry" value={entry} />
         <ToggleGroup type="single" value={entry} onValueChange={(v) => v && setEntry(v)} className="flex-wrap justify-start gap-2">
           {Object.entries(DATA.entries).map(([id, e]) => (
             <ToggleGroupItem
               key={id}
               value={id}
-              className="h-13 rounded-xl border-2 border-input bg-card px-4 text-[17px] font-semibold data-[state=on]:border-primary data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground"
+              className="h-11 rounded-full border-0 bg-muted px-4 text-sm font-medium data-[state=on]:bg-foreground data-[state=on]:text-background"
             >
               {e.name[locale]}
             </ToggleGroupItem>
@@ -68,26 +68,26 @@ export function ReportForm({ contactUrl }: { contactUrl: string }) {
         </ToggleGroup>
       </fieldset>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="travelled_on" className="text-lg">{f.date}</Label>
-          <Input id="travelled_on" name="travelled_on" type="date" required className="h-14 rounded-xl border-2 border-input text-lg" />
+          <Label htmlFor="travelled_on">{f.date}</Label>
+          <Input id="travelled_on" name="travelled_on" type="date" required className="h-11 rounded-[10px]" />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="wait_minutes" className="text-lg">{f.wait}</Label>
-          <Input id="wait_minutes" name="wait_minutes" type="number" inputMode="numeric" min={0} max={4320} className="h-14 rounded-xl border-2 border-input text-lg" />
+          <Label htmlFor="wait_minutes">{f.wait}</Label>
+          <Input id="wait_minutes" name="wait_minutes" type="number" inputMode="numeric" min={0} max={4320} className="h-11 rounded-[10px]" />
         </div>
       </div>
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 text-lg font-semibold">{f.passport}</legend>
+        <legend className="text-[13.5px] font-semibold">{f.passport}</legend>
         <input type="hidden" name="passport" value={passport} />
-        <ToggleGroup type="single" value={passport} onValueChange={(v) => v && setPassport(v as Passport)} className="grid grid-cols-1 gap-2">
+        <ToggleGroup type="single" value={passport} onValueChange={(v) => v && setPassport(v as Passport)} className="grid grid-cols-3 gap-2">
           {PASSPORTS.map((p) => (
             <ToggleGroupItem
               key={p}
               value={p}
-              className="h-auto min-h-14 rounded-xl border-2 border-input bg-card px-2 py-2 text-base font-semibold leading-snug whitespace-normal data-[state=on]:border-primary data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground"
+              className="h-11 rounded-[10px] border-0 bg-muted text-sm font-medium data-[state=on]:bg-foreground data-[state=on]:text-background"
             >
               {f.passports[p]}
             </ToggleGroupItem>
@@ -96,12 +96,12 @@ export function ReportForm({ contactUrl }: { contactUrl: string }) {
       </fieldset>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="note" className="text-lg">{f.note}</Label>
-        <Textarea id="note" name="note" required minLength={10} maxLength={1000} rows={4} className="rounded-xl border-2 border-input text-lg leading-relaxed" />
+        <Label htmlFor="note">{f.note}</Label>
+        <Textarea id="note" name="note" required minLength={10} maxLength={1000} rows={4} className="rounded-[10px] text-base leading-relaxed" />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="contact" className="text-lg">{f.contact}</Label>
+        <Label htmlFor="contact">{f.contact}</Label>
         <Input
           id="contact"
           name="contact"
@@ -112,13 +112,13 @@ export function ReportForm({ contactUrl }: { contactUrl: string }) {
           spellCheck={false}
           enterKeyHint="done"
           maxLength={200}
-          className="h-14 rounded-xl border-2 border-input text-lg"
+          className="h-11 rounded-[10px]"
         />
       </div>
 
-      <div className="flex items-start gap-3 text-base leading-relaxed">
-        <input id="consent" name="consent" type="checkbox" required className="mt-1 size-7 shrink-0 accent-primary" />
-        <Label htmlFor="consent" className="text-base font-normal leading-relaxed">
+      <div className="flex items-start gap-3 text-[13px] leading-relaxed text-muted-foreground">
+        <input id="consent" name="consent" type="checkbox" required className="mt-0.5 size-6 shrink-0 accent-primary" />
+        <Label htmlFor="consent" className="font-normal leading-relaxed">
           {f.consent}
         </Label>
       </div>
@@ -129,7 +129,7 @@ export function ReportForm({ contactUrl }: { contactUrl: string }) {
         </Alert>
       )}
 
-      <Button type="submit" size="lg" disabled={pending} className="h-16 rounded-xl text-xl font-bold shadow-none">
+      <Button type="submit" size="lg" disabled={pending} className="h-13 rounded-xl text-[15.5px] shadow-none">
         {pending ? f.sending : f.submit}
       </Button>
     </form>

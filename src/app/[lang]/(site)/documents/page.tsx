@@ -36,8 +36,8 @@ export default async function DocumentsPage({ params }: Props) {
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path: "/documents", name: m.documents.title, description: m.seo.documents.description }))} />
       <section>
         <Breadcrumbs locale={locale} items={crumbs} />
-        <h1 className="text-[28px] font-bold leading-tight tracking-tight">{m.documents.title}</h1>
-        <p className="mt-2 max-w-prose text-[17px] leading-relaxed text-muted-foreground">{m.documents.lede}</p>
+        <h1 className="text-2xl font-bold tracking-tight">{m.documents.title}</h1>
+        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.documents.lede}</p>
       </section>
 
       <Alert>
@@ -49,7 +49,7 @@ export default async function DocumentsPage({ params }: Props) {
           <h2 id={`h-${mode}`} className="text-xl font-bold tracking-tight">
             {m.documents[mode]}
           </h2>
-          <p className="mt-1 mb-3 text-[15px] text-muted-foreground">
+          <p className="mt-1 mb-3 text-xs text-muted-foreground">
             {(mode === "air" ? airEntries() : landEntries()).map(([id, e], i, arr) => (
               <span key={id}>
                 <Link href={href(entryPath(id))} className="underline-offset-4 hover:underline">
@@ -61,9 +61,9 @@ export default async function DocumentsPage({ params }: Props) {
           </p>
           <div className="flex flex-col gap-3">
             {PASSPORTS.map((pp) => (
-              <div key={pp} className="rounded-2xl border-[1.5px] bg-card px-5 py-4">
-                <h3 className="text-xl font-bold">{m.reports.form.passports[pp]}</h3>
-                <ul className="mt-2 flex list-disc flex-col gap-3 ps-5 text-[17px] leading-relaxed">
+              <div key={pp} className="rounded-2xl border bg-card px-5 py-4">
+                <h3 className="text-[15px] font-semibold">{m.reports.form.passports[pp]}</h3>
+                <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
                   {DATA.needs[mode][pp].map((n, i) => (
                     <li key={i}>
                       {n.text[locale]}
@@ -77,7 +77,7 @@ export default async function DocumentsPage({ params }: Props) {
         </section>
       ))}
 
-      <p className="text-base leading-relaxed text-muted-foreground">{m.about.fine}</p>
+      <p className="text-xs leading-relaxed text-muted-foreground">{m.about.fine}</p>
     </div>
   )
 }
