@@ -9,7 +9,6 @@ const t = (x: Text, l: Locale) => x[l] ?? x.ar
 
 export const ORG_ID = `${SITE_URL}/#organization`
 export const WEBSITE_ID = `${SITE_URL}/#website`
-export const GITHUB_URL = "https://github.com/droubiamr/fly.sy"
 
 export function organizationLd(locale: Locale) {
   return {
@@ -18,11 +17,10 @@ export function organizationLd(locale: Locale) {
     name: SITE_NAME,
     url: SITE_URL,
     logo: { "@type": "ImageObject", url: `${SITE_URL}/icon-512.png`, width: 512, height: 512 },
-    sameAs: [GITHUB_URL],
     description:
       locale === "ar"
-        ? "موقع مستقل غير رسمي مفتوح المصدر يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟"
-        : "An independent, unofficial, open-source site answering one question: how do I get into Syria today?",
+        ? "موقع مستقل غير رسمي يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟"
+        : "An independent, unofficial site answering one question: how do I get into Syria today?",
   }
 }
 
@@ -90,28 +88,23 @@ export function airlineLd(locale: Locale, code: string, path: string) {
   }
 }
 
-/** The data/ folder is a real dataset with a real licence; Google Dataset Search can list it. */
+/** The data/ folder is a real dataset; Google Dataset Search can list it. */
 export function datasetLd(locale: Locale) {
-  const raw = (f: string) => `https://raw.githubusercontent.com/droubiamr/fly.sy/main/data/${f}.json`
-  const files = ["entries", "arrivals", "airlines", "roads", "needs", "cities", "sources"]
   return {
     "@type": "Dataset",
     "@id": `${SITE_URL}/#dataset`,
     name: locale === "ar" ? "بيانات fly.sy: طرق الدخول إلى سوريا" : "fly.sy data: ways into Syria",
     description:
       locale === "ar"
-        ? "المطارات والمعابر البرية والرحلات الجوية والأوراق المطلوبة لدخول سوريا، مع المصدر ومستوى الثقة وتاريخ المراجعة لكل سجل. JSON، محدَّث يدوياً."
-        : "Airports, land crossings, flight routes and entry documents for Syria, with a source, confidence level and check date on every record. JSON, updated by hand.",
+        ? "المطارات والمعابر البرية والرحلات الجوية والأوراق المطلوبة لدخول سوريا، مع المصدر ومستوى الثقة وتاريخ المراجعة لكل سجل. تُحدَّث يدوياً."
+        : "Airports, land crossings, flight routes and entry documents for Syria, with a source, confidence level and check date on every record. Updated by hand.",
     url: `${SITE_URL}${locale === "ar" ? "" : "/en"}/about`,
-    sameAs: `${GITHUB_URL}/tree/main/data`,
-    license: "https://creativecommons.org/licenses/by-sa/4.0/",
     isAccessibleForFree: true,
     creator: { "@id": ORG_ID },
     dateModified: DATA.meta.updated,
     inLanguage: ["ar", "en"],
     spatialCoverage: { "@type": "Place", name: "Syria", address: { "@type": "PostalAddress", addressCountry: "SY" } },
     keywords: ["Syria", "travel", "border crossings", "airports", "flights", "visa", "سوريا", "معابر", "مطارات"],
-    distribution: files.map((f) => ({ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: raw(f) })),
   }
 }
 

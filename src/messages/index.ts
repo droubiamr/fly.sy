@@ -136,7 +136,7 @@ const messages = {
         },
         {
           q: "من يقف خلف fly.sy؟",
-          a: "مشروع مستقل مفتوح المصدر من سوريين في المهجر. لا جهة حكومية ولا شركة طيران ولا وكالة سفر، ولا عمولة على أي شيء.",
+          a: "مشروع مستقل من سوريين في المهجر. لا جهة حكومية ولا شركة طيران ولا وكالة سفر، ولا عمولة على أي شيء.",
         },
       ],
       sources: "المصادر",
@@ -215,7 +215,7 @@ const messages = {
       about: {
         title: "عن fly.sy: مصادرنا ومستويات الثقة وكيف نتحقق",
         description:
-          "fly.sy موقع مستقل غير رسمي مفتوح المصدر يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟ هنا مصادرنا، مستويات الثقة، طريقة التحقق، والأسئلة الشائعة.",
+          "fly.sy موقع مستقل غير رسمي يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟ هنا مصادرنا، مستويات الثقة، طريقة التحقق، والأسئلة الشائعة.",
       },
     },
     lang: "English",
@@ -354,7 +354,7 @@ const messages = {
         },
         {
           q: "Who is behind fly.sy?",
-          a: "An independent open-source project by Syrians in the diaspora. No government body, no airline, no travel agency, and no commission on anything.",
+          a: "An independent project by Syrians in the diaspora. No government body, no airline, no travel agency, and no commission on anything.",
         },
       ],
       sources: "Sources",
@@ -433,7 +433,7 @@ const messages = {
       about: {
         title: "About fly.sy: sources, confidence levels and how we verify",
         description:
-          "fly.sy is an independent, unofficial, open-source site answering one question: how do I get into Syria today? Our sources, confidence levels, verification method and common questions.",
+          "fly.sy is an independent, unofficial site answering one question: how do I get into Syria today? Our sources, confidence levels, verification method and common questions.",
       },
     },
     lang: "العربية",
