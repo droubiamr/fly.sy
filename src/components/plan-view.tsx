@@ -62,7 +62,7 @@ export function PlanView({
       }),
     ]),
   ) as Record<Passport, Record<string, Reach>>;
-  const live = journeys.sy.filter((j) => !j.blocked);
+  const live = journeys.sy.filter((j) => !j.blocked && j.status !== "closed");
   const liveEntries = live.map((j) => j.entry);
   const city = cityById(dest)!;
   const best = live.find((j) => j.totalHours != null);

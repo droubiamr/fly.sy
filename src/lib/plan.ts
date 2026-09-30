@@ -18,8 +18,8 @@ export type Journey = Arrival & {
 
 /** Pure planner: every arrival from `from` (filed under the country itself or
  *  under a group it belongs to), joined to the road leg to `dest`, flagged when
- *  the entry is closed to this passport, sorted by total time with blocked and
- *  unknown-time journeys last. */
+ *  the entry is closed to this passport, sorted by total time with closed routes
+ *  after the ones that run, and blocked and unknown-time journeys last. */
 export function plan(input: PlanInput): Journey[] {
   const out: Journey[] = []
   const { id, group } = input.from
@@ -32,9 +32,9 @@ export function plan(input: PlanInput): Journey[] {
     const totalHours = roadHours == null ? null : Math.round((a.hours + roadHours) * 10) / 10
     out.push({ ...a, entryData, roadHours, totalHours, blocked })
   }
-  return out.sort(
-    (x, y) => Number(x.blocked) - Number(y.blocked) || (x.totalHours ?? Infinity) - (y.totalHours ?? Infinity),
-  )
+  // A closed route stays listed, so travellers see what stopped, but never outranks one that runs.
+  const tier = (j: Journey) => (j.blocked ? 2 : j.status === "closed" ? 1 : 0)
+  return out.sort((x, y) => tier(x) - tier(y) || (x.totalHours ?? Infinity) - (y.totalHours ?? Infinity))
 }
 
 export type Reach = "direct" | "via" | "none"

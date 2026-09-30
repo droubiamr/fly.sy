@@ -30,7 +30,7 @@ export function routeMetadata(p: RouteParams): Metadata {
   const { origin, dest } = resolve(p)
   const { locale, m } = getI18n(requireLocale(p.lang))
   const vars = { origin: origin.name[locale], city: cityById(dest)!.name[locale] }
-  const live = journeysFor(origin, dest, "sy").filter((j) => !j.blocked)
+  const live = journeysFor(origin, dest, "sy").filter((j) => !j.blocked && j.status !== "closed")
   const best = live.find((j) => j.totalHours != null)
   const description = best
     ? fmt(m.seo.route.description, {

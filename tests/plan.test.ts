@@ -42,6 +42,19 @@ test("sorts by total hours, blocked last", () => {
   assert.equal(voa.at(-1)?.blocked, true)
 })
 
+test("a closed route sorts after the ones that run, blocked ones last", () => {
+  const withClosed: Arrival[] = [...arrivals, { ...base, airline: "EK", entry: "DAM", mode: "air", hours: 0.5, status: "closed" }]
+  const sy = plan({ arrivals: withClosed, entries, roads, from: TR, dest: "damascus", passport: "sy" })
+  assert.equal(sy[0].airline, "TK")
+  assert.equal(sy.at(-1)?.status, "closed")
+
+  const voa = plan({ arrivals: withClosed, entries, roads, from: TR, dest: "idlib", passport: "voa" })
+  assert.deepEqual(
+    voa.map((j) => [j.status, j.blocked]),
+    [["open", false], ["closed", false], ["open", true]],
+  )
+})
+
 test("unknown road time yields null total and sorts after known", () => {
   const r = plan({ arrivals, entries, roads, from: TR, dest: "qamishli", passport: "sy" })
   assert.ok(r.every((j) => j.totalHours === null))
