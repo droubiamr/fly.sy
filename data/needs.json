@@ -18,7 +18,8 @@
   "land":{
     "sy":[
       {"source":"sana","text":{"ar":"نحو 391 ألف عودة طوعية عبر المعابر في النصف الأول من 2026، أكثر من 24 ألفاً منها عبر نصيب.","en":"Around 391,000 voluntary returns through the crossings in the first half of 2026, over 24,000 through Nasib."}},
-      {"source":"nosrc","text":{"ar":"المقيمون في تركيا: وضع الإقامة أو الحماية المؤقتة هو ما يحدد إمكانية العودة. لا مصدر رسمي محدّث لدينا — تحقق قبل السفر.","en":"If you live in Türkiye, residence or temporary-protection status decides whether you can return. We have no current official source — check before you travel."}}
+      {"source":"nosrc","text":{"ar":"المقيمون في تركيا: وضع الإقامة أو الحماية المؤقتة هو ما يحدد إمكانية العودة. لا مصدر رسمي محدّث لدينا — تحقق قبل السفر.","en":"If you live in Türkiye, residence or temporary-protection status decides whether you can return. We have no current official source — check before you travel."}},
+      {"source":"lbgs","text":{"ar":"إن وصلت إلى لبنان جواً أو بحراً لتعبر براً إلى سوريا، يمنحك الأمن العام اللبناني إذن دخول «ترانزيت» لمدة 24 ساعة على جوازك (معايير 24 أيلول 2026).","en":"If you fly or sail into Lebanon to cross overland to Syria, Lebanese General Security gives you a 24-hour transit permit on your passport (rules of 24 September 2026)."}}
     ],
     "voa":[
       {"source":"ops","text":{"ar":"التأشيرة تُمنح عند المعبر: استمارة قصيرة وختم في الجواز، دخولاً وخروجاً.","en":"The visa is issued at the crossing: a short form and a stamp, in and out."}},

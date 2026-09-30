@@ -9,5 +9,6 @@
   "BKM":{"deirezzor":2,"raqqa":4,"qamishli":4,"homs":7,"aleppo":7,"hama":7.5,"idlib":8,"damascus":8,"latakia":8.5,"tartus":8.5,"daraa":9,"sweida":9},
   "DEZ":{"deirezzor":0.5,"raqqa":2,"qamishli":3.5,"aleppo":4.5,"homs":4.5,"hama":5,"idlib":5.5,"damascus":6,"tartus":6,"latakia":6.5,"daraa":7.5,"sweida":7.5},
   "LTK":{"latakia":0.5,"tartus":1.5,"hama":2.5,"homs":2.5,"idlib":2.5,"aleppo":3,"damascus":4,"daraa":5.5,"sweida":5.5,"raqqa":5.5,"deirezzor":6.5,"qamishli":9},
-  "KAC":{"qamishli":0.5,"deirezzor":3.5,"raqqa":3.5,"aleppo":5.5,"idlib":6.5,"hama":7,"homs":7.5,"latakia":8,"damascus":8.5,"tartus":8.5,"daraa":10,"sweida":10}
+  "KAC":{"qamishli":0.5,"deirezzor":3.5,"raqqa":3.5,"aleppo":5.5,"idlib":6.5,"hama":7,"homs":7.5,"latakia":8,"damascus":8.5,"tartus":8.5,"daraa":10,"sweida":10},
+  "SEM":{"qamishli":1.5,"deirezzor":4.5,"raqqa":5,"aleppo":7,"idlib":8,"hama":8.5,"homs":9,"latakia":9.5,"damascus":10,"tartus":10,"daraa":11.5,"sweida":11.5}
 }
