@@ -1,3 +1,4 @@
+import { LIVE_SESSION } from "./admin-auth"
 import { fillSeries, rangeWindow, type Point, type Range } from "./analytics"
 import { db, type D1Database } from "./db"
 
@@ -211,17 +212,17 @@ export type AdminSessionRow = {
 }
 export type LoginAttempt = { ts: number; ip: string | null; country: string | null; user_agent: string | null; ok: number; reason: string | null }
 
-/** Live admin sessions (inside both timeouts) and the latest sign-in attempts, for /admin/security. */
-export async function getSecurity(idleMs: number): Promise<{ sessions: AdminSessionRow[]; attempts: LoginAttempt[] }> {
+/** Live admin sessions (inside their timeouts) and the latest sign-in attempts, for /admin/security. */
+export async function getSecurity(): Promise<{ sessions: AdminSessionRow[]; attempts: LoginAttempt[] }> {
   const d = db()
   if (!d) return { sessions: [], attempts: [] }
   const now = Date.now()
   const [sessions, attempts] = await d.batch([
     d
       .prepare(
-        "select id_hash, created_at, last_seen, expires_at, ip, country, user_agent, access_email from admin_sessions where expires_at > ? and last_seen > ? order by last_seen desc",
+        `select id_hash, created_at, last_seen, expires_at, ip, country, user_agent, access_email from admin_sessions where ${LIVE_SESSION} order by last_seen desc`,
       )
-      .bind(now, now - idleMs),
+      .bind(now),
     d.prepare("select ts, ip, country, user_agent, ok, reason from login_attempts order by ts desc limit 50"),
   ])
   return { sessions: sessions.results as AdminSessionRow[], attempts: attempts.results as LoginAttempt[] }

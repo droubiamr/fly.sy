@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { CheckCircle2, CircleAlert, LogOut } from "lucide-react"
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import { accessConfigured, authConfig, IDLE_MS, requireAdmin } from "@/lib/admin-auth"
+import { accessConfigured, authConfig, isKept, requireAdmin } from "@/lib/admin-auth"
 import { getSecurity, pendingCount, type AdminSessionRow as Session, type LoginAttempt as Attempt } from "@/lib/admin-data"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -34,7 +34,7 @@ function hasLimiter() {
 
 export default async function SecurityPage() {
   const me = await requireAdmin()
-  const { sessions, attempts } = await getSecurity(IDLE_MS)
+  const { sessions, attempts } = await getSecurity()
   const cfg = authConfig()
   const checks = [
     { on: accessConfigured(), label: "Cloudflare Access", note: "Access JWT required on every admin request" },
@@ -96,6 +96,7 @@ export default async function SecurityPage() {
                 )}
                 <span className="w-full truncate text-xs text-muted-foreground" title={s.user_agent ?? ""}>
                   Signed in {when.format(s.created_at)} UTC · active {when.format(s.last_seen)} · ends {when.format(s.expires_at)}
+                  {isKept(s) ? " · kept signed in" : ""}
                   {s.access_email ? ` · ${s.access_email}` : ""} · {s.user_agent ?? ""}
                 </span>
                 {s.id_hash !== me.id_hash && (
