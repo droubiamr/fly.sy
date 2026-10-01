@@ -10,7 +10,7 @@ export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }))
 }
 
-export async function GET(_req: Request, { params }: RouteContext<"/api/search/[lang]">) {
+export async function GET(_req: Request, { params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
   if (!isLocale(lang)) return new Response("Not found", { status: 404 })
   return Response.json(searchIndex(lang))

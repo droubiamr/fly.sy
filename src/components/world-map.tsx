@@ -111,7 +111,7 @@ type Label = { x: number; y: number; text: string; strong: boolean; side: "start
 /**
  * Lays labels out so none sits on another or on a dot. Each is offered the
  * spot beside its own dot first, then rows above and below, and takes the
- * first that is free. Callers pass them most-important-first. Widths are
+ * first that is free, or is dropped if none is. Callers pass them most-important-first. Widths are
  * estimated: this renders on the server, where there is no text metric.
  */
 function place(labels: Label[], dots: Box[]): Label[] {
@@ -128,10 +128,20 @@ function place(labels: Label[], dots: Box[]): Label[] {
     // off the edge of the map moves to the other side of its dot.
     const b = boxOf(l, 0)
     if (b.l < 0 || b.r > W) l = { ...l, side: l.side === "end" ? "start" : "end" }
-    let dy = 0
+    let dy: number | null = null
     for (const c of [0, LINE, -LINE, LINE * 2, -LINE * 2]) {
-      dy = c
-      if (!taken.some((t) => hits(boxOf(l, c), t))) break
+      if (!taken.some((t) => hits(boxOf(l, c), t))) {
+        dy = c
+        break
+      }
+    }
+    // Where crossings sit close together (the Turkish border north of Aleppo) a
+    // name with nowhere free to go is left off rather than printed over another;
+    // the route cards name every entry point. The two ends of the route always
+    // keep theirs.
+    if (dy === null) {
+      if (!l.strong) continue
+      dy = 0
     }
     taken.push(boxOf(l, dy))
     out.push({ ...l, y: l.y + dy })

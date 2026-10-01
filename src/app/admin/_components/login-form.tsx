@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef } from "react"
 import { LockKeyhole } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { login, type LoginState } from "../actions"
@@ -96,6 +97,10 @@ export function LoginForm({
           className="h-11 tracking-[0.3em] tabular-nums"
         />
       </div>
+      <Label htmlFor="keep" className="min-h-11 cursor-pointer gap-3 font-normal">
+        <Checkbox id="keep" name="keep" disabled={!enabled} />
+        Keep me signed in for 30 days
+      </Label>
       <div ref={box} className="min-h-[65px]" />
       {error && (
         <p id="login-error" role="alert" className="text-sm text-destructive">

@@ -14,6 +14,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
     { href: "/airlines", label: m.tabs.airlines },
     { href: "/crossings", label: m.tabs.crossings },
     { href: "/documents", label: m.footer.documents },
+    { href: "/news", label: m.tabs.news },
     { href: "/reports", label: m.tabs.reports },
     { href: "/about", label: m.tabs.about },
   ]

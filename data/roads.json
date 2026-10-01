@@ -10,5 +10,12 @@
   "DEZ":{"deirezzor":0.5,"raqqa":2,"qamishli":3.5,"aleppo":4.5,"homs":4.5,"hama":5,"idlib":5.5,"damascus":6,"tartus":6,"latakia":6.5,"daraa":7.5,"sweida":7.5},
   "LTK":{"latakia":0.5,"tartus":1.5,"hama":2.5,"homs":2.5,"idlib":2.5,"aleppo":3,"damascus":4,"daraa":5.5,"sweida":5.5,"raqqa":5.5,"deirezzor":6.5,"qamishli":9},
   "KAC":{"qamishli":0.5,"deirezzor":3.5,"raqqa":3.5,"aleppo":5.5,"idlib":6.5,"hama":7,"homs":7.5,"latakia":8,"damascus":8.5,"tartus":8.5,"daraa":10,"sweida":10},
-  "SEM":{"qamishli":1.5,"deirezzor":4.5,"raqqa":5,"aleppo":7,"idlib":8,"hama":8.5,"homs":9,"latakia":9.5,"damascus":10,"tartus":10,"daraa":11.5,"sweida":11.5}
+  "SEM":{"qamishli":1.5,"deirezzor":4.5,"raqqa":5,"aleppo":7,"idlib":8,"hama":8.5,"homs":9,"latakia":9.5,"damascus":10,"tartus":10,"daraa":11.5,"sweida":11.5},
+  "JQM":{"homs":1,"tartus":1,"hama":1.5,"latakia":2,"idlib":2.5,"damascus":2.5,"aleppo":3.5,"daraa":4,"sweida":4,"raqqa":5,"deirezzor":6,"qamishli":8.5},
+  "SAL":{"aleppo":1,"idlib":1.5,"hama":3,"raqqa":3.5,"homs":3.5,"latakia":3.5,"tartus":4.5,"deirezzor":5.5,"damascus":5.5,"qamishli":6.5,"daraa":7,"sweida":7},
+  "RAI":{"aleppo":1.5,"idlib":2,"raqqa":3,"hama":3.5,"homs":4,"latakia":4,"tartus":5,"deirezzor":5,"damascus":6,"qamishli":6,"daraa":7.5,"sweida":7.5},
+  "JAR":{"aleppo":2,"raqqa":2.5,"idlib":3,"hama":4,"deirezzor":4.5,"homs":4.5,"latakia":4.5,"qamishli":5.5,"tartus":5.5,"damascus":6.5,"daraa":8,"sweida":8},
+  "TAB":{"raqqa":1.5,"deirezzor":3.5,"aleppo":3.5,"qamishli":4,"idlib":4.5,"hama":5,"homs":5.5,"latakia":6,"tartus":6.5,"damascus":7.5,"daraa":9,"sweida":9},
+  "KAS":{"latakia":1,"tartus":2,"idlib":2.5,"hama":3,"homs":3.5,"aleppo":3.5,"damascus":5.5,"raqqa":6,"daraa":7,"sweida":7,"deirezzor":8,"qamishli":9.5},
+  "YAR":{"qamishli":1.5,"raqqa":4.5,"deirezzor":5,"aleppo":6.5,"idlib":7.5,"hama":8,"homs":8.5,"latakia":9,"tartus":9.5,"damascus":10,"sweida":11,"daraa":11.5}
 }

@@ -9,6 +9,7 @@ export function sitePaths(): { path: string; priority: number }[] {
     { path: "/airlines", priority: 0.9 },
     { path: "/crossings", priority: 0.9 },
     { path: "/documents", priority: 0.9 },
+    { path: "/news", priority: 0.8 },
     { path: "/reports", priority: 0.7 },
     { path: "/about", priority: 0.5 },
   ]
@@ -26,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return (["ar", "en"] as const).map((locale) => ({
       url: absoluteUrl(locale, path),
       lastModified,
-      changeFrequency: path === "/reports" ? ("daily" as const) : ("weekly" as const),
+      changeFrequency: path === "/reports" || path === "/news" ? ("daily" as const) : ("weekly" as const),
       priority,
       alternates: { languages },
     }))

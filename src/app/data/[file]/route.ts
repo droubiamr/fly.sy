@@ -8,7 +8,7 @@ export function generateStaticParams() {
   return DATA_FILES.map((f) => ({ file: `${f.id}.json` }))
 }
 
-export async function GET(_req: Request, { params }: RouteContext<"/data/[file]">) {
+export async function GET(_req: Request, { params }: { params: Promise<{ file: string }> }) {
   const id = (await params).file.replace(/\.json$/, "")
   if (!isDataFile(id)) return new Response("Not found", { status: 404 })
   return Response.json(dataFile(id), {

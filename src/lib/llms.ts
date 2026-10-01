@@ -86,6 +86,7 @@ export function llmsIndex(): string {
     "## Papers, experiences and method",
     "",
     `- [${m.documents.title}](${en("/documents")}): by air and by land, for Syrian passports, visa on arrival and prior approval`,
+    `- [${m.news.title}](${en("/news")}): dated changes to flights and crossings, each with its official source`,
     `- [${m.reports.title}](${en("/reports")}): moderated reports from people who made the crossing`,
     `- [${m.about.title}](${en("/about")}): sources, confidence levels, how facts are checked, and common questions`,
     "",

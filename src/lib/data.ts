@@ -8,7 +8,8 @@ import roads from "../../data/roads.json"
 import needs from "../../data/needs.json"
 import seedReports from "../../data/reports.seed.json"
 import meta from "../../data/meta.json"
-import type { Airline, Arrival, City, Entry, Needs, Origin, OriginDef, Region, Report, Roads, Source } from "./types"
+import news from "../../data/news.json"
+import type { Airline, Arrival, City, Entry, Needs, NewsItem, Origin, OriginDef, Region, Report, Roads, Source } from "./types"
 import { slugify } from "./slugs"
 import { routeHref } from "./site"
 
@@ -22,6 +23,8 @@ export const DATA = {
   roads: roads as Roads,
   needs: needs as Needs,
   seedReports: seedReports as Report[],
+  /** Newest first. */
+  news: [...(news as NewsItem[])].sort((a, b) => b.date.localeCompare(a.date)),
 }
 
 export const ORIGINS = origins as OriginDef[]
@@ -130,6 +133,8 @@ export function pageUpdated(path: string): string {
   } else if (parts[0] === "airlines" && parts[1]) {
     const code = airlineFromSlug(parts[1])
     if (code) dates = arrivalsBy(code).map((a) => a.seen)
+  } else if (parts[0] === "news") {
+    dates = DATA.news.map((n) => n.date)
   } else if (parts[0] === "from" && parts[2] === "to") {
     const o = originFromSlug(parts[1])
     if (o) {

@@ -37,7 +37,10 @@ npm run dev
   build time; only `/reports` renders per request.
 - On Cloudflare the prerendered pages are served from the static assets bundle (`open-next.config.ts`), so the
   Worker never renders them. `npm run deploy` populates that cache; without it every request would render the page,
-  world map included, and hit the Worker CPU limit (error 1102).
+  world map included, and hit the Worker CPU limit (error 1102). The same happens if Next looks pages up under a key
+  the adapter doesn't store them by: Next 16.3.8 does, so `next` stays at 16.3.7 until `@opennextjs/cloudflare`
+  supports it (`tests/worker-cache.test.ts` fails otherwise). After any Next or adapter upgrade, `npm run preview`
+  and check that pages come back with `x-nextjs-cache: HIT`.
 - Each page's `lastmod` in the sitemap and `dateModified` in its structured data is the newest `seen` date among the
   facts it shows (`pageUpdated` in `src/lib/data.ts`), capped at `data/meta.json → updated`. Bumping `seen` on a line
   you re-checked is what tells search engines that page moved.
@@ -59,6 +62,7 @@ npm run dev
 |---|---|
 | `data/*.json` | **All sourced facts.** Editing these is how the site is updated. |
 | `data/origins.json` | The countries you can start from, with the hub airport the map draws the route from. |
+| `data/news.json` | The News page: dated changes (a crossing closes, a route starts), each linking the exact post or document it came from. Newest first. |
 | `src/lib/plan.ts` | The route planner. Pure function, tested in `tests/`. |
 | `src/lib/data.ts` | Loads and types the JSON. |
 | `src/messages/index.ts` | UI strings, `ar` and `en`. |
@@ -95,6 +99,10 @@ Rules:
 4. Update `data/meta.json` → `updated` after each review pass.
 5. `npm test` checks referential integrity (every entry, road, source and airline id resolves).
 6. Every airport in `entries.json` names its `city`. The destination picker lists the airports by name and routes to that city.
+7. When a change is news (something opened, closed, started or stopped, or a rule changed), add it to the top of
+   `data/news.json` as well: date it was published, a title and two or three sentences in both languages, the
+   `source` key, and the `url` of the exact post or document. Only official bodies or the operator itself; press
+   stays out of the news list. `tests/news.test.ts` checks it and needs no install.
 
 ## Community reports
 
@@ -143,7 +151,7 @@ Nothing is deleted automatically: to keep 13 months, run
 | Rate limit + lockout | Workers Rate Limiting binding: 5 tries a minute per IP. D1: 5 failures per IP, or 20 in total, within 15 minutes locks the form. |
 | Password | PBKDF2-SHA256, 100,000 iterations (the most Workers allow), random salt; breached passwords are refused at setup. Or, with no terminal, the password itself as the `ADMIN_PASSWORD` secret (Cloudflare secrets are write-only). |
 | Authenticator code | TOTP (RFC 6238) via `otpauth`. Each code is accepted once. |
-| Session | 256-bit random token in a `__Host-` cookie (Secure, HttpOnly, SameSite=Strict); only its SHA-256 is stored. 30 minutes idle, 8 hours absolute. See and revoke sessions at `/admin/security`. |
+| Session | 256-bit random token in a `__Host-` cookie (Secure, HttpOnly, SameSite=Strict); only its SHA-256 is stored. 30 minutes idle, 8 hours absolute; with *Keep me signed in for 30 days* ticked, 30 days absolute and no idle timeout. See and revoke sessions at `/admin/security`. |
 | Page | Strict per-request nonce CSP, `frame-ancestors 'none'`, `no-store`, `noindex`. Every failure shows the same message; the reason goes to the sign-in log. |
 
 Set up:
@@ -159,6 +167,9 @@ Set up:
    Copy the application's AUD tag, then `npx wrangler secret put CF_ACCESS_TEAM_DOMAIN`
    (`https://<team>.cloudflareaccess.com`) and `npx wrangler secret put CF_ACCESS_AUD`.
 5. Deploy and sign in at `/admin`. `/admin/security` shows which layers are on.
+
+*Keep me signed in* covers the app's own session only. With Access on, Access asks you to log in again when its
+own session ends (24 hours by default): set the application's session duration to 1 month in Zero Trust to match.
 
 For local development put the same four values in `.env.local`, using Cloudflare's Turnstile testing pair
 (`1x00000000000000000000AA` / `1x0000000000000000000000000000000AA`); leave the Access pair empty.

@@ -22,6 +22,7 @@ export function searchIndex(locale: Locale): SearchItem[] {
     ...landEntries().map(([id, e]) => ({ group: "crossings" as const, label: e.name[locale], sub: m.status[e.status], href: at(entryPath(id)), keywords: e.name[other] })),
     ...Object.entries(DATA.airlines).map(([code, a]) => ({ group: "airlines" as const, label: a.name[locale], href: at(airlinePath(code)), keywords: `${a.name[other]} ${code}` })),
     { group: "pages", label: m.documents.title, href: at("/documents"), keywords: getMessages(other).documents.title },
+    { group: "pages", label: m.news.title, href: at("/news"), keywords: getMessages(other).news.title },
     { group: "pages", label: m.reports.title, href: at("/reports"), keywords: getMessages(other).reports.title },
     { group: "pages", label: m.about.title, href: at("/about"), keywords: getMessages(other).about.title },
   ]

@@ -9,7 +9,7 @@ const messages = {
       // Alt text for the share card, which carries the same words as an image.
       card: "fly.sy — كيف تصل إلى سوريا. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
     },
-    tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", reports: "تجارب", about: "عن الموقع" },
+    tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", news: "الأخبار", reports: "تجارب", about: "عن الموقع" },
     // The navigation's own short labels. Breadcrumbs and footer links keep the fuller names in `tabs`.
     nav: {
       label: "القائمة الرئيسية",
@@ -17,6 +17,7 @@ const messages = {
       flights: "الطيران",
       borders: "المعابر",
       papers: "الأوراق",
+      news: "الأخبار",
       experiences: "تجارب",
       search: "ابحث",
       searchHint: "ابحث عن بلد أو مطار أو معبر أو شركة",
@@ -106,6 +107,12 @@ const messages = {
       land: "الدخول براً",
       which: "أي جواز معك؟",
       warn: "تحقق مع السفارة أو شركة الطيران قبل شراء تذكرة غير قابلة للاسترداد. القواعد تتغير وتُطبَّق بشكل مختلف من موظف لآخر.",
+    },
+    news: {
+      title: "أخبار الطريق إلى سوريا",
+      lede: "ما تغيّر في المطارات والمعابر والرحلات والأوراق، بتاريخه ومصدره. ننقل كل خبر عن الجهة الرسمية أو عن الشركة نفسها، ونحدّث بيانات الموقع معه.",
+      related: "ذو صلة",
+      empty: "لا أخبار بعد.",
     },
     reports: {
       title: "تجارب حقيقية",
@@ -217,7 +224,7 @@ const messages = {
       crossings: {
         title: "المعابر البرية إلى سوريا: حالة كل معبر اليوم",
         description:
-          "جديدة يابوس والعريضة وجوسية من لبنان، نصيب من الأردن، باب الهوى من تركيا، والبوكمال من العراق: مفتوح أم مغلق، ساعات العمل، من يُسمح له بالعبور، ومصدر كل سطر.",
+          "كل معبر بري إلى سوريا من لبنان والأردن وتركيا والعراق، من جديدة يابوس ونصيب إلى باب الهوى وباب السلامة وسيمالكا: مفتوح أم مغلق، ساعات العمل، من يُسمح له بالعبور، ومصدر كل سطر.",
       },
       entry: {
         title: "{name} اليوم: {status}، ومن يمكنه العبور وما يحتاجه",
@@ -235,6 +242,11 @@ const messages = {
         title: "الأوراق المطلوبة لدخول سوريا: للسوريين وللأجانب، جواً وبراً",
         description:
           "ما تحتاجه لدخول سوريا بجواز سوري، أو بتأشيرة عند الوصول، أو بموافقة مسبقة، جواً وبراً: الرسوم، صلاحية الجواز، الموافقات، والفراغات التي لا نملك لها مصدراً.",
+      },
+      news: {
+        title: "أخبار السفر إلى سوريا: المعابر والمطارات والرحلات الجديدة",
+        description:
+          "آخر ما تغيّر في الطريق إلى سوريا: فتح وإغلاق المعابر والمطارات، خطوط الطيران الجديدة، وقواعد الدخول، مع مصدر رسمي وتاريخ لكل خبر.",
       },
       reports: {
         title: "تجارب حقيقية في الدخول إلى سوريا: الانتظار وما طُلب عند كل معبر",
@@ -260,13 +272,14 @@ const messages = {
       description: "Every route into Syria, with the source and the date checked on every line. Independent and unofficial.",
       card: "fly.sy — How to get into Syria. Every route, with a source on every line. Independent, unofficial.",
     },
-    tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", reports: "Reports", about: "About" },
+    tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", news: "News", reports: "Reports", about: "About" },
     nav: {
       label: "Main",
       trip: "Trip",
       flights: "Flights",
       borders: "Borders",
       papers: "Papers",
+      news: "News",
       experiences: "Experiences",
       search: "Search",
       searchHint: "Search a country, airport, crossing or airline",
@@ -356,6 +369,12 @@ const messages = {
       land: "Entering by land",
       which: "Which passport do you hold?",
       warn: "Confirm with the embassy or airline before buying a non-refundable ticket. Rules change and are applied differently by different officials.",
+    },
+    news: {
+      title: "News on the way into Syria",
+      lede: "What changed at airports, crossings, flights and paperwork, each with its date and source. Every item comes from the official body or the operator itself, and the site's data is updated with it.",
+      related: "Related",
+      empty: "No news yet.",
     },
     reports: {
       title: "Real experiences",
@@ -467,7 +486,7 @@ const messages = {
       crossings: {
         title: "Syria land border crossings: the status of every crossing today",
         description:
-          "Jdeidet Yabous, Al-Arida and Joussieh from Lebanon, Nasib from Jordan, Bab al-Hawa from Türkiye and Abu Kamal from Iraq: open or closed, hours, who can cross, and the source behind each line.",
+          "Every land crossing into Syria from Lebanon, Jordan, Türkiye and Iraq, from Jdeidet Yabous and Nasib to Bab al-Hawa, Bab al-Salama and Semalka: open or closed, hours, who can cross, and the source behind each line.",
       },
       entry: {
         title: "{name} today: {status}, who can cross and what you need",
@@ -485,6 +504,11 @@ const messages = {
         title: "Documents to enter Syria: Syrians, visa on arrival and pre-approval, by air and land",
         description:
           "What you need to enter Syria on a Syrian passport, with a visa on arrival, or with prior approval, by air and by land: fees, passport validity, approvals, and the gaps we have no source for.",
+      },
+      news: {
+        title: "Syria travel news: border crossings, airports and new flights",
+        description:
+          "The latest changes on the way into Syria: crossings and airports opening or closing, new airline routes and entry rules, each with an official source and a date.",
       },
       reports: {
         title: "Real experiences entering Syria: waits, documents and fees at each crossing",

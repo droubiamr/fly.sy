@@ -2,17 +2,18 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FileText, Landmark, MapPin, MessagesSquare, Plane } from "lucide-react"
+import { FileText, Landmark, MapPin, MessagesSquare, Newspaper, Plane } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { localePath, splitLocale } from "@/lib/site"
 import { useLocale, useMessages } from "@/components/messages-provider"
 
-/** The five sections, once. The phone's tab bar and the desktop's top bar both read this list. */
+/** The sections, once. The phone's tab bar and the desktop's top bar both read this list. */
 const ITEMS = [
   { href: "/", key: "trip", Icon: MapPin, on: (p: string) => p === "/" || p.startsWith("/from/") },
   { href: "/airlines", key: "flights", Icon: Plane, on: (p: string) => p.startsWith("/airlines") },
   { href: "/crossings", key: "borders", Icon: Landmark, on: (p: string) => p.startsWith("/crossings") || p.startsWith("/airports") },
   { href: "/documents", key: "papers", Icon: FileText, on: (p: string) => p.startsWith("/documents") },
+  { href: "/news", key: "news", Icon: Newspaper, on: (p: string) => p.startsWith("/news") },
   { href: "/reports", key: "experiences", Icon: MessagesSquare, on: (p: string) => p.startsWith("/reports") },
 ] as const
 
@@ -34,7 +35,7 @@ export function MainNav({ variant }: { variant: "top" | "bar" }) {
             href={localePath(locale, href)}
             aria-current={on(path) ? "page" : undefined}
             className={cn(
-              "inline-flex h-10 items-center rounded-lg px-3.5 text-[15px] font-semibold transition-colors duration-150 ease-out",
+              "inline-flex h-10 items-center rounded-lg px-3 text-[15px] font-semibold transition-colors duration-150 ease-out",
               on(path)
                 ? "bg-primary text-primary-foreground shadow-[inset_0_0_0_3px_var(--primary),inset_0_0_0_4.5px_var(--primary-foreground)]"
                 : "text-muted-foreground hover:bg-secondary hover:text-secondary-foreground",
@@ -52,7 +53,7 @@ export function MainNav({ variant }: { variant: "top" | "bar" }) {
       aria-label={m.nav.label}
       className="fixed inset-x-0 bottom-0 z-20 border-t bg-card pb-[env(safe-area-inset-bottom,0px)] lg:hidden"
     >
-      <ul className="mx-auto grid max-w-md grid-cols-5">
+      <ul className="mx-auto grid max-w-lg grid-cols-6">
         {ITEMS.map(({ href, key, Icon, on }) => {
           const active = on(path)
           return (
@@ -61,13 +62,13 @@ export function MainNav({ variant }: { variant: "top" | "bar" }) {
                 href={localePath(locale, href)}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex min-h-16 flex-col items-center justify-center gap-1 px-0.5 text-xs leading-tight select-none",
+                  "flex min-h-16 flex-col items-center justify-center gap-1 px-0 text-[11px] leading-tight tracking-tight select-none",
                   active ? "font-bold text-primary" : "text-muted-foreground",
                 )}
               >
                 <span
                   className={cn(
-                    "grid h-7 w-12 place-items-center rounded-md transition-colors duration-150 ease-out",
+                    "grid h-7 w-11 place-items-center rounded-md transition-colors duration-150 ease-out",
                     active && "bg-primary text-primary-foreground",
                   )}
                 >
