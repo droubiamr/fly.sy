@@ -9,7 +9,8 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
   return (
     <div className="flex min-h-dvh flex-col">
       <SiteHeader locale={locale} />
-      <main className="mx-auto w-full max-w-2xl flex-1 px-5 pt-5">{children}</main>
+      {/* Width is the page's business: (site) pages sit in a reading column, (wide) ones run edge to edge. */}
+      <main className="flex-1">{children}</main>
       {/* Room under the footer for the phone's tab bar, which is fixed to the bottom. */}
       <div className="pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))] lg:pb-0">
         <SiteFooter locale={locale} />

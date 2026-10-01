@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { formatDate, formatHours, formatHoursText, formatMinutes } from "../src/lib/format.ts"
+import { formatDate, formatDuration, formatHours, formatHoursText, formatMinutes } from "../src/lib/format.ts"
 
 const EASTERN = /[٠-٩۰-۹]/
 
@@ -35,4 +35,14 @@ test("hours in running text drop the tilde and spell the unit", () => {
   assert.equal(formatHoursText(1, "en"), "1 hour")
   assert.equal(formatHoursText(2.5, "ar").replace(/[.,٫]/, "."), "2.5 ساعة")
   assert.doesNotMatch(formatHoursText(2.5, "ar"), EASTERN)
+})
+
+test("durations read as hours and minutes, to the nearest five minutes", () => {
+  assert.equal(formatDuration(2.7, "en"), "2 h 40 min")
+  assert.equal(formatDuration(2.3, "en"), "2 h 20 min")
+  assert.equal(formatDuration(5.9, "en"), "5 h 55 min")
+  assert.equal(formatDuration(8, "en"), "8 h")
+  assert.equal(formatDuration(0.5, "en"), "30 min")
+  assert.equal(formatDuration(2.7, "ar"), "2 س 40 د")
+  assert.equal(formatDuration(null, "ar"), "—")
 })

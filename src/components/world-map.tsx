@@ -145,7 +145,20 @@ function place(labels: Label[], dots: Box[]): Label[] {
  * entry point that serves the journey. Server-rendered SVG, so the map costs
  * the phone no script and no tiles.
  */
-export function WorldMap({ origin, dest, liveEntries, locale }: { origin: OriginDef; dest: string; liveEntries: string[]; locale: Locale }) {
+export function WorldMap({
+  origin,
+  dest,
+  liveEntries,
+  locale,
+  framed = true,
+}: {
+  origin: OriginDef
+  dest: string
+  liveEntries: string[]
+  locale: Locale
+  /** A card with a border, or bare, for a band whose own background is the sea. */
+  framed?: boolean
+}) {
   const city = cityById(dest)
   if (!city) return null
   const s = scene(origin)
@@ -171,7 +184,7 @@ export function WorldMap({ origin, dest, liveEntries, locale }: { origin: Origin
   const labels = place(wanted, dots)
 
   return (
-    <figure className="overflow-hidden rounded-2xl border">
+    <figure className={framed ? "overflow-hidden rounded-2xl border" : undefined}>
       <svg
         // A new element per origin, so the route draws itself again when the
         // country changes.

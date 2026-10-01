@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { airportReach, answerFor, plan } from "../src/lib/plan.ts"
+import { airportReach, answerFor, groupWays, plan } from "../src/lib/plan.ts"
 import type { Arrival, Entry, OriginDef, Roads } from "../src/lib/types.ts"
 
 const entries: Record<string, Entry> = {
@@ -143,4 +143,47 @@ test("answerFor falls back to a conditional route, then to none", () => {
   const none = answerFor(plan({ arrivals: closed, entries, roads, from: TR, dest: "damascus", passport: "sy" }))
   assert.equal(none.best, null)
   assert.deepEqual([none.running, none.total], [0, 1])
+})
+
+test("groupWays: one way per entry, fastest first, with the drive and status it needs", () => {
+  const es: Record<string, Entry> = { ...entries, DAM: { ...entries.DAM, city: "damascus" }, ALP: { ...entries.DAM, name: { ar: "حلب", en: "Aleppo" }, city: "aleppo" } }
+  const rs: Roads = { ...roads, ALP: { damascus: 4.5 } }
+  const as: Arrival[] = [
+    { ...base, airline: "TK", entry: "DAM", mode: "air", hours: 2 },
+    { ...base, airline: "PC", entry: "DAM", mode: "air", hours: 1, status: "unknown" },
+    { ...base, airline: "XQ", entry: "ALP", mode: "air", hours: 1.5 },
+    { ...base, airline: null, entry: "BAB", mode: "land", hours: 3 },
+  ]
+  const ways = groupWays(plan({ arrivals: as, entries: es, roads: rs, from: TR, dest: "damascus", passport: "sy" }), "damascus")
+  assert.deepEqual(ways.map((w) => w.entry), ["DAM", "ALP", "BAB"], "fastest first; a way with no road time to the city comes last")
+  assert.equal(ways[2].best, null, "no time, so no answer from it")
+  const dam = ways[0]
+  assert.equal(dam.journeys.length, 2)
+  assert.equal(dam.best?.airline, "TK", "the faster unknown flight is listed but not the answer")
+  assert.equal(dam.status, "open")
+  assert.equal(dam.drive, false, "the airport is in the destination city")
+  assert.equal(ways[1].drive, true, "Aleppo airport, then the road to Damascus")
+})
+
+test("groupWays: a crossing closed to a passport is a blocked way", () => {
+  const ways = groupWays(plan({ arrivals, entries, roads, from: TR, dest: "idlib", passport: "voa" }), "idlib")
+  const bab = ways.find((w) => w.entry === "BAB")!
+  assert.equal(bab.blocked, true)
+  assert.equal(bab.mode, "land")
+  assert.equal(bab.drive, true)
+  assert.equal(ways.at(-1)?.entry, "BAB", "blocked ways come last")
+  assert.equal(bab.fly, false, "Türkiye to Bab al-Hawa is a drive")
+})
+
+test("groupWays: a crossing reached from another country starts with a flight", () => {
+  const es: Record<string, Entry> = { ...entries, JDE: { ...entries.BAB, syriansOnly: false, country: "LB", name: { ar: "جديدة يابوس", en: "Jdeidet Yabous" } } }
+  const rs: Roads = { JDE: { damascus: 1 } }
+  const as: Arrival[] = [
+    { ...base, airline: null, entry: "JDE", mode: "land", hours: 8, from: "eu", country: "LB", city: { ar: "بيروت", en: "Beirut, then overland" } },
+    { ...base, airline: null, entry: "JDE", mode: "land", hours: 1, from: "LB", country: "LB" },
+  ]
+  const de = groupWays(plan({ arrivals: as, entries: es, roads: rs, from: { id: "DE", group: "eu" }, dest: "damascus", passport: "sy" }), "damascus")
+  assert.deepEqual([de[0].fly, de[0].drive], [true, true], "Germany: fly to Beirut, then cross")
+  const lb = groupWays(plan({ arrivals: as, entries: es, roads: rs, from: { id: "LB" }, dest: "damascus", passport: "sy" }), "damascus")
+  assert.deepEqual([lb[0].fly, lb[0].drive], [false, true], "Lebanon: drive only")
 })

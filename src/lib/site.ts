@@ -24,6 +24,9 @@ export function localePath(locale: Locale, path = "/"): string {
   return clean === "/" ? "/en" : `/en${clean}`
 }
 
+/** /from/turkiye/to/damascus: a route page's path from the origin's slug and the destination city. */
+export const routeHref = (originSlug: string, dest: string) => `/from/${originSlug}/to/${dest}`
+
 /** Absolute URL for a page. The root is the bare origin, which is also how Next writes the canonical. */
 export function absoluteUrl(locale: Locale, path = "/"): string {
   const p = localePath(locale, path)
