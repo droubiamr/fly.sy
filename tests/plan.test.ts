@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { airportReach, plan } from "../src/lib/plan.ts"
+import { airportReach, answerFor, plan } from "../src/lib/plan.ts"
 import type { Arrival, Entry, OriginDef, Roads } from "../src/lib/types.ts"
 
 const entries: Record<string, Entry> = {
@@ -118,4 +118,29 @@ test("real data: every origin is a country on the map and has at least one route
   }
   const groups = new Set(origins.map((o) => o.group).filter(Boolean))
   for (const a of arrivals) assert.ok(ids.has(a.from) || groups.has(a.from), `arrival from ${a.from} matches no origin or group`)
+})
+
+test("answerFor names the fastest running route, never an unknown or blocked one", () => {
+  const more: Arrival[] = [
+    ...arrivals,
+    { ...base, airline: "PC", entry: "DAM", mode: "air", hours: 0.5, status: "unknown" },
+    { ...base, airline: "XQ", entry: "DAM", mode: "air", hours: 0.2, status: "closed" },
+  ]
+  const sy = answerFor(plan({ arrivals: more, entries, roads, from: TR, dest: "idlib", passport: "sy" }))
+  assert.equal(sy.best?.entry, "BAB", "fastest open route; the quicker unknown and closed ones are skipped")
+  assert.deepEqual([sy.running, sy.total], [2, 4])
+
+  const voa = answerFor(plan({ arrivals: more, entries, roads, from: TR, dest: "idlib", passport: "voa" }))
+  assert.equal(voa.best?.airline, "TK", "Bab al-Hawa is closed to this passport")
+  assert.deepEqual([voa.running, voa.total], [1, 3], "a blocked route is not counted as known for this passport")
+})
+
+test("answerFor falls back to a conditional route, then to none", () => {
+  const caution: Arrival[] = [{ ...base, airline: "TK", entry: "DAM", mode: "air", hours: 2, status: "caution" }]
+  const a = answerFor(plan({ arrivals: caution, entries, roads, from: TR, dest: "damascus", passport: "sy" }))
+  assert.equal(a.best?.status, "caution")
+  const closed: Arrival[] = [{ ...base, airline: "TK", entry: "DAM", mode: "air", hours: 2, status: "closed" }]
+  const none = answerFor(plan({ arrivals: closed, entries, roads, from: TR, dest: "damascus", passport: "sy" }))
+  assert.equal(none.best, null)
+  assert.deepEqual([none.running, none.total], [0, 1])
 })

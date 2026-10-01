@@ -108,3 +108,34 @@ export const destinationVia = (entry: string): string => {
     .sort((a, b) => a[1] - b[1])[0]
   return nearest?.[0] ?? "damascus"
 }
+
+/* ---- When a page's facts were last checked. ---- */
+
+const latest = (dates: string[]) => dates.reduce((a, b) => (b > a ? b : a), "")
+
+/**
+ * The newest check date among the facts a page shows, so each page reports its
+ * own freshness instead of the date of the last review pass. Feeds the sitemap's
+ * lastmod and the page's dateModified, which must agree. Never later than
+ * meta.updated: a check date past the review date is a typo, not news.
+ */
+export function pageUpdated(path: string): string {
+  const cap = DATA.meta.updated
+  const parts = path.split("/").filter(Boolean)
+  let dates: string[] = []
+  if ((parts[0] === "airports" || parts[0] === "crossings") && parts[1]) {
+    const id = entryFromSlug(parts[1])
+    if (id) dates = [DATA.entries[id].seen, ...arrivalsVia(id).map((a) => a.seen)]
+  } else if (parts[0] === "airlines" && parts[1]) {
+    const code = airlineFromSlug(parts[1])
+    if (code) dates = arrivalsBy(code).map((a) => a.seen)
+  } else if (parts[0] === "from" && parts[2] === "to") {
+    const o = originFromSlug(parts[1])
+    if (o) {
+      const hops = DATA.arrivals.filter((a) => !a.hidden && (a.from === o.id || a.from === o.group))
+      dates = [...hops.map((a) => a.seen), ...hops.map((a) => DATA.entries[a.entry]?.seen ?? "")]
+    }
+  }
+  const d = latest(dates)
+  return d && d < cap ? d : cap
+}

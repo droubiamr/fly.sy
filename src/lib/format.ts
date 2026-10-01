@@ -21,6 +21,13 @@ export function formatHours(h: number | null, locale: Locale) {
   return `~${n} ${locale === "ar" ? "س" : "h"}`
 }
 
+/** Hours as words for running text: "2.7 hours", "2.7 ساعة". The "~" of formatHours reads badly inside a sentence. */
+export function formatHoursText(h: number, locale: Locale) {
+  const n = h.toLocaleString(INTL_LOCALE[locale], { maximumFractionDigits: 1 })
+  if (locale === "ar") return `${n} ساعة`
+  return `${n} ${h === 1 ? "hour" : "hours"}`
+}
+
 export function formatMinutes(min: number | null, locale: Locale) {
   if (min == null) return null
   if (min < 60) return locale === "ar" ? `${min.toLocaleString(INTL_LOCALE.ar)} دقيقة` : `${min} min`

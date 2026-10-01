@@ -24,6 +24,12 @@ export function RouteResults({ journeys, dest, locale, m }: { journeys: Record<P
   )
 }
 
+/** The page's one-line answer for the chosen passport. All three arrive with the page; the Syrian one is in the HTML crawlers read. */
+export function AnswerLine({ answers }: { answers: Record<Passport, string> }) {
+  const { passport } = usePassport()
+  return <p className="max-w-prose text-[15px] leading-relaxed">{answers[passport]}</p>
+}
+
 /** The three passports as chips; the current one is filled. Same page, no navigation. */
 export function PassportChips({ locale }: { locale: Locale }) {
   const { passport, setPassport } = usePassport()

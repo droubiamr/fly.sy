@@ -8,13 +8,13 @@ import {
   routePath,
 } from "@/lib/data";
 import { fmt, getI18n } from "@/lib/i18n";
-import { formatHours } from "@/lib/format";
-import { airportReach, plan, type Journey, type Reach } from "@/lib/plan";
+import { formatDate, formatHoursText } from "@/lib/format";
+import { airportReach, answerFor, plan, type Journey, type Reach } from "@/lib/plan";
 import { localePath } from "@/lib/site";
 import type { Locale, OriginDef, Passport } from "@/lib/types";
 import { Planner } from "@/components/planner";
 import { PassportProvider } from "@/components/passport-state";
-import { PassportChips, RouteResults } from "@/components/route-results";
+import { AnswerLine, PassportChips, RouteResults } from "@/components/route-results";
 import { WorldMap } from "@/components/world-map";
 
 export type PlanProps = { locale: Locale; origin: OriginDef; dest: string };
@@ -33,6 +33,34 @@ export function journeysFor(
     from: origin,
     dest,
     passport,
+  });
+}
+
+/**
+ * The sentence a route page opens with, for one passport. It is what a search
+ * snippet or an AI assistant quotes, so it names the route, the time and the
+ * check date in full words rather than leaning on the cards below it.
+ */
+export function answerText(
+  locale: Locale,
+  origin: OriginDef,
+  dest: string,
+  journeys: Journey[],
+) {
+  const { m } = getI18n(locale);
+  const { best, running, total } = answerFor(journeys);
+  const vars = {
+    origin: origin.name[locale],
+    city: cityById(dest)!.name[locale],
+    running,
+    total,
+  };
+  if (!best || best.totalHours == null) return fmt(m.route.answerNone, vars);
+  return fmt(m.route.answer, {
+    ...vars,
+    how: fmt(m.route.how[best.mode], { entry: best.entryData.name[locale] }),
+    hours: formatHoursText(best.totalHours, locale),
+    date: formatDate(best.seen, locale),
   });
 }
 
@@ -65,7 +93,9 @@ export function PlanView({
   const live = journeys.sy.filter((j) => !j.blocked && j.status !== "closed");
   const liveEntries = live.map((j) => j.entry);
   const city = cityById(dest)!;
-  const best = live.find((j) => j.totalHours != null);
+  const answers = Object.fromEntries(
+    ALL.map((p) => [p, answerText(locale, origin, dest, journeys[p])]),
+  ) as Record<Passport, string>;
   const href = (p: string) => localePath(locale, p);
   const chip =
     "inline-flex min-h-11 items-center gap-1.5 rounded-full border bg-card px-4 text-sm";
@@ -76,15 +106,7 @@ export function PlanView({
         {heading}
         <Planner from={origin.id} dest={dest} reach={reach} />
 
-        {best && (
-          <p className="text-sm text-muted-foreground">
-            {fmt(m.route.fastest, {
-              mode: m.mode[best.mode],
-              entry: best.entryData.name[locale],
-              hours: formatHours(best.totalHours, locale),
-            })}
-          </p>
-        )}
+        <AnswerLine answers={answers} />
 
         <WorldMap
           origin={origin}

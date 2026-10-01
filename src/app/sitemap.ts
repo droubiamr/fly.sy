@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next"
-import { DATA, DESTINATIONS, ORIGINS, airlinePath, entryPath, routePath } from "@/lib/data"
+import { DATA, DESTINATIONS, ORIGINS, airlinePath, entryPath, pageUpdated, routePath } from "@/lib/data"
 import { absoluteUrl } from "@/lib/site"
 
 /** Every indexable path, language-neutral. The sitemap lists each once per language with hreflang alternates. */
@@ -19,9 +19,9 @@ export function sitePaths(): { path: string; priority: number }[] {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // The data review date: that is when the content actually changes.
-  const lastModified = new Date(`${DATA.meta.updated}T00:00:00Z`)
   return sitePaths().flatMap(({ path, priority }) => {
+    // When this page's facts were last checked, the same date as its dateModified.
+    const lastModified = new Date(`${pageUpdated(path)}T00:00:00Z`)
     const languages = { ar: absoluteUrl("ar", path), en: absoluteUrl("en", path), "x-default": absoluteUrl("ar", path) }
     return (["ar", "en"] as const).map((locale) => ({
       url: absoluteUrl(locale, path),

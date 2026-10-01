@@ -65,3 +65,20 @@ test("titles are unique per language and descriptions are search-snippet sized",
     assert.ok(seo.airline.title.includes("{airline}"))
   }
 })
+
+test("Arabic and English message templates use the same placeholders", () => {
+  // A placeholder in one language that the code never fills shows on the page as
+  // literal "{passport}". Both languages must ask for exactly the same values.
+  const holes = (t: string) => [...t.matchAll(/\{(\w+)\}/g)].map((x) => x[1]).sort().join(",")
+  const walk = (ar: unknown, en: unknown, at: string) => {
+    if (typeof ar === "string") {
+      assert.equal(typeof en, "string", `${at}: English is missing`)
+      assert.equal(holes(ar), holes(en as string), `${at}: placeholders differ between Arabic and English`)
+      return
+    }
+    if (ar && typeof ar === "object") {
+      for (const k of Object.keys(ar)) walk((ar as Record<string, unknown>)[k], (en as Record<string, unknown>)?.[k], `${at}.${k}`)
+    }
+  }
+  walk(getMessages("ar"), getMessages("en"), "messages")
+})

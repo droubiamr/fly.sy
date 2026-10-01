@@ -1,4 +1,5 @@
-import { DATA } from "./data"
+import { DATA, pageUpdated } from "./data"
+import { DATA_FILES, dataFileUrl } from "./open-data"
 import { absoluteUrl, LANG_TAG, SITE_NAME, SITE_URL } from "./site"
 import type { Entry, Locale, Text } from "./types"
 
@@ -57,7 +58,7 @@ export function webPageLd(locale: Locale, { path, name, description }: { path: s
     description,
     inLanguage: LANG_TAG[locale],
     isPartOf: { "@id": WEBSITE_ID },
-    dateModified: DATA.meta.updated,
+    dateModified: pageUpdated(path),
     publisher: { "@id": ORG_ID },
   }
 }
@@ -105,6 +106,32 @@ export function datasetLd(locale: Locale) {
     inLanguage: ["ar", "en"],
     spatialCoverage: { "@type": "Place", name: "Syria", address: { "@type": "PostalAddress", addressCountry: "SY" } },
     keywords: ["Syria", "travel", "border crossings", "airports", "flights", "visa", "سوريا", "معابر", "مطارات"],
+    distribution: DATA_FILES.map((f) => ({
+      "@type": "DataDownload",
+      name: f.name[locale],
+      encodingFormat: "application/json",
+      contentUrl: dataFileUrl(f.id),
+    })),
+  }
+}
+
+/** The About page's questions, exactly as shown on it. */
+export function faqLd(faqs: readonly { q: string; a: string }[]) {
+  return {
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  }
+}
+
+/** The routes a route page lists, in the order it lists them, each pointing at its airline's or entry's page. */
+export function routeListLd(locale: Locale, path: string, name: string, items: { name: string; path: string }[]) {
+  return {
+    "@type": "ItemList",
+    "@id": `${absoluteUrl(locale, path)}#routes`,
+    name,
+    numberOfItems: items.length,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, url: absoluteUrl(locale, it.path) })),
   }
 }
 

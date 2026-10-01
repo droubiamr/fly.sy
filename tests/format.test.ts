@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { formatDate, formatHours, formatMinutes } from "../src/lib/format.ts"
+import { formatDate, formatHours, formatHoursText, formatMinutes } from "../src/lib/format.ts"
 
 const EASTERN = /[٠-٩۰-۹]/
 
@@ -28,4 +28,11 @@ test("data files carry Western digits only, Arabic text included", async () => {
     const hit = text.match(/[٠-٩۰-۹٫٬]/)
     assert.equal(hit, null, `data/${f} contains an Eastern Arabic digit or separator: ${hit?.[0]}`)
   }
+})
+
+test("hours in running text drop the tilde and spell the unit", () => {
+  assert.equal(formatHoursText(2.7, "en"), "2.7 hours")
+  assert.equal(formatHoursText(1, "en"), "1 hour")
+  assert.equal(formatHoursText(2.5, "ar").replace(/[.,٫]/, "."), "2.5 ساعة")
+  assert.doesNotMatch(formatHoursText(2.5, "ar"), EASTERN)
 })
