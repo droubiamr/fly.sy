@@ -41,10 +41,19 @@ npm run dev
   the adapter doesn't store them by: Next 16.3.8 does, so `next` stays at 16.3.7 until `@opennextjs/cloudflare`
   supports it (`tests/worker-cache.test.ts` fails otherwise). After any Next or adapter upgrade, `npm run preview`
   and check that pages come back with `x-nextjs-cache: HIT`.
-- `data/meta.json → updated` feeds `lastmod` in the sitemap and `dateModified` in the structured data, so bumping it
-  after a review pass is what tells search engines the site moved.
-- Structured data: `WebSite`, `Organization` and a `Dataset` (the CC BY-SA data) on the home and about pages;
-  `BreadcrumbList` and `WebPage` everywhere; `Airport`, `Place` and `Airline` on their pages.
+- Each page's `lastmod` in the sitemap and `dateModified` in its structured data is the newest `seen` date among the
+  facts it shows (`pageUpdated` in `src/lib/data.ts`), capped at `data/meta.json → updated`. Bumping `seen` on a line
+  you re-checked is what tells search engines that page moved.
+- Route pages open with one sentence that answers the page (`answerText` in `plan-view.tsx`, the pick in `answerFor`
+  in `src/lib/plan.ts`): the fastest running route, its time and check date. It is what snippets and AI assistants
+  quote, and it doubles as the WebPage description.
+- For AI assistants: `/llms.txt` (an index of the site) and `/llms-full.txt` (every fact with its source and date),
+  written from `data/` at build time by `src/lib/llms.ts`. The data itself is at `/data/{entries,arrivals,airlines,needs,roads,origins,cities,sources}.json`
+  (`src/lib/open-data.ts`) and listed in the Dataset markup. All of them are `noindex`, since the pages already
+  cover them in search.
+- Structured data: `WebSite`, `Organization` and a `Dataset` (with its JSON downloads) on the home and about pages;
+  `FAQPage` on about; `BreadcrumbList` and `WebPage` everywhere; an `ItemList` of the routes on route pages;
+  `Airport`, `Place` and `Airline` on their pages.
 - Search Console: `public/google….html` serves the HTML-file verification. Submit `https://fly.sy/sitemap.xml`.
 
 ## Where things live

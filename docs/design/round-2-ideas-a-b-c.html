@@ -1,0 +1,582 @@
+<title>fly.sy Visual Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@500..800&family=Noto+Sans+Arabic:wght@400..700&family=Noto+Sans:wght@400..700&family=Rubik:wght@400..700&display=swap">
+<style>/* Layout: a neutral reading column, then three equal columns (one per direction) that stack on a phone.
+   The page chrome stays deliberately plain so it doesn't favour any of the three looks. */
+:root {
+  --pg-bg: #f3f4f5;
+  --pg-fg: #16181b;
+  --pg-muted: #5d636b;
+  --pg-line: #dfe2e6;
+  --pg-card: #ffffff;
+  --pg-font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --pg-bg: #0f1113; --pg-fg: #e9ebee; --pg-muted: #a1a8b1; --pg-line: #2a2e33; --pg-card: #171a1d; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --pg-bg: #0f1113; --pg-fg: #e9ebee; --pg-muted: #a1a8b1; --pg-line: #2a2e33; --pg-card: #171a1d; color-scheme: dark; }
+
+/* ---------- Direction tokens ---------- */
+.dir-a {
+  --bg: #f2f3f1; --surface: #ffffff; --ink: #111315; --muted: #5a6068; --line: #dcdfe2; --input: #c9cdd2;
+  --accent: #111315; --on-accent: #ffffff; --soft: #eceef0; --signal: #ffcd00; --on-signal: #111315;
+  --head-bg: #111315; --head-fg: #ffffff;
+  --open: #12813a; --open-bg: #e3f3e8; --caution: #9e5a00; --caution-bg: #fff1cc; --closed: #c42b1c; --closed-bg: #fde8e6; --unknown: #5a6068; --unknown-bg: #eceef0;
+  --font: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-head: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --r: 6px; --r-sm: 4px;
+}
+.dir-b {
+  --bg: #eae8e3; --surface: #f8f7f4; --ink: #202329; --muted: #5f636a; --line: #d6d2c9; --input: #bfbaaf;
+  --accent: #1d46a4; --on-accent: #ffffff; --soft: #e3e9f7; --signal: #1d46a4; --on-signal: #ffffff;
+  --head-bg: #202329; --head-fg: #eae8e3;
+  --open: #1b7a50; --open-bg: #ddefe5; --caution: #8f5a06; --caution-bg: #f6ebd3; --closed: #b3261e; --closed-bg: #f6e0dd; --unknown: #5f636a; --unknown-bg: #e2e0da;
+  --font: "Noto Sans", "Noto Sans Arabic", system-ui, sans-serif;
+  --font-head: "Noto Kufi Arabic", "Noto Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --r: 12px; --r-sm: 8px;
+}
+.dir-c {
+  --bg: #edf1f6; --surface: #ffffff; --ink: #0e1e36; --muted: #566880; --line: #d9e1eb; --input: #c3cfdd;
+  --accent: #1f6fe0; --on-accent: #ffffff; --soft: #e4eefc; --signal: #ffffff; --on-signal: #0e1e36;
+  --head-bg: #ffffff; --head-fg: #0e1e36;
+  --open: #12805a; --open-bg: #def3ea; --caution: #9a5800; --caution-bg: #fcefd8; --closed: #c8322a; --closed-bg: #fce6e4; --unknown: #566880; --unknown-bg: #e7ecf2;
+  --font: "Rubik", system-ui, sans-serif;
+  --font-head: "Rubik", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --r: 18px; --r-sm: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dir-a {
+    --bg: #0f1113; --surface: #181b1e; --ink: #f2f3f1; --muted: #a3aab2; --line: #2a2f34; --input: #3a4047;
+    --accent: #f2f3f1; --on-accent: #111315; --soft: #22262a; --head-bg: #000000; --head-fg: #ffffff;
+    --open: #4cc27a; --open-bg: #13301f; --caution: #f2b13b; --caution-bg: #33270c; --closed: #ff7b6e; --closed-bg: #3a1714; --unknown: #a3aab2; --unknown-bg: #22262a;
+  }
+  :root:not([data-theme="light"]) .dir-b {
+    --bg: #16181c; --surface: #1f2227; --ink: #eceae4; --muted: #a8a9a6; --line: #31353b; --input: #444950;
+    --accent: #7e9cf5; --on-accent: #0f1630; --soft: #1e2a4a; --signal: #2c4fa8; --on-signal: #ffffff; --head-bg: #0e0f12; --head-fg: #eceae4;
+    --open: #5cc492; --open-bg: #14301f; --caution: #e4ae4f; --caution-bg: #33280f; --closed: #f08a80; --closed-bg: #3a1a17; --unknown: #a8a9a6; --unknown-bg: #262a30;
+  }
+  :root:not([data-theme="light"]) .dir-c {
+    --bg: #0b1424; --surface: #12203a; --ink: #e8eef7; --muted: #9eb0c8; --line: #23334f; --input: #33476a;
+    --accent: #6aa6ff; --on-accent: #0b1424; --soft: #17305a; --signal: #12203a; --on-signal: #e8eef7; --head-bg: #12203a; --head-fg: #e8eef7;
+    --open: #4fcb98; --open-bg: #10332a; --caution: #edb34e; --caution-bg: #33280f; --closed: #ff8a80; --closed-bg: #3a1a1a; --unknown: #9eb0c8; --unknown-bg: #1c2a44;
+  }
+}
+:root[data-theme="dark"] .dir-a {
+  --bg: #0f1113; --surface: #181b1e; --ink: #f2f3f1; --muted: #a3aab2; --line: #2a2f34; --input: #3a4047;
+  --accent: #f2f3f1; --on-accent: #111315; --soft: #22262a; --head-bg: #000000; --head-fg: #ffffff;
+  --open: #4cc27a; --open-bg: #13301f; --caution: #f2b13b; --caution-bg: #33270c; --closed: #ff7b6e; --closed-bg: #3a1714; --unknown: #a3aab2; --unknown-bg: #22262a;
+}
+:root[data-theme="dark"] .dir-b {
+  --bg: #16181c; --surface: #1f2227; --ink: #eceae4; --muted: #a8a9a6; --line: #31353b; --input: #444950;
+  --accent: #7e9cf5; --on-accent: #0f1630; --soft: #1e2a4a; --signal: #2c4fa8; --on-signal: #ffffff; --head-bg: #0e0f12; --head-fg: #eceae4;
+  --open: #5cc492; --open-bg: #14301f; --caution: #e4ae4f; --caution-bg: #33280f; --closed: #f08a80; --closed-bg: #3a1a17; --unknown: #a8a9a6; --unknown-bg: #262a30;
+}
+:root[data-theme="dark"] .dir-c {
+  --bg: #0b1424; --surface: #12203a; --ink: #e8eef7; --muted: #9eb0c8; --line: #23334f; --input: #33476a;
+  --accent: #6aa6ff; --on-accent: #0b1424; --soft: #17305a; --signal: #12203a; --on-signal: #e8eef7; --head-bg: #12203a; --head-fg: #e8eef7;
+  --open: #4fcb98; --open-bg: #10332a; --caution: #edb34e; --caution-bg: #33280f; --closed: #ff8a80; --closed-bg: #3a1a1a; --unknown: #9eb0c8; --unknown-bg: #1c2a44;
+}
+
+/* ---------- Page chrome ---------- */
+* { box-sizing: border-box; }
+body { background: var(--pg-bg); color: var(--pg-fg); font-family: var(--pg-font); font-size: 16px; line-height: 1.6; padding-inline: 16px; padding-block: 40px 80px; -webkit-font-smoothing: antialiased; }
+.page { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+.prose { max-width: 68ch; }
+h1, h2, h3, h4 { text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(32px, 5vw, 44px); line-height: 1.12; letter-spacing: -0.02em; }
+h2 { font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pg-muted); }
+.lede { font-size: 19px; line-height: 1.55; }
+.muted { color: var(--pg-muted); }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.stack-lg { display: flex; flex-direction: column; gap: 24px; }
+svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+.dirs { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 56px 32px; align-items: start; }
+.dir { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.dir-h { display: flex; align-items: center; gap: 14px; }
+.dir-h .k { width: 40px; height: 40px; border-radius: 50%; background: var(--pg-fg); color: var(--pg-bg); display: grid; place-items: center; font-weight: 700; font-size: 18px; flex: none; }
+.dir-h .muted { font-size: 15px; }
+.pitch { font-size: 15.5px; }
+.type-note { font-size: 14px; color: var(--pg-muted); }
+.type-note b { color: var(--pg-fg); font-weight: 600; }
+.pros { display: grid; gap: 8px; font-size: 14.5px; }
+.pros ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.pros li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start; }
+.pros li svg { margin-top: 4px; font-size: 15px; }
+.pros .good svg { color: #1f8a4c; }
+.pros .watch svg { color: #b0700a; }
+.pros .watch li span { color: var(--pg-muted); }
+
+.sw { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; font-size: 11.5px; color: var(--pg-muted); line-height: 1.3; }
+.sw li { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.sw span { display: block; height: 36px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgb(127 127 127 / 0.25); }
+.swwrap { font-family: var(--pg-font); }
+
+.spec { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 6px; font-family: var(--font); }
+.spec-ar { font-family: var(--font-head); font-size: 26px; font-weight: 700; line-height: 1.4; }
+.spec-en { font-family: var(--font-head); font-size: 19px; font-weight: 600; color: var(--muted); }
+.spec-num { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+.spec-num span:first-child { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.spec-num .mono { font-size: 13px; color: var(--muted); }
+.spec-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+.same { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px 32px; }
+.same li { display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--pg-line); padding-top: 14px; }
+.same b { font-weight: 600; }
+.same span { font-size: 15px; color: var(--pg-muted); }
+
+/* ---------- Phone mockup, shared structure ---------- */
+.phone { width: 100%; max-width: 375px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; font-family: var(--font); font-size: 15px; line-height: 1.5; box-shadow: 0 0 0 6px var(--pg-card), 0 0 0 7px var(--pg-line); margin: 7px; width: calc(100% - 14px); }
+.mono { font-family: var(--mono); font-size: 0.92em; }
+.ph-head { display: flex; align-items: center; gap: 10px; padding: 14px 18px; background: var(--head-bg); color: var(--head-fg); border-bottom: 1px solid var(--line); }
+.logo { font-weight: 700; font-size: 19px; letter-spacing: -0.02em; font-family: var(--font); }
+.logo span { color: var(--accent); }
+.grow { flex: 1; }
+.icon-btn { width: 34px; height: 34px; border-radius: var(--r-sm); display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--head-fg) 22%, transparent); font-size: 16px; }
+.chip-btn { display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: var(--r-sm); border: 1px solid color-mix(in srgb, var(--head-fg) 22%, transparent); font-size: 13px; font-weight: 500; }
+.ablaq { display: none; }
+.ph-body { padding: 20px 18px 24px; display: flex; flex-direction: column; gap: 18px; }
+.ask { font-family: var(--font-head); font-size: 19px; font-weight: 600; line-height: 2.15; }
+.combo { display: inline-flex; align-items: center; gap: 6px; padding: 1px 10px; border-radius: var(--r-sm); border: 1px solid var(--input); background: var(--surface); line-height: 1.6; font-family: var(--font); }
+.combo svg { color: var(--muted); font-size: 14px; }
+.flag { width: 20px; height: auto; border-radius: 2px; display: inline-block; box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08); }
+.seg-label { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--soft); border-radius: var(--r); padding: 4px; gap: 4px; }
+.seg span { text-align: center; font-size: 13px; font-weight: 500; padding: 8px 4px; border-radius: calc(var(--r) - 3px); color: var(--muted); line-height: 1.3; }
+.seg span.on { background: var(--surface); color: var(--ink); font-weight: 700; }
+.sec-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.sec-h h4 { font-family: var(--font-head); font-size: 18px; font-weight: 700; }
+.sec-h small { font-size: 12.5px; color: var(--muted); }
+
+.best { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.best-head { background: var(--signal); color: var(--on-signal); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.best-top { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 12px; align-items: center; }
+.pict { width: 42px; height: 42px; border-radius: var(--r-sm); display: grid; place-items: center; font-size: 22px; background: var(--on-signal); color: var(--signal); }
+.best-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; line-height: 1.3; }
+.best-sub { font-size: 13px; opacity: 0.85; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 2px; }
+.fast { font-size: 11.5px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--on-signal); color: var(--signal); }
+.best-time { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.best-time b { font-size: 34px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.best-time small { font-size: 13px; opacity: 0.85; }
+.codes, .perf { display: none; }
+
+.flights { list-style: none; margin: 0; padding: 0 16px 4px; }
+.flights li { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 10px 0; font-size: 14px; }
+.flights li + li { border-top: 1px solid var(--line); }
+.flights li img { width: 26px; height: 26px; border-radius: 7px; border: 1px solid var(--line); background: #fff; padding: 3px; object-fit: contain; }
+.flights .who { min-width: 0; }
+.flights .who b { font-weight: 600; }
+.flights .who span { color: var(--muted); }
+.flights .t { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+.flights .detail { grid-column: 2 / -1; font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; line-height: 1.55; }
+.flights .more .who { color: var(--accent); font-weight: 600; font-size: 13.5px; }
+.trust { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--open); font-weight: 500; }
+
+.ways { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.way { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; }
+.way + .way { border-top: 1px solid var(--line); }
+.way-ico { width: 38px; height: 38px; border-radius: var(--r-sm); display: grid; place-items: center; background: var(--soft); color: var(--ink); font-size: 18px; }
+.way-title { font-weight: 600; font-size: 15px; line-height: 1.3; font-family: var(--font-head); }
+.way-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.way-time { text-align: end; line-height: 1.2; }
+.way-time b { display: block; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.way-time small { font-size: 11px; color: var(--muted); }
+
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--open); display: inline-block; flex: none; }
+.st { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--open); }
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; line-height: 1.5; }
+.pill svg { font-size: 13px; }
+.pill.unk { color: var(--unknown); background: var(--unknown-bg); }
+.pill.caution { color: var(--caution); background: var(--caution-bg); }
+.pill.closed { color: var(--closed); background: var(--closed-bg); }
+
+.check { list-style: none; margin: 0; padding: 4px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+.check li { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 11px 0; font-size: 14px; line-height: 1.55; }
+.check li + li { border-top: 1px solid var(--line); }
+.box { width: 18px; height: 18px; border: 1.5px solid var(--input); border-radius: 5px; margin-top: 3px; }
+.info-btn { color: var(--muted); font-size: 16px; margin-top: 3px; }
+
+.tabbar { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding: 8px 4px 14px; }
+.tabbar span { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; color: var(--muted); font-weight: 500; }
+.tabbar svg { font-size: 21px; }
+.tabbar .on { color: var(--ink); font-weight: 700; }
+
+/* ---------- A · Wayfinding: signage band, yellow answer panel, black pictogram squares ---------- */
+.phone.dir-a .logo span { color: var(--signal); }
+.phone.dir-a .combo { border-width: 2px; border-color: var(--ink); }
+.phone.dir-a .seg { background: var(--surface); border: 2px solid var(--ink); padding: 0; gap: 0; border-radius: var(--r); }
+.phone.dir-a .seg span { border-radius: 0; color: var(--ink); }
+.phone.dir-a .seg span.on { background: var(--ink); color: var(--on-accent); }
+.phone.dir-a .best { border: 2px solid var(--ink); }
+.phone.dir-a .best-head { color: #111315; background: var(--signal); }
+.phone.dir-a .pict { background: #111315; color: var(--signal); }
+.phone.dir-a .fast { background: #111315; color: var(--signal); }
+.phone.dir-a .best-time b { font-size: 38px; }
+.phone.dir-a .way-ico { background: var(--accent); color: var(--on-accent); }
+.phone.dir-a .pill { border-radius: var(--r-sm); }
+.phone.dir-a .tabbar .on { box-shadow: inset 0 3px 0 var(--signal); margin-top: -8px; padding-top: 8px; }
+.spec.dir-a .spec-num span:first-child { background: var(--signal); color: #111315; padding: 0 8px; border-radius: var(--r-sm); }
+
+/* ---------- B · Damascene stone: ablaq bands, cobalt answer, Kufic headings ---------- */
+.phone.dir-b .ablaq, .dir-b .best-head::before { display: block; height: 12px; background: repeating-linear-gradient(to bottom, var(--ink) 0 4px, var(--bg) 4px 8px); }
+.phone.dir-b .logo span { color: #9fb6f2; }
+.phone.dir-b .best { border: 0; }
+.phone.dir-b .best-head { position: relative; padding-top: 28px; }
+.dir-b .best-head::before { content: ""; position: absolute; inset: 0 0 auto 0; background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.9) 0 3px, transparent 3px 6px); height: 9px; }
+.phone.dir-b .pict { border-radius: 50%; background: var(--surface); color: var(--accent); }
+.phone.dir-b .fast { background: rgb(255 255 255 / 0.18); color: #fff; }
+.phone.dir-b .flights { border: 1px solid var(--line); border-top: 0; border-radius: 0 0 var(--r) var(--r); }
+.phone.dir-b .seg span.on { background: var(--accent); color: var(--on-accent); }
+.phone.dir-b .sec-h h4, .phone.dir-b .ask { letter-spacing: 0; }
+.phone.dir-b .tabbar .on { color: var(--accent); }
+.phone.dir-b .way-ico { background: var(--soft); color: var(--accent); border-radius: 50%; }
+
+/* ---------- C · Boarding pass: ticket with codes and a tear line ---------- */
+.phone.dir-c .ph-head { border-bottom: 1px solid var(--line); }
+.phone.dir-c .combo { border-radius: 999px; background: var(--soft); border-color: transparent; }
+.phone.dir-c .seg { background: transparent; padding: 0; gap: 6px; }
+.phone.dir-c .seg span { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; }
+.phone.dir-c .seg span.on { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.phone.dir-c .best { border: 0; background: transparent; overflow: visible; }
+.phone.dir-c .best-head { background: var(--surface); color: var(--ink); border-radius: var(--r) var(--r) 0 0; padding: 18px 18px 14px; }
+.phone.dir-c .pict { background: var(--soft); color: var(--accent); border-radius: 50%; }
+.phone.dir-c .fast { background: var(--accent); color: var(--on-accent); }
+.phone.dir-c .codes { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 4px 2px; }
+.phone.dir-c .codes span { display: flex; flex-direction: column; line-height: 1.1; }
+.phone.dir-c .codes span:last-child { text-align: end; }
+.phone.dir-c .codes b { font-family: var(--mono); font-size: 30px; font-weight: 600; letter-spacing: 0.02em; }
+.phone.dir-c .codes small { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.phone.dir-c .codes-line { display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 18px; border-top: 2px dotted var(--input); height: 0; }
+.phone.dir-c .codes-line svg { background: var(--surface); padding: 0 6px; width: 30px; height: 18px; margin-top: -1px; }
+.phone.dir-c .perf { display: block; height: 22px; position: relative; background: var(--surface); }
+.phone.dir-c .perf::before { content: ""; position: absolute; inset: 50% 16px auto; border-top: 2px dashed var(--line); }
+.phone.dir-c .perf::after { content: ""; position: absolute; inset: 0 -11px; background: radial-gradient(circle at 0 50%, var(--bg) 10px, transparent 10.5px), radial-gradient(circle at 100% 50%, var(--bg) 10px, transparent 10.5px); }
+.phone.dir-c .flights { background: var(--surface); border-radius: 0 0 var(--r) var(--r); padding-bottom: 8px; }
+.phone.dir-c .flights .mono { color: var(--ink); }
+.phone.dir-c .ways, .phone.dir-c .check { border-color: transparent; }
+.phone.dir-c .way-ico { border-radius: 50%; color: var(--accent); }
+.phone.dir-c .tabbar .on { color: var(--accent); }
+.phone.dir-c .tabbar .on svg { background: var(--soft); border-radius: 999px; padding: 3px 14px; width: 50px; height: 28px; margin-top: -4px; }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+    <symbol id="car" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></symbol>
+    <symbol id="down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+    <symbol id="warn" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="landmark" viewBox="0 0 24 24"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M12 2 20 7H4z"/></symbol>
+    <symbol id="file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+    <symbol id="chat" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></symbol>
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></symbol>
+    <symbol id="eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  </defs>
+</svg>
+
+<main class="page">
+  <header class="stack-lg">
+    <p class="eyebrow">fly.sy · Redesign, round 2 · 1 October 2026</p>
+    <h1>Three looks for the new fly.sy</h1>
+    <div class="stack prose">
+      <p class="lede">You asked for a new visual identity on top of the new structure. Here is the same route page, Türkiye to Damascus, in three directions. The layout is the one from the plan; only the look changes.</p>
+      <p class="muted">They are in Arabic because most visitors see Arabic first, and a look that fails in Arabic fails the site. All three come in light and dark; switch your device’s theme to see the other. Already decided: sources one tap away, the new tabs, and site-wide search. The structure, the search-engine safeguards and the order of work are in the <a href="https://claude.ai/artifact/MhTEoD6w1eAKLddVcH1QTg" style="color:inherit">full plan</a>.</p>
+    </div>
+  </header>
+
+  <section class="dirs" aria-label="Three visual directions">
+    
+    <article class="dir" aria-labelledby="h-dir-a">
+      <div class="dir-h">
+        <span class="k">A</span>
+        <div><h2 id="h-dir-a">Wayfinding</h2><p class="muted" dir="rtl" lang="ar">لوحة الإرشاد</p></div>
+      </div>
+      
+<div class="phone dir-a" dir="rtl" lang="ar" role="img" aria-label="Direction A, Wayfinding: the route page on a phone">
+  <div class="ph-head">
+    <span class="logo" dir="ltr">fly<span>.sy</span></span>
+    <span class="grow"></span>
+    <span class="icon-btn"><svg class="i " aria-hidden="true"><use href="#search"/></svg></span>
+    <span class="chip-btn" dir="ltr">English</span>
+  </div>
+  <div class="ablaq" aria-hidden="true"></div>
+  <div class="ph-body">
+    <p class="ask">أنا في <span class="combo"><img class="flag" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTMgMzQyIj48cGF0aCBmaWxsPSIjRTMwQTE3IiBkPSJNMCAwaDUxM3YzNDJIMHoiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMjU5LjcgMTE4LjZjLTEzLjEtOS41LTI5LTE0LjYtNDUuMy0xNC41LTQwLjggMC03My44IDMwLjgtNzMuOCA2OC45czMzLjEgNjguOSA3My44IDY4LjljMTcuMSAwIDMyLjktNS40IDQ1LjMtMTQuNS0zMCAzOC42LTg1LjcgNDUuNi0xMjQuMyAxNS41cy00NS42LTg1LjctMTUuNS0xMjQuMyA4NS43LTQ1LjYgMTI0LjMtMTUuNWM1LjggNC41IDExIDkuOCAxNS41IDE1LjV6bTM5LjkgNjUuOC0xOC4xIDIxLjkgMS4yLTI4LjQtMjYuNC0xMC40IDI3LjMtNy42IDEuOC0yOC4zIDE1LjYgMjMuNyAyNy41LTcuMS0xNy41IDIyIDE1LjMgMjMuOS0yNi43LTkuN3oiLz48L3N2Zz4=" alt=""> تركيا <svg class="i " aria-hidden="true"><use href="#down"/></svg></span> وأريد الوصول إلى <span class="combo">دمشق <svg class="i " aria-hidden="true"><use href="#down"/></svg></span></p>
+    <div>
+      <p class="seg-label">جوازي</p>
+      <div class="seg"><span class="on">سوري</span><span>تأشيرة عند الوصول</span><span>موافقة مسبقة</span></div>
+    </div>
+
+    <div class="sec-h"><h4>3 طرق للوصول</h4><small>الأسرع أولاً</small></div>
+
+    <div class="best">
+      <div class="best-head">
+        <div class="best-top">
+          <span class="pict"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span>
+          <div class="best-txt"><p class="best-title">طيران إلى دمشق</p><p class="best-sub"><span class="fast">الأسرع</span> 7 رحلات من إسطنبول وأنقرة ومرسين</p></div>
+        </div>
+        <div class="codes" dir="ltr"><span><b>IST</b><small>Istanbul</small></span><span class="codes-line"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span><span><b>DAM</b><small>Damascus</small></span></div>
+        <div class="best-time"><b>2 س 40 د</b><small>من الباب إلى الباب</small></div>
+      </div>
+      <div class="perf" aria-hidden="true"></div>
+      <ul class="flights">
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>أجيت</b> <span>· أنقرة</span></span><span class="t">2 س 20 <span class="dot"></span></span></li>
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>الخطوط التركية</b> <span>· إسطنبول</span></span><span class="t">2 س 40 <span class="dot"></span></span>
+          <span class="detail">
+            <span>مرتان يومياً (<span class="mono" dir="ltr">TK846</span> و<span class="mono" dir="ltr">TK848</span>) على لوحة المطار حتى 31 تشرين الأول.</span>
+            <span class="trust"><svg class="i " aria-hidden="true"><use href="#shield"/></svg> متحقق · موقع مطار دمشق الرسمي · روجع 30 أيلول 2026</span>
+          </span>
+        </li>
+        <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAABGCAYAAABxLuKEAAAGtUlEQVR4Ae3bQ9gcWRhA4ZmfsTk2Ytu2rbEV27Zt27Zt23Y6dn9zFndxn3rSTFV3UIt306rbp1G39I6IGNlgR7DD2GHsMHYYO4wdxg5jh/Egyy8jP0BmFMeP+F75ATWQH6kQ540Po4KkQHV0wyLswjEcVY7hMLZgCpqgEOK+UWFUjG/QGFvwAOKHMxiDogh9bcOoIGkxGncgmn0Yh0aohNxIrmRASfyDgViDuxDNJlRDyGsVhgG/jwF4BFEOohXSIpqPr/chfsFSOCHKSmQJSBgWFI5IRCihPr6JKjgJUQ7gN8QwKXpWTNECPUErhFodJitm4xYu4xAmogrC1eBiItww4OjoA1Eeoz1iW/S/lQebIMocJLYyTCg+RQ/ch/G3XRL/YhemIAc+xlqIsh85A7CGi0Q7iLID71kSxrDgrzEBonmMBigHBwQXIcosJLI4inGcleHQ4rxvaRhtwUWwH6JphA9xFKL0158X4DjZcAmCzYhleRi14HgYDtE0Q1IchGA5Pg5inFy4A8HEgK6u1TflqZs4J5E7iHGqQpS/AhZGLbw+xBDnPS3OXfwcxDg9IXDgy0CGGQQx+BcJDWunUUgahDAxsBeCyYH6KWXDEwhGYjlE+RURaI0rEFxHXSQOcJxiEDxHlkCEmQ3BKURHbGyAKLW03QrV0R2DUBlhAY6zBIIZloZhAWnwBILfDdtGRyF4hMrqvqBS0wzBYyS3MkwvCM4jruG+LLinDaTsKxAmDLsgaGXVPCYGjkDQx8VjGkIUB/K+AnGaQLATIVaEyQynktfFY8INa6WbyBfkMOngxCN8bUWYBhCcRXw3j0tt2Et3D1WDGCYSRyGoZkWYCRAs8WIw7SGaJ/gxiHGmQdDZ7I3Id7ERgt5eDCQWDkMMWvvwZt5DOsQzIUw7CKabHSaW9sf7tw+rSifEYCbe8/DcZriOR7iCWSiLUD/D/AHBZrPDfIgbEFTxYUDDIUYqchEXz8kHcWEDSvsRpgwEpxFqZpiP4IAgvw8DioNDEBeG41PDcwZCPFiEbD6MoyQEZ60Icwvi69xETfzuQFy4hk74QD0+I5ZAPHiGscjsQ5hzCPVnoujqjo/hgPj5VS7rxYG2NciILxANBTAdTyBwoCuG4SJEsww/4T0Xyy8PwQG86+WYY6IaSiOaqwcl0Qbzq49h9MHdh7jhhOAXREM65MMU/KS9ViL8jEW4a5gzzcE/SInY6vE/QbDMixi5MQCHMAzx3f2UomIvBB1fctfjAYgbc/A5jsGJlcihnh/+gtf8DD9iIs5BNJcwH3sgOIm/UQK5UQg/oBPm4woEe1HB2wneEgjmv+ScIgE64jDWQTSDtcedhiil8Cu2oC9K4xNEuJh5/4Te2IyruI+nEBfu4BC6vuhP3fhTMt7ZXasey4RJVyji4QQEXZEWeVATDgj+xc9wQjT3sRMT0QKVkAqJEWJYVlx8g/TIgeLIhwz4AjG0rfH4SIWKGIShSOPujZTW1gZZTZyuf4ncyIbHEE19NNWjeOEOjmErVmIGJqEb2qMd2ij9MBFzsBGHcROi7EV6Tz+l93Adgk4WnUjUSVt7/YI/IS48xyUcxyOIyXogurc7qmZCcEh7ktmBsqIQikE8uITl6Ij6aIFRWIStOInrKvZziBeOoZSve/AqQ5QSFm8R18A5iJeOYxL+RR6kw5d4D5/ia6RDWiUjSqIcaqI4ciKhP7s2Y+IwBGsQYnGchGiMgxAjPMFR7MQpiOaetuabjF5ohp+1c/3KIJtZRwl+gQCB2QGlPpCiGIITEIPzWIb+GILluAvx4DIqItSMMNGxF4ITiB/gnU7xUBDdscXw3/EcO9EDP+JnDMVRiMaB9ohj9pHIYtqAhgdxz1w4UqM5NkI097ECfyIXcqMbxiCFZefgGc6e+vMVOBoQiqw4AjG4i+n6TNnKMNGwAYInKPkKxKkOBwSXIcot/I5Iy8No+2lOQXAHJYMY5Tc4IViI99ASS5Ai4Kezqs37sxA8xu9BiNIKoixGLLOX8TKnwe+GKP0QJwBBEmI8RJmF2K/UCdBqZ9YciLIXpS2MUhqHIUo/7c/VdC872BA0xB2IsgD5EWZSkCyYblgt//m6nDKfElMhmk1ohG8R6ce3sRrm4BlEWYG0r+NFFtkxw7Aj3IntGI06KI1MSK7JixrojIW4CtHsxQ8Ie90vy0mFpirIQ4gfbmM5aiHam3whV0+swF6cwXVcw3VcxEGsw2BUxVdvy6V/HyIbyuJvtEErtEEDVEMufGFfLGo6O4wdxg5jh7HD2GHsMHYY2//gtU8kwOqdNwAAAABJRU5ErkJggg==" alt=""><span class="who"><b>السورية للطيران</b> <span>· إسطنبول</span></span><span class="t">2 س 40 <span class="dot"></span></span></li>
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>بيغاسوس</b> <span>· صبيحة</span></span><span class="t"><span class="pill unk"><svg class="i " aria-hidden="true"><use href="#help"/></svg>غير معروف</span></span></li>
+        <li class="more"><span></span><span class="who">+ 3 رحلات أخرى</span><span></span></li>
+      </ul>
+    </div>
+
+    <div class="ways">
+      <div class="way">
+        <span class="way-ico"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span>
+        <div><p class="way-title">طيران إلى حلب ثم براً</p><p class="way-sub">7 رحلات · 4½ س بالسيارة</p></div>
+        <div class="way-time"><b>5 س 55 د</b><small>على الأقل</small></div>
+      </div>
+      <div class="way">
+        <span class="way-ico"><svg class="i " aria-hidden="true"><use href="#car"/></svg></span>
+        <div><p class="way-title">براً عبر باب الهوى</p><p class="way-sub">من غازي عنتاب · <span class="pill caution"><svg class="i " aria-hidden="true"><use href="#warn"/></svg>للسوريين فقط</span></p></div>
+        <div class="way-time"><b>8 س</b><small>من الباب إلى الباب</small></div>
+      </div>
+    </div>
+
+    <div class="sec-h"><h4>قبل أن تسافر</h4><small>جواز سوري، جواً</small></div>
+    <ul class="check">
+      <li><span class="box"></span><span>جواز سفر سوري ساري. إن انتهت صلاحيته في الخارج، اسأل السفارة أولاً.</span><svg class="i info-btn" aria-hidden="true"><use href="#info"/></svg></li>
+      <li><span class="box"></span><span>تعيش في أوروبا؟ قد يؤثر السفر على وضع اللجوء أو الإقامة.</span><svg class="i info-btn" aria-hidden="true"><use href="#info"/></svg></li>
+    </ul>
+  </div>
+  <nav class="tabbar">
+    <span class="on"><svg class="i " aria-hidden="true"><use href="#pin"/></svg>رحلتي</span>
+    <span><svg class="i " aria-hidden="true"><use href="#plane"/></svg>الطيران</span>
+    <span><svg class="i " aria-hidden="true"><use href="#landmark"/></svg>المعابر</span>
+    <span><svg class="i " aria-hidden="true"><use href="#file"/></svg>الأوراق</span>
+    <span><svg class="i " aria-hidden="true"><use href="#chat"/></svg>تجارب</span>
+  </nav>
+</div>
+      <p class="pitch">Borrowed from airport signs, which people read while walking, tired, in a hurry. Black type on white, one signal yellow for the answer, white pictograms in black squares. The answer is impossible to miss.</p>
+      
+<div class="spec dir-a">
+  <p class="spec-ar" dir="rtl" lang="ar">كيف تصل إلى سوريا اليوم</p>
+  <p class="spec-en">How to get to Syria today</p>
+  <p class="spec-num"><span>2 h 40</span> <span class="mono">TK846 · IST → DAM</span></p>
+  <p class="spec-pills" dir="rtl" lang="ar"><span class="st"><span class="dot"></span>يعمل</span><span class="pill caution"><svg class="i " aria-hidden="true"><use href="#warn"/></svg>بشروط</span><span class="pill closed"><svg class="i " aria-hidden="true"><use href="#x"/></svg>مغلق</span><span class="pill unk"><svg class="i " aria-hidden="true"><use href="#help"/></svg>غير معروف</span></p>
+</div>
+      <div class="dir-a swwrap"><ul class="sw"><li><span style="background:var(--ink)"></span>Ink</li><li><span style="background:var(--signal)"></span>Signal yellow</li><li><span style="background:var(--bg)"></span>Ground</li><li><span style="background:var(--surface)"></span>Surface</li><li><span style="background:var(--open)"></span>Open</li></ul></div>
+      <p class="type-note"><b>Type.</b> IBM Plex Sans Arabic and IBM Plex Sans for text, IBM Plex Mono for flight numbers and airport codes. One family across both scripts, designed by IBM and released under an open licence.</p>
+      <div class="pros">
+        <ul class="good"><li><svg class="i " aria-hidden="true"><use href="#check"/></svg><span>The most legible of the three, also for older readers and in sunlight</span></li><li><svg class="i " aria-hidden="true"><use href="#check"/></svg><span>Big, plain numbers; works well on desktop as a departures-style table</span></li></ul>
+        <ul class="watch"><li><svg class="i " aria-hidden="true"><use href="#warn"/></svg><span>Yellow has to stay rare, or it starts to read as a warning</span></li><li><svg class="i " aria-hidden="true"><use href="#warn"/></svg><span>The least specifically Syrian of the three</span></li></ul>
+      </div>
+    </article>
+    <article class="dir" aria-labelledby="h-dir-b">
+      <div class="dir-h">
+        <span class="k">B</span>
+        <div><h2 id="h-dir-b">Damascene stone</h2><p class="muted" dir="rtl" lang="ar">حجر دمشقي</p></div>
+      </div>
+      
+<div class="phone dir-b" dir="rtl" lang="ar" role="img" aria-label="Direction B, Damascene stone: the route page on a phone">
+  <div class="ph-head">
+    <span class="logo" dir="ltr">fly<span>.sy</span></span>
+    <span class="grow"></span>
+    <span class="icon-btn"><svg class="i " aria-hidden="true"><use href="#search"/></svg></span>
+    <span class="chip-btn" dir="ltr">English</span>
+  </div>
+  <div class="ablaq" aria-hidden="true"></div>
+  <div class="ph-body">
+    <p class="ask">أنا في <span class="combo"><img class="flag" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTMgMzQyIj48cGF0aCBmaWxsPSIjRTMwQTE3IiBkPSJNMCAwaDUxM3YzNDJIMHoiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMjU5LjcgMTE4LjZjLTEzLjEtOS41LTI5LTE0LjYtNDUuMy0xNC41LTQwLjggMC03My44IDMwLjgtNzMuOCA2OC45czMzLjEgNjguOSA3My44IDY4LjljMTcuMSAwIDMyLjktNS40IDQ1LjMtMTQuNS0zMCAzOC42LTg1LjcgNDUuNi0xMjQuMyAxNS41cy00NS42LTg1LjctMTUuNS0xMjQuMyA4NS43LTQ1LjYgMTI0LjMtMTUuNWM1LjggNC41IDExIDkuOCAxNS41IDE1LjV6bTM5LjkgNjUuOC0xOC4xIDIxLjkgMS4yLTI4LjQtMjYuNC0xMC40IDI3LjMtNy42IDEuOC0yOC4zIDE1LjYgMjMuNyAyNy41LTcuMS0xNy41IDIyIDE1LjMgMjMuOS0yNi43LTkuN3oiLz48L3N2Zz4=" alt=""> تركيا <svg class="i " aria-hidden="true"><use href="#down"/></svg></span> وأريد الوصول إلى <span class="combo">دمشق <svg class="i " aria-hidden="true"><use href="#down"/></svg></span></p>
+    <div>
+      <p class="seg-label">جوازي</p>
+      <div class="seg"><span class="on">سوري</span><span>تأشيرة عند الوصول</span><span>موافقة مسبقة</span></div>
+    </div>
+
+    <div class="sec-h"><h4>3 طرق للوصول</h4><small>الأسرع أولاً</small></div>
+
+    <div class="best">
+      <div class="best-head">
+        <div class="best-top">
+          <span class="pict"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span>
+          <div class="best-txt"><p class="best-title">طيران إلى دمشق</p><p class="best-sub"><span class="fast">الأسرع</span> 7 رحلات من إسطنبول وأنقرة ومرسين</p></div>
+        </div>
+        <div class="codes" dir="ltr"><span><b>IST</b><small>Istanbul</small></span><span class="codes-line"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span><span><b>DAM</b><small>Damascus</small></span></div>
+        <div class="best-time"><b>2 س 40 د</b><small>من الباب إلى الباب</small></div>
+      </div>
+      <div class="perf" aria-hidden="true"></div>
+      <ul class="flights">
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>أجيت</b> <span>· أنقرة</span></span><span class="t">2 س 20 <span class="dot"></span></span></li>
+        <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAABGCAYAAABxLuKEAAAJ2klEQVR4Ad1cA3Qs2RZ9+Pb/S5Nn27ZtW2ts27ZtKxp7JrbaVtDJS1ovnbbPP3e6buYh6HTVDWavtR87Vbf3unV8q193AQD6I6cgjyMfRmYiJchqpB0Z5GhDmpBi7jOPIE8gJyH7dRdZ3+DfyPORnyIt0AFikQgkAAsyjRP3X31NmP7IjchUpB9OQ9hmc9neeb9Kv/dAoXLB0krpuCkq0ZBRjaLzhoWQgIyIUoa5RYNH2MUjxtaqFi6rqLnimiJHaoYkaDafgjPhR2Yg1/V2YQYgDyBlwCEWCkcdH38q1u/eXyQZOd5IvjwfigeNcGi3bC9pycrWQCwGp0GKPIIc2NuEWY/UAIew1easueq6IvHgkRbyhVhQPHR0venCSwv9Wu1J+A0K5NreIMwQZHqrIBarXb1uSwkuPICEbmJMs3pDGT5qdvgNXyIH9ZQwu5FOOAteuUKl23PgF9GgEdZuEobSZ7zw0qKo20PtmgO5pzuF+TPyBeBge/8jkWLe4oqIs8UNpyEWDgds731YKJ81n+ygcLcJhIbb+toblUARX+sA1sL8B5kPiFgwGNbt3FdMFyQZNV4bamyyQRsIGE0mzfotOfi5YHcJpN+1r5gYf4jjU+QfWQmTQj0OGrwGyeiJurMXIxk6ui5QV9cI7SBYX1+n3bEni2z77hBHNmm6MnSykbr5H5B/F1qYQVw0Cl6RuBrd5qn2FiMZO1kZC4WC0DaokW7UbNiWjZ+PshYHPaPVlV+kgzhKkP8TSpj/0J3irRSZ0Kg2d7YY7abt+ZAA3IVFYunI8SrW4pCg0V1WbjzNpf+HrzB/pjbFXVFpTEQUSstLrxZDAsBUIGy+7a4sccpwFythaHDo12gbII7P+QrzIiD8BmMjiuLs4kIsUa/XAwnCr9UZJCPGaZmKM2RkQ6i+nsY71yUrzG7qfaRjJiW1YNNFl+VCFxD1+dzKxSsKWIqD4hsjTpcPAELIBV0VZggN3ojb47EQD3oFC3QRtTfd8guJaFmJo920rYTeihrjRIXJAATJhPkuAvOZHEgC9Xfdm8Vy5zR/850S4vgiUWHWAyLS3OymdoUXh4yqg1gsBkmg9vqbf2GYhDZEPa3pw/rOhBlAs2TDoWOFQi3C+eNPEkgSxiPnMxOHRO4Qhxw5sCNhDgAiUF1jETJDxnQgH5IAdefSMRNlrDJzn1xZD3Ecb0+Y/jSQU61cVyroth02xgQ8gPGHAa/jZWyIZe0Js5FbRAMDjxBDm3UKeKD2xltYGWM/KblCHGvbEiYVEMbzLypksQBH5ucVwAMYLLpF5w13slgbqSufHRGfXs33QzQKpDjN6OY5wBP6vQez2dRwRtowkI0Q80q7D1SY8wHR/PV3CmYeYMeeXOAJv95oYrU+xydpUojjGBWm9TFSr1xXwurGyqUrC4E/SA7WxKSwtf8wfZwyqTD9aTOMZVVfNnV2JQgA+fQ5ZSzWJx090UCrtVSYKYDArNPBMgTHRFQOAsBw+Hg2q5gmbLfTasBEIszxeFH7wyqmwkyaLgIBUH3ZlcxyKNt7H9A1nt+Pa7CD8dj5hSyFUcxZXCqIMBdeykwY9Ho0RXi0H2dsQD5jroSlMKqV6wtAAKjXbsxjtUb5nIVV1AATYSSAkIyeoGPbzjiQCwIAuxNKek2GBlhChKkGBEnDWQpz8tEn84AnAqbqGsZ1YRfNQIgwdkCIUka0sLypu6xCBTyBgwJZrPvgtL1LhAmSkQrGPZ4g9poCwAfRaEQ8fKyBsTDkPoAI/SpMNBCIMXXVoyaogSfMt96Z0x3dy1goBIjgaY/ScC+rm1VfdFk28ACOeJhxfZ7uGCnhRt7srcZXMmyMmdUN/RqNEZIENuaD2INmGnxSktYzDZda3bVs4lQmbpC0YCFZxGJR5ZKViQSeEfKlxMPH1EjHTlZgTFahWra6SLdzbx7pbZnvuCev6fmXihxpGRWu3AKFRyzRYaG/oY2ek4m669YAjwwCshCm/oGHk45fHBmflWvWbCzQ7zuUW3PltbkN9z+Ub3n9zZLmL78WuUvL1TheYsa5HBcKmFAzz/5JWqlm844c8ZBR5jYDvGmzpTTAa00JcICwUPCtOWx0DQ4QhaAHQGvF5lvuyJZPnVNBi/sJlh4ebk0im154WfB03vL6W0XQjYj6/R5HemapbutOsitqu7repudeLKcdA1p2IMNAjYLWX6bMrKKNNpbAYQATTkvk4K4oJ4VtPmv2iqR1EMeUMwtVaMAEGtZpwuEgKzAAxlxeRwbuih17csijKmTdl7NVFqIJLW1+Gs9cNwlR2gy5snOlgu4Knd5kvuv+HPQ25azG1NTrNtOyyKfnFMMdaZl8Sw8B+8epZcATWLH3NX/+RZl+575s8dAxbRfAGRapzmmfkBYCj8kmD3YZRJAk0PXW1N9zf45ixrxS2nXsNuKkGD6iYaIB0aLNhpt+z4Girl4Ykzu9RyTWdnFX+DEeKdfvPpCDUTc9Z9AjNOw/Qr1natstWjpWlnimHSPRJarthwSAwwI19fc/mKOYNZ/sCpr79DRjPpWaNvY3dtjUV8zvPAqWTZtd5S6v0EAHIKWG5q++rcBaKnqQMXoei2dG1ZKVFac19ft3OAbilcpIcBRpS135jHmVHdmSQG1dHUkD5LMXEA/nRkIvZtSnUJohjgMJDQ7ptuwsPn3a0Xj4eB4+ZuY2st+A89sfKjGfySa2hsHimVG9fit10RrkgIRGzciZI9OJi/NwcFjTVn3k5MOP5SrnLCwWpbDbFaznfrHB5kp01Iwy/eyaiPOHH6sMB49m01ncvk7ra2/RVkl6UuOsJx97opDGNr8XqpetpsmiEzkkqQFoMtkoHjXe8HsRhZzNxO9EC/O7+Y3MG02N9BxBnyaO55IjRRDHi4IcssCSoKavGlp6AsVVVEw7jfnIPwtyLKePi+Nr+TlLTQM5IY7lUKYgTVQcWrfpK27ZlVeggziMyBShj/4NQsq4HnKjZNQEfa8XZfi4GpL7nbZTUpgeFqXeiri9XuuSV6wtjzid3tNsyn+643jxi8DB+va7VWjt7b3HyA5vsbz6etVZx4v/3CMH0sMOh0u7YWsJTTx7iFHtlp0lJJU5LXjb3ZOvMMgADj61ph47gKQNE+tOQZQLlld6xdJaoIiH+UN63UsvfEq1GatihcQjsBKEpCnkLSN+vaEJKOJrWN8HXpMSitje/aCKdB+wAWYRwvWSa2FTTcqNuFPIuHsP6JMv1vHJFebGJ54pNRw4VqiYvUCETfha8i4GLmik9ilEzjOQl+6Ql++QGnTTS6+UYwulqY0X66Ry9+rfV1/FlEqbejxfx2ThrnU+uXZffkcVZVde3mXn/k3CfeZh7mem0J3RHfw/fPHAbwZoGcQAAAAASUVORK5CYII=" alt=""><span class="who"><b>الخطوط التركية</b> <span>· إسطنبول</span></span><span class="t">2 س 40 <span class="dot"></span></span>
+          <span class="detail">
+            <span>مرتان يومياً (<span class="mono" dir="ltr">TK846</span> و<span class="mono" dir="ltr">TK848</span>) على لوحة المطار حتى 31 تشرين الأول.</span>
+            <span class="trust"><svg class="i " aria-hidden="true"><use href="#shield"/></svg> متحقق · موقع مطار دمشق الرسمي · روجع 30 أيلول 2026</span>
+          </span>
+        </li>
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>السورية للطيران</b> <span>· إسطنبول</span></span><span class="t">2 س 40 <span class="dot"></span></span></li>
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>بيغاسوس</b> <span>· صبيحة</span></span><span class="t"><span class="pill unk"><svg class="i " aria-hidden="true"><use href="#help"/></svg>غير معروف</span></span></li>
+        <li class="more"><span></span><span class="who">+ 3 رحلات أخرى</span><span></span></li>
+      </ul>
+    </div>
+
+    <div class="ways">
+      <div class="way">
+        <span class="way-ico"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span>
+        <div><p class="way-title">طيران إلى حلب ثم براً</p><p class="way-sub">7 رحلات · 4½ س بالسيارة</p></div>
+        <div class="way-time"><b>5 س 55 د</b><small>على الأقل</small></div>
+      </div>
+      <div class="way">
+        <span class="way-ico"><svg class="i " aria-hidden="true"><use href="#car"/></svg></span>
+        <div><p class="way-title">براً عبر باب الهوى</p><p class="way-sub">من غازي عنتاب · <span class="pill caution"><svg class="i " aria-hidden="true"><use href="#warn"/></svg>للسوريين فقط</span></p></div>
+        <div class="way-time"><b>8 س</b><small>من الباب إلى الباب</small></div>
+      </div>
+    </div>
+
+    <div class="sec-h"><h4>قبل أن تسافر</h4><small>جواز سوري، جواً</small></div>
+    <ul class="check">
+      <li><span class="box"></span><span>جواز سفر سوري ساري. إن انتهت صلاحيته في الخارج، اسأل السفارة أولاً.</span><svg class="i info-btn" aria-hidden="true"><use href="#info"/></svg></li>
+      <li><span class="box"></span><span>تعيش في أوروبا؟ قد يؤثر السفر على وضع اللجوء أو الإقامة.</span><svg class="i info-btn" aria-hidden="true"><use href="#info"/></svg></li>
+    </ul>
+  </div>
+  <nav class="tabbar">
+    <span class="on"><svg class="i " aria-hidden="true"><use href="#pin"/></svg>رحلتي</span>
+    <span><svg class="i " aria-hidden="true"><use href="#plane"/></svg>الطيران</span>
+    <span><svg class="i " aria-hidden="true"><use href="#landmark"/></svg>المعابر</span>
+    <span><svg class="i " aria-hidden="true"><use href="#file"/></svg>الأوراق</span>
+    <span><svg class="i " aria-hidden="true"><use href="#chat"/></svg>تجارب</span>
+  </nav>
+</div>
+      <p class="pitch">Taken from Damascus itself: pale limestone and black basalt, the alternating stone bands (ablaq) of the Umayyad Mosque and Azm Palace, and the cobalt of Damascene tiles. Kufic headings. Recognisably Syrian, still calm.</p>
+      
+<div class="spec dir-b">
+  <p class="spec-ar" dir="rtl" lang="ar">كيف تصل إلى سوريا اليوم</p>
+  <p class="spec-en">How to get to Syria today</p>
+  <p class="spec-num"><span>2 h 40</span> <span class="mono">TK846 · IST → DAM</span></p>
+  <p class="spec-pills" dir="rtl" lang="ar"><span class="st"><span class="dot"></span>يعمل</span><span class="pill caution"><svg class="i " aria-hidden="true"><use href="#warn"/></svg>بشروط</span><span class="pill closed"><svg class="i " aria-hidden="true"><use href="#x"/></svg>مغلق</span><span class="pill unk"><svg class="i " aria-hidden="true"><use href="#help"/></svg>غير معروف</span></p>
+</div>
+      <div class="dir-b swwrap"><ul class="sw"><li><span style="background:var(--ink)"></span>Basalt</li><li><span style="background:var(--accent)"></span>Tile cobalt</li><li><span style="background:var(--bg)"></span>Limestone</li><li><span style="background:var(--surface)"></span>Surface</li><li><span style="background:var(--open)"></span>Open</li></ul></div>
+      <p class="type-note"><b>Type.</b> Noto Kufi Arabic for headings only, Noto Sans Arabic and Noto Sans for everything else. Google’s Noto project, open licence.</p>
+      <div class="pros">
+        <ul class="good"><li><svg class="i " aria-hidden="true"><use href="#check"/></svg><span>Distinctive: no other travel site looks like this</span></li><li><svg class="i " aria-hidden="true"><use href="#check"/></svg><span>Ties the site to the place; feels made by Syrians, for Syrians</span></li></ul>
+        <ul class="watch"><li><svg class="i " aria-hidden="true"><use href="#warn"/></svg><span>Kufic is a display style, so it stays on headings</span></li><li><svg class="i " aria-hidden="true"><use href="#warn"/></svg><span>Must not look official. It avoids the flag colours on purpose</span></li></ul>
+      </div>
+    </article>
+    <article class="dir" aria-labelledby="h-dir-c">
+      <div class="dir-h">
+        <span class="k">C</span>
+        <div><h2 id="h-dir-c">Boarding pass</h2><p class="muted" dir="rtl" lang="ar">بطاقة الصعود</p></div>
+      </div>
+      
+<div class="phone dir-c" dir="rtl" lang="ar" role="img" aria-label="Direction C, Boarding pass: the route page on a phone">
+  <div class="ph-head">
+    <span class="logo" dir="ltr">fly<span>.sy</span></span>
+    <span class="grow"></span>
+    <span class="icon-btn"><svg class="i " aria-hidden="true"><use href="#search"/></svg></span>
+    <span class="chip-btn" dir="ltr">English</span>
+  </div>
+  <div class="ablaq" aria-hidden="true"></div>
+  <div class="ph-body">
+    <p class="ask">أنا في <span class="combo"><img class="flag" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTMgMzQyIj48cGF0aCBmaWxsPSIjRTMwQTE3IiBkPSJNMCAwaDUxM3YzNDJIMHoiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMjU5LjcgMTE4LjZjLTEzLjEtOS41LTI5LTE0LjYtNDUuMy0xNC41LTQwLjggMC03My44IDMwLjgtNzMuOCA2OC45czMzLjEgNjguOSA3My44IDY4LjljMTcuMSAwIDMyLjktNS40IDQ1LjMtMTQuNS0zMCAzOC42LTg1LjcgNDUuNi0xMjQuMyAxNS41cy00NS42LTg1LjctMTUuNS0xMjQuMyA4NS43LTQ1LjYgMTI0LjMtMTUuNWM1LjggNC41IDExIDkuOCAxNS41IDE1LjV6bTM5LjkgNjUuOC0xOC4xIDIxLjkgMS4yLTI4LjQtMjYuNC0xMC40IDI3LjMtNy42IDEuOC0yOC4zIDE1LjYgMjMuNyAyNy41LTcuMS0xNy41IDIyIDE1LjMgMjMuOS0yNi43LTkuN3oiLz48L3N2Zz4=" alt=""> تركيا <svg class="i " aria-hidden="true"><use href="#down"/></svg></span> وأريد الوصول إلى <span class="combo">دمشق <svg class="i " aria-hidden="true"><use href="#down"/></svg></span></p>
+    <div>
+      <p class="seg-label">جوازي</p>
+      <div class="seg"><span class="on">سوري</span><span>تأشيرة عند الوصول</span><span>موافقة مسبقة</span></div>
+    </div>
+
+    <div class="sec-h"><h4>3 طرق للوصول</h4><small>الأسرع أولاً</small></div>
+
+    <div class="best">
+      <div class="best-head">
+        <div class="best-top">
+          <span class="pict"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span>
+          <div class="best-txt"><p class="best-title">طيران إلى دمشق</p><p class="best-sub"><span class="fast">الأسرع</span> 7 رحلات من إسطنبول وأنقرة ومرسين</p></div>
+        </div>
+        <div class="codes" dir="ltr"><span><b>IST</b><small>Istanbul</small></span><span class="codes-line"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span><span><b>DAM</b><small>Damascus</small></span></div>
+        <div class="best-time"><b>2 س 40 د</b><small>من الباب إلى الباب</small></div>
+      </div>
+      <div class="perf" aria-hidden="true"></div>
+      <ul class="flights">
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>أجيت</b> <span>· أنقرة</span></span><span class="t">2 س 20 <span class="dot"></span></span></li>
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>الخطوط التركية</b> <span>· إسطنبول</span></span><span class="t">2 س 40 <span class="dot"></span></span>
+          <span class="detail">
+            <span>مرتان يومياً (<span class="mono" dir="ltr">TK846</span> و<span class="mono" dir="ltr">TK848</span>) على لوحة المطار حتى 31 تشرين الأول.</span>
+            <span class="trust"><svg class="i " aria-hidden="true"><use href="#shield"/></svg> متحقق · موقع مطار دمشق الرسمي · روجع 30 أيلول 2026</span>
+          </span>
+        </li>
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>السورية للطيران</b> <span>· إسطنبول</span></span><span class="t">2 س 40 <span class="dot"></span></span></li>
+        <li><img src="data:image/png;base64,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" alt=""><span class="who"><b>بيغاسوس</b> <span>· صبيحة</span></span><span class="t"><span class="pill unk"><svg class="i " aria-hidden="true"><use href="#help"/></svg>غير معروف</span></span></li>
+        <li class="more"><span></span><span class="who">+ 3 رحلات أخرى</span><span></span></li>
+      </ul>
+    </div>
+
+    <div class="ways">
+      <div class="way">
+        <span class="way-ico"><svg class="i " aria-hidden="true"><use href="#plane"/></svg></span>
+        <div><p class="way-title">طيران إلى حلب ثم براً</p><p class="way-sub">7 رحلات · 4½ س بالسيارة</p></div>
+        <div class="way-time"><b>5 س 55 د</b><small>على الأقل</small></div>
+      </div>
+      <div class="way">
+        <span class="way-ico"><svg class="i " aria-hidden="true"><use href="#car"/></svg></span>
+        <div><p class="way-title">براً عبر باب الهوى</p><p class="way-sub">من غازي عنتاب · <span class="pill caution"><svg class="i " aria-hidden="true"><use href="#warn"/></svg>للسوريين فقط</span></p></div>
+        <div class="way-time"><b>8 س</b><small>من الباب إلى الباب</small></div>
+      </div>
+    </div>
+
+    <div class="sec-h"><h4>قبل أن تسافر</h4><small>جواز سوري، جواً</small></div>
+    <ul class="check">
+      <li><span class="box"></span><span>جواز سفر سوري ساري. إن انتهت صلاحيته في الخارج، اسأل السفارة أولاً.</span><svg class="i info-btn" aria-hidden="true"><use href="#info"/></svg></li>
+      <li><span class="box"></span><span>تعيش في أوروبا؟ قد يؤثر السفر على وضع اللجوء أو الإقامة.</span><svg class="i info-btn" aria-hidden="true"><use href="#info"/></svg></li>
+    </ul>
+  </div>
+  <nav class="tabbar">
+    <span class="on"><svg class="i " aria-hidden="true"><use href="#pin"/></svg>رحلتي</span>
+    <span><svg class="i " aria-hidden="true"><use href="#plane"/></svg>الطيران</span>
+    <span><svg class="i " aria-hidden="true"><use href="#landmark"/></svg>المعابر</span>
+    <span><svg class="i " aria-hidden="true"><use href="#file"/></svg>الأوراق</span>
+    <span><svg class="i " aria-hidden="true"><use href="#chat"/></svg>تجارب</span>
+  </nav>
+</div>
+      <p class="pitch">The answer is a ticket: airport codes, a perforated tear line, flight numbers in a typewriter face. Light, rounded and friendly; the closest to the travel apps people already use.</p>
+      
+<div class="spec dir-c">
+  <p class="spec-ar" dir="rtl" lang="ar">كيف تصل إلى سوريا اليوم</p>
+  <p class="spec-en">How to get to Syria today</p>
+  <p class="spec-num"><span>2 h 40</span> <span class="mono">TK846 · IST → DAM</span></p>
+  <p class="spec-pills" dir="rtl" lang="ar"><span class="st"><span class="dot"></span>يعمل</span><span class="pill caution"><svg class="i " aria-hidden="true"><use href="#warn"/></svg>بشروط</span><span class="pill closed"><svg class="i " aria-hidden="true"><use href="#x"/></svg>مغلق</span><span class="pill unk"><svg class="i " aria-hidden="true"><use href="#help"/></svg>غير معروف</span></p>
+</div>
+      <div class="dir-c swwrap"><ul class="sw"><li><span style="background:var(--ink)"></span>Navy ink</li><li><span style="background:var(--accent)"></span>Sky</li><li><span style="background:var(--bg)"></span>Ground</li><li><span style="background:var(--surface)"></span>Surface</li><li><span style="background:var(--open)"></span>Open</li></ul></div>
+      <p class="type-note"><b>Type.</b> Rubik for Arabic and Latin, a rounded face from Hubert & Fischer on Google Fonts; IBM Plex Mono for codes.</p>
+      <div class="pros">
+        <ul class="good"><li><svg class="i " aria-hidden="true"><use href="#check"/></svg><span>Familiar at first sight; the ticket shape makes the answer stand out</span></li><li><svg class="i " aria-hidden="true"><use href="#check"/></svg><span>Airport codes help people who read Latin letters better than Arabic, and the other way round</span></li></ul>
+        <ul class="watch"><li><svg class="i " aria-hidden="true"><use href="#warn"/></svg><span>The closest to a generic travel app</span></li><li><svg class="i " aria-hidden="true"><use href="#warn"/></svg><span>A ticket fits flights better than overland routes</span></li></ul>
+      </div>
+    </article>
+  </section>
+
+  <section class="stack-lg" aria-labelledby="h-same">
+    <div class="stack"><p class="eyebrow">In every direction</p><h2 id="h-same">What stays the same</h2></div>
+    <ul class="same">
+      <li><b>Status colours and icons</b><span>Green dot for open; amber, red and grey labels with an icon for the rest. Colour is never the only signal.</span></li>
+      <li><b>Arabic first</b><span>Right to left by default, English mirrored. Fonts are self-hosted and split by script, so an Arabic page never loads Latin glyphs it won’t use.</span></li>
+      <li><b>Readable</b><span>Body text 16px or larger, 44px touch targets, contrast checked in light and dark.</span></li>
+      <li><b>The mark</b><span>The Syria outline stays as the logo and takes the new colours. The map is redrawn in each palette.</span></li>
+    </ul>
+  </section>
+</main>

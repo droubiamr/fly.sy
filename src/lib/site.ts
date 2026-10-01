@@ -24,15 +24,26 @@ export function localePath(locale: Locale, path = "/"): string {
   return clean === "/" ? "/en" : `/en${clean}`
 }
 
+/** /from/turkiye/to/damascus: a route page's path from the origin's slug and the destination city. */
+export const routeHref = (originSlug: string, dest: string) => `/from/${originSlug}/to/${dest}`
+
 /** Absolute URL for a page. The root is the bare origin, which is also how Next writes the canonical. */
 export function absoluteUrl(locale: Locale, path = "/"): string {
   const p = localePath(locale, path)
   return p === "/" ? SITE_URL : SITE_URL + p
 }
 
-/** Strip the /en prefix off a pathname and say which locale it was. */
+/**
+ * Strip the locale prefix off a pathname and say which locale it was. Arabic
+ * pages live at the root but render inside /ar (the proxy rewrites / to /ar),
+ * and a page prerendered at build time sees that internal /ar path rather than
+ * the visible one, so /ar is stripped too. Without that, every prerendered
+ * Arabic page linked to /en/ar/… for its English version, and no tab was marked.
+ */
 export function splitLocale(pathname: string): { locale: Locale; path: string } {
   if (pathname === "/en") return { locale: "en", path: "/" }
   if (pathname.startsWith("/en/")) return { locale: "en", path: pathname.slice(3) }
+  if (pathname === "/ar") return { locale: "ar", path: "/" }
+  if (pathname.startsWith("/ar/")) return { locale: "ar", path: pathname.slice(3) }
   return { locale: "ar", path: pathname }
 }

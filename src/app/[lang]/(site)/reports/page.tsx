@@ -82,8 +82,8 @@ export default async function ReportsPage({ params }: Props) {
         </ul>
       )}
 
-      <div className="fixed inset-x-0 bottom-[calc(76px+env(safe-area-inset-bottom,0px))] z-10 mx-auto flex max-w-2xl justify-end px-5">
-        <Button asChild size="lg" className="h-12 rounded-full px-5 shadow-none">
+      <div className="fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom,0px))] z-10 mx-auto flex max-w-2xl justify-end px-5 lg:bottom-8">
+        <Button asChild size="lg" className="h-12 px-5">
           <Link href={localePath(locale, "/reports/new")}>
             <Plus className="size-5" strokeWidth={2.4} />
             {m.reports.add}

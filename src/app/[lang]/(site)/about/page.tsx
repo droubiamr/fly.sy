@@ -4,7 +4,7 @@ import { DATA } from "@/lib/data"
 import { getI18n, requireLocale } from "@/lib/i18n"
 import { arrow, formatDate } from "@/lib/format"
 import { pageMetadata } from "@/lib/seo"
-import { breadcrumbLd, datasetLd, graph, organizationLd, webPageLd, websiteLd } from "@/lib/schema"
+import { breadcrumbLd, datasetLd, faqLd, graph, organizationLd, webPageLd, websiteLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
 import type { Locale } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
@@ -39,6 +39,7 @@ export default async function AboutPage({ params }: Props) {
           datasetLd(locale),
           breadcrumbLd(locale, crumbs),
           webPageLd(locale, { path: "/about", name: m.about.title, description: m.seo.about.description }),
+          faqLd(m.about.faqs),
         )}
       />
       <section>

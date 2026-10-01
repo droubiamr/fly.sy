@@ -88,9 +88,9 @@ function adminHeaders(req: NextRequest) {
 
 export const config = {
   // Everything except Next internals and the files really served from public/ or the
-  // metadata routes, plus the Search Console verification file. A stray /x.txt therefore
-  // still gets a localized 404, not a copy of a page.
+  // metadata routes, plus the Search Console verification file, llms.txt and the
+  // /data/*.json files. A stray /x.txt therefore still gets a localized 404, not a copy of a page.
   matcher: [
-    "/((?!_next/|fonts/|airlines/.*\\.png|favicon\\.ico|icon\\.svg|icon|apple-icon|opengraph-image|icon-192\\.png|icon-512\\.png|icon-maskable-512\\.png|robots\\.txt|sitemap\\.xml|manifest\\.webmanifest|google[0-9a-f]+\\.html).*)",
+    "/((?!_next/|fonts/|airlines/.*\\.png|favicon\\.ico|icon\\.svg|icon|apple-icon|opengraph-image|icon-192\\.png|icon-512\\.png|icon-maskable-512\\.png|robots\\.txt|sitemap\\.xml|manifest\\.webmanifest|llms\\.txt|llms-full\\.txt|data/[a-z]+\\.json|google[0-9a-f]+\\.html).*)",
   ],
 }
