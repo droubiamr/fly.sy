@@ -10,13 +10,22 @@ import { db } from "./db"
  *      and CF_ACCESS_AUD are set, every admin request must also carry a valid Access JWT, checked here, so a
  *      misconfigured Access rule or a request that reaches the Worker another way still gets nothing.
  *   2. The sign-in form (see app/admin/actions.ts): Turnstile, rate limits, lockout, password, TOTP.
- *   3. A server-side session in D1, 30 minutes idle and 8 hours absolute, revocable from /admin/security.
+ *   3. A server-side session in D1, 30 minutes idle and 8 hours absolute, or 30 days with no idle timeout when
+ *      "Keep me signed in" is ticked; revocable from /admin/security.
  */
 
 // __Host-: the browser only accepts it with Secure, Path=/ and no Domain, so no subdomain can set or shadow it.
 export const SESSION_COOKIE = "__Host-fsy_admin"
 export const IDLE_MS = 30 * 60 * 1000
 export const ABSOLUTE_MS = 8 * 60 * 60 * 1000
+// "Keep me signed in". A kept session is told apart by its lifetime alone (longer than ABSOLUTE_MS), so
+// admin_sessions needs no column for it and old rows keep their meaning.
+export const KEEP_MS = 30 * 24 * 60 * 60 * 1000
+
+/** SQL condition: the session is live at time ?1. Inside its absolute timeout, and its idle one unless kept. */
+export const LIVE_SESSION = `expires_at > ?1 and (last_seen > ?1 - ${IDLE_MS} or expires_at - created_at > ${ABSOLUTE_MS})`
+
+export const isKept = (s: { created_at: number; expires_at: number }) => s.expires_at - s.created_at > ABSOLUTE_MS
 
 export type AdminSession = {
   id_hash: string
@@ -89,8 +98,8 @@ export async function currentAdmin(): Promise<AdminSession | null> {
   const now = Date.now()
   const id = await tokenHash(token)
   const row = await d
-    .prepare("select id_hash, created_at, last_seen, expires_at, ip, access_email from admin_sessions where id_hash = ? and expires_at > ? and last_seen > ?")
-    .bind(id, now, now - IDLE_MS)
+    .prepare(`select id_hash, created_at, last_seen, expires_at, ip, access_email from admin_sessions where id_hash = ?2 and ${LIVE_SESSION}`)
+    .bind(now, id)
     .first<AdminSession>()
     .catch(() => null)
   if (!row) return null

@@ -134,7 +134,7 @@ Nothing is deleted automatically: to keep 13 months, run
 | Rate limit + lockout | Workers Rate Limiting binding: 5 tries a minute per IP. D1: 5 failures per IP, or 20 in total, within 15 minutes locks the form. |
 | Password | PBKDF2-SHA256, 100,000 iterations (the most Workers allow), random salt; breached passwords are refused at setup. Or, with no terminal, the password itself as the `ADMIN_PASSWORD` secret (Cloudflare secrets are write-only). |
 | Authenticator code | TOTP (RFC 6238) via `otpauth`. Each code is accepted once. |
-| Session | 256-bit random token in a `__Host-` cookie (Secure, HttpOnly, SameSite=Strict); only its SHA-256 is stored. 30 minutes idle, 8 hours absolute. See and revoke sessions at `/admin/security`. |
+| Session | 256-bit random token in a `__Host-` cookie (Secure, HttpOnly, SameSite=Strict); only its SHA-256 is stored. 30 minutes idle, 8 hours absolute; with *Keep me signed in for 30 days* ticked, 30 days absolute and no idle timeout. See and revoke sessions at `/admin/security`. |
 | Page | Strict per-request nonce CSP, `frame-ancestors 'none'`, `no-store`, `noindex`. Every failure shows the same message; the reason goes to the sign-in log. |
 
 Set up:
@@ -150,6 +150,9 @@ Set up:
    Copy the application's AUD tag, then `npx wrangler secret put CF_ACCESS_TEAM_DOMAIN`
    (`https://<team>.cloudflareaccess.com`) and `npx wrangler secret put CF_ACCESS_AUD`.
 5. Deploy and sign in at `/admin`. `/admin/security` shows which layers are on.
+
+*Keep me signed in* covers the app's own session only. With Access on, Access asks you to log in again when its
+own session ends (24 hours by default): set the application's session duration to 1 month in Zero Trust to match.
 
 For local development put the same four values in `.env.local`, using Cloudflare's Turnstile testing pair
 (`1x00000000000000000000AA` / `1x0000000000000000000000000000000AA`); leave the Access pair empty.

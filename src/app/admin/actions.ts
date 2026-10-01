@@ -4,7 +4,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare"
 import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
-import { ABSOLUTE_MS, accessIdentity, authConfig, requireAdmin, SESSION_COOKIE } from "@/lib/admin-auth"
+import { ABSOLUTE_MS, accessIdentity, authConfig, KEEP_MS, requireAdmin, SESSION_COOKIE } from "@/lib/admin-auth"
 import { checkAdminPassword, newSessionToken, tokenHash, totpStep } from "@/lib/auth-crypto"
 import { clientIp, countryFrom } from "@/lib/analytics"
 import { db } from "@/lib/db"
@@ -95,17 +95,18 @@ export async function login(_prev: LoginState, form: FormData): Promise<LoginSta
   const jar = await cookies()
   const old = jar.get(SESSION_COOKIE)?.value
   const token = newSessionToken()
+  const lifetime = form.get("keep") === "on" ? KEEP_MS : ABSOLUTE_MS
   await d.batch([
     d.prepare("delete from admin_sessions where expires_at < ? or id_hash = ?").bind(now, old ? await tokenHash(old) : ""),
     d
       .prepare(
         "insert into admin_sessions (id_hash, created_at, last_seen, expires_at, ip, country, user_agent, access_email) values (?, ?, ?, ?, ?, ?, ?, ?)",
       )
-      .bind(await tokenHash(token), now, now, now + ABSOLUTE_MS, ip, country, ua, access.email ?? null),
+      .bind(await tokenHash(token), now, now, now + lifetime, ip, country, ua, access.email ?? null),
   ])
   await record(true, null)
 
-  jar.set(SESSION_COOKIE, token, { httpOnly: true, secure: true, sameSite: "strict", path: "/", maxAge: ABSOLUTE_MS / 1000 })
+  jar.set(SESSION_COOKIE, token, { httpOnly: true, secure: true, sameSite: "strict", path: "/", maxAge: lifetime / 1000 })
   redirect("/admin")
 }
 
