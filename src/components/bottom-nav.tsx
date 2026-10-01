@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { MapPin, Plane, Landmark, MessagesSquare, Info } from "lucide-react"
+import { MapPin, Plane, Landmark, Newspaper, MessagesSquare, Info } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { localePath, splitLocale } from "@/lib/site"
 import { useLocale, useMessages } from "@/components/messages-provider"
@@ -11,6 +11,7 @@ const ITEMS = [
   { href: "/", key: "plan", Icon: MapPin },
   { href: "/airlines", key: "airlines", Icon: Plane },
   { href: "/crossings", key: "crossings", Icon: Landmark },
+  { href: "/news", key: "news", Icon: Newspaper },
   { href: "/reports", key: "reports", Icon: MessagesSquare },
   { href: "/about", key: "about", Icon: Info },
 ] as const
@@ -22,10 +23,11 @@ export function BottomNav() {
   return (
     // A floating dock rather than a bar welded to the bottom edge. The wrapper
     // ignores pointer events so taps either side of the pill reach the page
-    // underneath; only the pill itself takes them back.
+    // underneath; only the pill itself takes them back. Six tabs need the pill a
+    // little wider on narrow phones, or "عن الموقع" and "Crossings" get cut at 360px.
     <nav
       aria-label="Main"
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-20 px-5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-20 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] min-[380px]:px-5"
     >
       <ul
         className="pointer-events-auto mx-auto flex max-w-md items-center gap-0.5 rounded-full border border-border/70

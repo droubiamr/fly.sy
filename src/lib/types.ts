@@ -59,6 +59,20 @@ export type Arrival = {
   note?: Text
   hidden?: boolean
 }
+/** A dated change on the way into Syria, told once, with the post or article it came from. */
+export type NewsItem = {
+  id: string
+  /** YYYY-MM-DD, the date the source published it. */
+  date: string
+  title: Text
+  text: Text
+  source: string
+  /** The exact post, article or document; the source's home when absent. */
+  url?: string
+  /** Entry points (entries.json) and carriers (airlines.json) the item is about, linked under it. */
+  entries?: string[]
+  airlines?: string[]
+}
 export type Need = { source: string; text: Text }
 export type Needs = Record<Mode, Record<Passport, Need[]>>
 export type Roads = Record<string, Record<string, number>>

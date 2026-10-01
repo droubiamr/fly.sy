@@ -8,7 +8,8 @@ import roads from "../../data/roads.json"
 import needs from "../../data/needs.json"
 import seedReports from "../../data/reports.seed.json"
 import meta from "../../data/meta.json"
-import type { Airline, Arrival, City, Entry, Needs, Origin, OriginDef, Region, Report, Roads, Source } from "./types"
+import news from "../../data/news.json"
+import type { Airline, Arrival, City, Entry, Needs, NewsItem, Origin, OriginDef, Region, Report, Roads, Source } from "./types"
 import { slugify } from "./slugs"
 
 export const DATA = {
@@ -21,6 +22,8 @@ export const DATA = {
   roads: roads as Roads,
   needs: needs as Needs,
   seedReports: seedReports as Report[],
+  /** Newest first. */
+  news: [...(news as NewsItem[])].sort((a, b) => b.date.localeCompare(a.date)),
 }
 
 export const ORIGINS = origins as OriginDef[]

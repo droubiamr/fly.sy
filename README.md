@@ -50,6 +50,7 @@ npm run dev
 |---|---|
 | `data/*.json` | **All sourced facts.** Editing these is how the site is updated. |
 | `data/origins.json` | The countries you can start from, with the hub airport the map draws the route from. |
+| `data/news.json` | The News page: dated changes (a crossing closes, a route starts), each linking the exact post or document it came from. Newest first. |
 | `src/lib/plan.ts` | The route planner. Pure function, tested in `tests/`. |
 | `src/lib/data.ts` | Loads and types the JSON. |
 | `src/messages/index.ts` | UI strings, `ar` and `en`. |
@@ -86,6 +87,10 @@ Rules:
 4. Update `data/meta.json` → `updated` after each review pass.
 5. `npm test` checks referential integrity (every entry, road, source and airline id resolves).
 6. Every airport in `entries.json` names its `city`. The destination picker lists the airports by name and routes to that city.
+7. When a change is news (something opened, closed, started or stopped, or a rule changed), add it to the top of
+   `data/news.json` as well: date it was published, a title and two or three sentences in both languages, the
+   `source` key, and the `url` of the exact post or document. Only official bodies or the operator itself; press
+   stays out of the news list. `tests/news.test.ts` checks it and needs no install.
 
 ## Community reports
 
