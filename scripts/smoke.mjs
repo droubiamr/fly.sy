@@ -67,6 +67,10 @@ const checkPage = async (loc) => {
   const arPath = en ? path.replace(/^\/en/, "") : path
   check(html.includes(`hrefLang="x-default" href="${arPath === "/" || arPath === "" ? SITE : SITE + arPath}"`), where("x-default is the Arabic page"))
   check(count(html, /<h1[\s>]/g) === 1, where("exactly one h1"))
+  // Arabic pages render inside /ar; that path must never leak into a link (it 404s as /en/ar/…).
+  check(!/href="\/(en\/)?ar(\/|")/.test(html), where("no link to an internal /ar path"))
+  // The page's own language link points at its twin.
+  check(html.includes(`hrefLang="${en ? "ar" : "en"}" lang="${en ? "ar" : "en"}"`), where("language switch present"))
   const title = attr(html, /<title>([^<]+)<\/title>/)
   check(Boolean(title), where("has title"))
   check(Boolean(attr(html, /<meta name="description" content="([^"]+)"/)), where("has description"))

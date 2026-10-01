@@ -80,7 +80,7 @@ export function Disclaimer() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction onClick={accept} className="h-11 w-full rounded-full text-[15px]">
+          <AlertDialogAction onClick={accept} className="h-12 w-full text-[15px]">
             {m.disclaimer.accept}
           </AlertDialogAction>
         </AlertDialogFooter>

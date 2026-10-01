@@ -30,9 +30,17 @@ export function absoluteUrl(locale: Locale, path = "/"): string {
   return p === "/" ? SITE_URL : SITE_URL + p
 }
 
-/** Strip the /en prefix off a pathname and say which locale it was. */
+/**
+ * Strip the locale prefix off a pathname and say which locale it was. Arabic
+ * pages live at the root but render inside /ar (the proxy rewrites / to /ar),
+ * and a page prerendered at build time sees that internal /ar path rather than
+ * the visible one, so /ar is stripped too. Without that, every prerendered
+ * Arabic page linked to /en/ar/… for its English version, and no tab was marked.
+ */
 export function splitLocale(pathname: string): { locale: Locale; path: string } {
   if (pathname === "/en") return { locale: "en", path: "/" }
   if (pathname.startsWith("/en/")) return { locale: "en", path: pathname.slice(3) }
+  if (pathname === "/ar") return { locale: "ar", path: "/" }
+  if (pathname.startsWith("/ar/")) return { locale: "ar", path: pathname.slice(3) }
   return { locale: "ar", path: pathname }
 }

@@ -19,6 +19,10 @@ test("locale paths: Arabic at the root, English under /en, and back again", () =
   assert.deepEqual(splitLocale("/en"), { locale: "en", path: "/" })
   assert.deepEqual(splitLocale("/en/airlines"), { locale: "en", path: "/airlines" })
   assert.deepEqual(splitLocale("/airlines"), { locale: "ar", path: "/airlines" })
+  // The internal /ar path a prerendered Arabic page sees maps to the same visible path.
+  assert.deepEqual(splitLocale("/ar"), { locale: "ar", path: "/" })
+  assert.deepEqual(splitLocale("/ar/from/turkiye/to/damascus"), { locale: "ar", path: "/from/turkiye/to/damascus" })
+  assert.equal(localePath("en", splitLocale("/ar/crossings").path), "/en/crossings")
   assert.ok(!SITE_URL.endsWith("/") && !SITE_URL.includes("www."), "one canonical host, no trailing slash")
 })
 
