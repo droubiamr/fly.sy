@@ -38,11 +38,15 @@ export default async function ReportsPage({ params }: Props) {
     <div>
       <JsonLd data={graph(breadcrumbLd(locale, crumbs), webPageLd(locale, { path: "/reports", name: m.reports.title, description: m.seo.reports.description }))} />
       <Breadcrumbs locale={locale} items={crumbs} />
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">{m.reports.title}</h1>
-          <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.reports.lede}</p>
-        </div>
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold tracking-tight">{m.reports.title}</h1>
+        <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.reports.lede}</p>
+        <Button asChild size="lg" className="mt-4 h-12 w-full px-5">
+          <Link href={localePath(locale, "/reports/new")}>
+            <Plus className="size-5" strokeWidth={2.4} />
+            {m.reports.add}
+          </Link>
+        </Button>
       </div>
 
       {reports.length === 0 ? (
@@ -81,15 +85,6 @@ export default async function ReportsPage({ params }: Props) {
           })}
         </ul>
       )}
-
-      <div className="fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom,0px))] z-10 mx-auto flex max-w-2xl justify-end px-5 lg:bottom-8">
-        <Button asChild size="lg" className="h-12 px-5">
-          <Link href={localePath(locale, "/reports/new")}>
-            <Plus className="size-5" strokeWidth={2.4} />
-            {m.reports.add}
-          </Link>
-        </Button>
-      </div>
     </div>
   )
 }
