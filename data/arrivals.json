@@ -14,10 +14,16 @@
   {"airline":"RB","city":{"ar":"إسطنبول","en":"Istanbul"},"country":"TR","entry":"DAM","from":"TR","mode":"air","hours":2.2,"status":"open","confidence":"verified","source":"damairport","seen":"2026-09-30","note":{"ar":"5 رحلات أسبوعياً (RB444، وRB446 أيام الثلاثاء)، أغلبها ليلاً.","en":"5 weekly (RB444, and RB446 on Tuesdays), mostly overnight."}},
   {"airline":"RB","city":{"ar":"إسطنبول","en":"Istanbul"},"country":"TR","entry":"ALP","from":"TR","mode":"air","hours":2,"status":"open","confidence":"verified","source":"alpairport","seen":"2026-09-30","note":{"ar":"كل اثنين (RB444).","en":"Mondays (RB444)."}},
   {"airline":null,"city":{"ar":"غازي عنتاب","en":"Gaziantep"},"country":"TR","entry":"BAB","from":"TR","mode":"land","hours":3,"status":"open","confidence":"reported","source":"ports","seen":"2026-09-20"},
+  {"airline":null,"city":{"ar":"غازي عنتاب","en":"Gaziantep"},"country":"TR","entry":"SAL","from":"TR","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-01"},
+  {"airline":null,"city":{"ar":"غازي عنتاب","en":"Gaziantep"},"country":"TR","entry":"RAI","from":"TR","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-01"},
+  {"airline":null,"city":{"ar":"غازي عنتاب","en":"Gaziantep"},"country":"TR","entry":"JAR","from":"TR","mode":"land","hours":2.5,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-01"},
+  {"airline":null,"city":{"ar":"شانلي أورفا","en":"Şanlıurfa"},"country":"TR","entry":"TAB","from":"TR","mode":"land","hours":2.5,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-01"},
+  {"airline":null,"city":{"ar":"أنطاكيا (هاتاي)","en":"Antakya (Hatay)"},"country":"TR","entry":"KAS","from":"TR","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-01"},
 
   {"airline":null,"city":{"ar":"بيروت","en":"Beirut"},"country":"LB","entry":"JDE","from":"LB","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-09-30","note":{"ar":"لا شركة مؤكدة تطير بين بيروت ودمشق. الطريق البري هو الخيار الموثوق.","en":"No airline we could confirm flies Beirut–Damascus. Overland is the dependable option."}},
   {"airline":null,"city":{"ar":"طرابلس","en":"Tripoli"},"country":"LB","entry":"ARI","from":"LB","mode":"land","hours":1.5,"status":"closed","confidence":"verified","source":"sana","seen":"2026-09-30"},
   {"airline":null,"city":{"ar":"البقاع","en":"the Bekaa"},"country":"LB","entry":"JOU","from":"LB","mode":"land","hours":1.5,"status":"open","confidence":"reported","source":"sana","seen":"2026-09-20"},
+  {"airline":null,"city":{"ar":"طرابلس","en":"Tripoli"},"country":"LB","entry":"JQM","from":"LB","mode":"land","hours":2,"status":"caution","confidence":"verified","source":"ports","seen":"2026-10-01"},
 
   {"airline":null,"city":{"ar":"عمّان","en":"Amman"},"country":"JO","entry":"NAS","from":"JO","mode":"land","hours":3,"status":"open","confidence":"verified","source":"sana","seen":"2026-09-30"},
   {"airline":"RJ","city":{"ar":"عمّان","en":"Amman"},"country":"JO","entry":"DAM","from":"JO","mode":"air","hours":1,"status":"open","confidence":"verified","source":"damairport","seen":"2026-09-30","note":{"ar":"3 رحلات يومياً (RJ435 وRJ437 وRJ439).","en":"3 daily (RJ435, RJ437, RJ439)."}},
@@ -69,6 +75,7 @@
 
   {"airline":null,"city":{"ar":"القائم","en":"Al-Qa'im"},"country":"IQ","entry":"BKM","from":"IQ","mode":"land","hours":2,"status":"caution","confidence":"reported","source":"press","seen":"2026-09-20"},
   {"airline":null,"city":{"ar":"أربيل","en":"Erbil"},"country":"IQ","entry":"SEM","from":"IQ","mode":"land","hours":4,"status":"open","confidence":"verified","source":"ports","seen":"2026-09-30"},
+  {"airline":null,"city":{"ar":"الموصل","en":"Mosul"},"country":"IQ","entry":"YAR","from":"IQ","mode":"land","hours":2.5,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-01"},
   {"airline":"XH","city":{"ar":"بغداد","en":"Baghdad"},"country":"IQ","entry":"DAM","from":"IQ","mode":"air","hours":1.5,"status":"open","confidence":"verified","source":"damairport","seen":"2026-09-30","note":{"ar":"الاثنين والخميس والسبت (XH502). الناقل الوحيد المباشر من بغداد؛ الخطوط العراقية لم تستأنف.","en":"Mondays, Thursdays and Saturdays (XH502). The only nonstop from Baghdad; Iraqi Airways has not resumed."}},
   {"airline":"XH","city":{"ar":"أربيل","en":"Erbil"},"country":"IQ","entry":"DAM","from":"IQ","mode":"air","hours":1.7,"status":"open","confidence":"verified","source":"damairport","seen":"2026-09-30","note":{"ar":"الخميس والأحد (XH522).","en":"Thursdays and Sundays (XH522)."}},
   {"airline":"XH","city":{"ar":"أربيل","en":"Erbil"},"country":"IQ","entry":"ALP","from":"IQ","mode":"air","hours":1.5,"status":"open","confidence":"verified","source":"alpairport","seen":"2026-09-30","note":{"ar":"كل ثلاثاء (XH526).","en":"Tuesdays (XH526)."}},

@@ -190,7 +190,7 @@ const messages = {
       crossings: {
         title: "المعابر البرية إلى سوريا: حالة كل معبر اليوم",
         description:
-          "جديدة يابوس والعريضة وجوسية من لبنان، نصيب من الأردن، باب الهوى من تركيا، والبوكمال من العراق: مفتوح أم مغلق، ساعات العمل، من يُسمح له بالعبور، ومصدر كل سطر.",
+          "كل معبر بري إلى سوريا من لبنان والأردن وتركيا والعراق، من جديدة يابوس ونصيب إلى باب الهوى وباب السلامة وسيمالكا: مفتوح أم مغلق، ساعات العمل، من يُسمح له بالعبور، ومصدر كل سطر.",
       },
       entry: {
         title: "{name} اليوم: {status}، ومن يمكنه العبور وما يحتاجه",
@@ -419,7 +419,7 @@ const messages = {
       crossings: {
         title: "Syria land border crossings: the status of every crossing today",
         description:
-          "Jdeidet Yabous, Al-Arida and Joussieh from Lebanon, Nasib from Jordan, Bab al-Hawa from Türkiye and Abu Kamal from Iraq: open or closed, hours, who can cross, and the source behind each line.",
+          "Every land crossing into Syria from Lebanon, Jordan, Türkiye and Iraq, from Jdeidet Yabous and Nasib to Bab al-Hawa, Bab al-Salama and Semalka: open or closed, hours, who can cross, and the source behind each line.",
       },
       entry: {
         title: "{name} today: {status}, who can cross and what you need",
