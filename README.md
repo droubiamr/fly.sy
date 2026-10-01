@@ -42,6 +42,12 @@ npm run dev
   the adapter doesn't store them by: Next 16.3.8 does, so `next` stays at 16.3.7 until `@opennextjs/cloudflare`
   supports it (`tests/worker-cache.test.ts` fails otherwise). After any Next or adapter upgrade, `npm run preview`
   and check that pages come back with `x-nextjs-cache: HIT`.
+- The site runs on Workers Free, which allows 10 ms of CPU per request. Next spends 30–60 ms even on a cached page,
+  so `worker.ts` sits in front of it: prerendered pages, their prefetch segments, files like `/icon.svg` and page
+  views (`/api/track`) are answered from the static assets without starting Next, in about a millisecond. The
+  `build` command copies them out of the build for it (`scripts/static-pages.mjs`). Next still answers everything
+  else: `/reports`, the admin, form submissions, redirects and 404s. A response that came from Next carries
+  `x-opennext: 1`; one from `worker.ts` doesn't.
 - Each page's `lastmod` in the sitemap and `dateModified` in its structured data is the newest `seen` date among the
   facts it shows (`pageUpdated` in `src/lib/data.ts`), capped at `data/meta.json → updated`. Bumping `seen` on a line
   you re-checked is what tells search engines that page moved.
@@ -74,6 +80,7 @@ npm run dev
 | `src/lib/seo.ts`, `src/lib/schema.ts` | Per-page metadata (canonical, hreflang, Open Graph) and JSON-LD builders. |
 | `src/proxy.ts` | Rewrites `/` → `/ar` internally; `/en` passes through. Old `?from=&to=` links redirect to their page. |
 | `scripts/smoke.mjs` | Walks the built site like a crawler: status, canonical, hreflang, JSON-LD, redirects, 404s. |
+| `worker.ts`, `scripts/static-pages.mjs` | The Worker's front door: serves prerendered pages and page views without starting Next (Workers Free CPU limit). |
 | `migrations/` | D1 schema: reports and page views (`0001`), admin sessions and the sign-in log (`0002`). |
 | `src/lib/db.ts` | The D1 binding (`DB`), typed. |
 | `src/lib/admin-auth.ts`, `src/lib/auth-crypto.ts`, `src/app/admin/actions.ts` | Admin sign-in: Access check, sessions, password hashing, TOTP, lockout. |
