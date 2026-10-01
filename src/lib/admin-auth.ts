@@ -2,6 +2,7 @@ import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { createRemoteJWKSet, jwtVerify } from "jose"
 import { tokenHash } from "./auth-crypto"
+import { SESSION_COOKIE } from "./admin-cookie"
 import { db } from "./db"
 
 /**
@@ -14,8 +15,7 @@ import { db } from "./db"
  *      "Keep me signed in" is ticked; revocable from /admin/security.
  */
 
-// __Host-: the browser only accepts it with Secure, Path=/ and no Domain, so no subdomain can set or shadow it.
-export const SESSION_COOKIE = "__Host-fsy_admin"
+export { SESSION_COOKIE }
 export const IDLE_MS = 30 * 60 * 1000
 export const ABSOLUTE_MS = 8 * 60 * 60 * 1000
 // "Keep me signed in". A kept session is told apart by its lifetime alone (longer than ABSOLUTE_MS), so

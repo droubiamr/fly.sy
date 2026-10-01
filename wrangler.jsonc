@@ -1,14 +1,19 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
+  // Serves prerendered pages and page views without starting Next, then hands everything else to
+  // .open-next/worker.js. See the comment at the top of worker.ts.
+  "main": "worker.ts",
   // Worker names allow letters, digits and hyphens only, so not "fly.sy".
   "name": "fly-sy",
   "compatibility_date": "2026-09-22",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   // Copies the prerendered pages into the assets before every `wrangler deploy`, `wrangler versions upload` and
-  // `wrangler dev`, so a deploy serves them from the cache whatever command runs it. Without this, preview builds
-  // (uploaded with `wrangler versions upload`) render every page on every request and hit error 1102.
-  "build": { "command": "npx opennextjs-cloudflare populateCache local" },
+  // `wrangler dev`, whatever command runs them: into Next's cache, and one file per response for worker.ts.
+  // Without this, preview builds (uploaded with `wrangler versions upload`) render every page on every request
+  // and hit error 1102.
+  "build": {
+    "command": "npx opennextjs-cloudflare populateCache local && node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/static-pages.mjs"
+  },
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
