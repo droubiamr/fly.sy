@@ -22,7 +22,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
     <footer className="mt-12 border-t bg-card">
       <div className="mx-auto grid max-w-6xl gap-6 px-5 py-8 text-sm text-muted-foreground lg:grid-cols-[1.4fr_1fr] lg:px-6">
         <div className="flex flex-col gap-3">
-          <p dir="ltr" className="self-start text-lg font-bold tracking-tight text-foreground rtl:self-end">
+          <p dir="ltr" className="self-start text-lg font-bold tracking-tight text-foreground">
             fly<span className="text-primary">.sy</span>
           </p>
           <p className="max-w-prose leading-relaxed">{m.indep}</p>
