@@ -5,6 +5,10 @@
   "name": "fly-sy",
   "compatibility_date": "2026-09-22",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Copies the prerendered pages into the assets before every `wrangler deploy`, `wrangler versions upload` and
+  // `wrangler dev`, so a deploy serves them from the cache whatever command runs it. Without this, preview builds
+  // (uploaded with `wrangler versions upload`) render every page on every request and hit error 1102.
+  "build": { "command": "npx opennextjs-cloudflare populateCache local" },
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
