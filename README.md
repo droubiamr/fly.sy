@@ -37,7 +37,10 @@ npm run dev
   build time; only `/reports` renders per request.
 - On Cloudflare the prerendered pages are served from the static assets bundle (`open-next.config.ts`), so the
   Worker never renders them. `npm run deploy` populates that cache; without it every request would render the page,
-  world map included, and hit the Worker CPU limit (error 1102).
+  world map included, and hit the Worker CPU limit (error 1102). The same happens if Next looks pages up under a key
+  the adapter doesn't store them by: Next 16.3.8 does, so `next` stays at 16.3.7 until `@opennextjs/cloudflare`
+  supports it (`tests/worker-cache.test.ts` fails otherwise). After any Next or adapter upgrade, `npm run preview`
+  and check that pages come back with `x-nextjs-cache: HIT`.
 - `data/meta.json → updated` feeds `lastmod` in the sitemap and `dateModified` in the structured data, so bumping it
   after a review pass is what tells search engines the site moved.
 - Structured data: `WebSite`, `Organization` and a `Dataset` (the CC BY-SA data) on the home and about pages;
