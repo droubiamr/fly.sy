@@ -36,7 +36,8 @@ npm run dev
   airport and airline has a page too, and `/documents` holds the paperwork. All of it is prerendered from `data/` at
   build time; only `/reports` renders per request.
 - On Cloudflare the prerendered pages are served from the static assets bundle (`open-next.config.ts`), so the
-  Worker never renders them. `npm run deploy` populates that cache; without it every request would render the page,
+  Worker never renders them. The `build` command in `wrangler.jsonc` populates that cache before every `wrangler deploy`
+  and `wrangler versions upload` (previews included); without it every request would render the page,
   world map included, and hit the Worker CPU limit (error 1102). The same happens if Next looks pages up under a key
   the adapter doesn't store them by: Next 16.3.8 does, so `next` stays at 16.3.7 until `@opennextjs/cloudflare`
   supports it (`tests/worker-cache.test.ts` fails otherwise). After any Next or adapter upgrade, `npm run preview`
