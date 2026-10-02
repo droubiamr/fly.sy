@@ -22,15 +22,30 @@ export const DATE_TIME: Intl.DateTimeFormatOptions = {
   year: "numeric",
   hour: "2-digit",
   minute: "2-digit",
-  timeZoneName: "short",
+}
+
+/** A moment to the minute: "2 Oct 2026, 08:58". Without a `timeZone` it is on the reader's own clock. */
+export function formatDateTime(iso: string, locale: Locale, timeZone?: string) {
+  return new Date(iso).toLocaleString(INTL_LOCALE[locale], { ...DATE_TIME, timeZone })
 }
 
 /**
- * A moment to the minute, with its zone so nobody mistakes whose clock it is:
- * "2 Oct 2026, 08:58 CEST". Without a `timeZone` it is the reader's own.
+ * How long ago a moment was, in the largest whole unit: "2 hours ago", "yesterday",
+ * "قبل ساعتين". Takes the Intl locale and refers to nothing outside itself, so
+ * `LocalTime` can also inline its source into the page as a script.
  */
-export function formatDateTime(iso: string, locale: Locale, timeZone?: string) {
-  return new Date(iso).toLocaleString(INTL_LOCALE[locale], { ...DATE_TIME, timeZone })
+export function timeAgo(iso: string, intlLocale: string, now: number) {
+  const rtf = new Intl.RelativeTimeFormat(intlLocale, { numeric: "auto" })
+  const s = Math.max(0, Math.floor((now - Date.parse(iso)) / 1000))
+  const units: [Intl.RelativeTimeFormatUnit, number][] = [
+    ["year", 31536000],
+    ["month", 2592000],
+    ["day", 86400],
+    ["hour", 3600],
+    ["minute", 60],
+  ]
+  for (const [unit, size] of units) if (s >= size) return rtf.format(-Math.floor(s / size), unit)
+  return rtf.format(0, "second")
 }
 
 export function formatHours(h: number | null, locale: Locale) {

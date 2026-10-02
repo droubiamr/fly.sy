@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { formatDate, formatDateTime, formatDuration, formatHours, formatHoursText, formatMinutes } from "../src/lib/format.ts"
+import { INTL_LOCALE, formatDate, formatDateTime, formatDuration, formatHours, formatHoursText, formatMinutes, timeAgo } from "../src/lib/format.ts"
 
 const EASTERN = /[٠-٩۰-۹]/
 
@@ -47,17 +47,39 @@ test("durations read as hours and minutes, to the nearest five minutes", () => {
   assert.equal(formatDuration(null, "ar"), "—")
 })
 
-test("the last-updated time reads to the minute, with the reader's zone", () => {
+test("the last-updated time reads to the minute on the reader's clock, with no zone label", () => {
   const at = "2026-10-02T06:58:00Z"
-  assert.equal(formatDateTime(at, "en", "UTC"), "2 Oct 2026, 06:58 UTC")
-  assert.equal(formatDateTime(at, "en", "Europe/Berlin"), "2 Oct 2026, 08:58 CEST")
-  assert.equal(formatDateTime(at, "en", "Asia/Damascus"), "2 Oct 2026, 09:58 GMT+3")
+  assert.equal(formatDateTime(at, "en", "UTC"), "2 Oct 2026, 06:58")
+  assert.equal(formatDateTime(at, "en", "Europe/Berlin"), "2 Oct 2026, 08:58")
+  assert.equal(formatDateTime(at, "en", "Asia/Damascus"), "2 Oct 2026, 09:58")
   // Late enough in UTC to be the next day further east.
-  assert.match(formatDateTime("2026-10-02T22:30:00Z", "en", "Asia/Damascus"), /^3 Oct 2026, 01:30/)
+  assert.equal(formatDateTime("2026-10-02T22:30:00Z", "en", "Asia/Damascus"), "3 Oct 2026, 01:30")
   const ar = formatDateTime(at, "ar", "Asia/Damascus")
   assert.doesNotMatch(ar, EASTERN, ar)
   assert.match(ar, /تشرين الأول 2026/)
   assert.match(ar, /09:58/)
   // A timestamp still formats as its UTC day where only the day is wanted.
   assert.equal(formatDate(at, "en"), "2 Oct 2026")
+})
+
+test("how long ago reads in the largest whole unit", () => {
+  const at = "2026-10-02T06:58:00Z"
+  const t = Date.parse(at)
+  const ago = (ms: number, locale: "ar" | "en" = "en") => timeAgo(at, INTL_LOCALE[locale], t + ms)
+  const min = 60_000
+  assert.equal(ago(20_000), "now")
+  assert.equal(ago(-5 * min), "now") // a reader's clock running behind
+  assert.equal(ago(5 * min), "5 minutes ago")
+  assert.equal(ago(2 * 60 * min + 50 * min), "2 hours ago")
+  assert.equal(ago(26 * 60 * min), "yesterday")
+  assert.equal(ago(3 * 24 * 60 * min), "3 days ago")
+  assert.equal(ago(2 * 60 * min, "ar"), "قبل ساعتين")
+  assert.equal(ago(3 * 60 * min, "ar"), "قبل 3 ساعات")
+})
+
+test("timeAgo is self-contained, so its source runs as the page's inline script", () => {
+  const inlined = new Function(`return (${timeAgo})`)() as typeof timeAgo
+  const now = Date.parse("2026-10-02T09:00:00Z")
+  assert.equal(inlined("2026-10-02T06:58:00Z", "en-GB", now), "2 hours ago")
+  assert.equal(inlined("2026-10-02T06:58:00Z", INTL_LOCALE.ar, now), "قبل ساعتين")
 })
