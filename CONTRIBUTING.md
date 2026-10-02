@@ -25,6 +25,11 @@ direction from the `Direction.Provider` in `messages-provider.tsx`, not from the
 new ones inside it. Nothing may be wider than the screen: a phone widens its layout viewport to fit
 an overflowing element and the whole page starts panning sideways.
 
+## Say only what the source says
+Advisories (EASA bulletins, foreign travel advice) are advice, not bans: write "advises", never
+"bans" or "can't". Don't add a consequence the source doesn't state, and check any "no", "never",
+"only" or "can't" against `data/arrivals.json` before writing it. `CLAUDE.md` has the full list.
+
 ## What we won't publish
 Lists of restricted nationalities, military-service rules, or anything about asylum status in a
 specific country — unless it comes with a dated, published official source. A declared gap beats a guess.
