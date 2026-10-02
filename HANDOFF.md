@@ -110,6 +110,9 @@ Then: `npm install`, `npm run check`, `npm run dev`, open on phone.
 
 ## Backlog, in order
 
+The October 2026 audit (`docs/audit-2026-10.md`) has a verified Now / Soon / Later plan for speed, SEO and AI
+visibility, with thresholds for when to scale. Work from it before the list below.
+
 1. Verify on a real phone; fix anything at 390px width.
 2. D1: `wrangler d1 create fly-sy`, paste the id into `wrangler.jsonc`, apply `migrations/` with `--remote`, test a submission.
 3. GitHub Actions running `npm run check` on every PR.
