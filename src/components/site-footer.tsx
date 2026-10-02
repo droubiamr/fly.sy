@@ -2,7 +2,7 @@ import Link from "next/link"
 import { CalendarCheck } from "lucide-react"
 import { DATA } from "@/lib/data"
 import { getI18n } from "@/lib/i18n"
-import { formatDate } from "@/lib/format"
+import { LocalTime } from "@/components/local-time"
 import { localePath } from "@/lib/site"
 import type { Locale } from "@/lib/types"
 
@@ -27,8 +27,11 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </p>
           <p className="max-w-prose leading-relaxed">{m.indep}</p>
           <p className="inline-flex items-center gap-2 font-medium text-foreground">
-            <CalendarCheck className="size-4 text-primary" aria-hidden="true" />
-            {m.updated} <time dateTime={DATA.meta.updated}>{formatDate(DATA.meta.updated, locale)}</time>
+            <CalendarCheck className="size-4 shrink-0 text-primary" aria-hidden="true" />
+            {/* One run of text, so on a narrow phone it wraps like a sentence instead of in two columns. */}
+            <span>
+              {m.updated} <LocalTime iso={DATA.meta.updated} locale={locale} />
+            </span>
           </p>
         </div>
         <div className="flex flex-col gap-3">

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { DATA } from "@/lib/data"
 import { getI18n, requireLocale } from "@/lib/i18n"
-import { arrow, formatDate } from "@/lib/format"
+import { arrow } from "@/lib/format"
 import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, datasetLd, faqLd, graph, organizationLd, webPageLd, websiteLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
@@ -10,6 +10,7 @@ import type { Locale } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { JsonLd } from "@/components/json-ld"
+import { LocalTime } from "@/components/local-time"
 import { SourceLink } from "@/components/source-link"
 
 type Props = { params: Promise<{ lang: Locale }> }
@@ -71,7 +72,7 @@ export default async function AboutPage({ params }: Props) {
         <h2 className="mb-2 text-sm font-semibold">{m.about.how}</h2>
         <p className="max-w-prose text-[13.5px] leading-relaxed">{m.about.howText}</p>
         <p className="mt-2 text-xs text-muted-foreground">
-          {m.updated} <time dateTime={DATA.meta.updated}>{formatDate(DATA.meta.updated, locale)}</time>
+          {m.updated} <LocalTime iso={DATA.meta.updated} locale={locale} />
         </p>
       </section>
 

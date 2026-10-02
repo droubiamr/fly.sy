@@ -49,8 +49,8 @@ npm run dev
   else: `/reports`, the admin, form submissions, redirects and 404s. A response that came from Next carries
   `x-opennext: 1`; one from `worker.ts` doesn't.
 - Each page's `lastmod` in the sitemap and `dateModified` in its structured data is the newest `seen` date among the
-  facts it shows (`pageUpdated` in `src/lib/data.ts`), capped at `data/meta.json → updated`. Bumping `seen` on a line
-  you re-checked is what tells search engines that page moved.
+  facts it shows (`pageUpdated` in `src/lib/data.ts`), capped at the day of `data/meta.json → updated`. Bumping `seen`
+  on a line you re-checked is what tells search engines that page moved.
 - Route pages open with one sentence that answers the page (`answerText` in `plan-view.tsx`, the pick in `answerFor`
   in `src/lib/plan.ts`): the fastest running route, its time and check date. It is what snippets and AI assistants
   quote, and it doubles as the WebPage description.
@@ -104,7 +104,8 @@ Rules:
 2. Tour operators and press are capped at `reported`. Only official bodies, the operator itself,
    or a checked traveller report earn `verified`.
 3. Bump `seen` when you review a line. A fresh date on an unchanged fact is the signal the site is alive.
-4. Update `data/meta.json` → `updated` after each review pass.
+4. Update `data/meta.json` → `updated` after each review pass, to the UTC time you finished
+   (`date -u +%Y-%m-%dT%H:%M:00Z`). The footer and the About page show it on each reader's own clock.
 5. `npm test` checks referential integrity (every entry, road, source and airline id resolves).
 6. Every airport in `entries.json` names its `city`. The destination picker lists the airports by name and routes to that city.
 7. When a change is news (something opened, closed, started or stopped, or a rule changed), add it to the top of

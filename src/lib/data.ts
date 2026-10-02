@@ -14,6 +14,7 @@ import { slugify } from "./slugs"
 import { routeHref } from "./site"
 
 export const DATA = {
+  /** `updated`: when the facts were last reviewed, a UTC timestamp ("2026-10-02T06:58:00Z"). */
   meta: meta as { updated: string; contact: string },
   sources: sources as Record<string, Source>,
   airlines: airlines as Record<string, Airline>,
@@ -120,11 +121,11 @@ const latest = (dates: string[]) => dates.reduce((a, b) => (b > a ? b : a), "")
 /**
  * The newest check date among the facts a page shows, so each page reports its
  * own freshness instead of the date of the last review pass. Feeds the sitemap's
- * lastmod and the page's dateModified, which must agree. Never later than
- * meta.updated: a check date past the review date is a typo, not news.
+ * lastmod and the page's dateModified, which must agree. Never later than the
+ * day of meta.updated: a check date past the review date is a typo, not news.
  */
 export function pageUpdated(path: string): string {
-  const cap = DATA.meta.updated
+  const cap = DATA.meta.updated.slice(0, 10)
   const parts = path.split("/").filter(Boolean)
   let dates: string[] = []
   if ((parts[0] === "airports" || parts[0] === "crossings") && parts[1]) {

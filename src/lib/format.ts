@@ -3,16 +3,34 @@ import type { Locale } from "./types"
 // Arabic month names, Western (0-9) digits. Plain "ar-SY" renders Eastern Arabic
 // numerals, which the site avoids everywhere; `nu-latn` keeps the locale's words
 // and only swaps the digits.
-const INTL_LOCALE: Record<Locale, string> = { ar: "ar-SY-u-nu-latn", en: "en-GB" }
+export const INTL_LOCALE: Record<Locale, string> = { ar: "ar-SY-u-nu-latn", en: "en-GB" }
 
+/** The calendar day of a date or a UTC timestamp: "20 Sept 2026". */
 export function formatDate(iso: string, locale: Locale) {
-  const [y, m, d] = iso.split("-").map(Number)
+  const [y, m, d] = iso.slice(0, 10).split("-").map(Number)
   return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString(INTL_LOCALE[locale], {
     day: "numeric",
     month: "short",
     year: "numeric",
     timeZone: "UTC",
   })
+}
+
+export const DATE_TIME: Intl.DateTimeFormatOptions = {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZoneName: "short",
+}
+
+/**
+ * A moment to the minute, with its zone so nobody mistakes whose clock it is:
+ * "2 Oct 2026, 08:58 CEST". Without a `timeZone` it is the reader's own.
+ */
+export function formatDateTime(iso: string, locale: Locale, timeZone?: string) {
+  return new Date(iso).toLocaleString(INTL_LOCALE[locale], { ...DATE_TIME, timeZone })
 }
 
 export function formatHours(h: number | null, locale: Locale) {

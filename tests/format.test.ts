@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { formatDate, formatDuration, formatHours, formatHoursText, formatMinutes } from "../src/lib/format.ts"
+import { formatDate, formatDateTime, formatDuration, formatHours, formatHoursText, formatMinutes } from "../src/lib/format.ts"
 
 const EASTERN = /[٠-٩۰-۹]/
 
@@ -45,4 +45,19 @@ test("durations read as hours and minutes, to the nearest five minutes", () => {
   assert.equal(formatDuration(0.5, "en"), "30 min")
   assert.equal(formatDuration(2.7, "ar"), "2 س 40 د")
   assert.equal(formatDuration(null, "ar"), "—")
+})
+
+test("the last-updated time reads to the minute, with the reader's zone", () => {
+  const at = "2026-10-02T06:58:00Z"
+  assert.equal(formatDateTime(at, "en", "UTC"), "2 Oct 2026, 06:58 UTC")
+  assert.equal(formatDateTime(at, "en", "Europe/Berlin"), "2 Oct 2026, 08:58 CEST")
+  assert.equal(formatDateTime(at, "en", "Asia/Damascus"), "2 Oct 2026, 09:58 GMT+3")
+  // Late enough in UTC to be the next day further east.
+  assert.match(formatDateTime("2026-10-02T22:30:00Z", "en", "Asia/Damascus"), /^3 Oct 2026, 01:30/)
+  const ar = formatDateTime(at, "ar", "Asia/Damascus")
+  assert.doesNotMatch(ar, EASTERN, ar)
+  assert.match(ar, /تشرين الأول 2026/)
+  assert.match(ar, /09:58/)
+  // A timestamp still formats as its UTC day where only the day is wanted.
+  assert.equal(formatDate(at, "en"), "2 Oct 2026")
 })
