@@ -172,7 +172,7 @@ const messages = {
         },
         {
           q: "هل توجد رحلات مباشرة من أوروبا إلى سوريا؟",
-          a: "لا، بحسب نشرة EASA السارية. الطريق المعتاد هو الترانزيت عبر إسطنبول أو الخليج، أو الطيران إلى بيروت ثم براً.",
+          a: "نعم، عدد قليل منها: صن دير من برلين، وليف من دوسلدورف وكولن، ودان إير من بوخارست، والسورية للطيران من أمستردام وكوبنهاغن وفيينا. شركات الطيران الأوروبية الكبرى لا تطير إلى سوريا التزاماً بتوصية EASA بشأن الأجواء السورية، وهي توصية لا حظر، لذلك تمر معظم الرحلات الأخرى عبر إسطنبول أو الخليج، أو إلى بيروت ثم براً.",
         },
         {
           q: "من يقف خلف fly.sy؟",
@@ -434,7 +434,7 @@ const messages = {
         },
         {
           q: "Are there direct flights from Europe to Syria?",
-          a: "No, under the EASA bulletin currently in force. The usual way is a connection through Istanbul or the Gulf, or a flight to Beirut and then overland.",
+          a: "Yes, a few: Sundair from Berlin, LEAV Aviation from Düsseldorf and Cologne, Dan Air from Bucharest, and Syrian Air from Amsterdam, Copenhagen and Vienna. The big European airlines stay out, following EASA's advice on Syrian airspace (advice, not a ban), so most other trips connect through Istanbul or the Gulf, or fly to Beirut and continue overland.",
         },
         {
           q: "Who is behind fly.sy?",
