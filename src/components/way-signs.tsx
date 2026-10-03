@@ -8,6 +8,7 @@ import { localePath } from "@/lib/site"
 import type { Locale, Mode, Status } from "@/lib/types"
 import type { Messages } from "@/messages"
 import { cn } from "@/lib/utils"
+import { StatusStamp } from "@/components/status-stamp"
 import { AirlineLogo } from "@/components/airline-logo"
 import { WayGate } from "@/components/passport-ui"
 import { Provenance } from "@/components/provenance"
@@ -165,7 +166,7 @@ function Board({ way: w, dest, locale, m }: { way: Way; dest: string; locale: Lo
                         {formatDuration(j.totalHours, locale)}
                       </>
                     ) : (
-                      <StatusPill status={j.status} label={m.status[j.status]} />
+                      <StatusStamp status={j.status} label={m.status[j.status]} />
                     )}
                   </span>
                 </summary>
@@ -196,7 +197,3 @@ function Board({ way: w, dest, locale, m }: { way: Way; dest: string; locale: Lo
   )
 }
 
-function StatusPill({ status, label }: { status: Status; label: string }) {
-  const t = { open: "text-status-open bg-status-open/10", caution: "text-status-caution bg-status-caution/10", closed: "text-status-closed bg-status-closed/10", unknown: "text-status-unknown bg-status-unknown/10" }[status]
-  return <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", t)}>{label}</span>
-}

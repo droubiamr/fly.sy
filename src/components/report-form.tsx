@@ -1,5 +1,6 @@
 "use client"
 
+import { cn } from "@/lib/utils"
 import { useActionState, useState } from "react"
 import { DATA } from "@/lib/data"
 import type { Passport } from "@/lib/types"
@@ -55,12 +56,17 @@ export function ReportForm({ contactUrl }: { contactUrl: string }) {
       <fieldset className="flex flex-col gap-2">
         <legend className="text-[13.5px] font-semibold">{f.entry}</legend>
         <input type="hidden" name="entry" value={entry} />
-        <ToggleGroup type="single" value={entry} onValueChange={(v) => v && setEntry(v)} className="flex-wrap justify-start gap-2">
+        <ToggleGroup type="single" value={entry} onValueChange={(v) => v && setEntry(v)} spacing={1.5} className="grid w-full grid-cols-2 sm:grid-cols-3">
           {Object.entries(DATA.entries).map(([id, e]) => (
             <ToggleGroupItem
               key={id}
               value={id}
-              className="h-11 rounded-full border-0 bg-muted px-4 text-sm font-medium data-[state=on]:bg-foreground data-[state=on]:text-background"
+              // The passport picker's style: an outlined plate, and the chosen one a green road sign.
+              className={cn(
+                "h-12 w-full rounded-lg px-2 text-[13px] leading-tight font-semibold whitespace-normal",
+                "bg-card text-primary shadow-[inset_0_0_0_2px_var(--primary)] hover:bg-secondary hover:text-primary",
+                "data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-[inset_0_0_0_3px_var(--primary),inset_0_0_0_4.5px_var(--primary-foreground)]",
+              )}
             >
               {e.name[locale]}
             </ToggleGroupItem>
