@@ -14,6 +14,7 @@ import {
   routePath,
 } from "./data"
 import { DATA_FILES, dataFileUrl } from "./open-data"
+import { PARTNER, PARTNER_ON } from "./partner"
 import { SITE_URL, absoluteUrl } from "./site"
 import type { Arrival, Entry } from "./types"
 import { getMessages } from "@/messages"
@@ -33,10 +34,13 @@ const hours = (h: number) => `${h} h`
 const status = (e: { status: Entry["status"] }) => m.status[e.status].toLowerCase()
 
 function intro(): string[] {
+  const partner = PARTNER_ON
+    ? ` Some route pages recommend one travel agency, ${PARTNER.name}, in a card marked "Partner": it is run by the family of fly.sy's founder, and routes are listed and ranked the same way with or without it.`
+    : ""
   return [
     "# fly.sy",
     "",
-    "> How to get into Syria today: every flight, land crossing and entry document, with the source, confidence level and date last checked on every line. Independent and unofficial: not part of any government body, airline or embassy. It sells nothing and takes no commission.",
+    `> How to get into Syria today: every flight, land crossing and entry document, with the source, confidence level and date last checked on every line. Independent and unofficial: not part of any government body, airline or embassy. It sells nothing.${partner}`,
     "",
     `Facts last reviewed ${DATA.meta.updated}. Arabic is the main language, at ${SITE_URL}; English is at ${en("/")}. Every English page listed here has an Arabic version at the same path without /en.`,
     "",

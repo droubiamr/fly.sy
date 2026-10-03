@@ -4,7 +4,8 @@ An independent, unofficial, open-source answer sheet for getting into Syria: eve
 and paperwork requirement, with the **source**, **confidence level** and **date last checked** on every line —
 plus real experiences from people who actually made the trip.
 
-Not affiliated with any government body, airline or embassy. Sells nothing, takes no commission.
+Not affiliated with any government body, airline or embassy, and sells nothing. The one travel agency it
+recommends is marked as a partner and disclosed as the founder's family's (see [Partner agency](#partner-agency)).
 
 ## Stack
 
@@ -73,6 +74,7 @@ npm run dev
 | `data/news.json` | The News page: dated changes (a crossing closes, a route starts), each linking the exact post or document it came from. Newest first. |
 | `data/links.json` | The Links page (`/links`): official websites, accounts and apps, and visa and flight-tracking tools, one card per body. An airport's or airline's card also puts "Official website" on its page and `sameAs` in its structured data. |
 | `src/lib/plan.ts` | The route planner. Pure function, tested in `tests/`. |
+| `src/lib/partner.ts`, `src/components/partner-card.tsx` | The partner agency: its name, WhatsApp number and the regions whose route pages show it. No number, shown nowhere. |
 | `src/lib/data.ts` | Loads and types the JSON. |
 | `src/messages/index.ts` | UI strings, `ar` and `en`. |
 | `src/app/globals.css` | Design tokens. The whole look is these variables. |
@@ -123,6 +125,19 @@ Rules:
    under construction); the page tags it and `npm run links` says when it works again. The emblems on the cards
    come from the bodies' own sites: `npm run logos` refreshes `public/emblems/`, committed like the airline logos.
    `tests/links.test.ts` checks the file and needs no install.
+
+## Partner agency
+
+Route pages from the countries in `PARTNER.regions` (Europe) show one card for Homs Reisen, a travel agency run
+by the founder's family, after the papers in the sidebar: marked "Partner", a WhatsApp button that opens a chat
+with the trip already typed in ("I'd like to travel from Germany to Damascus"), and a line saying whose family
+runs it. Only where a route runs. The About page answers "Does fly.sy work with a travel agency?" and llms.txt
+says the same. The name, the number and the regions are in `src/lib/partner.ts`; with no number, none of it shows.
+
+- One card per page, never a button per flight: a row can be unconfirmed or closed, and the site says not to book on those.
+- After the papers, because the site's advice is to settle them before buying a ticket.
+- It plays no part in the planner (`tests/partner.test.ts` checks that `plan.ts` never reads it), and the agency is
+  never the `source` of a fact.
 
 ## Community reports
 

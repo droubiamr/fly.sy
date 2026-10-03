@@ -7,6 +7,7 @@ import { localePath } from "@/lib/site"
 import type { Locale, Mode, OriginDef, Passport } from "@/lib/types"
 import { PassportProvider } from "@/components/passport-state"
 import { AnswerLine, OnlyFor, PassportPlates } from "@/components/passport-ui"
+import { PartnerCard } from "@/components/partner-card"
 import { Planner } from "@/components/planner"
 import { Provenance } from "@/components/provenance"
 import { WaySigns } from "@/components/way-signs"
@@ -120,6 +121,7 @@ export function PlanView({ locale, origin, dest, heading }: PlanProps & { headin
           <Button asChild className="h-12 w-full text-[15px]">
             <Link href={href("/documents")}>{m.footer.documents}</Link>
           </Button>
+          <PartnerCard locale={locale} origin={origin} dest={dest} running={answerFor(journeys.sy).running > 0} />
 
           <nav aria-labelledby="od-h" className="flex flex-col gap-2">
             <h2 id="od-h" className="text-[15px] font-bold">

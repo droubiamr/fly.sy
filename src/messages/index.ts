@@ -103,6 +103,20 @@ const messages = {
       otherOrigin: "إلى {city} من دول أخرى",
       entries: "المنافذ على هذا الطريق",
     },
+    // The partner agency (src/lib/partner.ts). Every place it appears says whose family runs it.
+    partner: {
+      tag: "شريك",
+      title: "تحتاج مساعدة في الحجز؟",
+      text: "نتعامل مع وكالة السفر {name} ونوصي بها. راسلهم على واتساب واسألهم عن هذه الرحلة.",
+      cta: "{name} على واتساب",
+      fine: "وكالة {name} تديرها عائلة مؤسس fly.sy. تحجز معها لا مع fly.sy، والطرق هنا تُعرض وتُرتَّب بالطريقة نفسها بوجودها أو بدونها.",
+      // Typed into the chat for the traveller, who can change it before sending.
+      message: "مرحباً، وصلت إليكم عن طريق fly.sy. أريد السفر من {origin} إلى {city}.",
+      faq: {
+        q: "هل يتعامل fly.sy مع وكالة سفر؟",
+        a: "مع وكالة واحدة هي {name}، وتديرها عائلة مؤسس fly.sy. تظهر في بعض صفحات الطرق في بطاقة عليها كلمة «شريك». تحجز معها لا مع fly.sy، والطرق تُعرض وتُرتَّب بالطريقة نفسها بوجودها أو بدونها.",
+      },
+    },
     documents: {
       title: "الأوراق المطلوبة لدخول سوريا",
       lede: "ما تحتاجه حسب طريقة الدخول وجوازك. كل سطر بمصدره، وحيث لا مصدر موثوق نقول ذلك بدل التخمين.",
@@ -131,7 +145,7 @@ const messages = {
         borders: "المعابر البرية",
         tracking: "تتبع الرحلات",
       },
-      airlinesLede: "احجز رحلتك وتحقق منها لدى شركة الطيران نفسها. شركات الطيران الأجنبية التي تطير إلى سوريا مدرجة في صفحة الطيران.",
+      airlinesLede: "تحقق من رحلتك لدى شركة الطيران نفسها، أياً كانت الجهة التي حجزت عبرها. شركات الطيران الأجنبية التي تطير إلى سوريا مدرجة في صفحة الطيران.",
       visasLede: "عدا منصة التأشيرة السورية، هذه أدوات مستقلة لا مصادر رسمية. تأكد من سفارة البلد الذي تقصده قبل الحجز.",
       status: { down: "لا يعمل حالياً", building: "قيد الإنشاء" },
       kinds: {
@@ -183,7 +197,7 @@ const messages = {
       lede: "كل سطر يحمل مصدره ودرجة ثقته وتاريخ مراجعته. حين لا نجد مصدراً موثوقاً نقول ذلك بدل أن نملأ الفراغ بتخمين.",
       what: "ما هو fly.sy",
       whatText:
-        "fly.sy يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟ الرحلات الجوية، المعابر البرية، والأوراق المطلوبة، للسوريين في الخارج وللزوار الأجانب. مستقل، غير رسمي، لا يبيع شيئاً ولا يأخذ عمولة، ولا يتبع أي جهة حكومية أو شركة طيران أو سفارة.",
+        "fly.sy يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟ الرحلات الجوية، المعابر البرية، والأوراق المطلوبة، للسوريين في الخارج وللزوار الأجانب. مستقل، غير رسمي، لا يبيع شيئاً، ولا يتبع أي جهة حكومية أو شركة طيران أو سفارة.",
       levels: "درجات الثقة",
       lv: {
         verified: "من جهة رسمية أو من المشغّل نفسه، أو تجربة مسافر تم التحقق منها.",
@@ -217,7 +231,7 @@ const messages = {
         },
         {
           q: "من يقف خلف fly.sy؟",
-          a: "مشروع مستقل من سوريين في المهجر. لا جهة حكومية ولا شركة طيران ولا وكالة سفر، ولا عمولة على أي شيء.",
+          a: "مشروع مستقل من سوريين في المهجر، لا تديره جهة حكومية ولا شركة طيران ولا وكالة سفر.",
         },
       ],
       sources: "المصادر",
@@ -410,6 +424,18 @@ const messages = {
       otherOrigin: "To {city} from other countries",
       entries: "Entry points on this route",
     },
+    partner: {
+      tag: "Partner",
+      title: "Need help booking?",
+      text: "{name} is a travel agency we use and recommend. Message them on WhatsApp and ask about this trip.",
+      cta: "{name} on WhatsApp",
+      fine: "{name} is run by the family of fly.sy's founder. You book with them, not with fly.sy, and the routes here are listed and ranked the same way with or without them.",
+      message: "Hello, I found you through fly.sy. I'd like to travel from {origin} to {city}.",
+      faq: {
+        q: "Does fly.sy work with a travel agency?",
+        a: "With one: {name}, which is run by the family of fly.sy's founder. Some route pages show it in a card marked \"Partner\". You book with them, not with fly.sy, and routes are listed and ranked the same way with or without them.",
+      },
+    },
     documents: {
       title: "Documents you need to enter Syria",
       lede: "What you need, by how you enter and which passport you hold. Every line carries its source, and where there is no dependable source we say so instead of guessing.",
@@ -438,7 +464,7 @@ const messages = {
         borders: "Land borders",
         tracking: "Flight tracking",
       },
-      airlinesLede: "Book and check your flight with the airline itself. Foreign airlines flying to Syria are listed on the airlines page.",
+      airlinesLede: "Check your flight with the airline itself, however you booked it. Foreign airlines flying to Syria are listed on the airlines page.",
       visasLede: "Apart from Syria's own e-visa site, these are independent tools, not official sources. Confirm with the embassy of the country you are going to before you book.",
       status: { down: "Not working right now", building: "Under construction" },
       kinds: {
@@ -490,7 +516,7 @@ const messages = {
       lede: "Every line carries its source, its confidence level and the date it was reviewed. Where we can't find a dependable source, we say so instead of filling the gap with a guess.",
       what: "What fly.sy is",
       whatText:
-        "fly.sy answers one question: how do I get into Syria today? Flights, land crossings and the paperwork, for Syrians abroad and for foreign visitors. It is independent and unofficial, sells nothing, takes no commission, and is not part of any government body, airline or embassy.",
+        "fly.sy answers one question: how do I get into Syria today? Flights, land crossings and the paperwork, for Syrians abroad and for foreign visitors. It is independent and unofficial, sells nothing, and is not part of any government body, airline or embassy.",
       levels: "Confidence levels",
       lv: {
         verified: "From an official body, the operator itself, or a checked traveller report.",
@@ -524,7 +550,7 @@ const messages = {
         },
         {
           q: "Who is behind fly.sy?",
-          a: "An independent project by Syrians in the diaspora. No government body, no airline, no travel agency, and no commission on anything.",
+          a: "An independent project by Syrians in the diaspora. No government body, airline or travel agency runs it.",
         },
       ],
       sources: "Sources",

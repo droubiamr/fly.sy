@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { DATA } from "@/lib/data"
-import { getI18n, requireLocale } from "@/lib/i18n"
+import { fmt, getI18n, requireLocale } from "@/lib/i18n"
 import { arrow } from "@/lib/format"
+import { PARTNER, PARTNER_ON } from "@/lib/partner"
 import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, datasetLd, faqLd, graph, organizationLd, webPageLd, websiteLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
@@ -27,6 +28,8 @@ export default async function AboutPage({ params }: Props) {
   requireLocale(lang)
   const { locale, m } = getI18n(lang)
   const levels = ["verified", "reported", "unconfirmed"] as const
+  // With the partner agency on, the questions end with who it is, right after "Who is behind fly.sy?".
+  const faqs = PARTNER_ON ? [...m.about.faqs, { q: m.partner.faq.q, a: fmt(m.partner.faq.a, { name: PARTNER.name }) }] : m.about.faqs
   const crumbs = [
     { name: m.home, path: "/" },
     { name: m.tabs.about, path: "/about" },
@@ -40,7 +43,7 @@ export default async function AboutPage({ params }: Props) {
           datasetLd(locale),
           breadcrumbLd(locale, crumbs),
           webPageLd(locale, { path: "/about", name: m.about.title, description: m.seo.about.description }),
-          faqLd(m.about.faqs),
+          faqLd(faqs),
         )}
       />
       <section>
@@ -96,7 +99,7 @@ export default async function AboutPage({ params }: Props) {
       <section>
         <h2 className="mb-2 text-sm font-semibold">{m.about.faq}</h2>
         <dl className="divide-y rounded-2xl border bg-card px-5">
-          {m.about.faqs.map((f) => (
+          {faqs.map((f) => (
             <div key={f.q} className="py-3">
               <dt className="text-sm font-semibold">{f.q}</dt>
               <dd className="mt-1 text-[13.5px] leading-relaxed text-muted-foreground">{f.a}</dd>

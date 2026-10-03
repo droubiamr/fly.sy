@@ -8,7 +8,8 @@ Start here, then README.md and CONTRIBUTING.md.
 
 - Owner: Amr (GitHub: `droubiamr`, repo `droubiamr/fly.sy`). Trilingual AR/EN/DE.
 - Audience: Syrian diaspora (Germany, Türkiye, Gulf, Lebanon, Jordan) and foreign travellers.
-- **Not** for travel agencies. **Not** official. No government affiliation, sells nothing, takes no commission.
+- **Not** for travel agencies. **Not** official. No government affiliation, sells nothing. Route pages from Europe can
+  show one partner agency, Homs Reisen (run by Amr's family), marked and disclosed: README → Partner agency.
 - Arabic-first (RTL default) at `/`, English at `/en`. German is a planned third language (add it to `LOCALES` in
   `src/lib/site.ts`, `messages`, and the `languages` maps in `src/lib/seo.ts` and `src/app/sitemap.ts`).
 
@@ -124,5 +125,7 @@ Then: `npm install`, `npm run check`, `npm run dev`, open on phone.
 ## Open decisions for Amr
 
 - Whether to name himself publicly on the site or stay behind a studio name + contact channel.
-- Monetization: if affiliate links are ever added, the "no commission" line in the independence notice must change.
+- Partner agency (Oct 2026): built and off until its WhatsApp number is set in `src/lib/partner.ts`. The "no
+  commission" lines are gone. Once it earns money, check the German rules on marking ads and on an Impressum,
+  which touches the question above of naming himself.
 - Whether admin sign-in should move to passkeys (WebAuthn) as the in-app factor; Access can already require them.
