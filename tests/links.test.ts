@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { readFileSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 
 // Reads the JSON directly and imports nothing from src, so the sweep Routine can run it
 // on a fresh clone without npm install: node --experimental-strip-types --test tests/links.test.ts
@@ -20,6 +20,8 @@ type Card = {
   entry?: string
   airline?: string
   country?: string
+  logo?: string
+  status?: string
 }
 
 const GROUPS = ["aviation", "airlines", "consular", "visas", "borders", "tracking"]
@@ -87,6 +89,8 @@ test("links: cards point at airports, carriers and countries that exist", () => 
     if (c.entry) assert.equal(entries[c.entry]?.kind, "air", `${c.id}: entry ${c.entry} is an airport`)
     if (c.airline) assert.ok(airlines[c.airline], `${c.id}: airline ${c.airline}`)
     if (c.country) assert.match(c.country, /^[A-Z]{2}$/, `${c.id}: country`)
+    if (c.logo) assert.ok(existsSync(new URL(`../public/emblems/${c.logo}.png`, import.meta.url)), `${c.id}: public/emblems/${c.logo}.png (npm run logos)`)
+    if (c.status) assert.ok(["down", "building"].includes(c.status), `${c.id}: status ${c.status}`)
     // An airport's or a carrier's page shows the official website, so the card must have one.
     if (c.entry || c.airline) assert.ok(c.links.some((l) => l.kind === "site"), `${c.id}: needs a site link`)
   }

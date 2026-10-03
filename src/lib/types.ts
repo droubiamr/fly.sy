@@ -104,6 +104,10 @@ export type Resource = {
   airline?: string
   /** Two-letter code of a body outside Syria, shown as a tag. */
   country?: string
+  /** Its emblem in public/emblems/ (scripts/link-logos.mjs). Carriers show their logo from public/airlines/ instead. */
+  logo?: "gaca" | "emblem"
+  /** Listed though it does not work: "down" when it would not open, "building" when it says it is under construction. */
+  status?: "down" | "building"
 }
 
 export type Need = { source: string; text: Text }

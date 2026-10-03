@@ -3,7 +3,8 @@
 // it flags needs a look, then a fix in data/links.json or, if all is well, a fresh `seen` on the card.
 //   npm run links
 // Facebook, Instagram and X answer scripts with a login wall, so their accounts are checked through "via" only.
-// Sites behind a bot wall (Cloudflare) come back as "open it in a browser": that is not a broken link.
+// Sites behind a bot wall (Cloudflare) come back as "open it in a browser": that is not a broken link. A card with a
+// "status" (down, under construction) is expected not to work; the check says when it starts working again.
 import { readFileSync } from "node:fs"
 
 const cards = JSON.parse(readFileSync(new URL("../data/links.json", import.meta.url), "utf8"))
@@ -56,6 +57,17 @@ await Promise.all(
       const { c, l, u } = job
       const r = await get(u)
       checked++
+      // A card marked as not working: say whether it still doesn't, and when it may be back.
+      if (c.status === "down") {
+        if (r.status >= 200 && r.status < 300) flag("back", c.id, `${u} opens again (${r.status}): look at it, then drop "status"`)
+        else flag("still", c.id, `${u} still does not open (${r.status || r.error})`)
+        continue
+      }
+      if (c.status === "building") {
+        if (r.status >= 200 && r.status < 300 && r.text.length > 5000) flag("back", c.id, `${u} has grown past its "under construction" page: look at it, then drop "status"`)
+        else flag("still", c.id, `${u} is still under construction (${r.status || r.error})`)
+        continue
+      }
       if (r.status >= 200 && r.status < 300) {
         if (host(r.final) !== host(u)) flag("moved", c.id, `${u} now opens ${r.final}`)
       } else if ([401, 403, 429, 503].includes(r.status)) {
@@ -79,9 +91,9 @@ for (const c of cards.filter((x) => x.via)) {
     for (const u of urls(l)) if (!via.text.includes(needle(l, u))) flag("unlinked", c.id, `${l.kind} ${u} is no longer linked from ${c.via}`)
 }
 
-const MARK = { broken: "✗", unlinked: "✗", moved: "!", blocked: "?" }
+const MARK = { broken: "✗", unlinked: "✗", back: "!", moved: "!", blocked: "?", still: "·" }
 console.log(`${cards.length} cards, ${checked} addresses opened, accounts checked against ${cards.filter((c) => c.via).length} via pages`)
-for (const level of ["broken", "unlinked", "moved", "blocked"])
+for (const level of ["broken", "unlinked", "back", "moved", "blocked", "still"])
   for (const f of found.filter((x) => x.level === level)) console.log(`  ${MARK[level]} ${level.padEnd(8)} ${f.id}: ${f.msg}`)
 const failed = found.filter((f) => f.level === "broken" || f.level === "unlinked").length
 console.log(failed ? `${failed} to fix in data/links.json` : "nothing broken; bump `seen` on the cards you looked at")

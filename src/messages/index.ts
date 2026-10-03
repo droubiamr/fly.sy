@@ -132,7 +132,8 @@ const messages = {
         tracking: "تتبع الرحلات",
       },
       airlinesLede: "احجز رحلتك وتحقق منها لدى شركة الطيران نفسها. شركات الطيران الأجنبية التي تطير إلى سوريا مدرجة في صفحة الطيران.",
-      visasLede: "هذه أدوات مستقلة لا مصادر رسمية. تأكد من سفارة البلد الذي تقصده قبل الحجز.",
+      visasLede: "عدا منصة التأشيرة السورية، هذه أدوات مستقلة لا مصادر رسمية. تأكد من سفارة البلد الذي تقصده قبل الحجز.",
+      status: { down: "لا يعمل حالياً", building: "قيد الإنشاء" },
       kinds: {
         site: "الموقع",
         page: "صفحة",
@@ -438,7 +439,8 @@ const messages = {
         tracking: "Flight tracking",
       },
       airlinesLede: "Book and check your flight with the airline itself. Foreign airlines flying to Syria are listed on the airlines page.",
-      visasLede: "These are independent tools, not official sources. Confirm with the embassy of the country you are going to before you book.",
+      visasLede: "Apart from Syria's own e-visa site, these are independent tools, not official sources. Confirm with the embassy of the country you are going to before you book.",
+      status: { down: "Not working right now", building: "Under construction" },
       kinds: {
         site: "Website",
         page: "Page",

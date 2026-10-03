@@ -119,6 +119,9 @@ Rules:
    cites for it. Each card's `seen` is the day every address on it was opened. `npm run links` opens them all and checks every
    account is still linked from its `via` page; "blocked" means a bot wall, so open those in a browser, then bump
    `seen` on the cards you checked. Card text follows `CLAUDE.md`: say what the site itself says.
+   A site that is listed but not working carries `status`: `down` (it would not open) or `building` (it says it is
+   under construction); the page tags it and `npm run links` says when it works again. The emblems on the cards
+   come from the bodies' own sites: `npm run logos` refreshes `public/emblems/`, committed like the airline logos.
    `tests/links.test.ts` checks the file and needs no install.
 
 ## Community reports

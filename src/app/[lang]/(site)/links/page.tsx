@@ -1,21 +1,32 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, BookUser, Globe, Landmark, Plane, Radar, Stamp, TowerControl, type LucideIcon } from "lucide-react"
 import { DATA, LINK_GROUPS, airlinePath, entryPath, linkUrl } from "@/lib/data"
 import { getI18n, requireLocale } from "@/lib/i18n"
 import { arrow, formatDate, hostOf, shortUrl } from "@/lib/format"
 import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, graph, linksLd, webPageLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
-import type { Locale, Resource, ResourceLink } from "@/lib/types"
+import type { LinkGroup, Locale, Resource, ResourceLink } from "@/lib/types"
 import type { Messages } from "@/messages"
 import { Breadcrumbs } from "@/components/breadcrumbs"
-import { CountryTag } from "@/components/country-tag"
+import { Flag } from "@/components/flag"
 import { JsonLd } from "@/components/json-ld"
+import { signClass } from "@/components/sign"
+import { StatusStamp } from "@/components/status-stamp"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 type Props = { params: Promise<{ lang: Locale }> }
 const PATH = "/links"
+/** Each section's pictogram, on its sign at the top and beside the cards that have no emblem of their own. */
+const ICON: Record<LinkGroup, LucideIcon> = {
+  aviation: TowerControl,
+  airlines: Plane,
+  consular: BookUser,
+  visas: Stamp,
+  borders: Landmark,
+  tracking: Radar,
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params
@@ -56,15 +67,25 @@ export default async function LinksPage({ params }: Props) {
         <h1 className="text-2xl font-bold tracking-tight">{m.links.title}</h1>
         <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{m.links.lede}</p>
         <p className="mt-2 max-w-prose text-xs leading-relaxed text-muted-foreground">{m.links.how}</p>
-        <nav aria-label={m.links.jump} className="mt-4">
-          <ul className="flex flex-wrap gap-2">
-            {all.map(({ group }) => (
-              <li key={group}>
-                <a href={`#${group}`} className="inline-flex min-h-11 items-center rounded-full border bg-card px-4 text-sm">
-                  {m.links.groups[group]}
-                </a>
-              </li>
-            ))}
+        {/* The sections as road signs, the site's own way of pointing somewhere. */}
+        <nav aria-label={m.links.jump} className="mt-5">
+          <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            {all.map(({ group }) => {
+              const Icon = ICON[group]
+              return (
+                <li key={group}>
+                  <a
+                    href={`#${group}`}
+                    className={`${signClass()} flex min-h-16 items-center gap-2 px-3 py-3 text-[13.5px] leading-tight font-bold transition-opacity duration-100 ease-out active:opacity-85`}
+                  >
+                    <span className="grid size-8 shrink-0 place-items-center rounded-md bg-primary-foreground text-primary" aria-hidden="true">
+                      <Icon className="size-[18px]" strokeWidth={2.2} />
+                    </span>
+                    {m.links.groups[group]}
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         </nav>
       </section>
@@ -127,11 +148,17 @@ function Card({ r, locale, m }: { r: Resource; locale: Locale; m: Messages }) {
       : null
   return (
     <li id={r.id} className="scroll-mt-20 overflow-hidden rounded-[10px] border bg-card">
-      {/* No airline logo here: next/image would add its client chunk to a page that otherwise ships none of its own. */}
-      <h3 className="flex items-center gap-2 bg-secondary px-4 py-2.5 text-[15px] leading-snug font-bold text-secondary-foreground">
-        {r.country && <CountryTag code={r.country} />}
-        {r.name[locale]}
-      </h3>
+      <div className="flex items-center gap-3 bg-secondary px-4 py-3">
+        <Picture r={r} />
+        <div className="min-w-0 flex-1">
+          <h3 className="flex items-center gap-2 text-[15px] leading-snug font-bold text-secondary-foreground">
+            {r.name[locale]}
+          </h3>
+          {r.status && (
+            <StatusStamp status={r.status === "down" ? "closed" : "caution"} label={m.links.status[r.status]} className="mt-1.5" />
+          )}
+        </div>
+      </div>
       <p className="px-4 py-3 text-[13.5px] leading-relaxed">{r.use[locale]}</p>
       <ul>
         {r.links.map((l, i) => {
@@ -142,7 +169,7 @@ function Card({ r, locale, m }: { r: Resource; locale: Locale; m: Messages }) {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex min-h-12 items-center gap-3 px-4 py-2 text-[14px] transition-colors duration-100 ease-out hover:bg-muted active:bg-muted"
+                className={`flex min-h-12 items-center gap-3 px-4 py-2 text-[14px] transition-colors duration-100 ease-out hover:bg-muted active:bg-muted ${r.status ? "text-muted-foreground" : ""}`}
               >
                 <span className="shrink-0 font-semibold">{l.label ? l.label[locale] : m.links.kinds[l.kind]}</span>
                 <span className="ms-auto min-w-0 truncate text-[13px] text-muted-foreground">
@@ -182,3 +209,33 @@ function shown(l: ResourceLink, url: string, siteHost: string | null) {
   if (l.kind === "page") return hostOf(url) === siteHost ? "" : hostOf(url)
   return shortUrl(url)
 }
+
+/**
+ * The card's picture: the body's own emblem (pulled from its site by scripts/link-logos.mjs), a carrier's logo, a
+ * foreign body's flag, or the section's pictogram for an independent tool. A plain img: next/image would add its
+ * client script to a page that has none, for a 3KB file that needs no resizing.
+ */
+function Picture({ r }: { r: Resource }) {
+  const src = r.airline ? `/airlines/${r.airline}.png` : r.logo ? `/emblems/${r.logo}.png` : null
+  const tile = "grid size-11 shrink-0 place-items-center rounded-lg border bg-white"
+  if (src)
+    return (
+      <span className={`${tile} p-1`}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- see above */}
+        <img src={src} alt="" width={36} height={36} loading="lazy" decoding="async" className={`size-9 object-contain ${r.status ? "opacity-60 grayscale" : ""}`} />
+      </span>
+    )
+  if (r.country)
+    return (
+      <span className={`${tile} overflow-hidden`}>
+        <Flag code={r.country} className="h-5" />
+      </span>
+    )
+  const Icon = r.group in ICON ? ICON[r.group] : Globe
+  return (
+    <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground" aria-hidden="true">
+      <Icon className="size-6" strokeWidth={2} />
+    </span>
+  )
+}
+
