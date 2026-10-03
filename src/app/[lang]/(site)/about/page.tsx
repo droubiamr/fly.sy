@@ -103,9 +103,12 @@ export default async function AboutPage({ params }: Props) {
             </div>
           ))}
         </dl>
-        <p className="mt-2 text-xs">
+        <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
           <Link href={localePath(locale, "/documents")} className="text-primary underline-offset-4 hover:underline">
             {m.footer.documents} {arrow(locale)}
+          </Link>
+          <Link href={localePath(locale, "/links")} className="text-primary underline-offset-4 hover:underline">
+            {m.tabs.links} {arrow(locale)}
           </Link>
         </p>
       </section>

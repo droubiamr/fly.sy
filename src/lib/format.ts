@@ -78,6 +78,15 @@ export function formatMinutes(min: number | null, locale: Locale) {
   return formatHours(Math.round((min / 60) * 10) / 10, locale)
 }
 
+/** A site's host as a reader sees it in the address bar: "damairport.gov.sy", no scheme, no www. */
+export const hostOf = (url: string) => new URL(url).host.replace(/^www\./, "")
+
+/** An account's address the same way, with its path: "t.me/SyrGACA", "youtube.com/@SyGACA". */
+export const shortUrl = (url: string) => {
+  const u = new URL(url)
+  return `${hostOf(url)}${u.pathname}`.replace(/\/$/, "")
+}
+
 /**
  * The arrow between two places, pointing the way the sentence reads: "→" is
  * not mirrored by the bidi algorithm, so on the Arabic site it would point

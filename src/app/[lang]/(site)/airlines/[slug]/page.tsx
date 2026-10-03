@@ -1,7 +1,18 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { DATA, airlineFromSlug, airlinePath, airlineSlug, arrivalsBy, destinationVia, entryPath, originForArrival, routePath } from "@/lib/data"
+import {
+  DATA,
+  airlineFromSlug,
+  airlinePath,
+  airlineSlug,
+  arrivalsBy,
+  destinationVia,
+  entryPath,
+  originForArrival,
+  resourceFor,
+  routePath,
+} from "@/lib/data"
 import { fmt, getI18n, requireLocale } from "@/lib/i18n"
 import { arrow, formatHours } from "@/lib/format"
 import { pageMetadata } from "@/lib/seo"
@@ -12,6 +23,7 @@ import { AirlineLogo } from "@/components/airline-logo"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { CountryTag } from "@/components/country-tag"
 import { JsonLd } from "@/components/json-ld"
+import { OfficialSite } from "@/components/official-site"
 import { Provenance } from "@/components/provenance"
 import { StatusDot, StatusStamp } from "@/components/status-stamp"
 
@@ -85,6 +97,7 @@ export default async function AirlinePage({ params }: Props) {
         <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
           {m.airlines.country} <CountryTag code={al.country} /> · <span className="font-mono text-xs">{code}</span>
         </p>
+        <OfficialSite resource={resourceFor({ airline: code })} locale={locale} m={m} />
       </section>
 
       <section aria-labelledby="r-h">

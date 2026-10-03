@@ -1,7 +1,7 @@
-import { DATA, pageUpdated } from "./data"
+import { DATA, linkUrl, pageUpdated, resourceFor } from "./data"
 import { DATA_FILES, dataFileUrl } from "./open-data"
 import { absoluteUrl, LANG_TAG, SITE_NAME, SITE_URL } from "./site"
-import type { Entry, Locale, Text } from "./types"
+import type { Entry, Locale, Resource, Text } from "./types"
 
 /* JSON-LD builders. Only what the page really shows, never invented values: an
    empty optional field is left out rather than filled with a placeholder. */
@@ -63,6 +63,18 @@ export function webPageLd(locale: Locale, { path, name, description }: { path: s
   }
 }
 
+/* The Links page: a body's own website, and the accounts it links to, are the same entity as the body. */
+const site = (r: Resource | undefined, locale: Locale) => {
+  const l = r?.links.find((x) => x.kind === "site")
+  return l ? linkUrl(l, locale) : undefined
+}
+const accounts = (r: Resource | undefined, locale: Locale) =>
+  (r?.links ?? []).filter((l) => !["site", "page", "ios", "android"].includes(l.kind)).map((l) => linkUrl(l, locale))
+const sameAs = (urls: (string | undefined)[]) => {
+  const list = urls.filter((u): u is string => Boolean(u))
+  return list.length ? { sameAs: list } : {}
+}
+
 /** Airports as schema.org Airport, land crossings as a Place with coordinates. */
 export function entryLd(locale: Locale, id: string, e: Entry, path: string) {
   const base = {
@@ -71,6 +83,8 @@ export function entryLd(locale: Locale, id: string, e: Entry, path: string) {
     geo: { "@type": "GeoCoordinates", latitude: e.lat, longitude: e.lng },
     address: { "@type": "PostalAddress", addressCountry: "SY" },
     ...(e.note ? { description: t(e.note, locale) } : {}),
+    // The airport's site, never the civil aviation authority's accounts it lists: those are another body's.
+    ...sameAs([site(resourceFor({ entry: id }), locale)]),
   }
   return e.kind === "air"
     ? { "@type": "Airport", "@id": `${absoluteUrl(locale, path)}#airport`, iataCode: id, ...base }
@@ -79,6 +93,7 @@ export function entryLd(locale: Locale, id: string, e: Entry, path: string) {
 
 export function airlineLd(locale: Locale, code: string, path: string) {
   const a = DATA.airlines[code]
+  const r = resourceFor({ airline: code })
   return {
     "@type": "Airline",
     "@id": `${absoluteUrl(locale, path)}#airline`,
@@ -86,6 +101,36 @@ export function airlineLd(locale: Locale, code: string, path: string) {
     iataCode: code,
     url: absoluteUrl(locale, path),
     address: { "@type": "PostalAddress", addressCountry: a.country },
+    ...sameAs([site(r, locale), ...accounts(r, locale)]),
+  }
+}
+
+/**
+ * The official bodies on the Links page, in its order, each with its website as url and its accounts as sameAs.
+ * The independent tools (visa checkers, trackers) are links, not entities, and stay out.
+ */
+export function linksLd(locale: Locale, path: string, name: string, cards: Resource[]) {
+  const official = cards.filter((r) => r.group !== "visas" && r.group !== "tracking")
+  return {
+    "@type": "ItemList",
+    "@id": `${absoluteUrl(locale, path)}#links`,
+    name,
+    numberOfItems: official.length,
+    itemListElement: official.map((r, i) => {
+      const url = site(r, locale)
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": r.entry ? "Airport" : r.airline ? "Airline" : "GovernmentOrganization",
+          name: t(r.name, locale),
+          ...(r.entry || r.airline ? { iataCode: r.entry ?? r.airline } : {}),
+          ...(r.country ? { address: { "@type": "PostalAddress", addressCountry: r.country } } : {}),
+          ...(url ? { url } : {}),
+          ...sameAs(accounts(r, locale)),
+        },
+      }
+    }),
   }
 }
 

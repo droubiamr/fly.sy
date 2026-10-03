@@ -56,7 +56,7 @@ test("fmt fills placeholders and leaves unknown ones visible", () => {
 test("titles are unique per language and descriptions are search-snippet sized", () => {
   for (const locale of ["ar", "en"] as const) {
     const seo = getMessages(locale).seo
-    const pages = [seo.home, seo.airlines, seo.crossings, seo.documents, seo.reports, seo.reportNew, seo.about]
+    const pages = [seo.home, seo.airlines, seo.crossings, seo.documents, seo.news, seo.links, seo.reports, seo.reportNew, seo.about]
     const titles = pages.map((p) => p.title)
     assert.equal(new Set(titles).size, titles.length, `${locale}: duplicate title`)
     for (const p of pages) {

@@ -23,6 +23,17 @@ export function searchIndex(locale: Locale): SearchItem[] {
     ...Object.entries(DATA.airlines).map(([code, a]) => ({ group: "airlines" as const, label: a.name[locale], href: at(airlinePath(code)), keywords: `${a.name[other]} ${code}` })),
     { group: "pages", label: m.documents.title, href: at("/documents"), keywords: getMessages(other).documents.title },
     { group: "pages", label: m.news.title, href: at("/news"), keywords: getMessages(other).news.title },
+    // Every body on the page, in both languages, so "Syrian Air" or "هيئة الطيران" finds the official links too.
+    {
+      group: "pages",
+      label: m.links.title,
+      href: at("/links"),
+      keywords: [
+        getMessages(other).links.title,
+        ...DATA.links.flatMap((r) => [r.name.ar, r.name.en]),
+        "Facebook Instagram Telegram WhatsApp فيسبوك إنستغرام تيليغرام واتساب",
+      ].join(" "),
+    },
     { group: "pages", label: m.reports.title, href: at("/reports"), keywords: getMessages(other).reports.title },
     { group: "pages", label: m.about.title, href: at("/about"), keywords: getMessages(other).about.title },
   ]

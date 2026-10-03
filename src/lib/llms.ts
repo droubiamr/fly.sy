@@ -1,6 +1,7 @@
 import {
   DATA,
   DESTINATIONS,
+  LINK_GROUPS,
   ORIGINS,
   PASSPORTS,
   airEntries,
@@ -9,6 +10,7 @@ import {
   arrivalsVia,
   entryPath,
   landEntries,
+  linkUrl,
   routePath,
 } from "./data"
 import { DATA_FILES, dataFileUrl } from "./open-data"
@@ -87,6 +89,7 @@ export function llmsIndex(): string {
     "",
     `- [${m.documents.title}](${en("/documents")}): by air and by land, for Syrian passports, visa on arrival and prior approval`,
     `- [${m.news.title}](${en("/news")}): dated changes to flights and crossings, each with its official source`,
+    `- [${m.links.title}](${en("/links")}): the official websites and accounts of the Damascus, Aleppo and Deir ez-Zor airports, the civil aviation authority, Syrian airlines, the foreign ministry and border authorities, and visa-check tools, each checked by hand and dated`,
     `- [${m.reports.title}](${en("/reports")}): moderated reports from people who made the crossing`,
     `- [${m.about.title}](${en("/about")}): sources, confidence levels, how facts are checked, and common questions`,
     "",
@@ -152,6 +155,24 @@ export function llmsFull(): string {
     m.documents.warn,
     "",
     ...needs,
+    "## Official links",
+    "",
+    `${m.links.how} Page: ${en("/links")}`,
+    "",
+    ...LINK_GROUPS.flatMap((g) => {
+      const cards = DATA.links.filter((r) => r.group === g)
+      return cards.length
+        ? [
+            `### ${m.links.groups[g]}`,
+            "",
+            ...cards.flatMap((r) => [
+              `- ${r.name.en} (checked ${r.seen}): ${r.use.en}`,
+              ...r.links.map((l) => `  - ${l.label ? l.label.en : m.links.kinds[l.kind]}: ${linkUrl(l, "en")}`),
+            ]),
+            "",
+          ]
+        : []
+    }),
     "## Sources",
     "",
     ...Object.values(DATA.sources).map((s) => {

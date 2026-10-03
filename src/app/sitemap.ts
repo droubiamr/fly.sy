@@ -10,6 +10,7 @@ export function sitePaths(): { path: string; priority: number }[] {
     { path: "/crossings", priority: 0.9 },
     { path: "/documents", priority: 0.9 },
     { path: "/news", priority: 0.8 },
+    { path: "/links", priority: 0.7 },
     { path: "/reports", priority: 0.7 },
     { path: "/about", priority: 0.5 },
   ]

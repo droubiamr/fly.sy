@@ -14,6 +14,11 @@ source is you, set `confidence: reported` — a maintainer upgrades to `verified
 - Crossings: add to `data/entries.json` with `kind: "land"`, then its road times to every city in
   `data/roads.json` (road legs are automatically labelled `source: est`).
 
+## Adding an official link
+Add it to its card in `data/links.json` (or a new card), with the URL of the page on the body's own website that
+links to it as the card's `via`. We list no account, app or "official page" that the body itself does not point
+to. Bump the card's `seen`, run `npm run links`, and say in the PR where the link is published.
+
 ## Code
 `npm run check` must pass. Reuse `src/components/ui` (shadcn) and the shared components; don't add
 a second button, card or status chip. New logic gets a test in `tests/`.

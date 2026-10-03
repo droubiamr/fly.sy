@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FileText, Landmark, MapPin, MessagesSquare, Newspaper, Plane } from "lucide-react"
+import { FileText, Landmark, Link2, MapPin, MessagesSquare, Newspaper, Plane } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { localePath, splitLocale } from "@/lib/site"
 import { useLocale, useMessages } from "@/components/messages-provider"
@@ -15,6 +15,7 @@ const ITEMS = [
   { href: "/documents", key: "papers", Icon: FileText, on: (p: string) => p.startsWith("/documents") },
   { href: "/news", key: "news", Icon: Newspaper, on: (p: string) => p.startsWith("/news") },
   { href: "/reports", key: "experiences", Icon: MessagesSquare, on: (p: string) => p.startsWith("/reports") },
+  { href: "/links", key: "links", Icon: Link2, on: (p: string) => p.startsWith("/links") },
 ] as const
 
 /**
@@ -53,7 +54,7 @@ export function MainNav({ variant }: { variant: "top" | "bar" }) {
       aria-label={m.nav.label}
       className="fixed inset-x-0 bottom-0 z-20 border-t bg-card pb-[env(safe-area-inset-bottom,0px)] lg:hidden"
     >
-      <ul className="mx-auto grid max-w-lg grid-cols-6">
+      <ul className="mx-auto grid max-w-lg grid-cols-7">
         {ITEMS.map(({ href, key, Icon, on }) => {
           const active = on(path)
           return (
@@ -74,7 +75,7 @@ export function MainNav({ variant }: { variant: "top" | "bar" }) {
                 >
                   <Icon className="size-5" strokeWidth={active ? 2.2 : 1.8} aria-hidden="true" />
                 </span>
-                <span className="w-full truncate text-center">{m.nav[key]}</span>
+                <span className="w-full truncate text-center">{key in m.nav.short ? m.nav.short[key as keyof typeof m.nav.short] : m.nav[key]}</span>
               </Link>
             </li>
           )

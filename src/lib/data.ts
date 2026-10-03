@@ -9,7 +9,25 @@ import needs from "../../data/needs.json"
 import seedReports from "../../data/reports.seed.json"
 import meta from "../../data/meta.json"
 import news from "../../data/news.json"
-import type { Airline, Arrival, City, Entry, Needs, NewsItem, Origin, OriginDef, Region, Report, Roads, Source } from "./types"
+import links from "../../data/links.json"
+import type {
+  Airline,
+  Arrival,
+  City,
+  Entry,
+  LinkGroup,
+  Locale,
+  Needs,
+  NewsItem,
+  Origin,
+  OriginDef,
+  Region,
+  Report,
+  Resource,
+  ResourceLink,
+  Roads,
+  Source,
+} from "./types"
 import { slugify } from "./slugs"
 import { routeHref } from "./site"
 
@@ -26,6 +44,8 @@ export const DATA = {
   seedReports: seedReports as Report[],
   /** Newest first. */
   news: [...(news as NewsItem[])].sort((a, b) => b.date.localeCompare(a.date)),
+  /** The Links page, in file order within each group. */
+  links: links as Resource[],
 }
 
 export const ORIGINS = origins as OriginDef[]
@@ -91,6 +111,18 @@ export const routePath = (from: Origin, dest: string) => routeHref(originSlug(fr
 export const entryPath = (id: string) => `${DATA.entries[id].kind === "air" ? "/airports" : "/crossings"}/${entrySlug(id)}`
 export const airlinePath = (code: string) => `/airlines/${airlineSlug(code)}`
 
+/* ---- The Links page. ---- */
+
+/** Section order on the page. */
+export const LINK_GROUPS: LinkGroup[] = ["aviation", "airlines", "consular", "visas", "borders", "tracking"]
+
+/** The address a link opens for a reader of this language. */
+export const linkUrl = (l: ResourceLink, locale: Locale) => (typeof l.url === "string" ? l.url : l.url[locale])
+
+/** The official site of an airport or a carrier, when the Links page has one. Their own pages link to it. */
+export const resourceFor = (by: { entry: string } | { airline: string }) =>
+  DATA.links.find((r) => ("entry" in by ? r.entry === by.entry : r.airline === by.airline))
+
 export const landEntries = () => Object.entries(DATA.entries).filter(([, e]) => e.kind === "land")
 export const airEntries = () => Object.entries(DATA.entries).filter(([, e]) => e.kind === "air")
 
@@ -130,12 +162,14 @@ export function pageUpdated(path: string): string {
   let dates: string[] = []
   if ((parts[0] === "airports" || parts[0] === "crossings") && parts[1]) {
     const id = entryFromSlug(parts[1])
-    if (id) dates = [DATA.entries[id].seen, ...arrivalsVia(id).map((a) => a.seen)]
+    if (id) dates = [DATA.entries[id].seen, ...arrivalsVia(id).map((a) => a.seen), resourceFor({ entry: id })?.seen ?? ""]
   } else if (parts[0] === "airlines" && parts[1]) {
     const code = airlineFromSlug(parts[1])
-    if (code) dates = arrivalsBy(code).map((a) => a.seen)
+    if (code) dates = [...arrivalsBy(code).map((a) => a.seen), resourceFor({ airline: code })?.seen ?? ""]
   } else if (parts[0] === "news") {
     dates = DATA.news.map((n) => n.date)
+  } else if (parts[0] === "links") {
+    dates = DATA.links.map((r) => r.seen)
   } else if (parts[0] === "from" && parts[2] === "to") {
     const o = originFromSlug(parts[1])
     if (o) {

@@ -17,6 +17,7 @@ export const DATA_FILES = [
   { id: "origins", name: { en: "Countries you can start from", ar: "الدول التي يمكن الانطلاق منها" } },
   { id: "cities", name: { en: "Syrian cities", ar: "المدن السورية" } },
   { id: "sources", name: { en: "Sources", ar: "المصادر" } },
+  { id: "links", name: { en: "Official websites and accounts for travel to Syria", ar: "المواقع والحسابات الرسمية للسفر إلى سوريا" } },
 ] as const satisfies readonly { id: string; name: Text }[]
 
 export type DataFileId = (typeof DATA_FILES)[number]["id"]
@@ -36,6 +37,7 @@ export function dataFile(id: DataFileId) {
     origins: ORIGINS,
     cities: DATA.cities,
     sources: DATA.sources,
+    links: DATA.links,
   }[id]
   return {
     name: DATA_FILES.find((f) => f.id === id)!.name.en,
@@ -45,7 +47,8 @@ export function dataFile(id: DataFileId) {
     howToRead:
       "Facts name a source id from sources.json. Entries and arrivals also carry status (open, caution, closed, unknown), " +
       "confidence (verified, reported, unconfirmed) and seen, the date the line was last checked. Hours are estimates; " +
-      "road hours are fly.sy's own. Confirm with the airline or embassy before travelling.",
+      "road hours are fly.sy's own. In links.json, via is the page of the body's own website that links to its accounts. " +
+      "Confirm with the airline or embassy before travelling.",
     data: records,
   }
 }

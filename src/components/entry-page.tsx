@@ -13,6 +13,7 @@ import {
   entrySlug,
   landEntries,
   originForArrival,
+  resourceFor,
   routePath,
 } from "@/lib/data"
 import { fmt, getI18n, requireLocale } from "@/lib/i18n"
@@ -24,6 +25,7 @@ import type { Locale, Mode, Passport } from "@/lib/types"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { CountryTag } from "@/components/country-tag"
 import { JsonLd } from "@/components/json-ld"
+import { OfficialSite } from "@/components/official-site"
 import { Provenance } from "@/components/provenance"
 import { StatusDot, StatusStamp } from "@/components/status-stamp"
 
@@ -100,6 +102,7 @@ export function EntryPage(p: EntryParams, kind: Mode) {
         </p>
         {e.note && <p className="mt-3 max-w-prose text-[14.5px] leading-relaxed">{e.note[locale]}</p>}
         <Provenance source={e.source} locale={locale} m={m} />
+        <OfficialSite resource={resourceFor({ entry: id })} locale={locale} m={m} />
       </section>
 
       <section aria-labelledby="via-h">
