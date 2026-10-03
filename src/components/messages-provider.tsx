@@ -2,12 +2,12 @@
 
 import { createContext, useContext } from "react"
 import { Direction } from "radix-ui"
-import type { Messages } from "@/messages"
+import type { ClientMessages } from "@/messages"
 import type { Locale } from "@/lib/types"
 
-const Ctx = createContext<{ locale: Locale; m: Messages } | null>(null)
+const Ctx = createContext<{ locale: Locale; m: ClientMessages } | null>(null)
 
-export function MessagesProvider({ locale, m, children }: { locale: Locale; m: Messages; children: React.ReactNode }) {
+export function MessagesProvider({ locale, m, children }: { locale: Locale; m: ClientMessages; children: React.ReactNode }) {
   return (
     <Ctx.Provider value={{ locale, m }}>
       {/* Radix primitives (Select, ToggleGroup, …) do not read the document's

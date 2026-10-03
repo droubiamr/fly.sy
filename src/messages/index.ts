@@ -9,7 +9,7 @@ const messages = {
       // Alt text for the share card, which carries the same words as an image.
       card: "fly.sy — كيف تصل إلى سوريا. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
     },
-    tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", news: "الأخبار", reports: "تجارب", about: "عن الموقع" },
+    tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", news: "الأخبار", reports: "تجارب", links: "روابط رسمية", about: "عن الموقع" },
     // The navigation's own short labels. Breadcrumbs and footer links keep the fuller names in `tabs`.
     nav: {
       label: "القائمة الرئيسية",
@@ -19,6 +19,9 @@ const messages = {
       papers: "الأوراق",
       news: "الأخبار",
       experiences: "تجارب",
+      links: "روابط",
+      // The phone's tab bar has seven cells of about 51px; a label wider than that gets an ellipsis. Shorter words for it.
+      short: { experiences: "تجارب" },
       search: "ابحث",
       searchHint: "ابحث عن بلد أو مطار أو معبر أو شركة",
       searchEmpty: "لا نتائج. جرّب اسم بلد أو مدينة.",
@@ -114,6 +117,40 @@ const messages = {
       related: "ذو صلة",
       empty: "لا أخبار بعد.",
     },
+    links: {
+      title: "الروابط الرسمية للسفر إلى سوريا",
+      lede: "المواقع والحسابات الرسمية لمطارات دمشق وحلب ودير الزور وهيئة الطيران المدني وشركات الطيران السورية ووزارة الخارجية والمعابر، وأدوات تعرف بها إن كان جوازك يحتاج تأشيرة.",
+      how: "نتحقق من كل رابط بأنفسنا، وتُظهر كل بطاقة تاريخ التحقق. لا نُدرج حساباً إلا إذا أحال إليه الموقع الرسمي للجهة نفسها؛ ولم نجد لهيئة المنافذ موقعاً، فأدرجنا قناتها على تيليغرام التي نعتمدها مصدراً لأخبار المعابر.",
+      warn: "تطلب المطارات من المسافرين متابعة الحسابات الرسمية فقط. قبل أن تدفع أو ترسل وثيقة، تأكد أن العنوان يطابق ما هنا.",
+      jump: "أقسام الصفحة",
+      groups: {
+        aviation: "المطارات والطيران المدني",
+        airlines: "شركات الطيران السورية",
+        consular: "الجوازات والسفارات",
+        visas: "هل تحتاج تأشيرة؟",
+        borders: "المعابر البرية",
+        tracking: "تتبع الرحلات",
+      },
+      airlinesLede: "احجز رحلتك وتحقق منها لدى شركة الطيران نفسها. شركات الطيران الأجنبية التي تطير إلى سوريا مدرجة في صفحة الطيران.",
+      visasLede: "عدا منصة التأشيرة السورية، هذه أدوات مستقلة لا مصادر رسمية. تأكد من سفارة البلد الذي تقصده قبل الحجز.",
+      status: { down: "لا يعمل حالياً", building: "قيد الإنشاء" },
+      kinds: {
+        site: "الموقع",
+        page: "صفحة",
+        telegram: "تيليغرام",
+        facebook: "فيسبوك",
+        instagram: "إنستغرام",
+        x: "إكس",
+        youtube: "يوتيوب",
+        whatsapp: "قناة واتساب",
+        ios: "تطبيق آيفون",
+        android: "تطبيق أندرويد",
+      },
+      onSite: "على fly.sy",
+      official: "الموقع الرسمي",
+      all: "كل الروابط الرسمية",
+      missing: "تعرف رابطاً رسمياً ناقصاً، أو رابطاً تغيّر؟ راسلنا على",
+    },
     reports: {
       title: "تجارب حقيقية",
       lede: "أدق ما في الموقع جاء من أشخاص عبروا فعلاً. نتحقق قبل النشر، ولا ننشر أسماء.",
@@ -161,6 +198,10 @@ const messages = {
         {
           q: "هل مطار دمشق الدولي يعمل؟",
           a: "نعم بحسب هيئة الطيران المدني ولوحة المطار: يعمل بانتظام منذ 8 نيسان 2026 مع نحو 30 رحلة مغادرة يومياً. صفحة المطار تعرض الحالة الحالية وشركات الطيران التي تهبط فيه وتاريخ آخر مراجعة.",
+        },
+        {
+          q: "ما الموقع الرسمي لمطار دمشق الدولي؟",
+          a: "damairport.gov.sy، ويقول إنه الموقع الرسمي الوحيد للمطار. موقع مطار حلب alpairport.gov.sy ومطار دير الزور deirezzorairport.gov.sy، وتشغّل الثلاثة هيئة الطيران المدني. والروابط الرسمية التي تحققنا منها، ومنها حسابات الهيئة والسورية للطيران ووزارة الخارجية، في صفحة الروابط الرسمية.",
         },
         {
           q: "هل يمكن للأجانب دخول سوريا براً من تركيا؟",
@@ -248,6 +289,11 @@ const messages = {
         description:
           "آخر ما تغيّر في الطريق إلى سوريا: فتح وإغلاق المعابر والمطارات، خطوط الطيران الجديدة، وقواعد الدخول، مع مصدر رسمي وتاريخ لكل خبر.",
       },
+      links: {
+        title: "الروابط الرسمية للسفر إلى سوريا: مواقع المطارات والطيران المدني وشركات الطيران والسفارات",
+        description:
+          "المواقع والحسابات الرسمية لمطارات دمشق وحلب ودير الزور، وهيئة الطيران المدني، والسورية للطيران وفلاي شام، ووزارة الخارجية والسفارات، وأدوات التحقق من التأشيرة. كل رابط متحقق منه ومؤرخ.",
+      },
       reports: {
         title: "تجارب حقيقية في الدخول إلى سوريا: الانتظار وما طُلب عند كل معبر",
         description:
@@ -272,7 +318,7 @@ const messages = {
       description: "Every route into Syria, with the source and the date checked on every line. Independent and unofficial.",
       card: "fly.sy — How to get into Syria. Every route, with a source on every line. Independent, unofficial.",
     },
-    tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", news: "News", reports: "Reports", about: "About" },
+    tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", news: "News", reports: "Reports", links: "Official links", about: "About" },
     nav: {
       label: "Main",
       trip: "Trip",
@@ -281,6 +327,8 @@ const messages = {
       papers: "Papers",
       news: "News",
       experiences: "Experiences",
+      links: "Links",
+      short: { experiences: "Reports" },
       search: "Search",
       searchHint: "Search a country, airport, crossing or airline",
       searchEmpty: "No results. Try a country or city name.",
@@ -376,6 +424,40 @@ const messages = {
       related: "Related",
       empty: "No news yet.",
     },
+    links: {
+      title: "Official links for travelling to Syria",
+      lede: "The official websites and accounts of the Damascus, Aleppo and Deir ez-Zor airports, the civil aviation authority, Syrian airlines, the foreign ministry and the border authorities, and tools to check whether your passport needs a visa.",
+      how: "We check every link ourselves, and each card shows when. An account is listed only when the body's own website links to it; we found no website for the ports authority, so we list the Telegram channel we already cite for crossings.",
+      warn: "The airports ask travellers to follow only the official accounts. Before you pay or send a document, check the address against the one here.",
+      jump: "On this page",
+      groups: {
+        aviation: "Airports and civil aviation",
+        airlines: "Syrian airlines",
+        consular: "Passports and embassies",
+        visas: "Do you need a visa?",
+        borders: "Land borders",
+        tracking: "Flight tracking",
+      },
+      airlinesLede: "Book and check your flight with the airline itself. Foreign airlines flying to Syria are listed on the airlines page.",
+      visasLede: "Apart from Syria's own e-visa site, these are independent tools, not official sources. Confirm with the embassy of the country you are going to before you book.",
+      status: { down: "Not working right now", building: "Under construction" },
+      kinds: {
+        site: "Website",
+        page: "Page",
+        telegram: "Telegram",
+        facebook: "Facebook",
+        instagram: "Instagram",
+        x: "X",
+        youtube: "YouTube",
+        whatsapp: "WhatsApp channel",
+        ios: "iPhone app",
+        android: "Android app",
+      },
+      onSite: "on fly.sy",
+      official: "Official website",
+      all: "All official links",
+      missing: "Know an official link that's missing, or one that has changed? Write to",
+    },
     reports: {
       title: "Real experiences",
       lede: "The best lines on this site came from people who actually made the trip. We check before publishing, and never publish names.",
@@ -423,6 +505,10 @@ const messages = {
         {
           q: "Is Damascus International Airport open?",
           a: "Yes, according to the civil aviation authority and the airport's own board: regular operations since 8 April 2026, about 30 departures a day. The airport's page lists its current status, the airlines landing there and the date it was last checked.",
+        },
+        {
+          q: "What is the official website of Damascus International Airport?",
+          a: "damairport.gov.sy, which says it is the airport's only official website. Aleppo airport's is alpairport.gov.sy and Deir ez-Zor's is deirezzorairport.gov.sy; the civil aviation authority operates all three. The official links we have checked, including the authority's, Syrian Air's and the foreign ministry's accounts, are on the Official links page.",
         },
         {
           q: "Can foreigners enter Syria overland from Türkiye?",
@@ -510,6 +596,11 @@ const messages = {
         description:
           "The latest changes on the way into Syria: crossings and airports opening or closing, new airline routes and entry rules, each with an official source and a date.",
       },
+      links: {
+        title: "Official websites for Syria travel: airports, civil aviation, airlines and embassies",
+        description:
+          "The official websites and accounts of Damascus, Aleppo and Deir ez-Zor airports, the civil aviation authority, Syrian Air, Fly Cham and the foreign ministry, plus visa checkers. Every link checked and dated.",
+      },
       reports: {
         title: "Real experiences entering Syria: waits, documents and fees at each crossing",
         description:
@@ -531,3 +622,14 @@ const messages = {
 
 export type Messages = (typeof messages)["ar"]
 export const getMessages = (locale: Locale): Messages => messages[locale] as unknown as Messages
+
+/**
+ * The strings client components read through useMessages(). The provider in the root layout is handed only
+ * these, because whatever it is handed is serialized into every page: the rest of the dictionary (page text,
+ * FAQs, SEO titles) is read on the server and has no business in each page's payload. A client component that
+ * reaches for another key fails the type check; add the key here.
+ */
+const CLIENT_KEYS = ["nav", "disclaimer", "lang", "langSwitch", "ask", "regions", "reports"] as const
+export type ClientMessages = Pick<Messages, (typeof CLIENT_KEYS)[number]>
+export const clientMessages = (m: Messages): ClientMessages =>
+  Object.fromEntries(CLIENT_KEYS.map((k) => [k, m[k]])) as ClientMessages

@@ -3,6 +3,7 @@ import { getI18n } from "@/lib/i18n"
 import { LOCALES, SITE_NAME, SITE_URL } from "@/lib/site"
 import { AppShell } from "@/components/app-shell"
 import { MessagesProvider } from "@/components/messages-provider"
+import { clientMessages } from "@/messages"
 import "../globals.css"
 
 type Props = { children: React.ReactNode; params: Promise<{ lang: string }> }
@@ -75,7 +76,8 @@ export default async function RootLayout({ children, params }: Props) {
         />
       </head>
       <body>
-        <MessagesProvider locale={locale} m={m}>
+        {/* Only the strings client components read: see clientMessages. */}
+        <MessagesProvider locale={locale} m={clientMessages(m)}>
           <AppShell locale={locale}>{children}</AppShell>
         </MessagesProvider>
       </body>

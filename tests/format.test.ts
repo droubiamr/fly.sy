@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { INTL_LOCALE, formatDate, formatDateTime, formatDuration, formatHours, formatHoursText, formatMinutes, timeAgo } from "../src/lib/format.ts"
+import { INTL_LOCALE, formatDate, formatDateTime, formatDuration, formatHours, formatHoursText, formatMinutes, hostOf, shortUrl, timeAgo } from "../src/lib/format.ts"
 
 const EASTERN = /[٠-٩۰-۹]/
 
@@ -82,4 +82,13 @@ test("timeAgo is self-contained, so its source runs as the page's inline script"
   const now = Date.parse("2026-10-02T09:00:00Z")
   assert.equal(inlined("2026-10-02T06:58:00Z", "en-GB", now), "2 hours ago")
   assert.equal(inlined("2026-10-02T06:58:00Z", INTL_LOCALE.ar, now), "قبل ساعتين")
+})
+
+test("addresses read as in the address bar: no scheme, no www, no trailing slash or query", () => {
+  assert.equal(hostOf("https://damairport.gov.sy/en"), "damairport.gov.sy")
+  assert.equal(hostOf("https://www.general-security.gov.lb/ar/posts/572"), "general-security.gov.lb")
+  assert.equal(shortUrl("https://t.me/SyrGACA"), "t.me/SyrGACA")
+  assert.equal(shortUrl("https://www.facebook.com/SyrGACA/"), "facebook.com/SyrGACA")
+  assert.equal(shortUrl("https://www.youtube.com/@SyGACA"), "youtube.com/@SyGACA")
+  assert.equal(shortUrl("https://play.google.com/store/apps/details?id=sy.mofa.app"), "play.google.com/store/apps/details")
 })

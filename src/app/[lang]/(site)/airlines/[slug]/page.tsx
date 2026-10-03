@@ -1,7 +1,18 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { DATA, airlineFromSlug, airlinePath, airlineSlug, arrivalsBy, destinationVia, entryPath, originForArrival, routePath } from "@/lib/data"
+import {
+  DATA,
+  airlineFromSlug,
+  airlinePath,
+  airlineSlug,
+  arrivalsBy,
+  destinationVia,
+  entryPath,
+  originForArrival,
+  resourceFor,
+  routePath,
+} from "@/lib/data"
 import { fmt, getI18n, requireLocale } from "@/lib/i18n"
 import { arrow, formatHours } from "@/lib/format"
 import { pageMetadata } from "@/lib/seo"
@@ -12,6 +23,8 @@ import { AirlineLogo } from "@/components/airline-logo"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { CountryTag } from "@/components/country-tag"
 import { JsonLd } from "@/components/json-ld"
+import { LinkBoard } from "@/components/link-board"
+import { OfficialSite } from "@/components/official-site"
 import { Provenance } from "@/components/provenance"
 import { StatusDot, StatusStamp } from "@/components/status-stamp"
 
@@ -85,6 +98,7 @@ export default async function AirlinePage({ params }: Props) {
         <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
           {m.airlines.country} <CountryTag code={al.country} /> · <span className="font-mono text-xs">{code}</span>
         </p>
+        <OfficialSite resource={resourceFor({ airline: code })} locale={locale} m={m} />
       </section>
 
       <section aria-labelledby="r-h">
@@ -126,18 +140,18 @@ export default async function AirlinePage({ params }: Props) {
         <h2 id="o-h" className="mb-2 text-[15px] font-semibold">
           {m.airlines.more}
         </h2>
-        <ul className="flex flex-wrap gap-2">
-          {others.map((c) => (
-            <li key={c}>
-              <Link href={href(airlinePath(c))} className="inline-flex min-h-11 items-center gap-2 rounded-full border bg-card px-3 text-sm">
-                <span className="size-6 shrink-0 rounded-[6px] border bg-background p-0.5">
-                  <AirlineLogo code={c} />
-                </span>
-                {DATA.airlines[c].name[locale]}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <LinkBoard
+          items={others.map((c) => ({
+            key: c,
+            href: href(airlinePath(c)),
+            label: DATA.airlines[c].name[locale],
+            lead: (
+              <span className="size-7 shrink-0 rounded-md border bg-white p-0.5">
+                <AirlineLogo code={c} />
+              </span>
+            ),
+          }))}
+        />
       </section>
     </div>
   )

@@ -41,6 +41,7 @@ data/*.json            all sourced facts (the weekly edit)
   roads.json           estimated road hours entry → city
   needs.json           documents by mode (air/land) × passport (sy/voa/res)
   news.json            the News page: dated changes, each with its source and the exact link
+  links.json           the Links page: official sites and accounts (with the page that vouches for each), visa tools
   cities.json, meta.json, reports.seed.json
 src/lib/plan.ts        pure planner: ranks journeys by total time, blocks Türkiye crossings for non-Syrians;
                        an arrival filed under a group ("eu") applies to every country in that group
@@ -48,7 +49,7 @@ src/lib/data.ts        typed JSON loader
 src/messages/index.ts  all UI strings, ar + en
 src/app/globals.css    design tokens — the whole look
 src/app/[lang]/(site)/ routes: / (plan), /from/[origin]/to/[city] (?p=passport), /airlines, /airlines/[slug],
-                       /crossings, /crossings/[slug], /airports/[slug], /documents, /news, /reports, /reports/new, /about
+                       /crossings, /crossings/[slug], /airports/[slug], /documents, /news, /links, /reports, /reports/new, /about
 src/app/               sitemap.ts, robots.ts, manifest.ts, icons; src/proxy.ts maps / → /ar internally
 src/components/        app-shell, bottom-nav, disclaimer (no-liability popup, once per browser), planner, world-map, flag,
                        route-card, status-stamp, provenance, report-form, ui/ (shadcn)

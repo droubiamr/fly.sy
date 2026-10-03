@@ -1,0 +1,139 @@
+[
+  {"id":"damascus-airport","logo":"gaca","group":"aviation","entry":"DAM","source":"damairport","seen":"2026-10-03",
+    "name":{"ar":"مطار دمشق الدولي","en":"Damascus International Airport"},
+    "use":{"ar":"لوحة الرحلات المباشرة (القادمة والمغادرة)، وشركات الطيران والوجهات، وأرقام التواصل والمفقودات. يقول الموقع إنه الموقع الرسمي الوحيد للمطار.","en":"The live flight board (arrivals and departures), the airlines and destinations it serves, contact numbers and lost property. The site says it is the airport's only official website."},
+    "links":[
+      {"kind":"site","url":{"ar":"https://damairport.gov.sy/","en":"https://damairport.gov.sy/en"}},
+      {"kind":"page","label":{"ar":"اتصل بنا","en":"Contact"},"url":{"ar":"https://damairport.gov.sy/contact","en":"https://damairport.gov.sy/en/contact"}},
+      {"kind":"page","label":{"ar":"المفقودات","en":"Lost property"},"url":{"ar":"https://damairport.gov.sy/lost-found","en":"https://damairport.gov.sy/en/lost-found"}}
+    ]},
+  {"id":"aleppo-airport","logo":"gaca","group":"aviation","entry":"ALP","source":"alpairport","seen":"2026-10-03",
+    "name":{"ar":"مطار حلب الدولي","en":"Aleppo International Airport"},
+    "use":{"ar":"لوحة الرحلات المباشرة، وشركات الطيران والوجهات، وأرقام التواصل مع ساعات الدوام، والمفقودات. ويقول هو أيضاً إنه الموقع الرسمي الوحيد للمطار.","en":"The live flight board, the airlines and destinations it serves, contact numbers with office hours, and lost property. It too says it is the airport's only official website."},
+    "links":[
+      {"kind":"site","url":{"ar":"https://alpairport.gov.sy/","en":"https://alpairport.gov.sy/en"}},
+      {"kind":"page","label":{"ar":"اتصل بنا","en":"Contact"},"url":{"ar":"https://alpairport.gov.sy/contact","en":"https://alpairport.gov.sy/en/contact"}},
+      {"kind":"page","label":{"ar":"المفقودات","en":"Lost property"},"url":{"ar":"https://alpairport.gov.sy/lost-found","en":"https://alpairport.gov.sy/en/lost-found"}}
+    ]},
+  {"id":"deir-ez-zor-airport","logo":"gaca","group":"aviation","entry":"DEZ","seen":"2026-10-03",
+    "name":{"ar":"مطار دير الزور الدولي","en":"Deir ez-Zor International Airport"},
+    "use":{"ar":"لوحة الرحلات المباشرة، وشركات الطيران والوجهات. ويقول أيضاً إنه الموقع الرسمي الوحيد للمطار.","en":"The live flight board, and the airlines and destinations it serves. It also says it is the airport's only official website."},
+    "links":[
+      {"kind":"site","url":{"ar":"https://deirezzorairport.gov.sy/","en":"https://deirezzorairport.gov.sy/en"}}
+    ]},
+  {"id":"civil-aviation","logo":"gaca","group":"aviation","source":"gaca","via":"https://gaca.gov.sy/","seen":"2026-10-03",
+    "name":{"ar":"الهيئة العامة للطيران المدني والنقل الجوي","en":"General Authority of Civil Aviation and Air Transport"},
+    "use":{"ar":"تشغّل مطارات دمشق وحلب ودير الزور، وتنشر أخبارها وتعاميمها وقراراتها على هذه القنوات، وهي نفسها التي تدرجها مواقع المطارات حساباتٍ لها. موقعها قيد التجديد، وصفحة الشكاوى تستقبل الشكاوى عن المطارات وشركات الطيران وإجراءات السفر عبر نموذج أو بريد إلكتروني أو واتساب على مدار الساعة.","en":"Operates the Damascus, Aleppo and Deir ez-Zor airports, and posts its news, circulars and decisions on these channels, which the airports' sites list as their own. Its website is being rebuilt; the complaints page takes complaints about airports, airlines and travel procedures, by form, email or WhatsApp around the clock."},
+    "links":[
+      {"kind":"site","url":"https://gaca.gov.sy/"},
+      {"kind":"page","label":{"ar":"الشكاوى والمقترحات","en":"Complaints"},"url":{"ar":"https://gaca.gov.sy/feedback/","en":"https://gaca.gov.sy/feedback/en"}},
+      {"kind":"telegram","url":"https://t.me/SyrGACA"},
+      {"kind":"facebook","url":"https://www.facebook.com/SyrGACA/"},
+      {"kind":"instagram","url":"https://www.instagram.com/syrgaca/"},
+      {"kind":"x","url":"https://x.com/SyrGACA"},
+      {"kind":"youtube","url":"https://www.youtube.com/@SyGACA"}
+    ]},
+  {"id":"syrian-air","group":"airlines","airline":"RB","via":"https://syrian-airlines.net/","seen":"2026-10-03",
+    "name":{"ar":"السورية للطيران","en":"Syrian Air"},
+    "use":{"ar":"البحث عن الرحلات وحجزها، وقائمة الرحلات وجدولها والوجهات، وكذلك عبر تطبيقها. تحيل مواقع المطارات إلى syriaair.com، وهو يفتح الآن هذا الموقع.","en":"Flight search and booking, the flight list, timetable and destinations, also in its app. The airports' sites link to syriaair.com, which now opens this site."},
+    "links":[
+      {"kind":"site","url":"https://syrian-airlines.net/"},
+      {"kind":"telegram","url":"https://t.me/Syrian_Airlines"},
+      {"kind":"facebook","url":"https://www.facebook.com/SyrianAirlinesGo"},
+      {"kind":"instagram","url":"https://www.instagram.com/syrian.airlines"},
+      {"kind":"x","url":"https://x.com/syrian_airlines"},
+      {"kind":"ios","url":"https://apps.apple.com/app/id6757428903"},
+      {"kind":"android","url":"https://play.google.com/store/apps/details?id=com.syrianairlines.stbsoft"}
+    ]},
+  {"id":"fly-cham","group":"airlines","airline":"XH","via":"https://flycham.com/gb/en","seen":"2026-10-03",
+    "name":{"ar":"فلاي شام","en":"Fly Cham"},
+    "use":{"ar":"الحجز وإدارة الحجز والوجهات. وتنشر صفحة تحديثات السفر (بالإنجليزية) إشعارات مثل استئناف الرحلات.","en":"Booking, managing a booking and where it flies. Its travel updates page posts notices such as flights resuming."},
+    "links":[
+      {"kind":"site","url":"https://flycham.com/"},
+      {"kind":"page","label":{"ar":"تحديثات السفر","en":"Travel updates"},"url":"https://flycham.com/gb/en/travel-update"},
+      {"kind":"telegram","url":"https://t.me/flycham"},
+      {"kind":"facebook","url":"https://www.facebook.com/flychamofficial/"},
+      {"kind":"instagram","url":"https://www.instagram.com/fly.cham/"},
+      {"kind":"x","url":"https://x.com/fly_cham"},
+      {"kind":"whatsapp","url":"https://www.whatsapp.com/channel/0029Vb61PQ2HQbS4UsXPC83a"}
+    ]},
+  {"id":"foreign-ministry","logo":"emblem","group":"consular","via":"https://mofaex.gov.sy/en/eservices-app","seen":"2026-10-03",
+    "name":{"ar":"وزارة الخارجية والمغتربين","en":"Ministry of Foreign Affairs and Expatriates"},
+    "use":{"ar":"الخدمات القنصلية للسوريين في الخارج عبر السفارات: جوازات السفر (لأول مرة، والتجديد، وبدل الفاقد)، والتسجيل القنصلي، وتصديق الوثائق والوكالات. يحجز تطبيق MOFA SY مواعيد السفارات، وتطلب الوزارة عدم التعامل مع أي سمسار أو وسيط.","en":"Consular services for Syrians abroad, through the embassies: passports (first issue, renewal, replacement), consular registration, and legalising documents and powers of attorney. The MOFA SY app books embassy appointments; the ministry says to deal with no broker or intermediary."},
+    "links":[
+      {"kind":"site","url":{"ar":"https://mofaex.gov.sy/","en":"https://mofaex.gov.sy/en"}},
+      {"kind":"page","label":{"ar":"الخدمات القنصلية","en":"Consular services"},"url":{"ar":"https://mofaex.gov.sy/services","en":"https://mofaex.gov.sy/en/services"}},
+      {"kind":"page","label":{"ar":"السفارات والقنصليات","en":"Embassies and consulates"},"url":{"ar":"https://mofaex.gov.sy/diplomatic-missions","en":"https://mofaex.gov.sy/en/diplomatic-missions"}},
+      {"kind":"ios","url":"https://apps.apple.com/app/id6755138946"},
+      {"kind":"android","url":"https://play.google.com/store/apps/details?id=sy.mofa.app"},
+      {"kind":"telegram","url":"https://t.me/syrianmofaex1"},
+      {"kind":"facebook","url":"https://www.facebook.com/syrianmofaex"},
+      {"kind":"instagram","url":"https://www.instagram.com/syrian_mofaex"},
+      {"kind":"x","url":"https://x.com/syrianmofaex"}
+    ]},
+  {"id":"interior-ministry","logo":"emblem","group":"consular","status":"building","seen":"2026-10-03",
+    "name":{"ar":"وزارة الداخلية","en":"Ministry of Interior"},
+    "use":{"ar":"تتبع لها إدارة الهجرة والجوازات التي تصدر جوازات السفر داخل سوريا. لا يعرض موقعها الآن سوى عبارة «قيد الإنشاء».","en":"Its Immigration and Passports Department issues passports inside Syria. For now its website shows only an \"under construction\" notice."},
+    "links":[
+      {"kind":"site","url":"https://moi.gov.sy/"}
+    ]},
+  {"id":"visa-evisa","logo":"emblem","group":"visas","status":"down","seen":"2026-10-03",
+    "name":{"ar":"منصة التأشيرة الإلكترونية السورية","en":"Syria's e-visa site"},
+    "use":{"ar":"بحسب تقارير صحفية أطلقتها وزارة السياحة في أيار 2024 لطلب التأشيرة إلكترونياً. لم يفتح الموقع حين تحققنا منه، فلا تعتمد عليه الآن.","en":"Press reports say the Ministry of Tourism launched it in May 2024 for online visa applications. It did not open when we checked, so don't count on it for now."},
+    "links":[
+      {"kind":"site","url":"https://evisa.sy/"}
+    ]},
+  {"id":"visa-iata","group":"visas","seen":"2026-10-03",
+    "name":{"ar":"مركز السفر من إياتا","en":"IATA Travel Centre"},
+    "use":{"ar":"أداة اتحاد النقل الجوي الدولي (إياتا) للمسافرين: شروط الجواز والتأشيرة والصحة حسب جنسيتك ومسار رحلتك. تقوم على «تيماتيك»، قاعدة بيانات وثائق السفر التي تقول إياتا إن شركات الطيران تعتمد عليها.","en":"IATA's tool for travellers: passport, visa and health requirements for your nationality and itinerary. It is built on Timatic, the travel-document database IATA says airlines trust."},
+    "links":[
+      {"kind":"site","url":"https://www.iatatravelcentre.com/"}
+    ]},
+  {"id":"visa-passport-index","group":"visas","seen":"2026-10-03",
+    "name":{"ar":"مؤشر جوازات السفر باسبورت إندكس","en":"Passport Index"},
+    "use":{"ar":"دولةً دولة: أين يدخل الجواز السوري بلا تأشيرة، أو بتأشيرة عند الوصول أو بإذن سفر إلكتروني (eTA)، وأين يحتاج تأشيرة مسبقة. موقع مستقل، لا مصدر رسمي.","en":"Country by country: where the Syrian passport goes without a visa, with a visa on arrival or an eTA, and where it needs a visa first. An independent site, not an official source."},
+    "links":[
+      {"kind":"page","label":{"ar":"الجواز السوري","en":"The Syrian passport"},"url":{"ar":"https://www.passportindex.org/ar/passport/syria/","en":"https://www.passportindex.org/passport/syria/"}}
+    ]},
+  {"id":"visa-wikipedia","group":"visas","seen":"2026-10-03",
+    "name":{"ar":"ويكيبيديا","en":"Wikipedia"},
+    "use":{"ar":"متطلبات التأشيرة للمواطنين السوريين دولةً دولة، يحررها متطوعون. تحقق من المصدر المذكور لأي دولة قبل أن تعتمد عليه.","en":"Visa requirements for Syrian citizens, country by country, edited by volunteers. Check the source cited for a country before relying on it."},
+    "links":[
+      {"kind":"page","label":{"ar":"متطلبات التأشيرة لمواطني سوريا","en":"Visa requirements for Syrian citizens"},"url":{"ar":"https://ar.wikipedia.org/wiki/%D9%85%D8%AA%D8%B7%D9%84%D8%A8%D8%A7%D8%AA_%D8%A7%D9%84%D8%AD%D8%B5%D9%88%D9%84_%D8%B9%D9%84%D9%89_%D8%AA%D8%A3%D8%B4%D9%8A%D8%B1%D8%A9_%D9%84%D9%85%D9%88%D8%A7%D8%B7%D9%86%D9%8A_%D8%B3%D9%88%D8%B1%D9%8A%D8%A7","en":"https://en.wikipedia.org/wiki/Visa_requirements_for_Syrian_citizens"}}
+    ]},
+  {"id":"visa-henley","group":"visas","seen":"2026-10-03",
+    "name":{"ar":"مؤشر هينلي لجوازات السفر","en":"Henley Passport Index"},
+    "use":{"ar":"يرتّب جوازات السفر في العالم حسب عدد الوجهات التي يصلها حاملوها بلا تأشيرة مسبقة، ويُحدَّث شهرياً. ترتيب عام، لا جواب عن رحلة بعينها.","en":"Ranks the world's passports by how many destinations their holders can reach without a prior visa, updated monthly. A ranking, not an answer for a particular trip."},
+    "links":[
+      {"kind":"site","url":"https://www.henleyglobal.com/passport-index"}
+    ]},
+  {"id":"ports-customs","logo":"emblem","group":"borders","source":"ports","seen":"2026-10-03",
+    "name":{"ar":"الهيئة العامة للمنافذ والجمارك","en":"General Authority for Ports and Customs"},
+    "use":{"ar":"فتح المعابر البرية وإغلاقها وساعات عملها والأعمال فيها، على قناة تيليغرام التي تصفها الهيئة بأنها قناتها الرسمية. لم نجد لها موقعاً إلكترونياً.","en":"Openings, closures, hours and works at the land crossings, on the Telegram channel it calls official. We found no website for it."},
+    "links":[
+      {"kind":"telegram","url":"https://t.me/SyrGABC"}
+    ]},
+  {"id":"lebanon-general-security","group":"borders","country":"LB","source":"lbgs","seen":"2026-10-03",
+    "name":{"ar":"الأمن العام اللبناني","en":"Lebanese General Security"},
+    "use":{"ar":"قواعد لبنان لدخول السوريين إليه والعبور منه إلى سوريا، ومنها إذن «الترانزيت» لمدة 24 ساعة للسوريين الواصلين إلى لبنان جواً أو بحراً للعبور إلى سوريا.","en":"Lebanon's rules for Syrians entering Lebanon or crossing it into Syria, including the 24-hour transit permit for Syrians who fly or sail into Lebanon to cross into Syria. The page on these rules is in Arabic."},
+    "links":[
+      {"kind":"site","url":{"ar":"https://www.general-security.gov.lb/ar","en":"https://www.general-security.gov.lb/en"}},
+      {"kind":"page","label":{"ar":"معايير دخول السوريين","en":"Entry rules for Syrians"},"url":"https://www.general-security.gov.lb/ar/posts/572"}
+    ]},
+  {"id":"tracking-flightradar24","group":"tracking","source":"tracker","seen":"2026-10-03",
+    "name":{"ar":"Flightradar24","en":"Flightradar24"},
+    "use":{"ar":"الرحلات القادمة والمغادرة مباشرةً في كل مطار، وهل طارت رحلة ما فعلاً، برقم الرحلة.","en":"Live arrivals and departures at each airport, and whether a flight actually flew, by flight number."},
+    "links":[
+      {"kind":"page","label":{"ar":"مطار دمشق","en":"Damascus airport"},"url":"https://www.flightradar24.com/data/airports/dam"},
+      {"kind":"page","label":{"ar":"مطار حلب","en":"Aleppo airport"},"url":"https://www.flightradar24.com/data/airports/alp"},
+      {"kind":"page","label":{"ar":"مطار دير الزور","en":"Deir ez-Zor airport"},"url":"https://www.flightradar24.com/data/airports/dez"}
+    ]},
+  {"id":"tracking-flightaware","group":"tracking","seen":"2026-10-03",
+    "name":{"ar":"FlightAware","en":"FlightAware"},
+    "use":{"ar":"الرحلات القادمة والمغادرة والتي في الجو والمجدولة في كل مطار، وحالة المطار.","en":"Arrivals, departures, flights en route and scheduled flights at each airport, and the airport's status."},
+    "links":[
+      {"kind":"page","label":{"ar":"مطار دمشق","en":"Damascus airport"},"url":"https://www.flightaware.com/live/airport/OSDI"},
+      {"kind":"page","label":{"ar":"مطار حلب","en":"Aleppo airport"},"url":"https://www.flightaware.com/live/airport/OSAP"},
+      {"kind":"page","label":{"ar":"مطار دير الزور","en":"Deir ez-Zor airport"},"url":"https://www.flightaware.com/live/airport/OSDZ"}
+    ]}
+]

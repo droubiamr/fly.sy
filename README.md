@@ -33,8 +33,9 @@ npm run dev
 - Every planner answer is a static page: `/from/turkiye/to/damascus`. Origins are the countries in
   `data/origins.json` (slug from the English name), destinations the airport cities. The passport is a query on the
   page (`?p=voa`, `?p=res`) that the browser applies, so it costs no request and no extra pages. Each crossing,
-  airport and airline has a page too, and `/documents` holds the paperwork. All of it is prerendered from `data/` at
-  build time; only `/reports` renders per request.
+  airport and airline has a page too, `/documents` holds the paperwork and `/links` the official sites and accounts
+  (airports, civil aviation, Syrian airlines, the foreign ministry, border authorities) and visa checkers. All of it
+  is prerendered from `data/` at build time; only `/reports` renders per request.
 - On Cloudflare the prerendered pages are served from the static assets bundle (`open-next.config.ts`), so the
   Worker never renders them. The `build` command in `wrangler.jsonc` populates that cache before every `wrangler deploy`
   and `wrangler versions upload` (previews included); without it every request would render the page,
@@ -55,7 +56,7 @@ npm run dev
   in `src/lib/plan.ts`): the fastest running route, its time and check date. It is what snippets and AI assistants
   quote, and it doubles as the WebPage description.
 - For AI assistants: `/llms.txt` (an index of the site) and `/llms-full.txt` (every fact with its source and date),
-  written from `data/` at build time by `src/lib/llms.ts`. The data itself is at `/data/{entries,arrivals,airlines,needs,roads,origins,cities,sources}.json`
+  written from `data/` at build time by `src/lib/llms.ts`. The data itself is at `/data/{entries,arrivals,airlines,needs,roads,origins,cities,sources,links}.json`
   (`src/lib/open-data.ts`) and listed in the Dataset markup. All of them are `noindex`, since the pages already
   cover them in search.
 - Structured data: `WebSite`, `Organization` and a `Dataset` (with its JSON downloads) on the home and about pages;
@@ -70,6 +71,7 @@ npm run dev
 | `data/*.json` | **All sourced facts.** Editing these is how the site is updated. |
 | `data/origins.json` | The countries you can start from, with the hub airport the map draws the route from. |
 | `data/news.json` | The News page: dated changes (a crossing closes, a route starts), each linking the exact post or document it came from. Newest first. |
+| `data/links.json` | The Links page (`/links`): official websites, accounts and apps, and visa and flight-tracking tools, one card per body. An airport's or airline's card also puts "Official website" on its page and `sameAs` in its structured data. |
 | `src/lib/plan.ts` | The route planner. Pure function, tested in `tests/`. |
 | `src/lib/data.ts` | Loads and types the JSON. |
 | `src/messages/index.ts` | UI strings, `ar` and `en`. |
@@ -112,6 +114,15 @@ Rules:
    `data/news.json` as well: date it was published, a title and two or three sentences in both languages, the
    `source` key, and the `url` of the exact post or document. Only official bodies or the operator itself; press
    stays out of the news list. `tests/news.test.ts` checks it and needs no install.
+8. `data/links.json` lists a social account or app only when the body's own website links to it: `via` is that
+   page. A body with no website we can find (the ports authority) may list the one channel `sources.json` already
+   cites for it. Each card's `seen` is the day every address on it was opened. `npm run links` opens them all and checks every
+   account is still linked from its `via` page; "blocked" means a bot wall, so open those in a browser, then bump
+   `seen` on the cards you checked. Card text follows `CLAUDE.md`: say what the site itself says.
+   A site that is listed but not working carries `status`: `down` (it would not open) or `building` (it says it is
+   under construction); the page tags it and `npm run links` says when it works again. The emblems on the cards
+   come from the bodies' own sites: `npm run logos` refreshes `public/emblems/`, committed like the airline logos.
+   `tests/links.test.ts` checks the file and needs no install.
 
 ## Community reports
 

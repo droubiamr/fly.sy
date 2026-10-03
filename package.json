@@ -10,10 +10,12 @@
     "test": "node --experimental-strip-types --test \"tests/**/*.test.ts\"",
     "check": "npm run lint && npx tsc --noEmit && npm test && npm run build",
     "icons": "node scripts/icons.mjs",
+    "logos": "NODE_USE_ENV_PROXY=1 node --disable-warning=UNDICI-EHPA scripts/link-logos.mjs",
     "preview": "opennextjs-cloudflare build && wrangler dev",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "admin:setup": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin-setup.mjs",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "links": "NODE_USE_ENV_PROXY=1 node --disable-warning=UNDICI-EHPA scripts/check-links.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

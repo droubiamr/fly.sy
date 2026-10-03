@@ -73,6 +73,43 @@ export type NewsItem = {
   entries?: string[]
   airlines?: string[]
 }
+/** How a link reads on the Links page: a website, a page of one, an account on a platform, or an app in a store. */
+export type LinkKind = "site" | "page" | "telegram" | "facebook" | "instagram" | "x" | "youtube" | "whatsapp" | "ios" | "android"
+/** The sections of the Links page, in the order it shows them. */
+export type LinkGroup = "aviation" | "airlines" | "consular" | "visas" | "borders" | "tracking"
+export type ResourceLink = {
+  kind: LinkKind
+  /** One address, or one per language where the site has both. */
+  url: string | Text
+  /** What a "page" link opens ("Contact"); the other kinds are named by their kind. */
+  label?: Text
+}
+/** One body or tool on the Links page, with the addresses we checked and when. See data/links.json. */
+export type Resource = {
+  /** Also the card's anchor on the page: /links#damascus-airport. */
+  id: string
+  group: LinkGroup
+  name: Text
+  /** What a traveller can do there, in the words of the site itself. */
+  use: Text
+  links: ResourceLink[]
+  /** YYYY-MM-DD, the day every address on the card was last opened and found to be the body's own. */
+  seen: string
+  /** The page of the body's own website that links to its accounts and apps: how we know they are its own. */
+  via?: string
+  /** The same body in sources.json, when fly.sy also cites it for facts. */
+  source?: string
+  /** The airport (entries.json) or carrier (airlines.json) this is the official site of; their pages link here. */
+  entry?: string
+  airline?: string
+  /** Two-letter code of a body outside Syria, shown as a tag. */
+  country?: string
+  /** Its emblem in public/emblems/ (scripts/link-logos.mjs). Carriers show their logo from public/airlines/ instead. */
+  logo?: "gaca" | "emblem"
+  /** Listed though it does not work: "down" when it would not open, "building" when it says it is under construction. */
+  status?: "down" | "building"
+}
+
 export type Need = { source: string; text: Text }
 export type Needs = Record<Mode, Record<Passport, Need[]>>
 export type Roads = Record<string, Record<string, number>>
