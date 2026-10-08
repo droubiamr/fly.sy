@@ -37,6 +37,7 @@ data/*.json            all sourced facts (the weekly edit)
   airlines.json        carriers by IATA code
   entries.json         airports + land crossings (status, source, seen, note)
   arrivals.json        routes into Syria: airline, origin city, entry, hours, status, confidence
+  departures.json      routes out of Syria, checked on the departure boards and official posts (leaving pages)
   origins.json         countries you can start from: ISO code, names, atlas id, hub airport, region
   roads.json           estimated road hours entry → city
   needs.json           documents by mode (air/land) × passport (sy/voa/res)
