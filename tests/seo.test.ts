@@ -43,6 +43,10 @@ test("every origin, entry and airline gets a distinct, URL-safe slug", () => {
     assert.equal(new Set(slugs).size, slugs.length, `${file}: duplicate slug`)
     for (const s of slugs) assert.match(s, /^[a-z0-9]+(-[a-z0-9]+)*$/, `${file}: ${s}`)
   }
+  // /from/[origin]/to/[city] serves both ways: a country slug then a city id coming in, a city id then a country
+  // slug going out (/from/damascus/to/turkiye). That only works while no city id is also a country slug.
+  const cityIds = (load("cities") as { id: string }[]).map((c) => c.id)
+  for (const id of cityIds) assert.ok(!originSlugs.includes(id), `city id ${id} is also a country slug`)
   assert.equal(slugify("Türkiye"), "turkiye")
   assert.equal(slugify("Al-Qa'im"), "al-qaim")
   assert.equal(slugify("United Arab Emirates"), "united-arab-emirates")

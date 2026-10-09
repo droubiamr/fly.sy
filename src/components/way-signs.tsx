@@ -15,21 +15,23 @@ import { Provenance } from "@/components/provenance"
 import { ModeIcons, signClass } from "@/components/sign"
 
 /*
- * The ways into Syria for one route page, one road sign each, fastest first.
- * Rendered on the server, for a Syrian passport; WayGate moves a Syrians-only
- * crossing to the end for any other passport. Each sign opens on its board of
- * journeys, and each journey on its note, source and check date. Closed
- * <details> keep their text in the HTML, so search engines and assistants read
- * every line even when a visitor sees only the signs.
+ * The ways into Syria for one route page, one road sign each, fastest first;
+ * or, on a leaving page (`out`), the ways out, with the road to the border or
+ * the airport before the flight. Rendered on the server, for a Syrian passport;
+ * WayGate moves a Syrians-only crossing to the end for any other passport on the
+ * way in. Leaving pages have no passport choice: the crossing's own plate says
+ * who may use it. Each sign opens on its board of journeys, and each journey on
+ * its note, source and check date. Closed <details> keep their text in the HTML,
+ * so search engines and assistants read every line even when a visitor sees only the signs.
  */
-export function WaySigns({ ways, dest, locale }: { ways: Way[]; dest: string; locale: Locale }) {
+export function WaySigns({ ways, dest, locale, out = false }: { ways: Way[]; dest: string; locale: Locale; out?: boolean }) {
   const { m } = getI18n(locale)
   const main = Math.max(0, ways.findIndex((w) => w.best))
   return (
     <ol className="flex flex-col gap-3">
       {ways.map((w, i) => (
-        <WayGate key={w.entry} syriansOnly={Boolean(w.journeys[0].entryData.syriansOnly)}>
-          <WaySign way={w} main={i === main} dest={dest} locale={locale} m={m} />
+        <WayGate key={w.entry} syriansOnly={!out && Boolean(w.journeys[0].entryData.syriansOnly)}>
+          <WaySign way={w} main={i === main} dest={dest} locale={locale} m={m} out={out} />
         </WayGate>
       ))}
     </ol>
@@ -50,17 +52,33 @@ function Plate({ tone, className, children }: { tone: "caution" | "closed" | "un
   return <span className={cn("inline-block rounded-md bg-card px-2 py-0.5 text-xs font-bold", t, className)}>{children}</span>
 }
 
-function WaySign({ way: w, main, dest, locale, m }: { way: Way; main: boolean; dest: string; locale: Locale; m: Messages }) {
+function WaySign({ way: w, main, dest, locale, m, out }: { way: Way; main: boolean; dest: string; locale: Locale; m: Messages; out: boolean }) {
   const e = w.journeys[0].entryData
   const city = cityById(dest)!.name[locale]
-  const modes: Mode[] = [...(w.fly ? ["air" as const] : []), ...(w.drive ? ["land" as const] : [])]
-  const title = w.mode === "air" && w.drive ? fmt(m.way.thenRoad, { entry: e.name[locale] }) : e.name[locale]
+  // In the order you travel them: fly then drive coming in, drive then fly going out.
+  const fly: Mode[] = w.fly ? ["air"] : []
+  const drive: Mode[] = w.drive ? ["land"] : []
+  const modes = out ? [...drive, ...fly] : [...fly, ...drive]
+  const title = w.mode === "air" && w.drive ? fmt(out ? m.way.roadThen : m.way.thenRoad, { entry: e.name[locale] }) : e.name[locale]
   const live = w.journeys.filter(running)
   const timed = live.length ? live : w.journeys
   const road = w.journeys[0].roadHours
   const airlines = uniq([...live, ...w.journeys].map((j) => j.airline).filter((a): a is string => Boolean(a)))
   const status: Status = w.status
   const size = main ? "text-xl sm:text-2xl" : "text-lg"
+  const leg = "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 shadow-[inset_0_0_0_1.5px_color-mix(in_srgb,currentColor_75%,transparent)]"
+  const crossLeg = (
+    <span key="cross" className={leg}>
+      {fmt(w.mode === "air" ? m.way.flyLeg : out ? m.way.borderFrom : m.way.borderLeg, { time: span(timed.map((j) => j.hours), locale) })}
+    </span>
+  )
+  const roadLeg =
+    road != null && road > 0 ? (
+      <span key="road" className={leg}>
+        <Car className="size-4" aria-hidden="true" />
+        {fmt(out ? m.way.roadFrom : m.way.roadLeg, { time: formatDuration(road, locale), city })}
+      </span>
+    ) : null
 
   return (
     <details open={main} className="group/d">
@@ -78,7 +96,7 @@ function WaySign({ way: w, main, dest, locale, m }: { way: Way; main: boolean; d
               <span>
                 {w.mode === "air"
                   ? fmt(m.way.flights, { n: w.journeys.length })
-                  : fmt(m.way.from, { cities: uniq(w.journeys.map((j) => j.city[locale])).join(locale === "ar" ? "، " : ", ") })}
+                  : fmt(out ? m.way.to : m.way.from, { cities: uniq(w.journeys.map((j) => j.city[locale])).join(locale === "ar" ? "، " : ", ") })}
               </span>
             </span>
           </span>
@@ -99,17 +117,8 @@ function WaySign({ way: w, main, dest, locale, m }: { way: Way; main: boolean; d
         {main && (
           <>
             <span className="mt-3 flex flex-wrap gap-2 text-[13px] font-semibold">
-              <span className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 shadow-[inset_0_0_0_1.5px_color-mix(in_srgb,currentColor_75%,transparent)]">
-                {w.mode === "air"
-                  ? fmt(m.way.flyLeg, { time: span(timed.map((j) => j.hours), locale) })
-                  : fmt(m.way.borderLeg, { time: span(timed.map((j) => j.hours), locale) })}
-              </span>
-              {road != null && road > 0 && (
-                <span className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 shadow-[inset_0_0_0_1.5px_color-mix(in_srgb,currentColor_75%,transparent)]">
-                  <Car className="size-4" aria-hidden="true" />
-                  {fmt(m.way.roadLeg, { time: formatDuration(road, locale), city })}
-                </span>
-              )}
+              {/* The legs in the order you travel them: the road comes first on the way out. */}
+              {out ? [roadLeg, crossLeg] : [crossLeg, roadLeg]}
             </span>
             {airlines.length > 0 && (
               <span className="mt-3 flex items-center gap-1.5 border-t-2 border-primary-foreground/70 pt-3">
@@ -124,19 +133,20 @@ function WaySign({ way: w, main, dest, locale, m }: { way: Way; main: boolean; d
           </>
         )}
       </summary>
-      <Board way={w} dest={dest} locale={locale} m={m} />
+      <Board way={w} dest={dest} locale={locale} m={m} out={out} />
     </details>
   )
 }
 
 /** Every journey through one entry point, one line each; a line opens on its note, source and date. */
-function Board({ way: w, dest, locale, m }: { way: Way; dest: string; locale: Locale; m: Messages }) {
+function Board({ way: w, dest, locale, m, out }: { way: Way; dest: string; locale: Locale; m: Messages; out: boolean }) {
   const e = w.journeys[0].entryData
   const href = (p: string) => localePath(locale, p)
+  const city = cityById(dest)!.name[locale]
   return (
     <div className="mt-2 overflow-hidden rounded-[10px] border bg-card">
       <p className="bg-secondary px-4 py-2 text-[13.5px] font-bold text-secondary-foreground">
-        {fmt(w.mode === "air" ? m.way.board : m.way.boardLand, { entry: e.name[locale] })}
+        {fmt(w.mode === "air" ? (out ? m.way.boardOut : m.way.board) : m.way.boardLand, { entry: e.name[locale] })}
       </p>
       <ul>
         {/* What runs first, fastest first; then what is unconfirmed or closed, so a quick-looking flight nobody has seen never heads the list. */}
@@ -173,8 +183,17 @@ function Board({ way: w, dest, locale, m }: { way: Way; dest: string; locale: Lo
                 <div className="flex flex-col gap-1.5 px-4 pb-3 ps-[3.75rem] text-[13px] leading-relaxed">
                   {j.note && <p>{j.note[locale]}</p>}
                   <p className="text-muted-foreground">
-                    {formatDuration(j.hours, locale)} {m.to} {e.name[locale]}
-                    {j.roadHours != null && j.roadHours > 0 && ` · ${formatDuration(j.roadHours, locale)} ${arrow(locale)} ${cityById(dest)!.name[locale]}`}
+                    {out ? (
+                      <>
+                        {j.roadHours != null && j.roadHours > 0 && `${city} ${arrow(locale)} ${e.name[locale]} ${formatDuration(j.roadHours, locale)} · `}
+                        {formatDuration(j.hours, locale)} {m.to} {j.city[locale]}
+                      </>
+                    ) : (
+                      <>
+                        {formatDuration(j.hours, locale)} {m.to} {e.name[locale]}
+                        {j.roadHours != null && j.roadHours > 0 && ` · ${formatDuration(j.roadHours, locale)} ${arrow(locale)} ${city}`}
+                      </>
+                    )}
                   </p>
                   <Provenance confidence={j.confidence} source={j.source} seen={j.seen} locale={locale} m={m} />
                   {al && j.airline && (

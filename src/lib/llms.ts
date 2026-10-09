@@ -8,14 +8,16 @@ import {
   airlinePath,
   arrivalsBy,
   arrivalsVia,
+  departuresVia,
   entryPath,
   landEntries,
+  leavePath,
   linkUrl,
   routePath,
 } from "./data"
 import { DATA_FILES, dataFileUrl } from "./open-data"
 import { SITE_URL, absoluteUrl } from "./site"
-import type { Arrival, Entry } from "./types"
+import type { Arrival, Departure, Entry, Route } from "./types"
 import { getMessages } from "@/messages"
 
 /*
@@ -48,6 +50,7 @@ function intro(): string[] {
     `  - unconfirmed: ${m.about.lv.unconfirmed}`,
     "- Times are door-to-door estimates in hours: the flight or drive to the entry point, plus fly.sy's own road estimate to the city.",
     "- Where there is no dependable source the site says so instead of guessing. Confirm with the airline or embassy before booking.",
+    "- The way out of Syria has pages of its own (from a Syrian city to a country). They list only departures checked on their own: the airports' departure boards and official posts, never an arrival turned around.",
   ]
 }
 
@@ -66,6 +69,14 @@ export function llmsIndex(): string {
     "Each page ranks every known route from one country to one Syrian city by door-to-door time, with what each passport needs.",
     "",
     ...ORIGINS.map((o) => `- [${o.name.en} to Damascus](${en(routePath(o.id, "damascus"))})`),
+    "",
+    `Other cities: replace "damascus" in any of these addresses with ${others.join(", ")}.`,
+    "",
+    "## Leave Syria",
+    "",
+    "The same pages the other way: every checked way out from one Syrian city to one country, by door-to-door time.",
+    "",
+    ...ORIGINS.map((o) => `- [Damascus to ${o.name.en}](${en(leavePath("damascus", o.id))})`),
     "",
     `Other cities: replace "damascus" in any of these addresses with ${others.join(", ")}.`,
     "",
@@ -105,14 +116,24 @@ export function llmsIndex(): string {
   ].join("\n")
 }
 
-const arrivalLine = (a: Arrival) => {
-  const who = a.airline ? DATA.airlines[a.airline]?.name.en ?? a.airline : "overland"
-  const note = a.note ? ` ${a.note.en}` : ""
-  return `- From ${a.city.en} (${country(a.country)}), ${who}: about ${hours(a.hours)}; ${status(a)}; ${a.confidence} (${source(a.source)}, checked ${a.seen}).${note}`
+/** Who runs a route: the airline, or for a row without one, a connection by air or the road. */
+const carrier = (r: Route) => (r.airline ? DATA.airlines[r.airline]?.name.en ?? r.airline : r.mode === "air" ? "connecting flights" : "overland")
+/** Where a row starts or ends, for a reader who sees it under one entry point: the country it belongs to. */
+const end = (id: string) => ORIGINS.find((o) => o.id === id)?.name.en ?? (id === "eu" ? "Europe" : id)
+const facts = (r: Route) => `about ${hours(r.hours)}; ${status(r)}; ${r.confidence} (${source(r.source)}, checked ${r.seen}).${r.note ? ` ${r.note.en}` : ""}`
+
+/** "From Istanbul (Türkiye)", "To Beirut (Lebanon; for Europe)"; a connection names itself: "Connecting via Istanbul or the Gulf". */
+const line = (word: "From" | "To", r: Route, endId: string) => {
+  const place = r.airline || r.mode === "land" ? `${word} ${r.city.en}` : r.city.en.charAt(0).toUpperCase() + r.city.en.slice(1)
+  const forEnd = r.country === endId ? "" : `; for ${end(endId)}`
+  return `- ${place} (${country(r.country)}${forEnd}), ${carrier(r)}: ${facts(r)}`
 }
+const arrivalLine = (a: Arrival) => line("From", a, a.from)
+const departureLine = (d: Departure) => line("To", d, d.to)
 
 function entryBlock([id, e]: [string, Entry]): string[] {
   const via = arrivalsVia(id)
+  const out = departuresVia(id)
   const roads = Object.entries(DATA.roads[id] ?? {}).sort((a, b) => a[1] - b[1])
   const cityName = (c: string) => DATA.cities.find((x) => x.id === c)?.name.en ?? c
   return [
@@ -124,6 +145,7 @@ function entryBlock([id, e]: [string, Entry]): string[] {
     "",
     via.length ? (e.kind === "air" ? "Flights landing here:" : "Routes through here:") : m.entry.viaEmpty,
     ...via.map(arrivalLine),
+    ...(out.length ? ["", e.kind === "air" ? "Flights leaving here (from the departures board):" : "Routes out of Syria through here:", ...out.map(departureLine)] : []),
     ...(roads.length ? ["", `Road times from here (fly.sy estimates): ${roads.map(([c, h]) => `${cityName(c)} ${hours(h)}`).join(", ")}.`] : []),
     "",
   ]
@@ -155,6 +177,10 @@ export function llmsFull(): string {
     m.documents.warn,
     "",
     ...needs,
+    `### ${m.leave.title} (leaving Syria)`,
+    "",
+    ...DATA.needs.leave.map((n) => `- ${n.text.en} (source: ${source(n.source)})`),
+    "",
     "## Official links",
     "",
     `${m.links.how} Page: ${en("/links")}`,

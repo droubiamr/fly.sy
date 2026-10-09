@@ -18,7 +18,7 @@
   "land":{
     "sy":[
       {"source":"sana","text":{"ar":"نحو 391 ألف عودة طوعية عبر المعابر في النصف الأول من 2026، أكثر من 24 ألفاً منها عبر نصيب.","en":"Around 391,000 voluntary returns through the crossings in the first half of 2026, over 24,000 through Nasib."}},
-      {"source":"nosrc","text":{"ar":"المقيمون في تركيا: وضع الإقامة أو الحماية المؤقتة هو ما يحدد إمكانية العودة. لا مصدر رسمي محدّث لدينا — تحقق قبل السفر.","en":"If you live in Türkiye, residence or temporary-protection status decides whether you can return. We have no current official source — check before you travel."}},
+      {"source":"ports","text":{"ar":"المقيمون في تركيا: منذ 1 كانون الثاني 2026 يمكن للسوريين الحاصلين على إذن إقامة أو إذن عمل في تركيا الدخول إلى سوريا والخروج منها عبر كسب وباب الهوى والحمام والسلامة والراعي وجرابلس. لغيرهم، كحاملي الحماية المؤقتة، لا مصدر رسمي محدّث لدينا — تحقق قبل السفر.","en":"If you live in Türkiye: since 1 January 2026, Syrians with a Turkish residence or work permit can enter and leave Syria through Kasab, Bab al-Hawa, al-Hamam, Bab al-Salama, Al-Rai and Jarablus. For anyone else, such as people under temporary protection, we have no current official source — check before you travel."}},
       {"source":"lbgs","text":{"ar":"إن وصلت إلى لبنان جواً أو بحراً لتعبر براً إلى سوريا، يمنحك الأمن العام اللبناني إذن دخول «ترانزيت» لمدة 24 ساعة على جوازك (معايير 24 أيلول 2026).","en":"If you fly or sail into Lebanon to cross overland to Syria, Lebanese General Security gives you a 24-hour transit permit on your passport (rules of 24 September 2026)."}}
     ],
     "voa":[
@@ -29,5 +29,9 @@
     "res":[
       {"source":"ops","text":{"ar":"موافقة مسبقة إلزامية حتى براً.","en":"Prior approval is mandatory even by land."}}
     ]
-  }
+  },
+  "leave":[
+    {"source":"nosrc","text":{"ar":"تأشيرة البلد الذي تقصده: لا نتابع شروط الدول الأخرى. تحقق مع سفارته، أو بأدوات التأشيرة في صفحة الروابط الرسمية.","en":"The visa for the country you're going to: we don't track other countries' rules. Check with its embassy, or with the visa checkers on the Official links page."}},
+    {"source":"nosrc","text":{"ar":"قواعد الخروج من سوريا، ومنها ما يتعلق بالخدمة العسكرية: لا نملك مصدراً رسمياً مؤرخاً، ولن نخمّن.","en":"Syria's own rules for leaving, including any tied to military service: we have no dated official source, and won't guess."}}
+  ]
 }

@@ -31,7 +31,9 @@ npm run dev
 - One URL per language: Arabic at `/…`, English at `/en/…`. Every page carries a self-canonical, `hreflang` for both
   languages and `x-default` (Arabic). Google indexes each language separately; a cookie would have hidden English.
 - Every planner answer is a static page: `/from/turkiye/to/damascus`. Origins are the countries in
-  `data/origins.json` (slug from the English name), destinations the airport cities. The passport is a query on the
+  `data/origins.json` (slug from the English name), destinations the airport cities. The same pair the other way,
+  out of Syria, is `/from/damascus/to/turkiye` (city ids and country slugs never collide), built from
+  `data/departures.json`; the round button on the sign links one to the other. The passport is a query on the
   page (`?p=voa`, `?p=res`) that the browser applies, so it costs no request and no extra pages. Each crossing,
   airport and airline has a page too, `/documents` holds the paperwork and `/links` the official sites and accounts
   (airports, civil aviation, Syrian airlines, the foreign ministry, border authorities) and visa checkers. All of it
@@ -70,6 +72,7 @@ npm run dev
 |---|---|
 | `data/*.json` | **All sourced facts.** Editing these is how the site is updated. |
 | `data/origins.json` | The countries you can start from, with the hub airport the map draws the route from. |
+| `data/departures.json` | The ways out of Syria, one row per carrier and destination (or crossing), each checked on its own: the airports' departure boards and official posts. Never an arrival turned around. |
 | `data/news.json` | The News page: dated changes (a crossing closes, a route starts), each linking the exact post or document it came from. Newest first. |
 | `data/links.json` | The Links page (`/links`): official websites, accounts and apps, and visa and flight-tracking tools, one card per body. An airport's or airline's card also puts "Official website" on its page and `sameAs` in its structured data. |
 | `src/lib/plan.ts` | The route planner. Pure function, tested in `tests/`. |
@@ -110,11 +113,17 @@ Rules:
    (`date -u +%Y-%m-%dT%H:%M:00Z`). The footer and the About page show it on each reader's own clock.
 5. `npm test` checks referential integrity (every entry, road, source and airline id resolves).
 6. Every airport in `entries.json` names its `city`. The destination picker lists the airports by name and routes to that city.
-7. When a change is news (something opened, closed, started or stopped, or a rule changed), add it to the top of
+7. `data/departures.json` is checked like `arrivals.json`, against its own sources: the departures side of each
+   airport's board (the same flight API: `/api/flights.php?paged=1&dir=departure&dexact=YYYY-MM-DD&df=0` on
+   damairport.gov.sy and alpairport.gov.sy, five flights a page), and for land exits the ports authority's posts and
+   the crossing's own status. `to` is the country it goes to, or a group such as `eu`. A route in with no checked way
+   out is simply not listed on leaving pages; never turn an arrival around. `npm test` checks every row resolves.
+   `needs.json` → `leave` holds what a traveller should check before leaving.
+8. When a change is news (something opened, closed, started or stopped, or a rule changed), add it to the top of
    `data/news.json` as well: date it was published, a title and two or three sentences in both languages, the
    `source` key, and the `url` of the exact post or document. Only official bodies or the operator itself; press
    stays out of the news list. `tests/news.test.ts` checks it and needs no install.
-8. `data/links.json` lists a social account or app only when the body's own website links to it: `via` is that
+9. `data/links.json` lists a social account or app only when the body's own website links to it: `via` is that
    page. A body with no website we can find (the ports authority) may list the one channel `sources.json` already
    cites for it. Each card's `seen` is the day every address on it was opened. `npm run links` opens them all and checks every
    account is still linked from its `via` page; "blocked" means a bot wall, so open those in a browser, then bump

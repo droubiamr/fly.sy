@@ -43,14 +43,15 @@ export type Entry = {
   syriansOnly?: boolean
   note?: Text
 }
-export type Arrival = {
+/** One carrier, or one road, between a city abroad and an entry point, in one direction. */
+export type Route = {
   airline: string | null
+  /** The city abroad: where an arrival starts, where a departure lands. */
   city: Text
   country: string
   entry: string
-  /** An origin id, or a group shared by several origins (see OriginDef.group). */
-  from: string
   mode: Mode
+  /** The flight, or the drive between the city abroad and the border. */
   hours: number
   status: Status
   confidence: Confidence
@@ -59,6 +60,17 @@ export type Arrival = {
   note?: Text
   hidden?: boolean
 }
+export type Arrival = Route & {
+  /** An origin id, or a group shared by several origins (see OriginDef.group). */
+  from: string
+}
+/** The way out: checked on its own (a departures board, an official post), never inferred from an arrival. */
+export type Departure = Route & {
+  /** The country it goes to: an origin id, or a group shared by several origins. */
+  to: string
+}
+/** Into Syria, or out of it. A route page in the "out" direction runs from a Syrian city to a country. */
+export type Direction = "in" | "out"
 /** A dated change on the way into Syria, told once, with the post or article it came from. */
 export type NewsItem = {
   id: string
@@ -111,7 +123,8 @@ export type Resource = {
 }
 
 export type Need = { source: string; text: Text }
-export type Needs = Record<Mode, Record<Passport, Need[]>>
+/** What you need to enter Syria, by mode and passport, and what a traveller leaving should check first. */
+export type Needs = Record<Mode, Record<Passport, Need[]>> & { leave: Need[] }
 export type Roads = Record<string, Record<string, number>>
 
 export type Report = {

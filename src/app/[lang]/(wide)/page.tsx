@@ -39,8 +39,9 @@ export default async function HomePage({ params }: Props) {
       />
       <PlanView
         locale={lang}
-        origin={origin}
-        dest="damascus"
+        country={origin}
+        city="damascus"
+        dir="in"
         heading={<h1 className="text-2xl font-bold tracking-tight">{m.homeTitle}</h1>}
       />
     </>
