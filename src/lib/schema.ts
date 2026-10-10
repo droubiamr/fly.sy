@@ -30,7 +30,7 @@ export function websiteLd(locale: Locale) {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     name: SITE_NAME,
-    alternateName: locale === "ar" ? "كيف تصل إلى سوريا أو إلى العالم" : "How to get into Syria or the world",
+    alternateName: locale === "ar" ? "طريقك إلى سوريا، ومن سوريا إلى العالم" : "Your way to Syria, and from Syria to the world",
     url: SITE_URL,
     inLanguage: ["ar", "en"],
     publisher: { "@id": ORG_ID },

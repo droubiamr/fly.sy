@@ -4,10 +4,10 @@ const messages = {
   ar: {
     brand: "fly.sy",
     meta: {
-      title: "fly.sy — كيف تصل إلى سوريا أو إلى العالم",
+      title: "fly.sy — طريقك إلى سوريا، ومن سوريا إلى العالم",
       description: "كل طريق إلى سوريا ومنها، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
       // Alt text for the share card, which carries the same words as an image.
-      card: "fly.sy — كيف تصل إلى سوريا أو إلى العالم. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
+      card: "fly.sy — طريقك إلى سوريا، ومن سوريا إلى العالم. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
     },
     tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", news: "الأخبار", reports: "تجارب", links: "روابط رسمية", about: "عن الموقع" },
     // The navigation's own short labels. Breadcrumbs and footer links keep the fuller names in `tabs`.
@@ -80,7 +80,7 @@ const messages = {
     blockedWhy: "مفتوح للسوريين والأتراك وحاملي الجنسيتين فقط.",
     fromCity: "من",
     home: "الرئيسية",
-    homeTitle: "كيف تصل إلى سوريا أو إلى العالم اليوم",
+    homeTitle: "طريقك إلى سوريا، ومن سوريا إلى العالم",
     langSwitch: "Read in English",
     airlines: {
       title: "من يطير إلى سوريا",
@@ -278,7 +278,7 @@ const messages = {
     },
     seo: {
       home: {
-        title: "كيف تصل إلى سوريا أو إلى العالم: الطيران والمعابر البرية والأوراق المطلوبة",
+        title: "طريقك إلى سوريا، ومن سوريا إلى العالم: الطيران والمعابر البرية والأوراق المطلوبة",
         description:
           "كل طريق إلى سوريا اليوم من تركيا ولبنان والأردن والخليج وأوروبا، وكل طريق منها إليها: الرحلات الجوية والمعابر البرية والوقت المتوقع والأوراق المطلوبة، مع مصدر كل معلومة وتاريخ مراجعتها.",
       },
@@ -348,9 +348,9 @@ const messages = {
   en: {
     brand: "fly.sy",
     meta: {
-      title: "fly.sy — How to get into Syria or the world",
+      title: "fly.sy — Your way to Syria, and from Syria to the world",
       description: "Every route into Syria and out of it, with the source and the date checked on every line. Independent and unofficial.",
-      card: "fly.sy — How to get into Syria or the world. Every route, with a source on every line. Independent, unofficial.",
+      card: "fly.sy — Your way to Syria, and from Syria to the world. Every route, with a source on every line. Independent, unofficial.",
     },
     tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", news: "News", reports: "Reports", links: "Official links", about: "About" },
     nav: {
@@ -421,7 +421,7 @@ const messages = {
     blockedWhy: "Open to Syrians, Turkish citizens and dual nationals only.",
     fromCity: "from",
     home: "Home",
-    homeTitle: "How to get into Syria or the world today",
+    homeTitle: "Your way to Syria, and from Syria to the world",
     langSwitch: "اقرأ بالعربية",
     airlines: {
       title: "Who flies to Syria",
@@ -619,7 +619,7 @@ const messages = {
     },
     seo: {
       home: {
-        title: "How to get into Syria or the world: flights, land crossings and the papers you need",
+        title: "Your way to Syria, and from Syria to the world: flights, land crossings and papers",
         description:
           "Every way into Syria today from Türkiye, Lebanon, Jordan, the Gulf and Europe, and every way out to them: flights, land crossings, journey times and documents, with a source and check date on every line.",
       },

@@ -1,4 +1,4 @@
-# fly.sy — كيف تصل إلى سوريا أو إلى العالم
+# fly.sy — طريقك إلى سوريا، ومن سوريا إلى العالم
 
 An independent, unofficial, open-source answer sheet for getting into Syria, and from Syria to the world: every
 flight, land crossing and paperwork requirement, with the **source**, **confidence level** and **date last checked** on every line —

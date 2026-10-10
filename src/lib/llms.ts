@@ -38,7 +38,7 @@ function intro(): string[] {
   return [
     "# fly.sy",
     "",
-    "> How to get into Syria or the world: every flight and land crossing into Syria and out of it, and the documents to enter, with the source, confidence level and date last checked on every line. Independent and unofficial: not part of any government body, airline or embassy. It sells nothing and takes no commission.",
+    "> Your way to Syria, and from Syria to the world: every flight and land crossing into Syria and out of it, and the documents to enter, with the source, confidence level and date last checked on every line. Independent and unofficial: not part of any government body, airline or embassy. It sells nothing and takes no commission.",
     "",
     `Facts last reviewed ${DATA.meta.updated}. Arabic is the main language, at ${SITE_URL}; English is at ${en("/")}. Every English page listed here has an Arabic version at the same path without /en.`,
     "",

@@ -5,7 +5,7 @@ import type { MetadataRoute } from "next"
 // cookie, which a manifest cannot see.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "fly.sy — كيف تصل إلى سوريا أو إلى العالم",
+    name: "fly.sy — طريقك إلى سوريا، ومن سوريا إلى العالم",
     short_name: "fly.sy",
     description: "كل طريق إلى سوريا ومنها، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
     lang: "ar",
