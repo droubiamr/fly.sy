@@ -11,6 +11,7 @@ import type { Text } from "./types"
 export const DATA_FILES = [
   { id: "entries", name: { en: "Airports and land crossings into Syria", ar: "المطارات والمعابر البرية إلى سوريا" } },
   { id: "arrivals", name: { en: "Flights and overland routes into Syria", ar: "الرحلات الجوية والطرق البرية إلى سوريا" } },
+  { id: "departures", name: { en: "Flights and overland routes out of Syria", ar: "الرحلات الجوية والطرق البرية من سوريا" } },
   { id: "airlines", name: { en: "Airlines flying to Syria", ar: "شركات الطيران إلى سوريا" } },
   { id: "needs", name: { en: "Documents needed to enter Syria, by route and passport", ar: "الأوراق المطلوبة لدخول سوريا حسب الطريق والجواز" } },
   { id: "roads", name: { en: "Estimated road hours from each entry point to each city", ar: "أزمنة الطريق التقديرية من كل منفذ إلى كل مدينة" } },
@@ -31,6 +32,7 @@ export function dataFile(id: DataFileId) {
     entries: DATA.entries,
     // Hidden rows are kept in the repo as a record but never shown on the site, so they are not published either.
     arrivals: DATA.arrivals.filter((a) => !a.hidden),
+    departures: DATA.departures.filter((d) => !d.hidden),
     airlines: DATA.airlines,
     needs: DATA.needs,
     roads: DATA.roads,
@@ -45,9 +47,11 @@ export function dataFile(id: DataFileId) {
     url: absoluteUrl("en", "/about"),
     updated: DATA.meta.updated,
     howToRead:
-      "Facts name a source id from sources.json. Entries and arrivals also carry status (open, caution, closed, unknown), " +
+      "Facts name a source id from sources.json. Entries, arrivals and departures also carry status (open, caution, closed, unknown), " +
       "confidence (verified, reported, unconfirmed) and seen, the date the line was last checked. Hours are estimates; " +
-      "road hours are fly.sy's own. In links.json, via is the page of the body's own website that links to its accounts. " +
+      "road hours are fly.sy's own. An arrival's from and a departure's to are the country at the other end, or a group such as eu. " +
+      "Departures are checked on their own (the airports' departure boards, official posts), never inferred from arrivals. " +
+      "In links.json, via is the page of the body's own website that links to its accounts. " +
       "Confirm with the airline or embassy before travelling.",
     data: records,
   }

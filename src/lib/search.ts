@@ -1,9 +1,9 @@
-import { DATA, ORIGINS, airEntries, airlinePath, entryPath, landEntries, routePath } from "./data"
+import { DATA, ORIGINS, airEntries, airlinePath, entryPath, landEntries, leavePath, routePath } from "./data"
 import { getMessages } from "@/messages"
 import { localePath } from "./site"
 import type { Locale } from "./types"
 
-export type SearchGroup = "countries" | "airports" | "crossings" | "airlines" | "pages"
+export type SearchGroup = "countries" | "leaving" | "airports" | "crossings" | "airlines" | "pages"
 export type SearchItem = { group: SearchGroup; label: string; sub?: string; href: string; keywords: string }
 
 /**
@@ -18,6 +18,8 @@ export function searchIndex(locale: Locale): SearchItem[] {
   const at = (path: string) => localePath(locale, path)
   const items: SearchItem[] = [
     ...ORIGINS.map((o) => ({ group: "countries" as const, label: o.name[locale], sub: m.nav.toDamascus, href: at(routePath(o.id, "damascus")), keywords: `${o.name[other]} ${o.id}` })),
+    // The same countries the other way. "Damascus" in both languages rides along, so "دمشق السعودية" finds the leaving page.
+    ...ORIGINS.map((o) => ({ group: "leaving" as const, label: o.name[locale], sub: m.nav.fromDamascus, href: at(leavePath("damascus", o.id)), keywords: `${o.name[other]} ${o.id} دمشق Damascus` })),
     ...airEntries().map(([id, e]) => ({ group: "airports" as const, label: e.name[locale], sub: m.status[e.status], href: at(entryPath(id)), keywords: `${e.name[other]} ${id}` })),
     ...landEntries().map(([id, e]) => ({ group: "crossings" as const, label: e.name[locale], sub: m.status[e.status], href: at(entryPath(id)), keywords: e.name[other] })),
     ...Object.entries(DATA.airlines).map(([code, a]) => ({ group: "airlines" as const, label: a.name[locale], href: at(airlinePath(code)), keywords: `${a.name[other]} ${code}` })),

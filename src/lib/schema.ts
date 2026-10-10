@@ -20,8 +20,8 @@ export function organizationLd(locale: Locale) {
     logo: { "@type": "ImageObject", url: `${SITE_URL}/icon-512.png`, width: 512, height: 512 },
     description:
       locale === "ar"
-        ? "موقع مستقل غير رسمي يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟"
-        : "An independent, unofficial site answering one question: how do I get into Syria today?",
+        ? "موقع مستقل غير رسمي يجيب عن سؤالين: كيف أصل إلى سوريا اليوم، وكيف أسافر منها إلى بلد آخر؟"
+        : "An independent, unofficial site answering two questions: how do I get into Syria today, and how do I get from Syria to another country?",
   }
 }
 
@@ -30,7 +30,7 @@ export function websiteLd(locale: Locale) {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     name: SITE_NAME,
-    alternateName: locale === "ar" ? "كيف تصل إلى سوريا" : "How to get to Syria",
+    alternateName: locale === "ar" ? "طريقك إلى سوريا، ومن سوريا إلى العالم" : "Your way to Syria, and from Syria to the world",
     url: SITE_URL,
     inLanguage: ["ar", "en"],
     publisher: { "@id": ORG_ID },

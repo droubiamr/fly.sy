@@ -16,3 +16,11 @@ Kept in case the choice changes:
 | 2 | `round-2-ideas-a-b-c.html` | A Wayfinding, B Damascene stone, C Boarding pass (new colours; judged too close to an app template) |
 | 3 | `round-3/` | D Visa page, E Departure board, F Transit map (new colours and fonts) |
 | 4 | `round-4/` | In the site's own colours: G Stamped papers, H Ticket stubs, I Journey bars, J Map first, K Road signs (chosen), L Document wallet |
+
+## Searching from Syria (7 Oct 2026, not decided)
+
+`round-5-outbound/options.html`: five ways to let people search out of Syria (Damascus to Saudi Arabia, not only
+the other way), with phone mockups in the chosen road-sign style. A swap button on the sign (the owner's idea; the
+mockup works), B direction plates, C departure boards on the airport pages, D a map of where you can fly from Syria,
+E the way back on each route page. It also covers the departures data all five need, what else on the site the
+change touches, and a site check from the same day. `a-swap.png` is option A before and after the swap.

@@ -4,10 +4,10 @@ const messages = {
   ar: {
     brand: "fly.sy",
     meta: {
-      title: "fly.sy — كيف تصل إلى سوريا",
-      description: "كل طريق إلى سوريا، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
+      title: "fly.sy — طريقك إلى سوريا، ومن سوريا إلى العالم",
+      description: "كل طريق إلى سوريا ومنها، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
       // Alt text for the share card, which carries the same words as an image.
-      card: "fly.sy — كيف تصل إلى سوريا. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
+      card: "fly.sy — طريقك إلى سوريا، ومن سوريا إلى العالم. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
     },
     tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", news: "الأخبار", reports: "تجارب", links: "روابط رسمية", about: "عن الموقع" },
     // The navigation's own short labels. Breadcrumbs and footer links keep the fuller names in `tabs`.
@@ -26,12 +26,23 @@ const messages = {
       searchHint: "ابحث عن بلد أو مطار أو معبر أو شركة",
       searchEmpty: "لا نتائج. جرّب اسم بلد أو مدينة.",
       searchLoading: "جارٍ التحميل…",
-      groups: { countries: "من بلد إلى دمشق", airports: "المطارات", crossings: "المعابر البرية", airlines: "شركات الطيران", pages: "صفحات" },
+      groups: { countries: "من بلد إلى دمشق", leaving: "من دمشق إلى بلد", airports: "المطارات", crossings: "المعابر البرية", airlines: "شركات الطيران", pages: "صفحات" },
       toDamascus: "إلى دمشق",
+      fromDamascus: "من دمشق",
     },
     indep: "موقع مستقل، غير رسمي، لا يتبع أي جهة حكومية ولا يمثّل أي شركة طيران أو سفارة. يُحدَّث يدوياً ومن تجارب الناس.",
     updated: "آخر تحديث",
-    ask: { in: "أنا في", with: "ومعي", to: "وأريد الوصول إلى", via: "برحلة موصولة", fromLabel: "من", toLabel: "إلى", passportLabel: "جوازي" },
+    ask: {
+      in: "أنا في",
+      with: "ومعي",
+      to: "وأريد الوصول إلى",
+      via: "برحلة موصولة",
+      fromLabel: "من",
+      toLabel: "إلى",
+      passportLabel: "جوازي",
+      swap: "اعكس الاتجاه: من {from} إلى {to}",
+      inSyria: "في سوريا",
+    },
     way: {
       thenRoad: "{entry} ثم براً",
       fastest: "الأسرع",
@@ -44,6 +55,12 @@ const messages = {
       noTime: "لا وقت معروف",
       board: "الرحلات إلى {entry}",
       boardLand: "الطرق عبر {entry}",
+      // A way out of Syria: the road comes first, then the flight or the border.
+      roadThen: "براً ثم من {entry}",
+      to: "إلى {cities}",
+      roadFrom: "{time} بالسيارة من {city}",
+      borderFrom: "{time} بعد المعبر",
+      boardOut: "الرحلات من {entry}",
       more: "الطرق الأخرى",
       open: "افتح",
     },
@@ -63,7 +80,7 @@ const messages = {
     blockedWhy: "مفتوح للسوريين والأتراك وحاملي الجنسيتين فقط.",
     fromCity: "من",
     home: "الرئيسية",
-    homeTitle: "كيف تصل إلى سوريا اليوم",
+    homeTitle: "طريقك إلى سوريا، ومن سوريا إلى العالم",
     langSwitch: "Read in English",
     airlines: {
       title: "من يطير إلى سوريا",
@@ -103,6 +120,18 @@ const messages = {
       otherOrigin: "إلى {city} من دول أخرى",
       entries: "المنافذ على هذا الطريق",
     },
+    // The same page the other way: from a Syrian city out to a country.
+    routeOut: {
+      title: "من {city} إلى {country}",
+      lede: "كل طريق نعرفه من {city} إلى {country}، مرتباً حسب الوقت الكلي. لا نذكر إلا الرحلات والمعابر التي تحققنا منها في اتجاه الخروج من سوريا، وكل سطر بمصدره وتاريخ مراجعته.",
+      answer: "أسرع طريق من {city} إلى {country} اليوم: {how}، نحو {hours} من الباب إلى الباب (روجع في {date}). عدد الطرق المعروفة {total}، يعمل منها {running}.",
+      answerNone: "لا نعرف اليوم طريقاً يعمل من {city} إلى {country} تحققنا منه. عدد الطرق المعروفة {total}.",
+      how: { air: "الطيران من {entry}", land: "براً عبر {entry}" },
+      list: "الطرق من {city} إلى {country}",
+      otherDest: "وجهات أخرى من {city}",
+      otherOrigin: "إلى {country} من مدن سورية أخرى",
+    },
+    leave: { title: "قبل أن تغادر", visas: "أدوات التحقق من التأشيرة" },
     documents: {
       title: "الأوراق المطلوبة لدخول سوريا",
       lede: "ما تحتاجه حسب طريقة الدخول وجوازك. كل سطر بمصدره، وحيث لا مصدر موثوق نقول ذلك بدل التخمين.",
@@ -183,7 +212,7 @@ const messages = {
       lede: "كل سطر يحمل مصدره ودرجة ثقته وتاريخ مراجعته. حين لا نجد مصدراً موثوقاً نقول ذلك بدل أن نملأ الفراغ بتخمين.",
       what: "ما هو fly.sy",
       whatText:
-        "fly.sy يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟ الرحلات الجوية، المعابر البرية، والأوراق المطلوبة، للسوريين في الخارج وللزوار الأجانب. مستقل، غير رسمي، لا يبيع شيئاً ولا يأخذ عمولة، ولا يتبع أي جهة حكومية أو شركة طيران أو سفارة.",
+        "fly.sy يجيب عن سؤالين: كيف أصل إلى سوريا اليوم، وكيف أسافر منها إلى بلد آخر؟ الرحلات الجوية، المعابر البرية، والأوراق المطلوبة، للسوريين في الخارج وفي الداخل وللزوار الأجانب. مستقل، غير رسمي، لا يبيع شيئاً ولا يأخذ عمولة، ولا يتبع أي جهة حكومية أو شركة طيران أو سفارة.",
       levels: "درجات الثقة",
       lv: {
         verified: "من جهة رسمية أو من المشغّل نفسه، أو تجربة مسافر تم التحقق منها.",
@@ -249,9 +278,9 @@ const messages = {
     },
     seo: {
       home: {
-        title: "كيف تصل إلى سوريا اليوم: الطيران والمعابر البرية والأوراق المطلوبة",
+        title: "طريقك إلى سوريا، ومن سوريا إلى العالم: الطيران والمعابر البرية والأوراق المطلوبة",
         description:
-          "كل طريق إلى سوريا اليوم من تركيا ولبنان والأردن والخليج وأوروبا: الرحلات الجوية والمعابر البرية والوقت المتوقع والأوراق المطلوبة لكل جواز، مع مصدر كل معلومة وتاريخ مراجعتها.",
+          "كل طريق إلى سوريا اليوم من تركيا ولبنان والأردن والخليج وأوروبا، وكل طريق منها إليها: الرحلات الجوية والمعابر البرية والوقت المتوقع والأوراق المطلوبة، مع مصدر كل معلومة وتاريخ مراجعتها.",
       },
       airlines: {
         title: "شركات الطيران التي تطير إلى سوريا {year}: الرحلات إلى دمشق وحلب",
@@ -278,6 +307,11 @@ const messages = {
         description:
           "{n} من الطرق من {origin} إلى {city}؛ أسرعها {mode} عبر {entry} بنحو {hours}. الحالة والأوراق المطلوبة لكل جواز، ومصدر كل معلومة وتاريخ مراجعتها.",
         descriptionNone: "لا نعرف طريقاً مفتوحاً من {origin} إلى {city}. ما نعرفه، ومصدره، وتاريخ مراجعته.",
+      },
+      routeOut: {
+        title: "من {city} إلى {country}: الرحلات والطرق، والمدة، وما تتحقق منه قبل السفر",
+        description: "كل طريق تحققنا منه من {city} إلى {country}، الأسرع أولاً: {how}، {hours}. حالة كل سطر ومصدره وتاريخ مراجعته.",
+        descriptionNone: "لا نعرف طريقاً تحققنا منه من {city} إلى {country}. ما نعرفه، ومصدره، وتاريخ مراجعته.",
       },
       documents: {
         title: "الأوراق المطلوبة لدخول سوريا: للسوريين وللأجانب، جواً وبراً",
@@ -306,7 +340,7 @@ const messages = {
       about: {
         title: "عن fly.sy: مصادرنا ومستويات الثقة وكيف نتحقق",
         description:
-          "fly.sy موقع مستقل غير رسمي يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟ هنا مصادرنا، مستويات الثقة، طريقة التحقق، والأسئلة الشائعة.",
+          "fly.sy موقع مستقل غير رسمي يجيب عن سؤالين: كيف أصل إلى سوريا اليوم، وكيف أسافر منها إلى بلد آخر؟ هنا مصادرنا، مستويات الثقة، طريقة التحقق، والأسئلة الشائعة.",
       },
     },
     lang: "English",
@@ -314,9 +348,9 @@ const messages = {
   en: {
     brand: "fly.sy",
     meta: {
-      title: "fly.sy — How to get into Syria",
-      description: "Every route into Syria, with the source and the date checked on every line. Independent and unofficial.",
-      card: "fly.sy — How to get into Syria. Every route, with a source on every line. Independent, unofficial.",
+      title: "fly.sy — Your way to Syria, and from Syria to the world",
+      description: "Every route into Syria and out of it, with the source and the date checked on every line. Independent and unofficial.",
+      card: "fly.sy — Your way to Syria, and from Syria to the world. Every route, with a source on every line. Independent, unofficial.",
     },
     tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", news: "News", reports: "Reports", links: "Official links", about: "About" },
     nav: {
@@ -333,12 +367,23 @@ const messages = {
       searchHint: "Search a country, airport, crossing or airline",
       searchEmpty: "No results. Try a country or city name.",
       searchLoading: "Loading…",
-      groups: { countries: "From a country to Damascus", airports: "Airports", crossings: "Land crossings", airlines: "Airlines", pages: "Pages" },
+      groups: { countries: "From a country to Damascus", leaving: "From Damascus to a country", airports: "Airports", crossings: "Land crossings", airlines: "Airlines", pages: "Pages" },
       toDamascus: "to Damascus",
+      fromDamascus: "from Damascus",
     },
     indep: "Independent and unofficial. Not part of any government body; represents no airline or embassy. Updated by hand and from people's real experiences.",
     updated: "Last updated",
-    ask: { in: "I'm in", with: "with", to: "heading to", via: "with a connection", fromLabel: "From", toLabel: "To", passportLabel: "My passport" },
+    ask: {
+      in: "I'm in",
+      with: "with",
+      to: "heading to",
+      via: "with a connection",
+      fromLabel: "From",
+      toLabel: "To",
+      passportLabel: "My passport",
+      swap: "Swap: from {from} to {to}",
+      inSyria: "In Syria",
+    },
     way: {
       thenRoad: "{entry}, then by road",
       fastest: "Fastest",
@@ -351,6 +396,12 @@ const messages = {
       noTime: "Time not known",
       board: "Flights to {entry}",
       boardLand: "Routes through {entry}",
+      // A way out of Syria: the road comes first, then the flight or the border.
+      roadThen: "By road, then from {entry}",
+      to: "to {cities}",
+      roadFrom: "{time} by road from {city}",
+      borderFrom: "{time} beyond the border",
+      boardOut: "Flights from {entry}",
       more: "Other ways",
       open: "Open",
     },
@@ -370,7 +421,7 @@ const messages = {
     blockedWhy: "Open to Syrians, Turkish citizens and dual nationals only.",
     fromCity: "from",
     home: "Home",
-    homeTitle: "How to get to Syria today",
+    homeTitle: "Your way to Syria, and from Syria to the world",
     langSwitch: "اقرأ بالعربية",
     airlines: {
       title: "Who flies to Syria",
@@ -410,6 +461,18 @@ const messages = {
       otherOrigin: "To {city} from other countries",
       entries: "Entry points on this route",
     },
+    // The same page the other way: from a Syrian city out to a country.
+    routeOut: {
+      title: "From {city} to {country}",
+      lede: "Every way we know from {city} to {country}, ranked by total time. Only flights and crossings we have checked leaving Syria are listed, each with its source and the date it was checked.",
+      answer: "Fastest way from {city} to {country} today: {how}, about {hours} door to door (checked {date}). {running} of {total} known routes are running.",
+      answerNone: "We know of no running route from {city} to {country} that we have checked. {total} known routes in all.",
+      how: { air: "fly from {entry}", land: "overland via {entry}" },
+      list: "Routes from {city} to {country}",
+      otherDest: "Other destinations from {city}",
+      otherOrigin: "To {country} from other Syrian cities",
+    },
+    leave: { title: "Before you leave", visas: "Visa checkers" },
     documents: {
       title: "Documents you need to enter Syria",
       lede: "What you need, by how you enter and which passport you hold. Every line carries its source, and where there is no dependable source we say so instead of guessing.",
@@ -490,7 +553,7 @@ const messages = {
       lede: "Every line carries its source, its confidence level and the date it was reviewed. Where we can't find a dependable source, we say so instead of filling the gap with a guess.",
       what: "What fly.sy is",
       whatText:
-        "fly.sy answers one question: how do I get into Syria today? Flights, land crossings and the paperwork, for Syrians abroad and for foreign visitors. It is independent and unofficial, sells nothing, takes no commission, and is not part of any government body, airline or embassy.",
+        "fly.sy answers two questions: how do I get into Syria today, and how do I get from Syria to another country? Flights, land crossings and the paperwork, for Syrians abroad and at home and for foreign visitors. It is independent and unofficial, sells nothing, takes no commission, and is not part of any government body, airline or embassy.",
       levels: "Confidence levels",
       lv: {
         verified: "From an official body, the operator itself, or a checked traveller report.",
@@ -556,9 +619,9 @@ const messages = {
     },
     seo: {
       home: {
-        title: "How to get to Syria today: flights, land crossings and the papers you need",
+        title: "Your way to Syria, and from Syria to the world: flights, land crossings and papers",
         description:
-          "Every way into Syria today from Türkiye, Lebanon, Jordan, the Gulf and Europe: flights, land crossings, journey times and the documents each passport needs, with a source and check date on every line.",
+          "Every way into Syria today from Türkiye, Lebanon, Jordan, the Gulf and Europe, and every way out to them: flights, land crossings, journey times and documents, with a source and check date on every line.",
       },
       airlines: {
         title: "Airlines flying to Syria in {year}: routes to Damascus and Aleppo",
@@ -585,6 +648,11 @@ const messages = {
         description:
           "{n} ways from {origin} to {city}; the fastest is {mode} via {entry}, about {hours}. Status, documents for each passport, source and check date for every line.",
         descriptionNone: "We know of no open route from {origin} to {city}. What we do know, its source, and when it was checked.",
+      },
+      routeOut: {
+        title: "{city} to {country}: flights and routes, journey time, what to check before you go",
+        description: "Every checked way from {city} to {country}, fastest first: {how}, {hours}. The status, source and check date of every line.",
+        descriptionNone: "We know of no checked route from {city} to {country}. What we do know, its source, and when it was checked.",
       },
       documents: {
         title: "Documents to enter Syria: Syrians, visa on arrival and pre-approval, by air and land",
@@ -613,7 +681,7 @@ const messages = {
       about: {
         title: "About fly.sy: sources, confidence levels and how we verify",
         description:
-          "fly.sy is an independent, unofficial site answering one question: how do I get into Syria today? Our sources, confidence levels, verification method and common questions.",
+          "fly.sy is an independent, unofficial site answering two questions: how do I get into Syria today, and how do I get from Syria to another country? Our sources, confidence levels, verification method and common questions.",
       },
     },
     lang: "العربية",

@@ -14,6 +14,8 @@ export function Flag({ code, className }: { code: string; className?: string }) 
   return (
     <F
       aria-hidden="true"
+      // Lets a surface restyle its flags (the green sign gives them a white edge).
+      data-flag=""
       // A hairline keeps flags with white edges (Lebanon's field, Japan) from
       // bleeding into a white card.
       className={cn("inline-block h-[0.85em] w-auto shrink-0 rounded-[2px] border border-border", className)}

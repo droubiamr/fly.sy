@@ -1,7 +1,7 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { airportReach, answerFor, groupWays, plan } from "../src/lib/plan.ts"
-import type { Arrival, Entry, OriginDef, Roads } from "../src/lib/types.ts"
+import { airportReach, answerFor, countryReach, groupWays, plan, planOut } from "../src/lib/plan.ts"
+import type { Arrival, Departure, Entry, OriginDef, Roads } from "../src/lib/types.ts"
 
 const entries: Record<string, Entry> = {
   DAM: { kind: "air", name: { ar: "دمشق", en: "Damascus" }, lat: 0, lng: 0, status: "open", source: "gaca", seen: "2026-09-20" },
@@ -186,4 +186,73 @@ test("groupWays: a crossing reached from another country starts with a flight", 
   assert.deepEqual([de[0].fly, de[0].drive], [true, true], "Germany: fly to Beirut, then cross")
   const lb = groupWays(plan({ arrivals: as, entries: es, roads: rs, from: { id: "LB" }, dest: "damascus", passport: "sy" }), "damascus")
   assert.deepEqual([lb[0].fly, lb[0].drive], [false, true], "Lebanon: drive only")
+})
+
+/* ---- The other direction: from a Syrian city out to a country. ---- */
+
+const out = { city: { ar: "x", en: "x" }, country: "TR", to: "TR", status: "open" as const, confidence: "verified" as const, source: "damairport", seen: "2026-10-08" }
+const departures: Departure[] = [
+  { ...out, airline: "TK", entry: "DAM", mode: "air", hours: 2 },
+  { ...out, airline: null, entry: "BAB", mode: "land", hours: 3, status: "caution" },
+  { ...out, airline: null, entry: "DAM", mode: "air", hours: 8, to: "eu" },
+  { ...out, airline: "RB", entry: "DAM", mode: "air", hours: 1, hidden: true },
+]
+
+test("planOut: departures to the country or its group, the road to the entry point counted first", () => {
+  const tr = planOut({ departures, entries, roads, origin: "idlib", to: TR, passport: "sy" })
+  assert.deepEqual(tr.map((j) => [j.entry, j.totalHours, j.end]), [["BAB", 3.5, "TR"], ["DAM", 7, "TR"]], "Idlib is half an hour from Bab al-Hawa and five from Damascus airport")
+  const de = planOut({ departures, entries, roads, origin: "damascus", to: { id: "DE", group: "eu" }, passport: "sy" })
+  assert.deepEqual(de.map((j) => [j.end, j.totalHours]), [["eu", 8.5]])
+  assert.ok(!tr.some((j) => j.hidden), "hidden rows never show")
+})
+
+test("planOut never turns an arrival around: a country with arrivals but no departures has no way out", () => {
+  const lb = planOut({ departures, entries, roads, origin: "damascus", to: { id: "LB" }, passport: "sy" })
+  assert.equal(lb.length, 0)
+  assert.equal(plan({ arrivals, entries, roads, from: { id: "LB" }, dest: "damascus", passport: "sy" }).length, 1)
+})
+
+test("planOut: a Syrians-only crossing is blocked for other passports, and the answer prefers a route that simply runs", () => {
+  const voa = planOut({ departures, entries, roads, origin: "idlib", to: TR, passport: "voa" })
+  assert.equal(voa.at(-1)?.entry, "BAB")
+  assert.equal(voa.at(-1)?.blocked, true)
+  const a = answerFor(planOut({ departures, entries, roads, origin: "idlib", to: TR, passport: "sy" }))
+  assert.equal(a.best?.entry, "DAM", "the open flight is named before the faster conditional crossing")
+  const ways = groupWays(planOut({ departures, entries: { ...entries, DAM: { ...entries.DAM, city: "damascus" } }, roads, origin: "idlib", to: TR, passport: "sy" }), "idlib")
+  assert.deepEqual(ways.map((w) => [w.entry, w.fly, w.drive]), [["BAB", false, true], ["DAM", true, true]])
+})
+
+test("countryReach: a country is reachable when a departure to it, or to its group, is not closed", () => {
+  const rows: Departure[] = [...departures, { ...out, airline: "EK", entry: "DAM", mode: "air", hours: 3, to: "AE", status: "closed" }]
+  assert.deepEqual(countryReach(rows, [{ id: "TR" }, { id: "FR", group: "eu" }, { id: "AE" }, { id: "LB" }]), { TR: true, FR: true, AE: false, LB: false })
+})
+
+test("real data: every departure resolves, and none is checked later than the last review", async () => {
+  const { readFileSync } = await import("node:fs")
+  const load = (f: string) => JSON.parse(readFileSync(new URL(`../data/${f}.json`, import.meta.url), "utf8"))
+  const entries = load("entries") as Record<string, Entry>
+  const origins = load("origins") as OriginDef[]
+  const departures = load("departures") as Departure[]
+  const sources = load("sources")
+  const airlines = load("airlines")
+  const needs = load("needs")
+  const updated = (load("meta") as { updated: string }).updated.slice(0, 10)
+  const ends = new Set([...origins.map((o) => o.id), ...origins.map((o) => o.group).filter(Boolean)])
+  assert.ok(departures.length > 0)
+  for (const d of departures) {
+    const at = `departure ${d.airline ?? d.mode} ${d.entry} → ${d.city.en}`
+    assert.ok(entries[d.entry], `${at}: entry`)
+    assert.equal(entries[d.entry].kind, d.mode, `${at}: a flight leaves from an airport, a drive through a crossing`)
+    assert.ok(ends.has(d.to), `${at}: "to" matches no origin or group`)
+    assert.ok(sources[d.source], `${at}: source`)
+    if (d.airline) assert.ok(airlines[d.airline], `${at}: airline`)
+    assert.match(d.seen, /^\d{4}-\d{2}-\d{2}$/, `${at}: seen`)
+    assert.ok(d.seen <= updated, `${at}: seen ${d.seen} is after the last review ${updated}`)
+    assert.ok(["open", "caution", "closed", "unknown"].includes(d.status), `${at}: status`)
+    assert.ok(["verified", "reported", "unconfirmed"].includes(d.confidence), `${at}: confidence`)
+    assert.ok(d.hours > 0, `${at}: hours`)
+    assert.ok(d.city.ar && d.city.en && (!d.note || (d.note.ar && d.note.en)), `${at}: both languages`)
+  }
+  assert.ok(Array.isArray(needs.leave) && needs.leave.length > 0, "needs.json has what to check before leaving")
+  for (const n of needs.leave) assert.ok(sources[n.source] && n.text.ar && n.text.en, "leave line: source and both languages")
 })

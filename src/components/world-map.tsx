@@ -152,8 +152,9 @@ function place(labels: Label[], dots: Box[]): Label[] {
 /**
  * A real map: the chosen country and Syria on Natural Earth coastlines, with
  * the route drawn as a great circle from the country's main airport to each
- * entry point that serves the journey. Server-rendered SVG, so the map costs
- * the phone no script and no tiles.
+ * entry point that serves the journey, or, leaving Syria (`out`), from each
+ * entry point out to that airport. Server-rendered SVG, so the map costs the
+ * phone no script and no tiles.
  */
 export function WorldMap({
   origin,
@@ -161,13 +162,18 @@ export function WorldMap({
   liveEntries,
   locale,
   framed = true,
+  out = false,
 }: {
+  /** The country at the other end of the trip. */
   origin: OriginDef
+  /** The Syrian city. */
   dest: string
   liveEntries: string[]
   locale: Locale
   /** A card with a border, or bare, for a band whose own background is the sea. */
   framed?: boolean
+  /** The trip leaves Syria: lines draw from the border outwards. */
+  out?: boolean
 }) {
   const city = cityById(dest)
   if (!city) return null
@@ -198,11 +204,11 @@ export function WorldMap({
       <svg
         // A new element per origin, so the route draws itself again when the
         // country changes.
-        key={origin.id + ":" + liveEntries.join()}
+        key={(out ? "out:" : "") + origin.id + ":" + liveEntries.join()}
         viewBox={`0 0 ${W} ${H}`}
         className="block h-auto w-full"
         role="img"
-        aria-label={`${origin.name[locale]} ${arrow(locale)} ${city.name[locale]}`}
+        aria-label={out ? `${city.name[locale]} ${arrow(locale)} ${origin.name[locale]}` : `${origin.name[locale]} ${arrow(locale)} ${city.name[locale]}`}
         // Left-to-right geometry regardless of page direction: an anchor of
         // "start" is the left edge, and the label sits where it was measured.
         style={{ direction: "ltr" }}
@@ -222,7 +228,7 @@ export function WorldMap({
           entries.map((x) => (
             <path
               key={x.id}
-              d={s.arc(origin.hub, [x.e.lng, x.e.lat])}
+              d={out ? s.arc([x.e.lng, x.e.lat], origin.hub) : s.arc(origin.hub, [x.e.lng, x.e.lat])}
               pathLength={1}
               className="map-arc stroke-primary"
               fill="none"

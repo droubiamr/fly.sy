@@ -6,7 +6,7 @@ import type { SearchGroup, SearchItem } from "@/lib/search"
 import { useLocale, useMessages } from "@/components/messages-provider"
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 
-const GROUPS: SearchGroup[] = ["countries", "airports", "crossings", "airlines", "pages"]
+const GROUPS: SearchGroup[] = ["countries", "leaving", "airports", "crossings", "airlines", "pages"]
 
 /** The site search: shadcn's Command (cmdk) in a dialog, over the index for this language. */
 export default function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {

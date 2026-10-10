@@ -4,7 +4,7 @@ Start here, then README.md and CONTRIBUTING.md.
 
 ## What it is
 
-**fly.sy** is a public, open-source, independent site answering one question: *how do I get into Syria, today?* Flights, land crossings, and the paperwork you need — for Syrians and for foreign visitors — with the **source, confidence level and date last checked on every single line**. Built around **real experiences from people who made the trip**, not only data the owner sources.
+**fly.sy** is a public, open-source, independent site answering two questions: *how do I get into Syria today, and how do I get from Syria to another country?* Flights, land crossings, and the paperwork you need — for Syrians and for foreign visitors — with the **source, confidence level and date last checked on every single line**. Built around **real experiences from people who made the trip**, not only data the owner sources.
 
 - Owner: Amr (GitHub: `droubiamr`, repo `droubiamr/fly.sy`). Trilingual AR/EN/DE.
 - Audience: Syrian diaspora (Germany, Türkiye, Gulf, Lebanon, Jordan) and foreign travellers.
@@ -37,6 +37,7 @@ data/*.json            all sourced facts (the weekly edit)
   airlines.json        carriers by IATA code
   entries.json         airports + land crossings (status, source, seen, note)
   arrivals.json        routes into Syria: airline, origin city, entry, hours, status, confidence
+  departures.json      routes out of Syria, checked on the departure boards and official posts (leaving pages)
   origins.json         countries you can start from: ISO code, names, atlas id, hub airport, region
   roads.json           estimated road hours entry → city
   needs.json           documents by mode (air/land) × passport (sy/voa/res)

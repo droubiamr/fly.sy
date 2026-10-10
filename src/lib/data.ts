@@ -3,6 +3,7 @@ import airlines from "../../data/airlines.json"
 import cities from "../../data/cities.json"
 import entries from "../../data/entries.json"
 import arrivals from "../../data/arrivals.json"
+import departures from "../../data/departures.json"
 import origins from "../../data/origins.json"
 import roads from "../../data/roads.json"
 import needs from "../../data/needs.json"
@@ -14,6 +15,7 @@ import type {
   Airline,
   Arrival,
   City,
+  Departure,
   Entry,
   LinkGroup,
   Locale,
@@ -39,6 +41,8 @@ export const DATA = {
   cities: cities as City[],
   entries: entries as Record<string, Entry>,
   arrivals: arrivals as Arrival[],
+  /** The ways out, each checked against its own source; see data/departures.json. */
+  departures: departures as Departure[],
   roads: roads as Roads,
   needs: needs as Needs,
   seedReports: seedReports as Report[],
@@ -106,6 +110,8 @@ export const destinationById = (id: string) => DESTINATIONS.find((d) => d.id ===
 
 /** /from/turkiye/to/damascus. The passport is a query on the page (?p=voa), never a segment. */
 export const routePath = (from: Origin, dest: string) => routeHref(originSlug(from), dest)
+/** /from/damascus/to/turkiye: the same pair the other way, out of Syria. City ids and country slugs never collide. */
+export const leavePath = (city: string, to: Origin) => routeHref(city, originSlug(to))
 
 /** Airports live under /airports, land crossings under /crossings. */
 export const entryPath = (id: string) => `${DATA.entries[id].kind === "air" ? "/airports" : "/crossings"}/${entrySlug(id)}`
@@ -130,6 +136,8 @@ export const airEntries = () => Object.entries(DATA.entries).filter(([, e]) => e
 export const arrivalsVia = (entry: string) => DATA.arrivals.filter((a) => a.entry === entry && !a.hidden)
 /** Arrivals flown by a given carrier, visible ones only. */
 export const arrivalsBy = (airline: string) => DATA.arrivals.filter((a) => a.airline === airline && !a.hidden)
+/** Departures through a given entry, visible ones only. */
+export const departuresVia = (entry: string) => DATA.departures.filter((d) => d.entry === entry && !d.hidden)
 
 /** The country a route page for this arrival starts from: the arrival's own, or the first of its group. */
 export const originForArrival = (a: Arrival): OriginDef =>
@@ -172,10 +180,14 @@ export function pageUpdated(path: string): string {
     dates = DATA.links.map((r) => r.seen)
   } else if (parts[0] === "from" && parts[2] === "to") {
     const o = originFromSlug(parts[1])
-    if (o) {
-      const hops = DATA.arrivals.filter((a) => !a.hidden && (a.from === o.id || a.from === o.group))
-      dates = [...hops.map((a) => a.seen), ...hops.map((a) => DATA.entries[a.entry]?.seen ?? "")]
-    }
+    // A leaving page names the city first: /from/damascus/to/turkiye.
+    const out = o ? undefined : destinationById(parts[1]) && originFromSlug(parts[3])
+    const hops: { seen: string; entry: string }[] = o
+      ? DATA.arrivals.filter((a) => !a.hidden && (a.from === o.id || a.from === o.group))
+      : out
+        ? DATA.departures.filter((d) => !d.hidden && (d.to === out.id || d.to === out.group))
+        : []
+    dates = [...hops.map((a) => a.seen), ...hops.map((a) => DATA.entries[a.entry]?.seen ?? "")]
   }
   const d = latest(dates)
   return d && d < cap ? d : cap
