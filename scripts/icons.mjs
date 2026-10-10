@@ -79,9 +79,10 @@ function shareCard() {
       ${mark}
     </g>
     <text x="${R}" y="128" text-anchor="end" font-size="46" font-weight="700" fill="${INK}" letter-spacing="-1">fly<tspan fill="${GREEN}">.sy</tspan></text>
-    <text x="${R}" y="318" direction="rtl" text-anchor="start" font-size="76" font-weight="700" fill="${INK}">كيف تصل إلى سوريا</text>
-    <text x="${R}" y="378" direction="rtl" text-anchor="start" font-size="30" font-weight="400" fill="${MUTED}">كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها</text>
-    <text x="${R}" y="436" text-anchor="end" font-size="26" font-weight="400" fill="${MUTED}">How to get into Syria, with a source on every line.</text>
+    <text x="${R}" y="262" direction="rtl" text-anchor="start" font-size="76" font-weight="700" fill="${INK}">كيف تصل إلى سوريا</text>
+    <text x="${R}" y="352" direction="rtl" text-anchor="start" font-size="76" font-weight="700" fill="${INK}">أو إلى العالم</text>
+    <text x="${R}" y="410" direction="rtl" text-anchor="start" font-size="30" font-weight="400" fill="${MUTED}">كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها</text>
+    <text x="${R}" y="460" text-anchor="end" font-size="26" font-weight="400" fill="${MUTED}">Into Syria or the world, with a source on every line.</text>
     <g transform="translate(${R} 500)" font-size="20" font-weight="500" fill="${MUTED}">
       <rect x="-198" y="0" width="198" height="50" rx="14" fill="none" stroke="${BORDER}" stroke-width="2"/>
       <text x="-99" y="33" text-anchor="middle" direction="rtl">مستقل · غير رسمي</text>

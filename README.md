@@ -1,7 +1,7 @@
-# fly.sy — كيف تصل إلى سوريا
+# fly.sy — كيف تصل إلى سوريا أو إلى العالم
 
-An independent, unofficial, open-source answer sheet for getting into Syria: every flight, land crossing
-and paperwork requirement, with the **source**, **confidence level** and **date last checked** on every line —
+An independent, unofficial, open-source answer sheet for getting into Syria, and from Syria to the world: every
+flight, land crossing and paperwork requirement, with the **source**, **confidence level** and **date last checked** on every line —
 plus real experiences from people who actually made the trip.
 
 Not affiliated with any government body, airline or embassy. Sells nothing, takes no commission.

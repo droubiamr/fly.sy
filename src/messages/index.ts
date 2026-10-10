@@ -4,10 +4,10 @@ const messages = {
   ar: {
     brand: "fly.sy",
     meta: {
-      title: "fly.sy — كيف تصل إلى سوريا",
-      description: "كل طريق إلى سوريا، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
+      title: "fly.sy — كيف تصل إلى سوريا أو إلى العالم",
+      description: "كل طريق إلى سوريا ومنها، مع مصدر كل معلومة وتاريخ مراجعتها. موقع مستقل غير رسمي.",
       // Alt text for the share card, which carries the same words as an image.
-      card: "fly.sy — كيف تصل إلى سوريا. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
+      card: "fly.sy — كيف تصل إلى سوريا أو إلى العالم. كل طريق، ومصدر كل معلومة، وتاريخ مراجعتها. مستقل، غير رسمي.",
     },
     tabs: { plan: "رحلتي", airlines: "الطيران", crossings: "المعابر", news: "الأخبار", reports: "تجارب", links: "روابط رسمية", about: "عن الموقع" },
     // The navigation's own short labels. Breadcrumbs and footer links keep the fuller names in `tabs`.
@@ -80,7 +80,7 @@ const messages = {
     blockedWhy: "مفتوح للسوريين والأتراك وحاملي الجنسيتين فقط.",
     fromCity: "من",
     home: "الرئيسية",
-    homeTitle: "كيف تصل إلى سوريا اليوم",
+    homeTitle: "كيف تصل إلى سوريا أو إلى العالم اليوم",
     langSwitch: "Read in English",
     airlines: {
       title: "من يطير إلى سوريا",
@@ -212,7 +212,7 @@ const messages = {
       lede: "كل سطر يحمل مصدره ودرجة ثقته وتاريخ مراجعته. حين لا نجد مصدراً موثوقاً نقول ذلك بدل أن نملأ الفراغ بتخمين.",
       what: "ما هو fly.sy",
       whatText:
-        "fly.sy يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟ الرحلات الجوية، المعابر البرية، والأوراق المطلوبة، للسوريين في الخارج وللزوار الأجانب. مستقل، غير رسمي، لا يبيع شيئاً ولا يأخذ عمولة، ولا يتبع أي جهة حكومية أو شركة طيران أو سفارة.",
+        "fly.sy يجيب عن سؤالين: كيف أصل إلى سوريا اليوم، وكيف أسافر منها إلى بلد آخر؟ الرحلات الجوية، المعابر البرية، والأوراق المطلوبة، للسوريين في الخارج وفي الداخل وللزوار الأجانب. مستقل، غير رسمي، لا يبيع شيئاً ولا يأخذ عمولة، ولا يتبع أي جهة حكومية أو شركة طيران أو سفارة.",
       levels: "درجات الثقة",
       lv: {
         verified: "من جهة رسمية أو من المشغّل نفسه، أو تجربة مسافر تم التحقق منها.",
@@ -278,9 +278,9 @@ const messages = {
     },
     seo: {
       home: {
-        title: "كيف تصل إلى سوريا اليوم: الطيران والمعابر البرية والأوراق المطلوبة",
+        title: "كيف تصل إلى سوريا أو إلى العالم: الطيران والمعابر البرية والأوراق المطلوبة",
         description:
-          "كل طريق إلى سوريا اليوم من تركيا ولبنان والأردن والخليج وأوروبا: الرحلات الجوية والمعابر البرية والوقت المتوقع والأوراق المطلوبة لكل جواز، مع مصدر كل معلومة وتاريخ مراجعتها.",
+          "كل طريق إلى سوريا اليوم من تركيا ولبنان والأردن والخليج وأوروبا، وكل طريق منها إليها: الرحلات الجوية والمعابر البرية والوقت المتوقع والأوراق المطلوبة، مع مصدر كل معلومة وتاريخ مراجعتها.",
       },
       airlines: {
         title: "شركات الطيران التي تطير إلى سوريا {year}: الرحلات إلى دمشق وحلب",
@@ -340,7 +340,7 @@ const messages = {
       about: {
         title: "عن fly.sy: مصادرنا ومستويات الثقة وكيف نتحقق",
         description:
-          "fly.sy موقع مستقل غير رسمي يجيب عن سؤال واحد: كيف أصل إلى سوريا اليوم؟ هنا مصادرنا، مستويات الثقة، طريقة التحقق، والأسئلة الشائعة.",
+          "fly.sy موقع مستقل غير رسمي يجيب عن سؤالين: كيف أصل إلى سوريا اليوم، وكيف أسافر منها إلى بلد آخر؟ هنا مصادرنا، مستويات الثقة، طريقة التحقق، والأسئلة الشائعة.",
       },
     },
     lang: "English",
@@ -348,9 +348,9 @@ const messages = {
   en: {
     brand: "fly.sy",
     meta: {
-      title: "fly.sy — How to get into Syria",
-      description: "Every route into Syria, with the source and the date checked on every line. Independent and unofficial.",
-      card: "fly.sy — How to get into Syria. Every route, with a source on every line. Independent, unofficial.",
+      title: "fly.sy — How to get into Syria or the world",
+      description: "Every route into Syria and out of it, with the source and the date checked on every line. Independent and unofficial.",
+      card: "fly.sy — How to get into Syria or the world. Every route, with a source on every line. Independent, unofficial.",
     },
     tabs: { plan: "Plan", airlines: "Airlines", crossings: "Crossings", news: "News", reports: "Reports", links: "Official links", about: "About" },
     nav: {
@@ -421,7 +421,7 @@ const messages = {
     blockedWhy: "Open to Syrians, Turkish citizens and dual nationals only.",
     fromCity: "from",
     home: "Home",
-    homeTitle: "How to get to Syria today",
+    homeTitle: "How to get into Syria or the world today",
     langSwitch: "اقرأ بالعربية",
     airlines: {
       title: "Who flies to Syria",
@@ -553,7 +553,7 @@ const messages = {
       lede: "Every line carries its source, its confidence level and the date it was reviewed. Where we can't find a dependable source, we say so instead of filling the gap with a guess.",
       what: "What fly.sy is",
       whatText:
-        "fly.sy answers one question: how do I get into Syria today? Flights, land crossings and the paperwork, for Syrians abroad and for foreign visitors. It is independent and unofficial, sells nothing, takes no commission, and is not part of any government body, airline or embassy.",
+        "fly.sy answers two questions: how do I get into Syria today, and how do I get from Syria to another country? Flights, land crossings and the paperwork, for Syrians abroad and at home and for foreign visitors. It is independent and unofficial, sells nothing, takes no commission, and is not part of any government body, airline or embassy.",
       levels: "Confidence levels",
       lv: {
         verified: "From an official body, the operator itself, or a checked traveller report.",
@@ -619,9 +619,9 @@ const messages = {
     },
     seo: {
       home: {
-        title: "How to get to Syria today: flights, land crossings and the papers you need",
+        title: "How to get into Syria or the world: flights, land crossings and the papers you need",
         description:
-          "Every way into Syria today from Türkiye, Lebanon, Jordan, the Gulf and Europe: flights, land crossings, journey times and the documents each passport needs, with a source and check date on every line.",
+          "Every way into Syria today from Türkiye, Lebanon, Jordan, the Gulf and Europe, and every way out to them: flights, land crossings, journey times and documents, with a source and check date on every line.",
       },
       airlines: {
         title: "Airlines flying to Syria in {year}: routes to Damascus and Aleppo",
@@ -681,7 +681,7 @@ const messages = {
       about: {
         title: "About fly.sy: sources, confidence levels and how we verify",
         description:
-          "fly.sy is an independent, unofficial site answering one question: how do I get into Syria today? Our sources, confidence levels, verification method and common questions.",
+          "fly.sy is an independent, unofficial site answering two questions: how do I get into Syria today, and how do I get from Syria to another country? Our sources, confidence levels, verification method and common questions.",
       },
     },
     lang: "العربية",
