@@ -17,7 +17,7 @@
   {"airline":null,"city":{"ar":"غازي عنتاب","en":"Gaziantep"},"country":"TR","entry":"SAL","from":"TR","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-08"},
   {"airline":null,"city":{"ar":"غازي عنتاب","en":"Gaziantep"},"country":"TR","entry":"RAI","from":"TR","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-08"},
   {"airline":null,"city":{"ar":"غازي عنتاب","en":"Gaziantep"},"country":"TR","entry":"JAR","from":"TR","mode":"land","hours":2.5,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-01"},
-  {"airline":null,"city":{"ar":"شانلي أورفا","en":"Şanlıurfa"},"country":"TR","entry":"TAB","from":"TR","mode":"land","hours":2.5,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-08"},
+  {"airline":null,"city":{"ar":"شانلي أورفا","en":"Şanlıurfa"},"country":"TR","entry":"TAB","from":"TR","mode":"land","hours":2.5,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-13"},
   {"airline":null,"city":{"ar":"أنطاكيا (هاتاي)","en":"Antakya (Hatay)"},"country":"TR","entry":"KAS","from":"TR","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-01"},
 
   {"airline":null,"city":{"ar":"بيروت","en":"Beirut"},"country":"LB","entry":"JDE","from":"LB","mode":"land","hours":2,"status":"open","confidence":"verified","source":"ports","seen":"2026-10-08","note":{"ar":"لا شركة مؤكدة تطير بين بيروت ودمشق. الطريق البري هو الخيار الموثوق.","en":"No airline we could confirm flies Beirut–Damascus. Overland is the dependable option."}},
