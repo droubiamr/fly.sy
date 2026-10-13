@@ -5,7 +5,7 @@ import { fmt, getI18n } from "@/lib/i18n"
 import { arrow, formatDuration } from "@/lib/format"
 import type { Journey, Way } from "@/lib/plan"
 import { localePath } from "@/lib/site"
-import type { Locale, Mode, Status } from "@/lib/types"
+import type { Locale, Mode, Passport, Status } from "@/lib/types"
 import type { Messages } from "@/messages"
 import { cn } from "@/lib/utils"
 import { StatusStamp } from "@/components/status-stamp"
@@ -14,26 +14,44 @@ import { WayGate } from "@/components/passport-ui"
 import { Provenance } from "@/components/provenance"
 import { ModeIcons, signClass } from "@/components/sign"
 
+/** The way that leads a route page for one passport, as entry ids: `fastest`, the way the answer names (null when
+ *  nothing runs for it), and `main`, the sign shown open with its legs: that way, or the first one open to the
+ *  passport when nothing runs. */
+export type Lead = { main: string | null; fastest: string | null }
+
+const PASSPORTS: Passport[] = ["sy", "voa", "res"]
+
 /*
- * The ways into Syria for one route page, one road sign each, fastest first;
- * or, on a leaving page (`out`), the ways out, with the road to the border or
- * the airport before the flight. Rendered on the server, for a Syrian passport;
- * WayGate moves a Syrians-only crossing to the end for any other passport on the
- * way in. Leaving pages have no passport choice: the crossing's own plate says
- * who may use it. Each sign opens on its board of journeys, and each journey on
- * its note, source and check date. Closed <details> keep their text in the HTML,
- * so search engines and assistants read every line even when a visitor sees only the signs.
+ * The ways into Syria for one route page, one road sign each, in the order the
+ * answer ranks them; or, on a leaving page (`out`), the ways out, with the road
+ * to the border or the airport before the flight. Rendered on the server, for a
+ * Syrian passport; WayGate moves a Syrians-only crossing to the end for any
+ * other passport on the way in, and moves the main sign and its Fastest plate
+ * to the way that leads for the passport chosen. Leaving pages have no passport
+ * choice: the crossing's own plate says who may use it. Each sign opens on its
+ * board of journeys, and each journey on its note, source and check date.
+ * Closed <details> keep their text in the HTML, so search engines and
+ * assistants read every line even when a visitor sees only the signs.
  */
-export function WaySigns({ ways, dest, locale, out = false }: { ways: Way[]; dest: string; locale: Locale; out?: boolean }) {
+export function WaySigns({ ways, lead, dest, locale, out = false }: { ways: Way[]; lead: Record<Passport, Lead>; dest: string; locale: Locale; out?: boolean }) {
   const { m } = getI18n(locale)
-  const main = Math.max(0, ways.findIndex((w) => w.best))
   return (
     <ol className="flex flex-col gap-3">
-      {ways.map((w, i) => (
-        <WayGate key={w.entry} syriansOnly={!out && Boolean(w.journeys[0].entryData.syriansOnly)}>
-          <WaySign way={w} main={i === main} dest={dest} locale={locale} m={m} out={out} />
-        </WayGate>
-      ))}
+      {ways.map((w) => {
+        const e = w.journeys[0].entryData
+        const main = PASSPORTS.filter((p) => lead[p].main === w.entry)
+        return (
+          <WayGate
+            key={w.entry}
+            syriansOnly={!out && Boolean(e.syriansOnly)}
+            unconfirmed={!out && e.foreigners === "unconfirmed"}
+            main={main}
+            fastest={PASSPORTS.filter((p) => lead[p].fastest === w.entry)}
+          >
+            <WaySign way={w} main={main.length > 0} open={main.includes("sy")} dest={dest} locale={locale} m={m} out={out} />
+          </WayGate>
+        )
+      })}
     </ol>
   )
 }
@@ -52,7 +70,9 @@ function Plate({ tone, className, children }: { tone: "caution" | "closed" | "un
   return <span className={cn("inline-block rounded-md bg-card px-2 py-0.5 text-xs font-bold", t, className)}>{children}</span>
 }
 
-function WaySign({ way: w, main, dest, locale, m, out }: { way: Way; main: boolean; dest: string; locale: Locale; m: Messages; out: boolean }) {
+/** `main`: this sign is the main one for some passport, so it carries the main parts, shown when that passport is
+ *  chosen. `open`: it is the main one for a Syrian passport, which the HTML is rendered for. */
+function WaySign({ way: w, main, open, dest, locale, m, out }: { way: Way; main: boolean; open: boolean; dest: string; locale: Locale; m: Messages; out: boolean }) {
   const e = w.journeys[0].entryData
   const city = cityById(dest)!.name[locale]
   // In the order you travel them: fly then drive coming in, drive then fly going out.
@@ -65,7 +85,9 @@ function WaySign({ way: w, main, dest, locale, m, out }: { way: Way; main: boole
   const road = w.journeys[0].roadHours
   const airlines = uniq([...live, ...w.journeys].map((j) => j.airline).filter((a): a is string => Boolean(a)))
   const status: Status = w.status
-  const size = main ? "text-xl sm:text-2xl" : "text-lg"
+  const size = main ? "text-lg group-data-[main]/way:text-xl sm:group-data-[main]/way:text-2xl" : "text-lg"
+  const unsure = !out && e.foreigners === "unconfirmed"
+  const plates = Boolean(e.syriansOnly) || status !== "open"
   const leg = "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 shadow-[inset_0_0_0_1.5px_color-mix(in_srgb,currentColor_75%,transparent)]"
   const crossLeg = (
     <span key="cross" className={leg}>
@@ -81,15 +103,15 @@ function WaySign({ way: w, main, dest, locale, m, out }: { way: Way; main: boole
     ) : null
 
   return (
-    <details open={main} className="group/d">
+    <details open={open} className="group/d">
       <summary className={cn(signClass(status === "closed"), "block cursor-pointer list-none p-4 [&::-webkit-details-marker]:hidden")}>
         <span className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
-          <ModeIcons modes={modes} size={main ? "lg" : "md"} />
+          <ModeIcons modes={modes} size={main ? "main" : "md"} />
           <span className="block min-w-0">
             <span className={cn("block leading-tight font-bold", size)}>{title}</span>
             <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] opacity-90">
               {main && w.best && (
-                <span className="rounded-md bg-primary-foreground px-2 py-0.5 text-xs font-bold text-primary group-data-[blocked]/way:hidden">
+                <span className="hidden rounded-md bg-primary-foreground px-2 py-0.5 text-xs font-bold text-primary group-data-[fastest]/way:inline">
                   {m.way.fastest}
                 </span>
               )}
@@ -106,16 +128,17 @@ function WaySign({ way: w, main, dest, locale, m, out }: { way: Way; main: boole
           </span>
         </span>
 
-        {(e.syriansOnly || status !== "open") && (
-          <span className="mt-3 flex flex-wrap gap-2">
+        {(plates || unsure) && (
+          <span className={cn("mt-3 flex-wrap gap-2", plates ? "flex" : "hidden group-data-[unsure]/way:flex")}>
             {e.syriansOnly && <Plate tone="caution">{m.way.syriansOnly}</Plate>}
             {e.syriansOnly && <Plate tone="closed" className="hidden group-data-[blocked]/way:inline-block">{m.blocked}</Plate>}
+            {unsure && <Plate tone="unknown" className="hidden group-data-[unsure]/way:inline-block">{m.way.unconfirmed}</Plate>}
             {status !== "open" && <Plate tone={status}>{m.status[status]}</Plate>}
           </span>
         )}
 
         {main && (
-          <>
+          <span className="hidden group-data-[main]/way:block">
             <span className="mt-3 flex flex-wrap gap-2 text-[13px] font-semibold">
               {/* The legs in the order you travel them: the road comes first on the way out. */}
               {out ? [roadLeg, crossLeg] : [crossLeg, roadLeg]}
@@ -124,13 +147,13 @@ function WaySign({ way: w, main, dest, locale, m, out }: { way: Way; main: boole
               <span className="mt-3 flex items-center gap-1.5 border-t-2 border-primary-foreground/70 pt-3">
                 {airlines.slice(0, 6).map((a) => (
                   <span key={a} className="size-8 rounded-md bg-white p-1">
-                    <AirlineLogo code={a} />
+                    <AirlineLogo code={a} light />
                   </span>
                 ))}
                 {airlines.length > 6 && <span className="text-xs font-semibold">+{airlines.length - 6}</span>}
               </span>
             )}
-          </>
+          </span>
         )}
       </summary>
       <Board way={w} dest={dest} locale={locale} m={m} out={out} />
@@ -158,7 +181,7 @@ function Board({ way: w, dest, locale, m, out }: { way: Way; dest: string; local
                 <summary className="grid min-h-12 cursor-pointer list-none grid-cols-[1.75rem_minmax(0,1fr)_auto] items-center gap-3 px-4 py-2 [&::-webkit-details-marker]:hidden">
                   {j.airline ? (
                     <span className="size-7 rounded-md border bg-white p-0.5">
-                      <AirlineLogo code={j.airline} />
+                      <AirlineLogo code={j.airline} light />
                     </span>
                   ) : (
                     // No named carrier: a connection by air, or a drive. Say which.

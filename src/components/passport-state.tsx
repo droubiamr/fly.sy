@@ -23,6 +23,9 @@ const read = (): Passport => {
 // The server, and the first client render that hydrates it, both say Syrian.
 const readOnServer = (): Passport => "sy"
 
+/** The passport in the address, outside a route page too: the language switch carries it to the other language. */
+export const useUrlPassport = () => useSyncExternalStore(subscribe, read, readOnServer)
+
 const Ctx = createContext<{ passport: Passport; setPassport: (p: Passport) => void } | null>(null)
 
 /**
@@ -33,7 +36,7 @@ const Ctx = createContext<{ passport: Passport; setPassport: (p: Passport) => vo
  * of the static HTML and into a client render, which is what a crawler reads.
  */
 export function PassportProvider({ children }: { children: React.ReactNode }) {
-  const passport = useSyncExternalStore(subscribe, read, readOnServer)
+  const passport = useUrlPassport()
   const setPassport = (p: Passport) => {
     const url = new URL(window.location.href)
     if (p === "sy") url.searchParams.delete(PASSPORT_PARAM)

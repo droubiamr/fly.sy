@@ -7,6 +7,7 @@ import atlas50 from "world-atlas/countries-50m.json"
 import { DATA, cityById } from "@/lib/data"
 import { arrow } from "@/lib/format"
 import type { Locale, OriginDef } from "@/lib/types"
+import { SyriansOnlyMark } from "@/components/passport-ui"
 
 // Natural Earth via the world-atlas package (public domain data, ISC package).
 // Two resolutions: the 50m file draws a proper coastline when the frame is a
@@ -106,7 +107,7 @@ const LINE = 16
 const PAD = 12
 const CHAR = 8
 type Box = { l: number; r: number; t: number; b: number }
-type Label = { x: number; y: number; text: string; strong: boolean; side: "start" | "end" }
+type Label = { x: number; y: number; text: string; strong: boolean; side: "start" | "end"; entry?: string }
 
 /**
  * Lays labels out so none sits on another or on a dot. Each is offered the
@@ -163,6 +164,7 @@ export function WorldMap({
   locale,
   framed = true,
   out = false,
+  gate = false,
 }: {
   /** The country at the other end of the trip. */
   origin: OriginDef
@@ -174,6 +176,9 @@ export function WorldMap({
   framed?: boolean
   /** The trip leaves Syria: lines draw from the border outwards. */
   out?: boolean
+  /** On a route page into Syria: crossings for Syrians only are drawn while a Syrian passport is chosen, and hidden
+   *  for the others. Needs the route page's passport state. */
+  gate?: boolean
 }) {
   const city = cityById(dest)
   if (!city) return null
@@ -196,8 +201,11 @@ export function WorldMap({
   const wanted: Label[] = []
   if (dp) wanted.push({ x: dp[0], y: dp[1] + 5, text: city.name[locale], strong: true, side: away(hub, dp) })
   if (hub) wanted.push({ x: hub[0], y: hub[1] + 5, text: origin.name[locale], strong: true, side: away(dp, hub) })
-  if (close) for (const x of entries) wanted.push({ x: x.p[0], y: x.p[1] + 4, text: x.e.name[locale], strong: false, side: x.p[0] < W / 2 ? "start" : "end" })
+  if (close) for (const x of entries) wanted.push({ x: x.p[0], y: x.p[1] + 4, text: x.e.name[locale], strong: false, side: x.p[0] < W / 2 ? "start" : "end", entry: x.id })
   const labels = place(wanted, dots)
+  // What belongs to a Syrians-only crossing, wrapped so it hides for other passports.
+  const mark = (entry: string | undefined, key: string, el: React.ReactElement) =>
+    gate && entry && DATA.entries[entry].syriansOnly ? <SyriansOnlyMark key={key}>{el}</SyriansOnlyMark> : el
 
   return (
     <figure className={framed ? "overflow-hidden rounded-2xl border" : undefined}>
@@ -225,36 +233,44 @@ export function WorldMap({
         <path d={s.syria} className="fill-primary/25 stroke-primary" strokeWidth="1" strokeLinejoin="round" />
 
         {hub &&
-          entries.map((x) => (
-            <path
-              key={x.id}
-              d={out ? s.arc([x.e.lng, x.e.lat], origin.hub) : s.arc(origin.hub, [x.e.lng, x.e.lat])}
-              pathLength={1}
-              className="map-arc stroke-primary"
-              fill="none"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          ))}
+          entries.map((x) =>
+            mark(
+              x.id,
+              x.id,
+              <path
+                key={x.id}
+                d={out ? s.arc([x.e.lng, x.e.lat], origin.hub) : s.arc(origin.hub, [x.e.lng, x.e.lat])}
+                pathLength={1}
+                className="map-arc stroke-primary"
+                fill="none"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />,
+            ),
+          )}
 
         {close &&
-          entries.map((x) => (
-            <circle key={x.id} cx={x.p[0]} cy={x.p[1]} r="3.5" className="map-rise fill-status-caution stroke-card" strokeWidth="1.5" />
-          ))}
+          entries.map((x) =>
+            mark(x.id, x.id, <circle key={x.id} cx={x.p[0]} cy={x.p[1]} r="3.5" className="map-rise fill-status-caution stroke-card" strokeWidth="1.5" />),
+          )}
         {hub && <circle cx={hub[0]} cy={hub[1]} r="4.5" className="map-rise fill-primary stroke-card" strokeWidth="2" />}
         {dp && <circle cx={dp[0]} cy={dp[1]} r="5" className="map-rise fill-primary stroke-card" strokeWidth="2" />}
 
-        {labels.map((l) => (
-          <text
-            key={l.text}
-            x={l.x + (l.side === "end" ? -GAP : GAP)}
-            y={l.y}
-            textAnchor={l.side}
-            className={"map-rise " + (l.strong ? "fill-foreground text-[14px] font-semibold" : "fill-muted-foreground text-[12px]")}
-          >
-            {l.text}
-          </text>
-        ))}
+        {labels.map((l) =>
+          mark(
+            l.entry,
+            l.text,
+            <text
+              key={l.text}
+              x={l.x + (l.side === "end" ? -GAP : GAP)}
+              y={l.y}
+              textAnchor={l.side}
+              className={"map-rise " + (l.strong ? "fill-foreground text-[14px] font-semibold" : "fill-muted-foreground text-[12px]")}
+            >
+              {l.text}
+            </text>,
+          ),
+        )}
       </svg>
     </figure>
   )

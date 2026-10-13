@@ -52,6 +52,7 @@ const messages = {
       roadLeg: "{time} بالسيارة إلى {city}",
       borderLeg: "{time} حتى المعبر",
       syriansOnly: "للسوريين والأتراك فقط",
+      unconfirmed: "غير مؤكد للأجانب",
       noTime: "لا وقت معروف",
       board: "الرحلات إلى {entry}",
       boardLand: "الطرق عبر {entry}",
@@ -84,7 +85,7 @@ const messages = {
     langSwitch: "Read in English",
     airlines: {
       title: "من يطير إلى سوريا",
-      lede: "كل شركة طيران تهبط اليوم في دمشق أو حلب أو دير الزور، ومن أين، وكم تستغرق الرحلة، ومدى ثقتنا بالمعلومة.",
+      lede: "كل شركة طيران تهبط اليوم في دمشق أو حلب أو دير الزور، ومن أين، وكم تستغرق الرحلة، ومدى ثقتنا بالمعلومة. والشركات التي توقفت عن الطيران أو لم تبدأ معلَّمة بذلك.",
       empty: "لا خطوط معروفة.",
       routes: "الخطوط إلى سوريا",
       country: "دولة الشركة",
@@ -105,12 +106,13 @@ const messages = {
       reports: "تجارب من هنا",
       reportsEmpty: "لا تجارب منشورة من هنا بعد.",
       need: "ما تحتاجه للعبور من هنا",
+      foreignersUnconfirmed: "لا مصدر لدينا يؤكد أن الزوار الأجانب يستطيعون الدخول من هنا، لذلك لا نعرض أوراق هذا الجواز لهذا المعبر. تحقق قبل السفر.",
       plan: "خطّط رحلتك عبر هذا المنفذ",
       from: "من",
     },
     route: {
       title: "من {origin} إلى {city}",
-      lede: "كل طريق نعرفه من {origin} إلى {city}، مرتباً حسب الوقت الكلي. اختر جوازك لترى ما ينطبق عليك. كل سطر بمصدره وتاريخ مراجعته.",
+      lede: "كل طريق نعرفه من {origin} إلى {city}، الأسرع أولاً؛ وما يعمل بشروط أو لم يتأكد أو أُغلق يأتي بعد ما يعمل دون شروط. اختر جوازك لترى ما ينطبق عليك. كل سطر بمصدره وتاريخ مراجعته.",
       answer: "أسرع طريق من {origin} إلى {city} اليوم: {how}، نحو {hours} من الباب إلى الباب (روجع في {date}). عدد الطرق المعروفة {total}، يعمل منها {running}.",
       answerNone: "لا نعرف اليوم طريقاً يعمل من {origin} إلى {city} بهذا الجواز. عدد الطرق المعروفة {total}.",
       how: { air: "الطيران إلى {entry}", land: "براً عبر {entry}" },
@@ -123,7 +125,7 @@ const messages = {
     // The same page the other way: from a Syrian city out to a country.
     routeOut: {
       title: "من {city} إلى {country}",
-      lede: "كل طريق نعرفه من {city} إلى {country}، مرتباً حسب الوقت الكلي. لا نذكر إلا الرحلات والمعابر التي تحققنا منها في اتجاه الخروج من سوريا، وكل سطر بمصدره وتاريخ مراجعته.",
+      lede: "كل طريق نعرفه من {city} إلى {country}، الأسرع أولاً؛ وما يعمل بشروط أو لم يتأكد أو أُغلق يأتي بعد ما يعمل دون شروط. لا نذكر إلا الرحلات والمعابر التي تحققنا منها في اتجاه الخروج من سوريا، وكل سطر بمصدره وتاريخ مراجعته.",
       answer: "أسرع طريق من {city} إلى {country} اليوم: {how}، نحو {hours} من الباب إلى الباب (روجع في {date}). عدد الطرق المعروفة {total}، يعمل منها {running}.",
       answerNone: "لا نعرف اليوم طريقاً يعمل من {city} إلى {country} تحققنا منه. عدد الطرق المعروفة {total}.",
       how: { air: "الطيران من {entry}", land: "براً عبر {entry}" },
@@ -215,13 +217,13 @@ const messages = {
         "fly.sy يجيب عن سؤالين: كيف أصل إلى سوريا اليوم، وكيف أسافر منها إلى بلد آخر؟ الرحلات الجوية، المعابر البرية، والأوراق المطلوبة، للسوريين في الخارج وفي الداخل وللزوار الأجانب. مستقل، غير رسمي، لا يبيع شيئاً ولا يأخذ عمولة، ولا يتبع أي جهة حكومية أو شركة طيران أو سفارة.",
       levels: "درجات الثقة",
       lv: {
-        verified: "من جهة رسمية أو من المشغّل نفسه، أو تجربة مسافر تم التحقق منها.",
+        verified: "من جهة رسمية أو من المشغّل نفسه، أو من تتبع الرحلات التي طارت فعلاً، أو تجربة مسافر تم التحقق منها.",
         reported: "من تقارير صحفية أو شركات سياحة. صحيح على الأرجح، غير مؤكد من المصدر الأول.",
         unconfirmed: "لم نتحقق منه. لا تحجز بناءً عليه.",
       },
       how: "كيف نتحقق",
       howText:
-        "نراجع كل سطر دورياً ونحدّث تاريخ «روجع» حتى لو لم يتغير شيء، فالتاريخ الحديث على معلومة ثابتة هو إشارة أن الموقع حي. خطوط الطيران تُقارن بلوحات المطارات الرسمية وبيانات التتبع. شركات السياحة والصحافة لا تتجاوز مستوى «من تقارير». المستوى «متحقق» للجهات الرسمية والمشغّل نفسه وتجارب المسافرين بعد التحقق منها.",
+        "نراجع كل سطر دورياً ونحدّث تاريخ «روجع» حتى لو لم يتغير شيء، فالتاريخ الحديث على معلومة ثابتة هو إشارة أن الموقع حي. خطوط الطيران تُقارن بلوحات المطارات الرسمية وبيانات التتبع. شركات السياحة والصحافة لا تتجاوز مستوى «من تقارير». المستوى «متحقق» للجهات الرسمية والمشغّل نفسه وتتبع الرحلات التي طارت فعلاً وتجارب المسافرين بعد التحقق منها.",
       faq: "أسئلة شائعة",
       faqs: [
         {
@@ -290,6 +292,8 @@ const messages = {
       airline: {
         title: "رحلات {airline} إلى سوريا: الخطوط إلى دمشق وحلب",
         description: "خطوط {airline} إلى سوريا اليوم: {routes}. حالة كل خط ومدة الرحلة ومصدر المعلومة وتاريخ مراجعتها.",
+        // For a carrier with nothing running: what it flew or announced, never as if it flies.
+        descriptionNone: "{airline}: لا خط إلى سوريا نستطيع تأكيد أنه يعمل اليوم. ما شغّلته أو أعلنته: {routes}. حالة كل خط ومصدره وتاريخ مراجعته.",
       },
       crossings: {
         title: "المعابر البرية إلى سوريا: حالة كل معبر اليوم",
@@ -305,12 +309,12 @@ const messages = {
       route: {
         title: "من {origin} إلى {city}: كيف تصل، كم تستغرق، وما تحتاجه",
         description:
-          "{n} من الطرق من {origin} إلى {city}؛ أسرعها {mode} عبر {entry} بنحو {hours}. الحالة والأوراق المطلوبة لكل جواز، ومصدر كل معلومة وتاريخ مراجعتها.",
+          "{n} من الطرق من {origin} إلى {city}؛ أسرعها {how}، بنحو {hours}. الحالة والأوراق المطلوبة لكل جواز، ومصدر كل معلومة وتاريخ مراجعتها.",
         descriptionNone: "لا نعرف طريقاً مفتوحاً من {origin} إلى {city}. ما نعرفه، ومصدره، وتاريخ مراجعته.",
       },
       routeOut: {
         title: "من {city} إلى {country}: الرحلات والطرق، والمدة، وما تتحقق منه قبل السفر",
-        description: "كل طريق تحققنا منه من {city} إلى {country}، الأسرع أولاً: {how}، {hours}. حالة كل سطر ومصدره وتاريخ مراجعته.",
+        description: "كل طريق تحققنا منه من {city} إلى {country}؛ أسرعها {how}، بنحو {hours}. حالة كل سطر ومصدره وتاريخ مراجعته.",
         descriptionNone: "لا نعرف طريقاً تحققنا منه من {city} إلى {country}. ما نعرفه، ومصدره، وتاريخ مراجعته.",
       },
       documents: {
@@ -393,6 +397,7 @@ const messages = {
       roadLeg: "{time} by road to {city}",
       borderLeg: "{time} to the border",
       syriansOnly: "Syrians and Turks only",
+      unconfirmed: "Not confirmed for foreigners",
       noTime: "Time not known",
       board: "Flights to {entry}",
       boardLand: "Routes through {entry}",
@@ -425,7 +430,7 @@ const messages = {
     langSwitch: "اقرأ بالعربية",
     airlines: {
       title: "Who flies to Syria",
-      lede: "Every airline landing in Damascus, Aleppo or Deir ez-Zor today, from where, how long the flight takes, and how sure we are.",
+      lede: "Every airline landing in Damascus, Aleppo or Deir ez-Zor today, from where, how long the flight takes, and how sure we are. Airlines that stopped flying, or never started, are marked.",
       empty: "No known routes.",
       routes: "Routes to Syria",
       country: "Home country",
@@ -446,12 +451,13 @@ const messages = {
       reports: "Experiences from here",
       reportsEmpty: "No published experiences from here yet.",
       need: "What you need to cross here",
+      foreignersUnconfirmed: "We have no source confirming that foreign visitors can enter here, so we don't list papers for this passport at this crossing. Check before you go.",
       plan: "Plan a journey through this entry point",
       from: "from",
     },
     route: {
       title: "From {origin} to {city}",
-      lede: "Every way we know from {origin} to {city}, ranked by total time. Pick your passport to see what applies to you. Each line carries its source and the date it was checked.",
+      lede: "Every way we know from {origin} to {city}, fastest first; conditional, unconfirmed and closed ways come after the ones that simply run. Pick your passport to see what applies to you. Each line carries its source and the date it was checked.",
       answer: "Fastest way from {origin} to {city} today: {how}, about {hours} door to door (checked {date}). {running} of {total} known routes are running.",
       answerNone: "We know of no running route from {origin} to {city} for this passport today. {total} known routes in all.",
       how: { air: "fly to {entry}", land: "overland via {entry}" },
@@ -464,7 +470,7 @@ const messages = {
     // The same page the other way: from a Syrian city out to a country.
     routeOut: {
       title: "From {city} to {country}",
-      lede: "Every way we know from {city} to {country}, ranked by total time. Only flights and crossings we have checked leaving Syria are listed, each with its source and the date it was checked.",
+      lede: "Every way we know from {city} to {country}, fastest first; conditional, unconfirmed and closed ways come after the ones that simply run. Only flights and crossings we have checked leaving Syria are listed, each with its source and the date it was checked.",
       answer: "Fastest way from {city} to {country} today: {how}, about {hours} door to door (checked {date}). {running} of {total} known routes are running.",
       answerNone: "We know of no running route from {city} to {country} that we have checked. {total} known routes in all.",
       how: { air: "fly from {entry}", land: "overland via {entry}" },
@@ -556,13 +562,13 @@ const messages = {
         "fly.sy answers two questions: how do I get into Syria today, and how do I get from Syria to another country? Flights, land crossings and the paperwork, for Syrians abroad and at home and for foreign visitors. It is independent and unofficial, sells nothing, takes no commission, and is not part of any government body, airline or embassy.",
       levels: "Confidence levels",
       lv: {
-        verified: "From an official body, the operator itself, or a checked traveller report.",
+        verified: "From an official body, the operator itself, tracking of the flights actually flown, or a checked traveller report.",
         reported: "From press or tour operators. Probably right, not confirmed at first hand.",
         unconfirmed: "Not checked. Don't book on it.",
       },
       how: "How we verify",
       howText:
-        "Every line is re-read on a schedule and its \"checked\" date is bumped even when nothing changed: a fresh date on an unchanged fact is the signal the site is alive. Air routes are checked against the airports' own boards and flight tracking. Tour operators and press are capped at \"reported\". Only official bodies, the operator itself, or a traveller report we have checked earn \"verified\".",
+        "Every line is re-read on a schedule and its \"checked\" date is bumped even when nothing changed: a fresh date on an unchanged fact is the signal the site is alive. Air routes are checked against the airports' own boards and flight tracking. Tour operators and press are capped at \"reported\". Only official bodies, the operator itself, tracking of the flights actually flown, or a traveller report we have checked earn \"verified\".",
       faq: "Common questions",
       faqs: [
         {
@@ -631,6 +637,7 @@ const messages = {
       airline: {
         title: "{airline} flights to Syria: routes to Damascus and Aleppo",
         description: "{airline} routes into Syria today: {routes}. Status, flight time, source and check date for each.",
+        descriptionNone: "{airline}: no route into Syria that we can confirm is running today. What it flew or announced: {routes}. The status, source and check date for each.",
       },
       crossings: {
         title: "Syria land border crossings: the status of every crossing today",
@@ -646,12 +653,12 @@ const messages = {
       route: {
         title: "{origin} to {city}: how to get there, how long it takes, what you need",
         description:
-          "{n} ways from {origin} to {city}; the fastest is {mode} via {entry}, about {hours}. Status, documents for each passport, source and check date for every line.",
+          "{n} ways from {origin} to {city}; fastest: {how}, about {hours}. Status, documents for each passport, source and check date for every line.",
         descriptionNone: "We know of no open route from {origin} to {city}. What we do know, its source, and when it was checked.",
       },
       routeOut: {
         title: "{city} to {country}: flights and routes, journey time, what to check before you go",
-        description: "Every checked way from {city} to {country}, fastest first: {how}, {hours}. The status, source and check date of every line.",
+        description: "Every checked way from {city} to {country}; fastest: {how}, about {hours}. The status, source and check date of every line.",
         descriptionNone: "We know of no checked route from {city} to {country}. What we do know, its source, and when it was checked.",
       },
       documents: {

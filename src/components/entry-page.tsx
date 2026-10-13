@@ -179,19 +179,27 @@ export function EntryPage(p: EntryParams, kind: Mode) {
           {m.entry.need}
         </h2>
         <div className="flex flex-col gap-3">
-          {PASSPORTS.map((pp) => (
-            <div key={pp} className="rounded-2xl border bg-card px-5 py-4">
-              <h3 className="text-[13.5px] font-semibold">{m.reports.form.passports[pp]}</h3>
-              <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
-                {DATA.needs[kind][pp].map((n, i) => (
-                  <li key={i}>
-                    {n.text[locale]}
-                    <Provenance source={n.source} locale={locale} m={m} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {PASSPORTS.map((pp) => {
+            // The general lists hold where foreigners are let in. A crossing for Syrians only, or one whose own record
+            // says foreign entry is unconfirmed, says that instead of the visa-on-arrival or approval steps.
+            const needs =
+              pp !== "sy" && e.syriansOnly ? [{ source: e.source, text: m.blockedWhy }]
+              : pp !== "sy" && e.foreigners === "unconfirmed" ? [{ source: "nosrc", text: m.entry.foreignersUnconfirmed }]
+              : DATA.needs[kind][pp].map((n) => ({ source: n.source, text: n.text[locale] }))
+            return (
+              <div key={pp} className="rounded-2xl border bg-card px-5 py-4">
+                <h3 className="text-[13.5px] font-semibold">{m.reports.form.passports[pp]}</h3>
+                <ul className="mt-2 flex list-disc flex-col gap-2.5 ps-4 text-[13.5px] leading-relaxed">
+                  {needs.map((n, i) => (
+                    <li key={i}>
+                      {n.text}
+                      <Provenance source={n.source} locale={locale} m={m} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          })}
         </div>
         <p className="mt-2 text-xs">
           <Link href={href("/documents")} className="text-primary underline-offset-4 hover:underline">

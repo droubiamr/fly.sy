@@ -66,7 +66,7 @@ export function llmsIndex(): string {
     "",
     "## Plan a journey",
     "",
-    "Each page ranks every known route from one country to one Syrian city by door-to-door time, with what each passport needs.",
+    "Each page lists every known route from one country to one Syrian city, those that simply run first and the fastest of them first, with what each passport needs.",
     "",
     ...ORIGINS.map((o) => `- [${o.name.en} to Damascus](${en(routePath(o.id, "damascus"))})`),
     "",
@@ -74,7 +74,7 @@ export function llmsIndex(): string {
     "",
     "## Leave Syria",
     "",
-    "The same pages the other way: every checked way out from one Syrian city to one country, by door-to-door time.",
+    "The same pages the other way: every checked way out from one Syrian city to one country, in the same order.",
     "",
     ...ORIGINS.map((o) => `- [Damascus to ${o.name.en}](${en(leavePath("damascus", o.id))})`),
     "",
@@ -92,7 +92,7 @@ export function llmsIndex(): string {
     "",
     ...Object.entries(DATA.airlines).map(([code, a]) => {
       const hops = arrivalsBy(code)
-      const where = hops.length ? hops.map((h) => `${h.city.en} to ${DATA.entries[h.entry].name.en}`).join("; ") : "no known route"
+      const where = hops.length ? hops.map((h) => `${h.city.en} to ${DATA.entries[h.entry].name.en} (${status(h)})`).join("; ") : "no known route"
       return `- [${a.name.en}](${en(airlinePath(code))}): ${where}`
     }),
     "",

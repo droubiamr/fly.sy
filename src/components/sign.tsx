@@ -19,7 +19,8 @@ export const signClass = (muted = false) =>
  * flight, a car for a crossing, both when a flight is followed by a drive.
  * Decorative: the sign's words say the same.
  */
-export function ModeIcons({ modes, size = "md" }: { modes: Mode[]; size?: "md" | "lg" }) {
+/** `main`: large on the sign that is main for the passport chosen (see WayGate), medium on the others. */
+export function ModeIcons({ modes, size = "md" }: { modes: Mode[]; size?: "md" | "lg" | "main" }) {
   const two = modes.length > 1
   return (
     <span className="inline-flex shrink-0 gap-1" aria-hidden="true">
@@ -30,7 +31,13 @@ export function ModeIcons({ modes, size = "md" }: { modes: Mode[]; size?: "md" |
             key={m}
             className={cn(
               "grid place-items-center rounded-lg bg-primary-foreground text-primary",
-              size === "lg" && !two ? "size-12 [&_svg]:size-7" : two ? "size-9 [&_svg]:size-5" : "size-10 [&_svg]:size-6",
+              two
+                ? "size-9 [&_svg]:size-5"
+                : size === "lg"
+                  ? "size-12 [&_svg]:size-7"
+                  : size === "main"
+                    ? "size-10 [--icon:--spacing(6)] group-data-[main]/way:size-12 group-data-[main]/way:[--icon:--spacing(7)] [&_svg]:size-(--icon)"
+                    : "size-10 [&_svg]:size-6",
             )}
           >
             <Icon strokeWidth={2.2} />

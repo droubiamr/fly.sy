@@ -2,14 +2,14 @@ import Link from "next/link"
 import { DATA, DESTINATIONS, ORIGINS, REGIONS, cityById, leavePath, originSlug, routePath } from "@/lib/data"
 import { fmt, getI18n } from "@/lib/i18n"
 import { formatDate, formatHoursText } from "@/lib/format"
-import { airportReach, answerFor, countryReach, groupWays, plan, planOut, type Journey, type Reach } from "@/lib/plan"
+import { airportReach, answerFor, countryReach, groupWays, plan, planOut, type Journey, type Reach, type Way } from "@/lib/plan"
 import { localePath } from "@/lib/site"
 import type { Direction, Locale, Mode, OriginDef, Passport } from "@/lib/types"
 import { PassportProvider } from "@/components/passport-state"
 import { AnswerLine, OnlyFor, PassportPlates } from "@/components/passport-ui"
 import { Planner } from "@/components/planner"
 import { Provenance } from "@/components/provenance"
-import { WaySigns } from "@/components/way-signs"
+import { WaySigns, type Lead } from "@/components/way-signs"
 import { WorldMap } from "@/components/world-map"
 import { Button } from "@/components/ui/button"
 
@@ -63,10 +63,17 @@ export function PlanView({ locale, country, city: dest, dir, heading }: PlanProp
   ) as Record<Passport, Record<string, Reach>>
   const answers = Object.fromEntries(ALL.map((p) => [p, answerText(locale, country, dest, journeys[p], dir)])) as Record<Passport, string>
   const ways = groupWays(journeys.sy, dest)
-  // The papers follow the way a passport would actually take: the first one open to it.
-  const needsMode = Object.fromEntries(
-    ALL.map((p) => [p, groupWays(journeys[p], dest).find((w) => !w.blocked && w.best)?.mode ?? "air"]),
-  ) as Record<Passport, Mode>
+  // For each passport, the way the answer names leads: its sign is the open one marked Fastest, and the papers are
+  // that way's. When nothing runs for a passport, the first way open to it is shown open, without the plate.
+  const leads = Object.fromEntries(
+    ALL.map((p) => {
+      const own = groupWays(journeys[p], dest)
+      const fastest = own.find((w) => !w.blocked && w.best)
+      return [p, { fastest, main: fastest ?? own.find((w) => !w.blocked) }]
+    }),
+  ) as Record<Passport, { fastest?: Way; main?: Way }>
+  const lead = Object.fromEntries(ALL.map((p) => [p, { main: leads[p].main?.entry ?? null, fastest: leads[p].fastest?.entry ?? null }])) as Record<Passport, Lead>
+  const needsMode = Object.fromEntries(ALL.map((p) => [p, leads[p].fastest?.mode ?? "air"])) as Record<Passport, Mode>
   const liveEntries = journeys.sy.filter((j) => !j.blocked && j.status !== "closed").map((j) => j.entry)
   const city = cityById(dest)!
   const href = (p: string) => localePath(locale, p)
@@ -79,7 +86,7 @@ export function PlanView({ locale, country, city: dest, dir, heading }: PlanProp
       <section aria-label={m.routes} className="border-b bg-muted dark:bg-background">
         <div className="mx-auto grid max-w-6xl lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:items-center lg:gap-10 lg:px-6 lg:py-6">
           <div className="lg:order-2">
-            <WorldMap origin={country} dest={dest} liveEntries={liveEntries} locale={locale} framed={false} out={out} />
+            <WorldMap origin={country} dest={dest} liveEntries={liveEntries} locale={locale} framed={false} out={out} gate={!out} />
           </div>
           <div className="flex flex-col gap-3 px-5 py-4 lg:order-1 lg:px-0">
             <Planner
@@ -101,7 +108,7 @@ export function PlanView({ locale, country, city: dest, dir, heading }: PlanProp
         <div className="flex min-w-0 flex-col gap-4">
           {heading}
           <AnswerLine answers={answers} />
-          <WaySigns ways={ways} dest={dest} locale={locale} out={out} />
+          <WaySigns ways={ways} lead={lead} dest={dest} locale={locale} out={out} />
           <p className="text-xs text-muted-foreground">{m.estimates}</p>
         </div>
 

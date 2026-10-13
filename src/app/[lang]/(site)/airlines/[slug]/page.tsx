@@ -41,12 +41,18 @@ function resolve(slug: string) {
   return { code, al: DATA.airlines[code], hops: arrivalsBy(code) }
 }
 
-/** The same sentence serves the meta description and the WebPage JSON-LD. */
+const running = (h: { status: string }) => h.status === "open" || h.status === "caution"
+/** A carrier counts as flying to Syria while one of its routes runs. */
+const flies = (code: string) => arrivalsBy(code).some(running)
+
+/** The same sentence serves the meta description and the WebPage JSON-LD. It names only the routes that run; a
+ *  carrier with none running is described as such, never as if it flew. */
 function describe(lang: Locale, code: string) {
   const { al, hops } = resolve(airlineSlug(code))
   const { m } = getI18n(lang)
-  const routes = hops.map((h) => `${h.city[lang]} ${arrow(lang)} ${DATA.entries[h.entry].name[lang]}`).join(lang === "ar" ? "، " : ", ")
-  return fmt(m.seo.airline.description, { airline: al.name[lang], routes: routes || m.airlines.empty })
+  const live = hops.filter(running)
+  const routes = (live.length ? live : hops).map((h) => `${h.city[lang]} ${arrow(lang)} ${DATA.entries[h.entry].name[lang]}`).join(lang === "ar" ? "، " : ", ")
+  return fmt(live.length ? m.seo.airline.description : m.seo.airline.descriptionNone, { airline: al.name[lang], routes: routes || m.airlines.empty })
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -76,7 +82,8 @@ export default async function AirlinePage({ params }: Props) {
     { name: m.tabs.airlines, path: "/airlines" },
     { name: al.name[locale], path },
   ]
-  const others = Object.keys(DATA.airlines).filter((c) => c !== code)
+  // "Other airlines flying to Syria": only carriers with a route running. The rest are on the airlines page, stamped.
+  const others = Object.keys(DATA.airlines).filter((c) => c !== code && flies(c))
   return (
     <div className="flex flex-col gap-7">
       <JsonLd
@@ -147,7 +154,7 @@ export default async function AirlinePage({ params }: Props) {
             label: DATA.airlines[c].name[locale],
             lead: (
               <span className="size-7 shrink-0 rounded-md border bg-white p-0.5">
-                <AirlineLogo code={c} />
+                <AirlineLogo code={c} light />
               </span>
             ),
           }))}

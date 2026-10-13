@@ -107,7 +107,8 @@ seen:        YYYY-MM-DD — bump it every time you re-check, even if nothing cha
 Rules:
 1. **Never write a fact without a `source`.** If there is none, use `nosrc` and say so in the text.
 2. Tour operators and press are capped at `reported`. Only official bodies, the operator itself,
-   or a checked traveller report earn `verified`.
+   flight tracking of the flights actually flown (by flight number, the `tracker` source), or a checked
+   traveller report earn `verified`.
 3. Bump `seen` when you review a line. A fresh date on an unchanged fact is the signal the site is alive.
 4. Update `data/meta.json` → `updated` after each review pass, to the UTC time you finished
    (`date -u +%Y-%m-%dT%H:%M:00Z`). The footer and the About page show it on each reader's own clock.
