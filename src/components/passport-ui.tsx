@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import type { Passport } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { useMessages } from "@/components/messages-provider"
@@ -62,16 +63,54 @@ export function OnlyFor({ passport, children }: { passport: Passport; children: 
 }
 
 /**
- * A way that only Syrians (and Turks) may take. For any other passport it drops
- * to the end of the list, greyed, and its sign shows the plate that says why;
- * the plate is in the sign already, shown by `group-data-[blocked]/way`.
+ * One way on a route page, for the passport chosen. A way that only Syrians
+ * (and Turks) may take drops to the end of the list for any other passport,
+ * greyed, and its sign shows the plate that says why (`group-data-[blocked]/way`);
+ * a crossing not confirmed for foreigners shows its plate (`group-data-[unsure]/way`).
+ * The main sign, open with its legs and airlines, follows the passport too:
+ * `main` lists the passports this way is main for, `fastest` those it is the
+ * answer for, and the sign reads them as `group-data-[main]/way` and
+ * `group-data-[fastest]/way`.
  */
-export function WayGate({ syriansOnly, children }: { syriansOnly: boolean; children: React.ReactNode }) {
+export function WayGate({
+  syriansOnly,
+  unconfirmed,
+  main,
+  fastest,
+  children,
+}: {
+  syriansOnly: boolean
+  unconfirmed: boolean
+  main: Passport[]
+  fastest: Passport[]
+  children: React.ReactNode
+}) {
   const { passport } = usePassport()
   const blocked = syriansOnly && passport !== "sy"
+  const isMain = main.includes(passport)
+  const ref = useRef<HTMLLIElement>(null)
+  // A main sign opens when its passport is chosen and closes when another one is; a sign that is never main stays as
+  // the reader left it.
+  useEffect(() => {
+    const d = ref.current?.firstElementChild
+    if (main.length && d instanceof HTMLDetailsElement) d.open = isMain
+  }, [isMain, main.length])
   return (
-    <li data-blocked={blocked || undefined} className={cn("group/way", blocked && "order-last opacity-70")}>
+    <li
+      ref={ref}
+      data-blocked={blocked || undefined}
+      data-unsure={(unconfirmed && passport !== "sy") || undefined}
+      data-main={isMain || undefined}
+      data-fastest={fastest.includes(passport) || undefined}
+      className={cn("group/way", blocked && "order-last opacity-70")}
+    >
       {children}
     </li>
   )
+}
+
+/** Part of the route map that only Syrians can use: a crossing closed to other passports, hidden for them. */
+export function SyriansOnlyMark({ children }: { children: React.ReactNode }) {
+  const { passport } = usePassport()
+  return <g display={passport === "sy" ? undefined : "none"}>{children}</g>
 }

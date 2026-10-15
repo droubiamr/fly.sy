@@ -41,6 +41,8 @@ export type Entry = {
   city?: string
   country?: string
   syriansOnly?: boolean
+  /** Land entries only: the crossing's own record says it is not confirmed that foreign visitors may enter here. */
+  foreigners?: "unconfirmed"
   note?: Text
 }
 /** One carrier, or one road, between a city abroad and an entry point, in one direction. */

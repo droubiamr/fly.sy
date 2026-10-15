@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { DATA, DESTINATIONS, ORIGINS, airlinePath, cityById, destinationById, entryPath, leavePath, originFromSlug, originSlug, routePath } from "@/lib/data"
 import { fmt, getI18n, requireLocale } from "@/lib/i18n"
-import { arrow, formatHours } from "@/lib/format"
+import { arrow, formatHours, formatHoursText } from "@/lib/format"
 import { answerFor } from "@/lib/plan"
 import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, graph, routeListLd, webPageLd } from "@/lib/schema"
@@ -39,25 +39,14 @@ export function routeMetadata(p: RouteParams): Metadata {
   const vars = { origin: country.name[locale], country: country.name[locale], city: cityById(city)!.name[locale] }
   // The same pick as the sentence the page opens with: the fastest route that is running.
   const { best, running } = answerFor(journeysFor(country, city, "sy", dir))
+  // In the words of the answer sentence: "fly to Aleppo airport, about 6.5 hours".
+  const how = best && fmt((dir === "out" ? m.routeOut : m.route).how[best.mode], { entry: best.entryData.name[locale] })
+  const hours = best?.totalHours != null ? formatHoursText(best.totalHours, locale) : null
   if (dir === "out") {
-    const description = best
-      ? fmt(m.seo.routeOut.description, {
-          ...vars,
-          how: fmt(m.routeOut.how[best.mode], { entry: best.entryData.name[locale] }),
-          hours: formatHours(best.totalHours, locale),
-        })
-      : fmt(m.seo.routeOut.descriptionNone, vars)
+    const description = how && hours ? fmt(m.seo.routeOut.description, { ...vars, how, hours }) : fmt(m.seo.routeOut.descriptionNone, vars)
     return pageMetadata({ locale, path, title: fmt(m.seo.routeOut.title, vars), description })
   }
-  const description = best
-    ? fmt(m.seo.route.description, {
-        ...vars,
-        n: running,
-        mode: m.mode[best.mode],
-        entry: best.entryData.name[locale],
-        hours: formatHours(best.totalHours, locale),
-      })
-    : fmt(m.seo.route.descriptionNone, vars)
+  const description = how && hours ? fmt(m.seo.route.description, { ...vars, n: running, how, hours }) : fmt(m.seo.route.descriptionNone, vars)
   return pageMetadata({ locale, path, title: fmt(m.seo.route.title, vars), description })
 }
 

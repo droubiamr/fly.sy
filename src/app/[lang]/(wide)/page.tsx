@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { originById } from "@/lib/data"
+import { HOME, originById } from "@/lib/data"
 import { getI18n, requireLocale } from "@/lib/i18n"
 import { pageMetadata } from "@/lib/seo"
 import { datasetLd, graph, organizationLd, webPageLd, websiteLd } from "@/lib/schema"
@@ -25,8 +25,8 @@ export default async function HomePage({ params }: Props) {
   const { lang } = await params
   requireLocale(lang)
   const { m } = getI18n(lang)
-  // Türkiye by default: it hosts the most Syrians abroad. Every other answer is its own page.
-  const origin = originById("TR")!
+  // Türkiye to Damascus by default (see HOME). Every other answer is its own page.
+  const origin = originById(HOME.origin)!
   return (
     <>
       <JsonLd
@@ -40,7 +40,7 @@ export default async function HomePage({ params }: Props) {
       <PlanView
         locale={lang}
         country={origin}
-        city="damascus"
+        city={HOME.city}
         dir="in"
         heading={<h1 className="text-2xl font-bold tracking-tight">{m.homeTitle}</h1>}
       />

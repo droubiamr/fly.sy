@@ -71,15 +71,47 @@ test("airportReach: direct from here, via when only others fly there, none when 
   const as: Arrival[] = [
     ...arrivals,
     { ...base, airline: null, entry: "ALP", mode: "air", hours: 1, from: "LB" },
-    { ...base, airline: null, entry: "KAC", mode: "air", hours: 2 },
+    { ...base, airline: "TK", entry: "KAC", mode: "air", hours: 2 },
+    { ...base, airline: "QR", entry: "NOF", mode: "air", hours: 2, status: "unknown" },
   ]
   const sy = airportReach({ arrivals: as, entries: es, from: TR, passport: "sy" })
-  assert.deepEqual(sy, { DAM: "direct", ALP: "via", LTK: "none", KAC: "direct", NOF: "none" })
+  assert.deepEqual(sy, { DAM: "direct", ALP: "via", LTK: "none", KAC: "direct", NOF: "none" }, "a flight of unknown status runs nowhere")
   const voa = airportReach({ arrivals: as, entries: es, from: TR, passport: "voa" })
   assert.equal(voa.KAC, "none")
+  // Germany's only Damascus row is the group's connection, with no airline: that is a connection, not a direct flight.
   const de = airportReach({ arrivals: as, entries: es, from: { id: "DE", group: "eu" }, passport: "sy" })
-  assert.equal(de.DAM, "direct")
+  assert.equal(de.DAM, "via")
   assert.equal(de.ALP, "via")
+})
+
+test("the order is the answer's: what simply runs, then what is conditional, unknown or closed, then what is blocked", () => {
+  const as: Arrival[] = [
+    { ...base, airline: "TK", entry: "DAM", mode: "air", hours: 2 },
+    { ...base, airline: null, entry: "BAB", mode: "land", hours: 0.5, status: "caution" },
+    { ...base, airline: "XQ", entry: "DAM", mode: "air", hours: 0.2, status: "unknown" },
+  ]
+  const sy = plan({ arrivals: as, entries, roads, from: TR, dest: "idlib", passport: "sy" })
+  assert.deepEqual(sy.map((j) => [j.entry, j.status]), [["DAM", "open"], ["BAB", "caution"], ["DAM", "unknown"]])
+  const ways = groupWays(sy, "idlib")
+  assert.equal(ways[0].entry, answerFor(sy).best?.entry, "the first sign is the route the answer names")
+})
+
+test("a crossing not confirmed for foreigners is listed for them but never their answer", () => {
+  const es: Record<string, Entry> = { ...entries, YAR: { ...entries.BAB, syriansOnly: undefined, foreigners: "unconfirmed" } }
+  const rs: Roads = { ...roads, YAR: { idlib: 0.5 } }
+  const as: Arrival[] = [
+    { ...base, airline: "TK", entry: "DAM", mode: "air", hours: 2 },
+    { ...base, airline: null, entry: "YAR", mode: "land", hours: 1 },
+  ]
+  const sy = plan({ arrivals: as, entries: es, roads: rs, from: TR, dest: "idlib", passport: "sy" })
+  assert.equal(answerFor(sy).best?.entry, "YAR")
+  assert.ok(sy.every((j) => !j.unsure), "Syrians are not asked")
+  const voa = plan({ arrivals: as, entries: es, roads: rs, from: TR, dest: "idlib", passport: "voa" })
+  assert.deepEqual(voa.map((j) => [j.entry, j.unsure, j.blocked]), [["DAM", false, false], ["YAR", true, false]])
+  const a = answerFor(voa)
+  assert.equal(a.best?.entry, "DAM")
+  assert.deepEqual([a.running, a.total], [1, 2])
+  assert.equal(groupWays(voa, "idlib").find((w) => !w.blocked && w.best)?.entry, "DAM")
 })
 
 test("real data: every arrival's entry and every road destination exist", async () => {
@@ -200,7 +232,8 @@ const departures: Departure[] = [
 
 test("planOut: departures to the country or its group, the road to the entry point counted first", () => {
   const tr = planOut({ departures, entries, roads, origin: "idlib", to: TR, passport: "sy" })
-  assert.deepEqual(tr.map((j) => [j.entry, j.totalHours, j.end]), [["BAB", 3.5, "TR"], ["DAM", 7, "TR"]], "Idlib is half an hour from Bab al-Hawa and five from Damascus airport")
+  // Idlib is half an hour from Bab al-Hawa and five from Damascus airport; the conditional crossing still comes after the open flight.
+  assert.deepEqual(tr.map((j) => [j.entry, j.totalHours, j.end]), [["DAM", 7, "TR"], ["BAB", 3.5, "TR"]])
   const de = planOut({ departures, entries, roads, origin: "damascus", to: { id: "DE", group: "eu" }, passport: "sy" })
   assert.deepEqual(de.map((j) => [j.end, j.totalHours]), [["eu", 8.5]])
   assert.ok(!tr.some((j) => j.hidden), "hidden rows never show")
@@ -219,7 +252,7 @@ test("planOut: a Syrians-only crossing is blocked for other passports, and the a
   const a = answerFor(planOut({ departures, entries, roads, origin: "idlib", to: TR, passport: "sy" }))
   assert.equal(a.best?.entry, "DAM", "the open flight is named before the faster conditional crossing")
   const ways = groupWays(planOut({ departures, entries: { ...entries, DAM: { ...entries.DAM, city: "damascus" } }, roads, origin: "idlib", to: TR, passport: "sy" }), "idlib")
-  assert.deepEqual(ways.map((w) => [w.entry, w.fly, w.drive]), [["BAB", false, true], ["DAM", true, true]])
+  assert.deepEqual(ways.map((w) => [w.entry, w.fly, w.drive]), [["DAM", true, true], ["BAB", false, true]], "the signs follow the answer")
 })
 
 test("countryReach: a country is reachable when a departure to it, or to its group, is not closed", () => {
@@ -255,4 +288,26 @@ test("real data: every departure resolves, and none is checked later than the la
   }
   assert.ok(Array.isArray(needs.leave) && needs.leave.length > 0, "needs.json has what to check before leaving")
   for (const n of needs.leave) assert.ok(sources[n.source] && n.text.ar && n.text.en, "leave line: source and both languages")
+})
+
+test("real data: on every route and for every passport, the leading sign is the way the answer names", async () => {
+  const { readFileSync } = await import("node:fs")
+  const load = (f: string) => JSON.parse(readFileSync(new URL(`../data/${f}.json`, import.meta.url), "utf8"))
+  const entries = load("entries") as Record<string, Entry>
+  const origins = load("origins") as OriginDef[]
+  const arrivals = load("arrivals") as Arrival[]
+  const roads = load("roads") as Roads
+  const cities = [...new Set(Object.values(entries).flatMap((e) => (e.kind === "air" && e.city ? [e.city] : [])))]
+  for (const o of origins)
+    for (const dest of cities)
+      for (const passport of ["sy", "voa", "res"] as const) {
+        const js = plan({ arrivals, entries, roads, from: o, dest, passport })
+        const best = answerFor(js).best
+        const lead = groupWays(js, dest).find((w) => !w.blocked && w.best)
+        assert.equal(lead?.entry, best?.entry, `${o.id} → ${dest} (${passport}): the Fastest sign and the answer disagree`)
+        if (passport !== "sy" && best) {
+          const e = entries[best.entry]
+          assert.ok(!e.syriansOnly && e.foreigners !== "unconfirmed", `${o.id} → ${dest} (${passport}): the answer names ${best.entry}, not open or not confirmed to foreigners`)
+        }
+      }
 })

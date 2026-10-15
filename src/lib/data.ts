@@ -164,9 +164,14 @@ const latest = (dates: string[]) => dates.reduce((a, b) => (b > a ? b : a), "")
  * lastmod and the page's dateModified, which must agree. Never later than the
  * day of meta.updated: a check date past the review date is a typo, not news.
  */
+/** The route the home page opens on: Türkiye, which hosts the most Syrians abroad, to Damascus. */
+export const HOME = { origin: "TR", city: "damascus" } as const
+
 export function pageUpdated(path: string): string {
   const cap = DATA.meta.updated.slice(0, 10)
   const parts = path.split("/").filter(Boolean)
+  // The home page is that route page at another address, with the same facts.
+  if (parts.length === 0) return pageUpdated(routePath(HOME.origin, HOME.city))
   let dates: string[] = []
   if ((parts[0] === "airports" || parts[0] === "crossings") && parts[1]) {
     const id = entryFromSlug(parts[1])
@@ -174,6 +179,12 @@ export function pageUpdated(path: string): string {
   } else if (parts[0] === "airlines" && parts[1]) {
     const code = airlineFromSlug(parts[1])
     if (code) dates = [...arrivalsBy(code).map((a) => a.seen), resourceFor({ airline: code })?.seen ?? ""]
+  } else if (parts[0] === "airlines") {
+    // The list of carriers: every route it names.
+    dates = DATA.arrivals.filter((a) => a.airline && !a.hidden).map((a) => a.seen)
+  } else if (parts[0] === "crossings") {
+    // The list of entry points, airports and land crossings: each one's status and the routes through it.
+    dates = Object.keys(DATA.entries).flatMap((id) => [DATA.entries[id].seen, ...arrivalsVia(id).map((a) => a.seen)])
   } else if (parts[0] === "news") {
     dates = DATA.news.map((n) => n.date)
   } else if (parts[0] === "links") {
