@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Homs Reisen on fly.sy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap">
+<style>
+:root{
+  /* Layout: one reading column; each option is a phone beside its notes, stacked on narrow screens. Colours, type and shapes are fly.sy's own (src/app/globals.css). */
+  --bg:#f5f6f3; --fg:#1c2a25; --card:#ffffff; --primary:#0e5c3f; --on-primary:#ffffff;
+  --secondary:#e8f1ec; --on-secondary:#0e5c3f; --muted:#edefec; --muted-fg:#5c6b65;
+  --border:#e3e6e1; --input:#d8ddd8;
+  --open:#0e5c3f; --caution:#9a6200; --closed:#b3261e; --unknown:#5c6b65;
+  --font:"Readex Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+  --mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --ease:cubic-bezier(0.23,1,0.32,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1512; --fg:#e8efeb; --card:#111e1a; --primary:#5cc98c; --on-primary:#0b1512;
+  --secondary:#133a28; --on-secondary:#5cc98c; --muted:#1a2a26; --muted-fg:#a9bdb6;
+  --border:#233833; --input:#2c453d;
+  --open:#5cc98c; --caution:#e0a83c; --closed:#f0817c; --unknown:#93a39e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1512; --fg:#e8efeb; --card:#111e1a; --primary:#5cc98c; --on-primary:#0b1512;
+  --secondary:#133a28; --on-secondary:#5cc98c; --muted:#1a2a26; --muted-fg:#a9bdb6;
+  --border:#233833; --input:#2c453d;
+  --open:#5cc98c; --caution:#e0a83c; --closed:#f0817c; --unknown:#93a39e; color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1}
+.page{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 72px;display:flex;flex-direction:column;gap:72px}
+@media (min-width:640px){.page{padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px));padding-block:44px 96px}}
+h1,h2,h3,h4{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+code{font-family:var(--mono);font-size:.86em;background:var(--muted);padding:.08em .35em;border-radius:5px;overflow-wrap:anywhere}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--primary)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.prose{max-width:68ch}
+.muted{color:var(--muted-fg)}
+h1{font-size:clamp(30px,5vw,46px);font-weight:700;letter-spacing:-.015em}
+h2{font-size:clamp(23px,3vw,30px);font-weight:700;letter-spacing:-.01em}
+.lede-x{font-size:clamp(17px,2vw,19px);line-height:1.6}
+a{color:var(--primary)}
+.ic{width:20px;height:20px;flex:none}
+[dir="rtl"]{text-align:start}
+
+/* The recommendation, as one of the site's road signs. */
+.verdict{background:var(--primary);color:var(--on-primary);border-radius:14px;box-shadow:inset 0 0 0 5px var(--primary),inset 0 0 0 7.5px var(--on-primary);padding:28px 24px;display:grid;gap:18px}
+@media (min-width:860px){.verdict{padding:36px 40px;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:start}}
+.verdict .eyebrow{color:inherit;opacity:.85}
+.verdict h2{font-size:clamp(24px,3.2vw,32px)}
+.verdict p{opacity:.95}
+.verdict a{color:inherit}
+.verdict code{background:color-mix(in srgb,var(--on-primary) 18%,transparent);color:inherit}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;counter-increment:s}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--on-primary);color:var(--primary);font-weight:700}
+.steps b{display:block}
+.decide{border-top:2px solid color-mix(in srgb,var(--on-primary) 60%,transparent);padding-top:14px;font-size:15px}
+
+/* The floor: three cards. */
+.floor{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:820px){.floor{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.floor>div{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:grid;gap:10px;align-content:start}
+.floor h3{font-size:17px}
+.floor .quote{border-inline-start:3px solid var(--border);padding-inline-start:12px;color:var(--muted-fg);font-size:14.5px}
+.floor ul{margin:0;padding-inline-start:18px;display:grid;gap:6px;font-size:15px}
+.floor li::marker{color:var(--primary)}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:84px}
+.opt{display:flex;flex-direction:column;gap:22px}
+.opt-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.opt-head h3{font-size:clamp(21px,2.6vw,26px);font-weight:700}
+.opt-head .ar{color:var(--muted-fg);font-size:15px}
+.opt-head>div:not(.tags){flex:1 1 220px;min-width:0}
+.plate{display:grid;place-items:center;width:48px;height:48px;flex:none;border-radius:10px;background:var(--primary);color:var(--on-primary);font-weight:700;font-size:22px;box-shadow:inset 0 0 0 3.5px var(--primary),inset 0 0 0 5.5px var(--on-primary)}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-inline-start:auto}
+.tag{font-size:12.5px;font-weight:700;border-radius:7px;padding:4px 10px;letter-spacing:.01em}
+.tag.outline{color:var(--primary);box-shadow:inset 0 0 0 1.5px var(--primary)}
+.tag.fill{background:var(--primary);color:var(--on-primary)}
+.opt-body{display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.opt-body{grid-template-columns:360px minmax(0,1fr);gap:48px;align-items:start}}
+.opt-phone{display:flex;flex-direction:column;gap:12px;align-items:center;min-width:0}
+.opt-text{display:flex;flex-direction:column;gap:18px;min-width:0;max-width:68ch}
+.lead{font-size:17.5px}
+.opt-text h4{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-fg);display:flex;align-items:center;gap:6px}
+.how{margin:0;padding-inline-start:20px;display:grid;gap:8px}
+.how li::marker{color:var(--primary)}
+.gw{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:560px){.gw{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.gw>div{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:grid;gap:6px}
+.gw h4 .ic{width:15px;height:15px}
+.gw h4.good{color:var(--open)} .gw h4.watch{color:var(--caution)}
+.size{margin:0;display:flex;flex-wrap:wrap;gap:10px 28px;border-top:1px solid var(--border);padding-top:14px}
+.size div{display:grid;gap:2px}
+.size dt{font-size:12.5px;color:var(--muted-fg)} .size dd{margin:0;font-weight:600}
+.url{font-size:12.5px;color:var(--muted-fg);background:var(--card);border:1px solid var(--border);border-radius:999px;padding:4px 12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.url span{font-family:var(--mono)}
+.cap{font-size:13px;color:var(--muted-fg);text-align:center;max-width:340px}
+button:focus-visible,.scr:focus-visible,a:focus-visible{outline:3px solid color-mix(in srgb,var(--primary) 55%,transparent);outline-offset:2px}
+
+/* Table */
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px}
+th,td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--border)}
+thead th{font-size:15px;line-height:1.25;background:var(--secondary);color:var(--on-secondary)}
+thead small{font-weight:500;font-size:12px}
+tbody th{font-weight:600;width:26%}
+tbody tr:last-child>*{border-bottom:0}
+.mk{display:inline-flex;align-items:center;gap:7px;font-weight:600}
+.mk i{width:9px;height:9px;border-radius:50%;flex:none}
+.mk.y i{background:var(--open)} .mk.p i{background:var(--caution)} .mk.n i{background:var(--closed)}
+.mk.n{color:var(--muted-fg)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* The words: Arabic and English side by side, like the copy desk. */
+.words{display:grid;gap:12px}
+.words>div{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.words .wh{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 16px;background:var(--secondary);color:var(--on-secondary);font-weight:700;font-size:14px}
+.words .wh span{font-weight:500;opacity:.85;font-size:12.5px}
+.words .pair{display:grid;grid-template-columns:minmax(0,1fr)}
+@media (min-width:760px){.words .pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.words .pair>p{padding:14px 16px;font-size:15px;line-height:1.75}
+.words .pair>p+p{border-top:1px solid var(--border)}
+@media (min-width:760px){.words .pair>p+p{border-top:0;border-inline-start:1px solid var(--border)}}
+.words .pair>p[lang="ar"]{font-size:15.5px}
+.words .was{padding:10px 16px;border-top:1px solid var(--border);font-size:13px;color:var(--muted-fg)}
+.words .was s{opacity:.8}
+
+/* Cards: law, measurement */
+.why{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:820px){.why{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.why>div{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:grid;gap:8px;align-content:start}
+.why h3{font-size:16.5px}
+.why ul{margin:0;padding-inline-start:18px;display:grid;gap:6px;font-size:14.5px}
+.why li::marker{color:var(--primary)}
+pre{margin:0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.55}
+pre .k{color:var(--primary);font-weight:700}
+
+/* What it touches */
+.touch{border:1px solid var(--border);border-radius:12px;background:var(--card);overflow:hidden}
+.touch>div{display:grid;gap:4px 18px;grid-template-columns:minmax(0,1fr);padding:14px 18px;border-bottom:1px solid var(--border)}
+.touch>div:last-child{border-bottom:0}
+@media (min-width:760px){.touch>div{grid-template-columns:230px minmax(0,1fr)}}
+.touch b{display:block}
+.touch .where{font-size:12.5px;color:var(--muted-fg)}
+.touch .abc{display:inline-flex;gap:4px;margin-top:4px}
+.touch .abc i{display:grid;place-items:center;width:20px;height:20px;border-radius:5px;font-size:11.5px;font-style:normal;font-weight:700;background:var(--primary);color:var(--on-primary)}
+.foot{font-size:14px;color:var(--muted-fg);border-top:1px solid var(--border);padding-top:20px}
+
+/* ---------- the phone: fly.sy as it renders at phone width ---------- */
+.ph{width:min(360px,100%);height:720px;border-radius:30px;border:1.5px solid var(--input);background:var(--bg);overflow:hidden;display:flex;flex-direction:column;position:relative;direction:rtl;font-size:14px;line-height:1.5;text-align:start}
+.ph .scr{flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;scroll-behavior:smooth}
+.ph .scr::-webkit-scrollbar{display:none}
+.hd{display:flex;align-items:center;gap:8px;height:56px;padding-inline:12px;background:var(--card);border-bottom:1px solid var(--border);flex:none}
+.logo{font-weight:700;font-size:19px;letter-spacing:-.01em}
+.logo b{color:var(--primary)}
+.grow{flex:1}
+.hbtn{height:36px;min-width:36px;padding-inline:9px;border-radius:9px;box-shadow:inset 0 0 0 2px var(--primary);color:var(--primary);display:inline-grid;place-items:center;font-weight:700;font-size:12.5px}
+.hbtn .ic{width:17px;height:17px}
+
+.q{padding:12px 14px 6px;display:flex;flex-direction:column;gap:12px}
+.sign{background:var(--primary);color:var(--on-primary);border-radius:10px;box-shadow:inset 0 0 0 4px var(--primary),inset 0 0 0 6px var(--on-primary)}
+.ask{position:relative;padding:4px 14px}
+.row{display:grid;grid-template-columns:2.2rem minmax(0,1fr) 22px;align-items:center;gap:6px;min-height:52px}
+.row+.row{border-top:2px solid color-mix(in srgb,var(--on-primary) 70%,transparent)}
+.lab{font-size:12.5px;opacity:.85}
+.val{font-size:20px;font-weight:700;min-width:0;overflow:hidden;padding-inline-end:74px}
+.val>span{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.chev{display:grid;place-items:center;opacity:.95} .chev .ic{width:18px;height:18px}
+.fl{display:inline-block;height:.85em;aspect-ratio:3/2;border-radius:2px;flex:none;box-shadow:0 0 0 1.5px var(--on-primary)}
+.fl-DE{background:linear-gradient(#000 0 33.4%,#dd0000 33.4% 66.7%,#ffce00 66.7%)}
+.swap{position:absolute;inset-inline-end:14%;top:50%;width:44px;height:44px;margin-top:-22px;border-radius:50%;background:var(--on-primary);color:var(--primary);box-shadow:0 0 0 3px var(--primary);display:grid;place-items:center}
+.swap .ic{width:22px;height:22px}
+.pp{display:flex;flex-direction:column;gap:6px}
+.ppl{font-size:13px;color:var(--muted-fg)}
+.ppg{display:grid;grid-template-columns:.8fr 1.3fr 1.1fr;gap:6px}
+.ppg>span{height:46px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding-inline:6px;text-align:center;font-size:12.5px;font-weight:600;line-height:1.2;background:var(--card);color:var(--primary);box-shadow:inset 0 0 0 2px var(--primary)}
+.ppg>.on{background:var(--primary);color:var(--on-primary);box-shadow:inset 0 0 0 3px var(--primary),inset 0 0 0 4.5px var(--on-primary)}
+
+.pg{padding:16px 14px 22px;display:flex;flex-direction:column;gap:12px}
+.crumbs{font-size:12px;color:var(--muted-fg)} .crumbs span{margin-inline:4px}
+.h1{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.h2{font-size:14.5px;font-weight:600;margin-top:6px}
+.lede{font-size:13px;color:var(--muted-fg);line-height:1.65}
+.answer{font-size:14px;line-height:1.7}
+.ways{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.way{padding:14px}
+.way.off{background:var(--muted);color:var(--muted-fg);box-shadow:inset 0 0 0 4px var(--muted),inset 0 0 0 6px var(--input)}
+.wg{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
+.mi{display:inline-flex;gap:4px}
+.mi i{display:grid;place-items:center;width:38px;height:38px;border-radius:8px;background:var(--on-primary);color:var(--primary)}
+.mi.big i{width:46px;height:46px} .mi.big .ic{width:26px;height:26px}
+.mi.two i{width:34px;height:34px} .mi.two .ic{width:18px;height:18px}
+.wt{display:flex;flex-direction:column;min-width:0}
+.wn{font-size:17px;font-weight:700;line-height:1.25} .wn.big{font-size:20px}
+.ws{display:flex;gap:8px;align-items:center;font-size:12.5px;opacity:.92;margin-top:3px;flex-wrap:wrap}
+.fast{font-style:normal;background:var(--on-primary);color:var(--primary);font-weight:700;font-size:11.5px;border-radius:6px;padding:1px 8px}
+.wtime{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:17px;font-weight:700;white-space:nowrap} .wtime.big{font-size:20px}
+.wtime .ic{width:15px;height:15px;opacity:.8}
+.legs{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.leg{display:inline-flex;align-items:center;gap:6px;border-radius:7px;padding:4px 9px;font-size:12.5px;font-weight:600;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,currentColor 75%,transparent)}
+.leg .ic{width:15px;height:15px}
+.tiles{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:2px solid color-mix(in srgb,var(--on-primary) 70%,transparent)}
+.tile{width:30px;height:30px;border-radius:7px;background:#fff;padding:3px;display:block}
+.lt{display:block;width:100%;height:100%;background-size:contain;background-repeat:no-repeat;background-position:center}
+.lg-SR{background-image:url(data:image/png;base64,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)}
+.lg-KK{background-image:url(data:image/png;base64,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)}
+.board{border:1px solid var(--border);border-radius:10px;background:var(--card);overflow:hidden;margin-top:8px}
+.bh{background:var(--secondary);color:var(--on-secondary);font-weight:700;font-size:13px;padding:8px 14px}
+.board ul,.cl{list-style:none;margin:0;padding:0}
+.board li{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:10px;align-items:center;min-height:46px;padding:6px 14px;border-top:1px solid var(--border);font-size:13px}
+.lt-box{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:#fff;padding:2px;display:block}
+.lt-box.ico{display:grid;place-items:center;background:var(--secondary);color:var(--on-secondary);border:0}
+.lt-box.ico .ic{width:15px;height:15px}
+.bn{min-width:0} .bn b{font-weight:600} .bn span{color:var(--muted-fg)}
+.bt{display:flex;align-items:center;gap:7px;font-weight:600;white-space:nowrap}
+.dt{width:7px;height:7px;border-radius:50%;background:var(--open);display:inline-block;flex:none}
+.stamp{display:inline-flex;align-items:center;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;box-shadow:inset 0 0 0 1.5px currentColor;white-space:nowrap}
+.stamp.open{color:var(--open)} .stamp.unknown{color:var(--unknown)} .stamp.closed{color:var(--closed)} .stamp.caution{color:var(--caution)}
+.est{font-size:11.5px;color:var(--muted-fg)}
+.card{border:1px solid var(--border);border-radius:10px;background:var(--card);overflow:hidden}
+.ch{background:var(--secondary);color:var(--on-secondary);font-weight:700;font-size:13.5px;padding:9px 14px}
+.cs{font-size:11.5px;color:var(--muted-fg);font-weight:600;padding:10px 14px 0}
+.need ul{list-style:none;margin:0;padding:4px 14px 6px}
+.need li{display:grid;grid-template-columns:16px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;line-height:1.65}
+.need li:last-child{border-bottom:0}
+.need .box{width:15px;height:15px;border-radius:4px;box-shadow:inset 0 0 0 1.5px var(--input);margin-top:4px}
+.prov{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:11px;color:var(--muted-fg);margin-top:4px}
+.prov u{text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--muted-fg) 40%,transparent);text-underline-offset:3px}
+.prov .own{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:0 6px;font-weight:700;font-size:10.5px;color:var(--caution);box-shadow:inset 0 0 0 1.5px var(--caution)}
+.prov .own .ic{width:11px;height:11px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:46px;border-radius:9px;background:var(--primary);color:var(--on-primary);font-weight:700;font-size:14px}
+.btn.o{background:var(--card);color:var(--primary);box-shadow:inset 0 0 0 2px var(--primary)}
+.btn .ic{width:18px;height:18px}
+.links2{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.links2 b{font-size:14px}
+.links2 p{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--primary)}
+.rc{border:1px solid var(--border);border-radius:14px;background:var(--card);padding:12px 16px;display:grid;gap:6px;font-size:13px;line-height:1.65}
+.rc b{font-size:13.5px}
+.fine{font-size:11.5px;color:var(--muted-fg);line-height:1.65}
+.foot-ph{margin-top:14px;border-top:1px solid var(--border);background:var(--card);padding:18px 14px 20px;display:grid;gap:10px;font-size:12.5px;color:var(--muted-fg)}
+.foot-ph .logo{font-size:17px;color:var(--fg)}
+.foot-ph .upd{display:flex;align-items:center;gap:6px;color:var(--fg);font-weight:600}
+.foot-ph .upd .ic{width:14px;height:14px;color:var(--primary)}
+.foot-ph .ex{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+.foot-ph .grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;color:var(--fg)}
+.new{position:relative}
+.new::after{content:"جديد";position:absolute;inset-inline-end:-4px;top:-10px;background:var(--caution);color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:999px;letter-spacing:.02em}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .new::after{color:#0b1512}}
+:root[data-theme="dark"] .new::after{color:#0b1512}
+
+/* The service plate (option B): white where the way signs are green, with the green rule set in. A plate, not a sign. */
+.svc{background:var(--card);color:var(--fg);border-radius:10px;box-shadow:inset 0 0 0 4px var(--card),inset 0 0 0 6px var(--primary);padding:16px 14px 14px;display:flex;flex-direction:column;gap:10px}
+.svc .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.svc .ad{font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:1px 7px;color:var(--muted-fg);box-shadow:inset 0 0 0 1.5px var(--muted-fg)}
+.svc .by{font-size:11.5px;color:var(--muted-fg)}
+.svc .ttl{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;align-items:center}
+.svc .ttl i{display:grid;place-items:center;width:40px;height:40px;border-radius:8px;background:var(--primary);color:var(--on-primary)}
+.svc .ttl .ic{width:22px;height:22px}
+.svc .ttl b{font-size:16px;line-height:1.3}
+.svc .txt{font-size:13px;line-height:1.65}
+.svc .acts{display:grid;gap:6px}
+.svc .wa{display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:9px;background:var(--primary);color:var(--on-primary);font-weight:700;font-size:13.5px}
+.svc .web{display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border-radius:9px;color:var(--primary);font-weight:700;font-size:13px;box-shadow:inset 0 0 0 2px var(--primary)}
+.svc .web .ic,.svc .wa .ic{width:17px;height:17px}
+
+/* Option A: the colophon card on the About page. */
+.who{border:1px solid var(--border);border-radius:14px;background:var(--card);overflow:hidden}
+.who .wh2{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--secondary);color:var(--on-secondary)}
+.who .mono{display:grid;place-items:center;width:40px;height:40px;border-radius:9px;background:var(--card);color:var(--primary);font-weight:700;font-size:20px;border:1px solid var(--border)}
+.who .nm{display:grid;gap:1px;min-width:0}
+.who .nm b{font-size:14.5px;line-height:1.3}
+.who .nm span{font-size:11.5px;opacity:.85}
+.who .body{padding:12px 14px;font-size:13px;line-height:1.7}
+.who .rowl{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--border);font-size:13px}
+.who .rowl b{font-weight:600}
+.who .rowl span{margin-inline-start:auto;color:var(--muted-fg);font-size:12px}
+.who .rowl .ic{width:15px;height:15px;color:var(--muted-fg)}
+
+.tb{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--card);border-top:1px solid var(--border);flex:none;padding-bottom:4px}
+.tb span{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0 5px;color:var(--muted-fg);min-width:0}
+.tb i{display:grid;place-items:center;width:38px;height:26px;border-radius:6px}
+.tb .ic{width:18px;height:18px}
+.tb b{font-weight:400;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tb .on{color:var(--primary)} .tb .on b{font-weight:700} .tb .on i{background:var(--primary);color:var(--on-primary)}
+
+@media (prefers-reduced-motion: reduce){.ph .scr{scroll-behavior:auto}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-plane" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-land" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></symbol>
+    <symbol id="i-msgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  </defs>
+</svg>
+
+<main class="page">
+  <header class="stack">
+    <p class="eyebrow">fly.sy · Pointing to Homs Reisen · 18 October 2026</p>
+    <h1>Three ways to point to Homs Reisen</h1>
+    <div class="stack prose">
+      <p class="lede-x">Homs Reisen (حمص للسياحة والسفر) is a travel office in Berlin, founded in 2018, run by the people who make fly.sy. These are three ways the site can send travellers to it without becoming a sales page: a colophon that says who makes the site, a labelled service plate on the route pages where the office can actually help, and the office as a named source with a declared interest.</p>
+      <p class="muted">Every phone is a mockup in the site's own colours, font, icons and airline logos, in Arabic, opened at the part of the page that changes. What the office is said to do comes from its own website as read on 18 October 2026; nothing on fly.sy has been changed.</p>
+    </div>
+  </header>
+
+  <section class="stack" aria-labelledby="h-floor" style="gap:20px">
+    <div class="stack prose">
+      <p class="eyebrow">Before any option</p>
+      <h2 id="h-floor">Three things every option stands on</h2>
+      <p class="muted">The site's whole value is that a reader can trust what it says about itself. A referral that contradicts the About page costs more than it earns, so these come first, whichever option you pick.</p>
+    </div>
+    <div class="floor">
+      <div>
+        <h3>1. One sentence has to change</h3>
+        <p class="quote">“Who is behind fly.sy? An independent project by Syrians in the diaspora. No government body, no airline, <b>no travel agency</b>, and no commission on anything.”</p>
+        <p>That FAQ, the About page (“sells nothing, takes no commission”), the footer line, <code>README.md</code>, <code>HANDOFF.md</code>, the Organization markup and <code>llms.txt</code> all say it. A reader who finds the office behind the site after reading that line stops believing the data too. So the first change is the disclosure, shipped <b>before or with</b> the first referral, and said as a strength: the people who check the flight boards every week also book these flights.</p>
+        <p>“Independent” then needs its object: independent <b>of any government body, airline or embassy</b>. Not bare.</p>
+      </div>
+      <div>
+        <h3>2. The office's site decides what fly.sy may say</h3>
+        <p>The site's first writing rule is “say only what the source says”. The office's website (Arabic, with a German legal notice) says, as of today:</p>
+        <ul>
+          <li>Berlin, founded 2018; “visas, flight tickets, hotels, tourist trips, Umrah and Hajj”.</li>
+          <li>Flight tickets “to any place in the world” on international airlines; departures listed from Berlin, Hamburg, Frankfurt, Düsseldorf and Munich; Sundair among its partner logos.</li>
+          <li>Staff speak Arabic and German. Contact by WhatsApp, phone, email or the Berlin office; its web forms say sending “starts soon”.</li>
+          <li><b>Syria is not mentioned anywhere.</b></li>
+        </ul>
+        <p>So fly.sy can say “tickets, visas and hotels”, but not “books flights to Syria”, until the office publishes a Syria page. That page is also where every link should land, instead of a home page about Umrah.</p>
+      </div>
+      <div>
+        <h3>3. The office is held to the site's own rules</h3>
+        <ul>
+          <li>It is a commercial source, like <code>ops</code>: whatever it says is capped at “reported”, never “verified”, and the About page says so.</li>
+          <li>Its ratings and customer counts stay on its own site; fly.sy repeats facts, not praise.</li>
+          <li>Anything that invites a booking is labelled as an advertisement and names the company, which German law asks for (see below) and which honesty asks for anyway.</li>
+          <li>One mention per page, never above the answer, and never on Official links, News or Experiences: those pages promise to be about other people.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="verdict" aria-labelledby="h-verdict">
+    <div class="stack">
+      <p class="eyebrow">My recommendation</p>
+      <h2 id="h-verdict">Ship A with the first referral, make B the referral, and let C grow</h2>
+      <p>A is the floor: who makes the site, said once in the footer and once on the About page. B is where the bookings will come from: one quiet, labelled plate under the facts, only on the route pages with Germany at one end, which hands the traveller's exact plan to the office on WhatsApp. C is the most fly.sy-like idea, but it needs the office to send dated notes every week, so it earns its place over time instead of launching.</p>
+    </div>
+    <div class="stack">
+      <ol class="steps">
+        <li><span><b>Settle the words and the legal notice.</b> The disclosure sentence in both languages (proposed below) and whether fly.sy gets an imprint page. The office is a sole trader (Homs e. K.), so an imprint names its owner; this settles the open question in <code>HANDOFF.md</code>.</span></li>
+        <li><span><b>The office publishes its Syria page.</b> In Arabic and German: what it books from Germany, what it needs from the traveller, how to reach it. Every link from fly.sy lands there, with a UTM tag per placement.</span></li>
+        <li><span><b>Ship A.</b> The sentence everywhere it is said today, the “Who makes fly.sy” section, the footer line.</span></li>
+        <li><span><b>Ship B.</b> <code>data/agency.json</code>, the plate under the papers box on the Germany route pages in both directions, <code>rel="sponsored"</code>, the WhatsApp handoff.</span></li>
+        <li><span><b>After four weeks.</b> Read the office's analytics and decide the Documents page and C.</span></li>
+      </ol>
+      <p class="decide"><b>One decision before anything ships:</b> does the office want to be named on fly.sy at all? Every option names it. If the answer is no, nothing here applies, and the site keeps its current line truthfully only if the office is not in fact behind it.</p>
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="h-opts" style="gap:36px">
+    <div class="stack">
+      <p class="eyebrow">The options</p>
+      <h2 id="h-opts">Three ways, one example: Germany to Damascus</h2>
+    </div>
+    <div class="opts">
+
+<!-- ================= A ================= -->
+<article class="opt" id="a" aria-labelledby="a-h">
+  <div class="opt-head">
+    <span class="plate" aria-hidden="true">A</span>
+    <div><h3 id="a-h">A. The colophon: say who makes it</h3><p class="ar" dir="rtl" lang="ar">من يصنع fly.sy</p></div>
+    <div class="tags"><span class="tag fill">The floor, in every case</span></div>
+  </div>
+  <div class="opt-body">
+    <div class="opt-phone">
+      <p class="url"><span dir="ltr">fly.sy/about</span></p>
+      <div class="ph" role="group" aria-label="نموذج: قسم «من يصنع fly.sy» في صفحة عن الموقع">
+        <div class="hd"><span class="logo" dir="ltr">fly<b>.sy</b></span><span class="grow"></span><span class="hbtn"><svg class="ic"><use href="#i-search"/></svg></span><span class="hbtn" dir="ltr">English</span></div>
+        <div class="scr" tabindex="0" data-scroll="a-new">
+          <div class="pg">
+            <p class="crumbs">الرئيسية <span>/</span> عن الموقع</p>
+            <h3 class="h1">من أين تأتي المعلومات</h3>
+            <p class="lede">كل سطر يحمل مصدره ودرجة ثقته وتاريخ مراجعته. حين لا نجد مصدراً موثوقاً نقول ذلك بدل أن نملأ الفراغ بتخمين.</p>
+            <p class="h2">تواصل معنا</p>
+            <p class="lede" style="color:var(--fg)">تصحيح، طريق لا نعرفه، أو سؤال: راسلنا على <u dir="ltr">info@fly.sy</u></p>
+            <div class="rc"><b>حابب تبني fly.sy معنا؟</b><p class="muted">إذا عندك خبرة برمجية backend أو تصميمية frontend وتقدر تفيد الموقع من خبراتك، حط إيدك بإيدنا.</p></div>
+
+            <p class="h2 new" id="a-new">من يصنع fly.sy</p>
+            <div class="who">
+              <div class="wh2">
+                <span class="mono" aria-hidden="true">ح</span>
+                <span class="nm"><b>حمص للسياحة والسفر</b><span dir="ltr">Homs Reisen · Berlin · 2018</span></span>
+              </div>
+              <p class="body">مكتب سفر في برلين منذ 2018، يبيع تذاكر الطيران والتأشيرات والفنادق ورحلات العمرة، ويتحدث العربية والألمانية. فريقه هو من يكتب هذا الموقع ويراجعه. الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة، وحين نذكر المكتب في أي مكان على fly.sy نقول إنه مكتبنا ونعامله كأي مصدر تجاري: ما يقوله لا يتجاوز درجة «من تقارير».</p>
+              <div class="rowl"><b>الموقع</b><span dir="ltr">homs-reisen.de</span><svg class="ic"><use href="#i-up"/></svg></div>
+            </div>
+
+            <p class="h2">قبل أن تخطط</p>
+            <div class="rc"><p>fly.sy يعطيك فكرة عمّا تتوقعه. نجمع المعلومات ونعرض مصدر كل سطر، ولا نتحمّل أي مسؤولية عن هذه المعلومات ولا عن أي شيء يترتب عليها.</p><p>أنت، كزائر أو مسافر، مسؤول عن التأكد من كل شيء من المصادر نفسها أو من الجهات المعنية: شركة الطيران، المطار، السفارة، المعبر.</p></div>
+            <p class="fine">هذا الموقع نقطة انطلاق للتحقق لا بديل عنه. أكّد كل شيء مع شركة الطيران أو السفارة، ولا تشترِ تذكرة غير قابلة للاسترداد قبل أن تتأكد من أوراقك.</p>
+          </div>
+          <div class="foot-ph">
+            <p class="logo" dir="ltr">fly<b>.sy</b></p>
+            <p>موقع غير رسمي، مستقل عن أي جهة حكومية أو شركة طيران أو سفارة. يصنعه فريق مكتب حمص للسياحة والسفر في برلين؛ الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة. يُحدَّث يدوياً ومن تجارب الناس.</p>
+            <p class="upd"><svg class="ic"><use href="#i-cal"/></svg>آخر تحديث 18 تشرين الأول 2026، 06:51</p>
+            <p class="ex">استكشف</p>
+            <div class="grid"><span>رحلتي</span><span>الطيران</span><span>المعابر</span><span>الأوراق المطلوبة</span><span>الأخبار</span><span>تجارب</span><span>روابط رسمية</span><span>عن الموقع</span></div>
+          </div>
+        </div>
+        <nav class="tb" aria-hidden="true"><span><i><svg class="ic"><use href="#i-pin"/></svg></i><b>رحلتي</b></span><span><i><svg class="ic"><use href="#i-plane"/></svg></i><b>الطيران</b></span><span><i><svg class="ic"><use href="#i-land"/></svg></i><b>المعابر</b></span><span><i><svg class="ic"><use href="#i-file"/></svg></i><b>الأوراق</b></span><span><i><svg class="ic"><use href="#i-news"/></svg></i><b>الأخبار</b></span><span><i><svg class="ic"><use href="#i-msgs"/></svg></i><b>تجارب</b></span><span><i><svg class="ic"><use href="#i-link"/></svg></i><b>روابط</b></span></nav>
+      </div>
+      <p class="cap">The About page, scrolled to the new section, and the footer with the new sentence. Scroll the phone.</p>
+    </div>
+    <div class="opt-text">
+      <p class="lead">No sales language at all. The footer says who makes the site in one sentence, and the About page gets a “Who makes fly.sy” card: the office, its city, its founding year, what it sells in its own words, and the promise that what it says is treated like any other commercial source. The link goes to the office's website.</p>
+      <h4>How it works</h4>
+      <ul class="how">
+        <li>The footer's independence line (<code>indep</code> in <code>messages/index.ts</code>) and the About page's “What fly.sy is” text change in both languages; the FAQ “Who is behind fly.sy?” gets a new answer. Proposed words are below.</li>
+        <li>The same sentence goes into <code>README.md</code>, <code>HANDOFF.md</code>, the Organization description in <code>schema.ts</code> and the intro of <code>llms.txt</code>, so no copy of the old claim survives anywhere a reader or an assistant looks.</li>
+        <li>The card is the Links page's card shape (header band, body, one row per address), so it reads as a fact about a body, not as a banner. The monogram tile stands in for the office's emblem, which <code>scripts/link-logos.mjs</code> can pull from its site.</li>
+        <li>The link carries <code>?utm_source=fly.sy&amp;utm_medium=referral&amp;utm_campaign=colophon</code>, so the office's own analytics show what the About page brings. A plain link, no <code>sponsored</code>: this is a disclosure, not an advertisement.</li>
+      </ul>
+      <div class="gw">
+        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>Costs no trust and adds some: the people who verify the flight boards also book the flights. Nothing on the route pages changes. The lightest legal footprint: it names the company, which is all a disclosure needs.</p></div>
+        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>Few people read footers or About pages, so on its own it brings little business. It is a floor, not a referral. It also makes the imprint question real: a site run for a German business usually needs one.</p></div>
+      </div>
+      <dl class="size"><div><dt>Size of the job</dt><dd>Small</dd></div><div><dt>Where it shows</dt><dd>Footer, About page</dd></div><div><dt>Office must do first</dt><dd>Nothing</dd></div></dl>
+    </div>
+  </div>
+</article>
+
+<!-- ================= B ================= -->
+<article class="opt" id="b" aria-labelledby="b-h">
+  <div class="opt-head">
+    <span class="plate" aria-hidden="true">B</span>
+    <div><h3 id="b-h">B. The service plate: help, after the facts, where it applies</h3><p class="ar" dir="rtl" lang="ar">لوحة الخدمة تحت الأوراق</p></div>
+    <div class="tags"><span class="tag fill">Recommended, with A</span></div>
+  </div>
+  <div class="opt-body">
+    <div class="opt-phone">
+      <p class="url"><span dir="ltr">fly.sy/from/germany/to/damascus</span></p>
+      <div class="ph" role="group" aria-label="نموذج: لوحة الخدمة في صفحة من ألمانيا إلى دمشق">
+        <div class="hd"><span class="logo" dir="ltr">fly<b>.sy</b></span><span class="grow"></span><span class="hbtn"><svg class="ic"><use href="#i-search"/></svg></span><span class="hbtn" dir="ltr">English</span></div>
+        <div class="scr" tabindex="0" data-scroll="b-new">
+          <div class="q">
+            <div class="ask sign">
+              <div class="row"><span class="lab">من</span><span class="val"><span><span class="fl fl-DE" aria-hidden="true"></span><span>ألمانيا</span></span></span><span class="chev"><svg class="ic"><use href="#i-chev"/></svg></span></div>
+              <div class="row"><span class="lab">إلى</span><span class="val"><span><span>دمشق</span></span></span><span class="chev"><svg class="ic"><use href="#i-chev"/></svg></span></div>
+              <span class="swap" aria-hidden="true"><svg class="ic"><use href="#i-swap"/></svg></span>
+            </div>
+            <div class="pp"><p class="ppl">جوازي</p><div class="ppg"><span class="on">سوري</span><span>تأشيرة عند الوصول</span><span>موافقة مسبقة</span></div></div>
+          </div>
+          <div class="pg">
+            <p class="crumbs">الرئيسية <span>/</span> من ألمانيا إلى دمشق</p>
+            <h3 class="h1">من ألمانيا إلى دمشق</h3>
+            <p class="lede">كل طريق نعرفه من ألمانيا إلى دمشق، الأسرع أولاً؛ وما يعمل بشروط أو لم يتأكد أو أُغلق يأتي بعد ما يعمل دون شروط. اختر جوازك لترى ما ينطبق عليك.</p>
+            <p class="answer">أسرع طريق من ألمانيا إلى دمشق اليوم: الطيران إلى مطار دمشق، نحو 4.7 ساعة من الباب إلى الباب (روجع في 8 تشرين الأول 2026). عدد الطرق المعروفة 7، يعمل منها 6.</p>
+            <div class="ways">
+              <div class="way sign">
+                <div class="wg"><span class="mi big"><i><svg class="ic"><use href="#i-plane"/></svg></i></span>
+                  <span class="wt"><b class="wn big">مطار دمشق</b><span class="ws"><i class="fast">الأسرع</i>الرحلات: 3</span></span>
+                  <span class="wtime big">4 س 40 د<svg class="ic"><use href="#i-chev"/></svg></span></div>
+                <div class="legs"><span class="leg"><svg class="ic"><use href="#i-plane"/></svg>طيران 4 س 10 د – 8 س</span><span class="leg"><svg class="ic"><use href="#i-car"/></svg>30 د بالسيارة إلى دمشق</span></div>
+                <div class="tiles"><span class="tile"><span class="lt lg-SR" aria-hidden="true"></span></span><span class="tile"><span class="lt lg-KK" aria-hidden="true"></span></span></div>
+              </div>
+              <div class="board"><p class="bh">الرحلات إلى مطار دمشق</p><ul>
+                <li><span class="lt-box"><span class="lt lg-SR" aria-hidden="true"></span></span><span class="bn"><b>صن دير</b> <span>برلين</span></span><span class="bt"><i class="dt"></i>4 س 40 د</span></li>
+                <li><span class="lt-box"><span class="lt lg-KK" aria-hidden="true"></span></span><span class="bn"><b>ليف للطيران</b> <span>دوسلدورف</span></span><span class="bt"><i class="dt"></i>5 س</span></li>
+                <li><span class="lt-box ico"><svg class="ic"><use href="#i-plane"/></svg></span><span class="bn"><b>طيران</b> <span>ترانزيت عبر إسطنبول أو الخليج</span></span><span class="bt"><span class="stamp caution">بشروط</span></span></li>
+              </ul></div>
+              <div class="way sign">
+                <div class="wg"><span class="mi"><i><svg class="ic"><use href="#i-car"/></svg></i></span>
+                  <span class="wt"><b class="wn">جديدة يابوس</b><span class="ws">من بيروت (طيران ثم براً)</span></span>
+                  <span class="wtime">8 س<svg class="ic"><use href="#i-chev"/></svg></span></div>
+              </div>
+              <div class="way sign">
+                <div class="wg"><span class="mi two"><i><svg class="ic"><use href="#i-plane"/></svg></i><i><svg class="ic"><use href="#i-car"/></svg></i></span>
+                  <span class="wt"><b class="wn">مطار حلب ثم براً</b><span class="ws">الرحلات: 2</span></span>
+                  <span class="wtime">8 س 50 د<svg class="ic"><use href="#i-chev"/></svg></span></div>
+              </div>
+              <div class="way sign">
+                <div class="wg"><span class="mi two"><i><svg class="ic"><use href="#i-plane"/></svg></i><i><svg class="ic"><use href="#i-car"/></svg></i></span>
+                  <span class="wt"><b class="wn">مطار دير الزور ثم براً</b><span class="ws">الرحلات: 1</span></span>
+                  <span class="wtime">10 س 50 د<svg class="ic"><use href="#i-chev"/></svg></span></div>
+              </div>
+            </div>
+            <p class="est">الأزمنة تقديرية وتشمل عادةً انتظار المعبر</p>
+
+            <div class="card need"><p class="ch">ما تحتاجه على هذا الطريق</p><p class="cs">سوري · طيران</p>
+              <ul>
+                <li><i class="box"></i><span>جواز سوري ساري. إن كان منتهياً وأنت في الخارج فالوضع يختلف حسب السفارة — لا نملك جواباً موثقاً، ولن نخمّن.<span class="prov">المصدر: لا مصدر موثوق بعد</span></span></li>
+                <li><i class="box"></i><span>المقيمون في أوروبا: السفر قد يمسّ وضع اللجوء أو الإقامة. لن ننشر شيئاً قبل التحقق من مصدر رسمي لكل دولة — اسأل محامي هجرة.<span class="prov">المصدر: لا مصدر موثوق بعد</span></span></li>
+              </ul>
+            </div>
+            <span class="btn">الأوراق المطلوبة</span>
+
+            <div class="svc new" id="b-new">
+              <div class="top"><span class="ad">إعلان</span><span class="by">من صانعي fly.sy</span></div>
+              <div class="ttl"><i><svg class="ic"><use href="#i-store"/></svg></i><b>تفضّل أن يحجز لك إنسان؟</b></div>
+              <p class="txt">حمص للسياحة والسفر، مكتب السفر الذي يصنع fly.sy، في برلين منذ 2018: تذاكر طيران وتأشيرات وفنادق. يتحدثون العربية والألمانية.</p>
+              <div class="acts">
+                <span class="wa"><svg class="ic"><use href="#i-chat"/></svg>أرسل هذه الخطة على واتساب</span>
+                <span class="web" dir="ltr">homs-reisen.de<svg class="ic"><use href="#i-up"/></svg></span>
+              </div>
+              <p class="fine">fly.sy نفسه لا يبيع شيئاً ولا يأخذ عمولة. المكتب مكتبنا، ولهذا نقولها.</p>
+            </div>
+
+            <div class="links2"><b>وجهات أخرى من ألمانيا</b><p><span>حلب</span><span>دير الزور</span><span>اللاذقية</span><span>القامشلي</span></p></div>
+            <div class="links2"><b>إلى دمشق من دول أخرى</b><p><span>تركيا</span><span>لبنان</span><span>الأردن</span><span>العراق</span><span>الإمارات</span><span>قطر</span><span>الكويت</span><span>السعودية</span><span>النمسا</span><span>هولندا</span><span>السويد</span><span>…</span></p></div>
+          </div>
+          <div class="foot-ph">
+            <p class="logo" dir="ltr">fly<b>.sy</b></p>
+            <p>موقع غير رسمي، مستقل عن أي جهة حكومية أو شركة طيران أو سفارة. يصنعه فريق مكتب حمص للسياحة والسفر في برلين؛ الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة.</p>
+          </div>
+        </div>
+        <nav class="tb" aria-hidden="true"><span class="on"><i><svg class="ic"><use href="#i-pin"/></svg></i><b>رحلتي</b></span><span><i><svg class="ic"><use href="#i-plane"/></svg></i><b>الطيران</b></span><span><i><svg class="ic"><use href="#i-land"/></svg></i><b>المعابر</b></span><span><i><svg class="ic"><use href="#i-file"/></svg></i><b>الأوراق</b></span><span><i><svg class="ic"><use href="#i-news"/></svg></i><b>الأخبار</b></span><span><i><svg class="ic"><use href="#i-msgs"/></svg></i><b>تجارب</b></span><span><i><svg class="ic"><use href="#i-link"/></svg></i><b>روابط</b></span></nav>
+      </div>
+      <p class="cap">The real Germany → Damascus page as of 8 October, scrolled to the papers box. The plate is the only new thing. Scroll up to see how far below the answer it sits.</p>
+    </div>
+    <div class="opt-text">
+      <p class="lead">Under the papers box, after every fact on the page, a white plate with the green rule set in: the inverse of a way sign. It says the office exists, what it does in its own words, that it is ours, and it offers one action: send this plan on WhatsApp. It appears only on route pages with Germany at one end, in both directions.</p>
+      <h4>How it works</h4>
+      <ul class="how">
+        <li><b>A plate, not a sign.</b> On fly.sy green signs are the ways themselves; white plates carry extra information (“Fastest”, “Syrians only”). The office gets a plate, so it never looks like a route. Real road signs do the same: services sit on a different colour from directions.</li>
+        <li><b>Only where the office can help.</b> <code>data/agency.json</code> lists the office's markets as origin ids (<code>["DE"]</code> to start; Austria or Switzerland only if its site says so). The plate renders when the route's country is in that list, so 22 of the 24 countries' pages stay exactly as they are today.</li>
+        <li><b>After the facts, never above them.</b> The plate comes after the answer, the signs, the estimates note and the papers. People who have their answer and still want someone to do it are the ones who scroll this far.</li>
+        <li><b>The handoff carries the plan.</b> The WhatsApp button is a plain link to <code>wa.me/491629171309</code> with a prefilled message that contains the page's own address, so the office sees exactly what the traveller saw. Nothing is typed twice and nothing is stored on fly.sy. The passport (<code>?p=</code>) can be appended by the existing passport state component.</li>
+        <li><b>Labelled.</b> “إعلان · من صانعي fly.sy” (“Ad · from the makers of fly.sy”) on the plate, the company named in the text, <code>rel="sponsored noopener noreferrer"</code> on both links, and a UTM tag per placement: <code>utm_campaign=route-plate&amp;utm_content=de-damascus</code>.</li>
+        <li><b>Says what the office's site says.</b> Today that is tickets, visas, hotels, Arabic and German. The day the office's Syria page is up, the text can become “يحجز الرحلات إلى سوريا من ألمانيا” and the link can land on it.</li>
+        <li>The office's web forms are not live (“starts soon”), so the actions are WhatsApp and the website. English pages show the same plate with “Arabic and German spoken”, so an English reader knows what to expect.</li>
+        <li>Server-rendered, no script, prerendered like the rest of the page; <code>worker.ts</code> and the Workers Free CPU budget are untouched.</li>
+      </ul>
+      <div class="gw">
+        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>The only option that puts the office in front of someone at the moment they are planning that exact trip, and the only one with a real action. Still quiet: one plate, below everything, on 2 of 24 countries, labelled, in the site's own vocabulary.</p></div>
+        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>The site now carries an advertisement, so the German rules on marking commercial communication apply in full, and the imprint question stops being optional. It needs the office's Syria page to be worth clicking. And it is the one place a hurried reader might mistake the plate for part of the answer; the label and the colour are what prevent that.</p></div>
+      </div>
+      <dl class="size"><div><dt>Size of the job</dt><dd>Medium (plus A)</dd></div><div><dt>Where it shows</dt><dd>10 route pages × 2 directions × 2 languages, Germany only</dd></div><div><dt>Office must do first</dt><dd>A Syria page, WhatsApp ready</dd></div></dl>
+    </div>
+  </div>
+</article>
+
+<!-- ================= C ================= -->
+<article class="opt" id="c" aria-labelledby="c-h">
+  <div class="opt-head">
+    <span class="plate" aria-hidden="true">C</span>
+    <div><h3 id="c-h">C. The named source: the office earns its byline</h3><p class="ar" dir="rtl" lang="ar">المكتب مصدراً مُعلَن المصلحة</p></div>
+    <div class="tags"><span class="tag outline">Later, when the notes exist</span></div>
+  </div>
+  <div class="opt-body">
+    <div class="opt-phone">
+      <p class="url"><span dir="ltr">fly.sy/from/germany/to/damascus?p=voa</span></p>
+      <div class="ph" role="group" aria-label="نموذج: المكتب مصدراً في صندوق الأوراق">
+        <div class="hd"><span class="logo" dir="ltr">fly<b>.sy</b></span><span class="grow"></span><span class="hbtn"><svg class="ic"><use href="#i-search"/></svg></span><span class="hbtn" dir="ltr">English</span></div>
+        <div class="scr" tabindex="0" data-scroll="c-new">
+          <div class="q">
+            <div class="ask sign">
+              <div class="row"><span class="lab">من</span><span class="val"><span><span class="fl fl-DE" aria-hidden="true"></span><span>ألمانيا</span></span></span><span class="chev"><svg class="ic"><use href="#i-chev"/></svg></span></div>
+              <div class="row"><span class="lab">إلى</span><span class="val"><span><span>دمشق</span></span></span><span class="chev"><svg class="ic"><use href="#i-chev"/></svg></span></div>
+              <span class="swap" aria-hidden="true"><svg class="ic"><use href="#i-swap"/></svg></span>
+            </div>
+            <div class="pp"><p class="ppl">جوازي</p><div class="ppg"><span>سوري</span><span class="on">تأشيرة عند الوصول</span><span>موافقة مسبقة</span></div></div>
+          </div>
+          <div class="pg">
+            <p class="crumbs">الرئيسية <span>/</span> من ألمانيا إلى دمشق</p>
+            <h3 class="h1">من ألمانيا إلى دمشق</h3>
+            <p class="answer">أسرع طريق من ألمانيا إلى دمشق اليوم: الطيران إلى مطار دمشق، نحو 4.7 ساعة من الباب إلى الباب (روجع في 8 تشرين الأول 2026). عدد الطرق المعروفة 7، يعمل منها 6.</p>
+            <div class="ways">
+              <div class="way sign">
+                <div class="wg"><span class="mi big"><i><svg class="ic"><use href="#i-plane"/></svg></i></span>
+                  <span class="wt"><b class="wn big">مطار دمشق</b><span class="ws"><i class="fast">الأسرع</i>الرحلات: 3</span></span>
+                  <span class="wtime big">4 س 40 د<svg class="ic"><use href="#i-chev"/></svg></span></div>
+                <div class="legs"><span class="leg"><svg class="ic"><use href="#i-plane"/></svg>طيران 4 س 10 د – 8 س</span><span class="leg"><svg class="ic"><use href="#i-car"/></svg>30 د بالسيارة إلى دمشق</span></div>
+                <div class="tiles"><span class="tile"><span class="lt lg-SR" aria-hidden="true"></span></span><span class="tile"><span class="lt lg-KK" aria-hidden="true"></span></span></div>
+              </div>
+            </div>
+            <p class="est">الأزمنة تقديرية وتشمل عادةً انتظار المعبر</p>
+
+            <div class="card need"><p class="ch">ما تحتاجه على هذا الطريق</p><p class="cs">تأشيرة عند الوصول · طيران</p>
+              <ul>
+                <li><i class="box"></i><span>جواز صالح ستة أشهر بعد عودتك، وفيه صفحتان فارغتان.<span class="prov">المصدر: <u>نشرات سفر حكومية أجنبية</u></span></span></li>
+                <li class="new" id="c-new"><i class="box"></i><span>أهم نقطة: حتى لو كانت جنسيتك مؤهلة للتأشيرة عند الوصول، أنظمة بعض شركات الطيران لم تُحدَّث وقد ترفض إركابك دون موافقة مسبقة. اتصل بالسفارة واطلب الجواب كتابةً.<span class="prov">من تقارير · المصدر: <u>حمص للسياحة والسفر</u> <span class="own"><svg class="ic"><use href="#i-user"/></svg>مكتبنا</span> · روجع 18 تشرين الأول 2026</span></span></li>
+                <li><i class="box"></i><span>الرسم نقداً بالدولار عند الوصول، تقريباً بين 25 و400 دولار حسب الجنسية، بموجب القرار 128 منذ 6 تموز 2025.<span class="prov">المصدر: <u>نشرات سفر حكومية أجنبية</u></span></span></li>
+                <li><i class="box"></i><span>ختم دخول إلى إسرائيل في جوازك قد يمنع منحك التأشيرة.<span class="prov">المصدر: شركات سياحة عاملة في سوريا</span></span></li>
+              </ul>
+            </div>
+            <span class="btn">الأوراق المطلوبة</span>
+            <div class="links2"><b>وجهات أخرى من ألمانيا</b><p><span>حلب</span><span>دير الزور</span><span>اللاذقية</span><span>القامشلي</span></p></div>
+          </div>
+        </div>
+        <nav class="tb" aria-hidden="true"><span class="on"><i><svg class="ic"><use href="#i-pin"/></svg></i><b>رحلتي</b></span><span><i><svg class="ic"><use href="#i-plane"/></svg></i><b>الطيران</b></span><span><i><svg class="ic"><use href="#i-land"/></svg></i><b>المعابر</b></span><span><i><svg class="ic"><use href="#i-file"/></svg></i><b>الأوراق</b></span><span><i><svg class="ic"><use href="#i-news"/></svg></i><b>الأخبار</b></span><span><i><svg class="ic"><use href="#i-msgs"/></svg></i><b>تجارب</b></span><span><i><svg class="ic"><use href="#i-link"/></svg></i><b>روابط</b></span></nav>
+      </div>
+      <p class="cap">The papers box for a visa-on-arrival passport. The second line is today's anonymous tour-operator line, shown as if the office had sent it in, dated, with the declared-interest plate.</p>
+    </div>
+    <div class="opt-text">
+      <p class="lead">The office contributes what it actually learns from booking: which airline asked for what at the Düsseldorf check-in, how long a pre-approval took for a client, which fares were refundable. Each note is a dated line with the office as its named source, capped at “reported”, with a small plate that says “our office”. The referral is the byline: a reader meets the office at the moment one of its facts helps them.</p>
+      <h4>How it works</h4>
+      <ul class="how">
+        <li>One new entry in <code>data/sources.json</code>, <code>homs</code>: name, kind “Commercial source, and our own office”, use “What the office sees when booking and at check-in on routes from Germany. A declared interest, so reported, never verified”, and its URL with <code>utm_campaign=source</code>. The About page's source list shows it automatically, with that wording.</li>
+        <li>Lines in <code>needs.json</code> and notes on routes can then cite <code>homs</code> instead of the anonymous <code>ops</code> where the office is the one who knows. <code>Provenance</code> adds the “مكتبنا / our office” plate whenever the source is the office, so the interest is visible at every citation, not only on the About page.</li>
+        <li>Needs get an optional <code>seen</code> date so an office note shows when it was last true, as flights do.</li>
+        <li>The same rules as every source: a note says what happened, with a date, and is re-checked on the weekly pass. Tour-operator claims are capped at reported today; the owner's own office must be too, or the cap means nothing.</li>
+      </ul>
+      <div class="gw">
+        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>The most fly.sy of the three: the office is useful before it is visible, and the declared interest is the site's honesty model applied to itself. Natural links, no advertisement, no label needed. Over months it builds the one thing a travel office cannot buy: a record of being right.</p></div>
+        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>It only works if the office really sends dated notes every week; an empty source is worse than none. Slow to bring bookings. And every office note must pass the writing rules: no “always”, no “never”, no consequence the note does not state.</p></div>
+      </div>
+      <dl class="size"><div><dt>Size of the job</dt><dd>Medium, plus a weekly habit</dd></div><div><dt>Where it shows</dt><dd>Under each fact the office sent; the About page's source list</dd></div><div><dt>Office must do first</dt><dd>Send the first dated notes</dd></div></dl>
+    </div>
+  </div>
+</article>
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="h-cmp" style="gap:20px">
+    <div class="stack"><p class="eyebrow">Side by side</p><h2 id="h-cmp">What each one does, and what it costs</h2></div>
+    <div class="tw"><table>
+      <thead><tr><th scope="col"><span class="vh">Aspect</span></th><th scope="col">A<br><small>Colophon</small></th><th scope="col">B<br><small>Service plate</small></th><th scope="col">C<br><small>Named source</small></th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Where it appears</th><td>Footer and About page</td><td>Route pages with Germany at one end, after the papers box</td><td>Under each fact the office sent; the About page's source list</td></tr>
+        <tr><th scope="row">Who meets the office</th><td>Readers checking who we are</td><td>People planning a trip between Germany and Syria</td><td>Readers checking where a line came from</td></tr>
+        <tr><th scope="row">Offers an action</th><td><span class="mk n"><i></i>No, a link</span></td><td><span class="mk y"><i></i>WhatsApp with the plan</span></td><td><span class="mk n"><i></i>No, a link</span></td></tr>
+        <tr><th scope="row">Labelled as an ad</th><td><span class="mk p"><i></i>No: a disclosure</span></td><td><span class="mk y"><i></i>Yes</span></td><td><span class="mk p"><i></i>No: a byline with the interest declared</span></td></tr>
+        <tr><th scope="row">Trust cost</th><td>None; it adds some</td><td>Low while it stays one plate, below the facts, labelled</td><td>None; it adds knowledge</td></tr>
+        <tr><th scope="row">German rules that apply</th><td>Name the company; imprint question</td><td>Mark as commercial, name the company, imprint</td><td>Name the company; imprint question</td></tr>
+        <tr><th scope="row">The office must first</th><td>Nothing</td><td>Publish a Syria page; be reachable on WhatsApp</td><td>Send dated notes weekly</td></tr>
+        <tr><th scope="row">Bookings</th><td>Few</td><td>The most</td><td>Slow, compounding</td></tr>
+        <tr><th scope="row">Size of the job</th><td>Small</td><td>Medium, plus A</td><td>Medium, plus a weekly habit</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="stack" aria-labelledby="h-words" style="gap:20px">
+    <div class="stack prose"><p class="eyebrow">The words</p><h2 id="h-words">Proposed copy, Arabic and English side by side</h2><p class="muted">Each entry would be one phrase in <code>src/messages/index.ts</code>. The office is named in Arabic as its own site names it, حمص للسياحة والسفر, and in English by its domain name, Homs Reisen. Everything said about it is what its website says today.</p></div>
+    <div class="words">
+      <div>
+        <p class="wh">The independence line <span><code>indep</code> · footer, every page · A, B, C</span></p>
+        <div class="pair">
+          <p lang="ar" dir="rtl">موقع غير رسمي، مستقل عن أي جهة حكومية أو شركة طيران أو سفارة. يصنعه فريق مكتب حمص للسياحة والسفر في برلين؛ الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة، وحيث يظهر المكتب نقول إنه مكتبنا. يُحدَّث يدوياً ومن تجارب الناس.</p>
+          <p lang="en">Unofficial, and independent of any government body, airline or embassy. Made by the team behind Homs Reisen, a travel office in Berlin; the site itself sells nothing and takes no commission, and wherever the office appears we say it is ours. Updated by hand and from people's real experiences.</p>
+        </div>
+        <p class="was">Today: <s>Independent and unofficial. Not part of any government body; represents no airline or embassy. Updated by hand and from people's real experiences.</s></p>
+      </div>
+      <div>
+        <p class="wh">Who is behind fly.sy? <span><code>about.faqs</code>, also in the FAQ markup · A, B, C</span></p>
+        <div class="pair">
+          <p lang="ar" dir="rtl">فريق مكتب حمص للسياحة والسفر، مكتب سفر في برلين، مع سوريين في المهجر. لا جهة حكومية ولا شركة طيران. الموقع لا يبيع شيئاً ولا يأخذ عمولة؛ المكتب يبيع خدماته على موقعه هو، وحيث نشير إليه هنا نقول إنه مكتبنا، ونعامل ما يقوله كأي مصدر تجاري: «من تقارير» لا «متحقق».</p>
+          <p lang="en">The team behind Homs Reisen, a travel office in Berlin, with Syrians in the diaspora. No government body and no airline. The site sells nothing and takes no commission; the office sells its services on its own website, and wherever we point to it here we say it is ours, and treat what it says like any commercial source: “reported”, never “verified”.</p>
+        </div>
+        <p class="was">Today: <s>An independent project by Syrians in the diaspora. No government body, no airline, no travel agency, and no commission on anything.</s></p>
+      </div>
+      <div>
+        <p class="wh">What fly.sy is, last sentence <span><code>about.whatText</code>, <code>README.md</code>, <code>HANDOFF.md</code>, <code>schema.ts</code>, <code>llms.ts</code> · A, B, C</span></p>
+        <div class="pair">
+          <p lang="ar" dir="rtl">غير رسمي، ومستقل عن أي جهة حكومية أو شركة طيران أو سفارة. يصنعه فريق مكتب حمص للسياحة والسفر في برلين؛ الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة.</p>
+          <p lang="en">It is unofficial, and independent of any government body, airline or embassy. It is made by the team behind Homs Reisen, a travel office in Berlin; the site itself sells nothing and takes no commission.</p>
+        </div>
+      </div>
+      <div>
+        <p class="wh">Who makes fly.sy <span><code>about.makers</code> · the About card · A</span></p>
+        <div class="pair">
+          <p lang="ar" dir="rtl"><b>من يصنع fly.sy</b><br>مكتب سفر في برلين منذ 2018، يبيع تذاكر الطيران والتأشيرات والفنادق ورحلات العمرة، ويتحدث العربية والألمانية. فريقه هو من يكتب هذا الموقع ويراجعه. الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة، وحين نذكر المكتب في أي مكان على fly.sy نقول إنه مكتبنا ونعامله كأي مصدر تجاري: ما يقوله لا يتجاوز درجة «من تقارير».</p>
+          <p lang="en"><b>Who makes fly.sy</b><br>A travel office in Berlin since 2018, selling flight tickets, visas, hotels and Umrah trips, in Arabic and German. Its team writes and checks this site. The site itself sells nothing and takes no commission, and wherever the office is mentioned on fly.sy we say it is ours and treat it like any commercial source: what it says never rises above “reported”.</p>
+        </div>
+      </div>
+      <div>
+        <p class="wh">The service plate <span><code>agency.plate</code> · route pages, Germany · B</span></p>
+        <div class="pair">
+          <p lang="ar" dir="rtl"><b>إعلان · من صانعي fly.sy</b><br><b>تفضّل أن يحجز لك إنسان؟</b><br>حمص للسياحة والسفر، مكتب السفر الذي يصنع fly.sy، في برلين منذ 2018: تذاكر طيران وتأشيرات وفنادق. يتحدثون العربية والألمانية.<br><b>أرسل هذه الخطة على واتساب</b> · homs-reisen.de<br><small>fly.sy نفسه لا يبيع شيئاً ولا يأخذ عمولة. المكتب مكتبنا، ولهذا نقولها.</small></p>
+          <p lang="en"><b>Ad · from the makers of fly.sy</b><br><b>Rather have a person book it?</b><br>Homs Reisen, the travel office that makes fly.sy, in Berlin since 2018: flight tickets, visas and hotels. Arabic and German spoken.<br><b>Send this plan on WhatsApp</b> · homs-reisen.de<br><small>fly.sy itself sells nothing and takes no commission. The office is ours, which is why we say so.</small></p>
+        </div>
+        <p class="was">Once the office's Syria page exists, the middle sentence can quote it: “يحجز الرحلات إلى سوريا من ألمانيا” / “books flights to Syria from Germany”.</p>
+      </div>
+      <div>
+        <p class="wh">The WhatsApp message <span>prefilled in the <code>wa.me</code> link · B</span></p>
+        <div class="pair">
+          <p lang="ar" dir="rtl">مرحباً حمص للسياحة والسفر، أنظر إلى هذا الطريق على fly.sy وأريد عرض سعر: <span dir="ltr">https://fly.sy/from/germany/to/damascus?p=sy</span></p>
+          <p lang="en">Hello Homs Reisen, I'm looking at this route on fly.sy and would like a quote: <span dir="ltr">https://fly.sy/en/from/germany/to/damascus</span></p>
+        </div>
+      </div>
+      <div>
+        <p class="wh">The source entry <span><code>data/sources.json</code> → <code>homs</code> · C</span></p>
+        <div class="pair">
+          <p lang="ar" dir="rtl"><b>حمص للسياحة والسفر</b> · مصدر تجاري، وهو مكتبنا<br>ما يراه المكتب في الحجز وتسجيل الدخول على الخطوط من ألمانيا. مصلحة معلنة، لذلك «من تقارير» لا «متحقق».<br>اللوحة تحت كل سطر: <b>مكتبنا</b></p>
+          <p lang="en"><b>Homs Reisen</b> · Commercial source, and our own office<br>What the office sees when booking and at check-in on routes from Germany. A declared interest, so “reported”, never “verified”.<br>The plate under each line: <b>our office</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="h-law" style="gap:20px">
+    <div class="stack prose"><p class="eyebrow">Honesty, law, measurement</p><h2 id="h-law">What “well studied” means here</h2><p class="muted">Four things to get right whichever option ships. The legal points are the rules as published; they are not legal advice, and the Berlin chamber of commerce (IHK) or a lawyer should confirm them before B goes live.</p></div>
+    <div class="why">
+      <div>
+        <h3>Say only what the office's site says</h3>
+        <ul>
+          <li>Today it says: Berlin, 2018, “visas, flight tickets, hotels, tourist trips, Umrah and Hajj”, tickets “to any place in the world”, Arabic and German. It does not say Syria. So fly.sy does not either, until it does.</li>
+          <li>Its Google rating and customer count stay on its site. fly.sy repeats what a body does, not how good it says it is; it does the same for airlines.</li>
+          <li>The landing page matters as much as the plate. A fly.sy reader who lands on an Umrah home page leaves. The office's Syria page, in Arabic and German, with WhatsApp on it, is step 2 of the plan for that reason.</li>
+          <li>Add the rule to <code>CLAUDE.md</code>: the office is a commercial source; cap at reported; one mention per page; never above the answer; never on Official links, News or Experiences.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>German rules on marking commercial communication</h3>
+        <ul>
+          <li><a href="https://www.gesetze-im-internet.de/ddg/__6.html" target="_blank" rel="noopener noreferrer">§ 6 DDG</a> (in force since 14 May 2024, replacing § 6 TMG): commercial communication must be clearly recognisable as such, and the company on whose behalf it is made clearly identifiable. The plate's label and the company name do both.</li>
+          <li>§ 5a (4) UWG: hiding the commercial purpose of a business practice is unfair unless it is obvious from the context. A February 2025 Bayreuth judgment (<a href="https://www.gesetze-bayern.de/Content/Document/Y-300-Z-BECKRS-B-2025-N-44513" target="_blank" rel="noopener noreferrer">1 HK O 30/24</a>) applied both rules to undisclosed promotion. “Ad · from the makers of fly.sy” removes the question.</li>
+          <li>§ 5 DDG, the imprint: a site that carries commercial communication for a German business is usually a business-like service and needs one, naming the operator. fly.sy has none today. The office's own imprint (Homs e. K., Amtsgericht Charlottenburg, HRA 61161 B) shows the shape; linkat.sy's single-language legal page shows how this codebase does it.</li>
+          <li>The option-A disclosure alone is not advertising, but it names the company, which is what § 6 asks of any mention made on its behalf.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Google and the links</h3>
+        <ul>
+          <li>Google asks that links which are advertisements carry <code>rel="sponsored"</code>. The plate's two links get it; the colophon's link and a source byline are ordinary links.</li>
+          <li>No keyword anchors (“cheap flights to Damascus”): the link text is the office's name or its host, as the Links page does for every body.</li>
+          <li>Outside links open in a new tab with <code>noopener noreferrer</code>, as everywhere on the site.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Measure without surveilling</h3>
+        <ul>
+          <li>One UTM tag per placement, read in the office's own analytics: <code>utm_source=fly.sy&amp;utm_medium=referral&amp;utm_campaign=colophon|route-plate|source&amp;utm_content=de-damascus</code>. The office then knows which placement and which route brings people.</li>
+          <li>Nothing new is stored on fly.sy, no script is added, and the WhatsApp message carries only the page address the traveller is already looking at.</li>
+          <li>If click counts on fly.sy's side are wanted later, a <code>/go/homs</code> redirect answered by <code>worker.ts</code> can count them in D1 without a third party, the way page views are counted now.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="h-touch" style="gap:20px">
+    <div class="stack prose"><p class="eyebrow">Around the site</p><h2 id="h-touch">What each option touches</h2><p class="muted">The letters say which options need the change.</p></div>
+    <div class="touch">
+      <div><span><b>The words</b><span class="where"><code>src/messages/index.ts</code></span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p><code>indep</code>, <code>about.whatText</code>, the “Who is behind fly.sy?” FAQ, a new <code>about.makers</code> group (A) and <code>agency.plate</code> group (B). Both languages, typed side by side as today.</p></div>
+      <div><span><b>Every other copy of the claim</b><span class="where"><code>README.md</code>, <code>HANDOFF.md</code>, <code>src/lib/llms.ts</code>, <code>src/lib/schema.ts</code></span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p>“Sells nothing, takes no commission” and “Not for travel agencies” become the new sentence. <code>organizationLd</code> gets the new description; if the office is the site's legal operator, it can also be named as <code>parentOrganization</code>.</p></div>
+      <div><span><b>Legal notice</b><span class="where">new <code>/imprint</code> page, <code>sitemap.ts</code>, footer</span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p>One language, like linkat.sy's. Named operator, address, register entry, contact. Linked from the footer beside About.</p></div>
+      <div><span><b>The About page</b><span class="where"><code>about/page.tsx</code>, <code>site-footer.tsx</code></span><span class="abc"><i>A</i></span></span><p>The “Who makes fly.sy” section with the card; the footer sentence. The office's emblem via <code>scripts/link-logos.mjs</code> into <code>public/emblems/</code>.</p></div>
+      <div><span><b>The office's details</b><span class="where">new <code>data/agency.json</code>, <code>types.ts</code>, <code>data.ts</code>, <code>tests/</code></span><span class="abc"><i>B</i></span></span><p>Name in both languages, URL, WhatsApp number, city, founding year, what it sells in its own words, <code>markets</code> as origin ids, <code>seen</code>. A test checks every market resolves to an origin, the URL is https and the date is a date, like <code>links.test.ts</code> does for the Links page.</p></div>
+      <div><span><b>The plate</b><span class="where">new <code>service-plate.tsx</code>, <code>plan-view.tsx</code></span><span class="abc"><i>B</i></span></span><p>A server component rendered in the aside after the papers button when the route's country is in <code>markets</code>, in both directions. Builds the <code>wa.me</code> link from the page's own address; <code>rel="sponsored noopener noreferrer"</code>; UTM per route. The passport can be appended by <code>passport-ui.tsx</code>, which already knows it.</p></div>
+      <div><span><b>The Documents page, later</b><span class="where"><code>documents/page.tsx</code></span><span class="abc"><i>B</i></span></span><p>The same plate under the warning alert, if the route pages show it earns its place. Not in the first release.</p></div>
+      <div><span><b>The source and its plate</b><span class="where"><code>data/sources.json</code>, <code>provenance.tsx</code>, <code>needs.json</code>, <code>types.ts</code></span><span class="abc"><i>C</i></span></span><p>The <code>homs</code> entry; the “our office” plate whenever a line cites it; an optional <code>seen</code> on needs. Existing tests already check that every source id resolves.</p></div>
+      <div><span><b>The writing rules</b><span class="where"><code>CLAUDE.md</code></span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p>One paragraph: how the office may be mentioned, what it may be said to do, and the cap at reported.</p></div>
+      <div><span><b>Nothing else</b><span class="where"><code>worker.ts</code>, <code>proxy.ts</code>, D1, the map, the planner</span></span><p>Every option is prerendered text and links. No new script, no new request, no new table.</p></div>
+    </div>
+  </section>
+
+  <p class="foot">Mockups for discussion; nothing on fly.sy has changed. What the office is said to do is quoted from homs-reisen.de as read on 18 October 2026. Airline logos are the carriers' trademarks, shown as on the site. The legal points summarise published rules and are not legal advice.</p>
+</main>
+
+<script>
+(() => {
+  // Each phone opens at the part of the page that changes; a reader can still scroll up to see what sits above it.
+  const open = (scr) => {
+    const t = scr.querySelector("#" + scr.dataset.scroll)
+    if (!t) return
+    const prev = scr.style.scrollBehavior
+    scr.style.scrollBehavior = "auto"
+    scr.scrollTop = Math.max(0, t.getBoundingClientRect().top - scr.getBoundingClientRect().top + scr.scrollTop - 96)
+    scr.style.scrollBehavior = prev
+  }
+  const phones = [...document.querySelectorAll(".ph .scr[data-scroll]")]
+  const run = () => phones.forEach(open)
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(run)
+  run()
+})()
+</script>
+</html>
