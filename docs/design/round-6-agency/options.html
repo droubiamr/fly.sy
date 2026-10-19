@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Homs Reisen on fly.sy</title>
+<title>Travel offices on fly.sy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&display=swap">
@@ -68,6 +68,16 @@ a{color:var(--primary)}
 .floor .quote{border-inline-start:3px solid var(--border);padding-inline-start:12px;color:var(--muted-fg);font-size:14.5px}
 .floor ul{margin:0;padding-inline-start:18px;display:grid;gap:6px;font-size:15px}
 .floor li::marker{color:var(--primary)}
+
+/* What an office gets, and never gets. */
+.gets{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:720px){.gets{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.gets>div{border-radius:12px;padding:18px 20px;display:grid;gap:10px;align-content:start;border:1px solid var(--border);background:var(--card)}
+.gets h3{font-size:17px;display:flex;align-items:center;gap:8px}
+.gets h3 .ic{width:18px;height:18px}
+.gets .yes h3{color:var(--open)} .gets .no h3{color:var(--closed)}
+.gets ul{margin:0;padding-inline-start:18px;display:grid;gap:6px;font-size:15px}
+.gets .yes li::marker{color:var(--open)} .gets .no li::marker{color:var(--closed)}
 
 /* Options */
 .opts{display:flex;flex-direction:column;gap:84px}
@@ -189,7 +199,6 @@ pre .k{color:var(--primary);font-weight:700}
 .answer{font-size:14px;line-height:1.7}
 .ways{display:flex;flex-direction:column;gap:10px;margin-top:4px}
 .way{padding:14px}
-.way.off{background:var(--muted);color:var(--muted-fg);box-shadow:inset 0 0 0 4px var(--muted),inset 0 0 0 6px var(--input)}
 .wg{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
 .mi{display:inline-flex;gap:4px}
 .mi i{display:grid;place-items:center;width:38px;height:38px;border-radius:8px;background:var(--on-primary);color:var(--primary)}
@@ -234,52 +243,57 @@ pre .k{color:var(--primary);font-weight:700}
 .prov .own{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:0 6px;font-weight:700;font-size:10.5px;color:var(--caution);box-shadow:inset 0 0 0 1.5px var(--caution)}
 .prov .own .ic{width:11px;height:11px}
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;height:46px;border-radius:9px;background:var(--primary);color:var(--on-primary);font-weight:700;font-size:14px}
-.btn.o{background:var(--card);color:var(--primary);box-shadow:inset 0 0 0 2px var(--primary)}
 .btn .ic{width:18px;height:18px}
 .links2{display:flex;flex-direction:column;gap:6px;margin-top:6px}
 .links2 b{font-size:14px}
 .links2 p{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--primary)}
-.rc{border:1px solid var(--border);border-radius:14px;background:var(--card);padding:12px 16px;display:grid;gap:6px;font-size:13px;line-height:1.65}
-.rc b{font-size:13.5px}
+.alert{border:1px solid var(--border);border-radius:9px;background:var(--card);padding:10px 14px;font-size:12.5px;color:var(--muted-fg);line-height:1.65}
 .fine{font-size:11.5px;color:var(--muted-fg);line-height:1.65}
 .foot-ph{margin-top:14px;border-top:1px solid var(--border);background:var(--card);padding:18px 14px 20px;display:grid;gap:10px;font-size:12.5px;color:var(--muted-fg)}
 .foot-ph .logo{font-size:17px;color:var(--fg)}
-.foot-ph .upd{display:flex;align-items:center;gap:6px;color:var(--fg);font-weight:600}
-.foot-ph .upd .ic{width:14px;height:14px;color:var(--primary)}
 .foot-ph .ex{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
 .foot-ph .grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;color:var(--fg)}
 .new{position:relative}
 .new::after{content:"جديد";position:absolute;inset-inline-end:-4px;top:-10px;background:var(--caution);color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:999px;letter-spacing:.02em}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .new::after{color:#0b1512}}
 :root[data-theme="dark"] .new::after{color:#0b1512}
+/* Cards clip their rounded corners, so their badge sits inside the corner instead of over it. */
+.who.new::after,.card.new::after{top:6px;inset-inline-end:8px}
 
-/* The service plate (option B): white where the way signs are green, with the green rule set in. A plate, not a sign. */
-.svc{background:var(--card);color:var(--fg);border-radius:10px;box-shadow:inset 0 0 0 4px var(--card),inset 0 0 0 6px var(--primary);padding:16px 14px 14px;display:flex;flex-direction:column;gap:10px}
-.svc .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.svc .ad{font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:1px 7px;color:var(--muted-fg);box-shadow:inset 0 0 0 1.5px var(--muted-fg)}
-.svc .by{font-size:11.5px;color:var(--muted-fg)}
-.svc .ttl{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;align-items:center}
-.svc .ttl i{display:grid;place-items:center;width:40px;height:40px;border-radius:8px;background:var(--primary);color:var(--on-primary)}
-.svc .ttl .ic{width:22px;height:22px}
-.svc .ttl b{font-size:16px;line-height:1.3}
-.svc .txt{font-size:13px;line-height:1.65}
-.svc .acts{display:grid;gap:6px}
-.svc .wa{display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:9px;background:var(--primary);color:var(--on-primary);font-weight:700;font-size:13.5px}
-.svc .web{display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border-radius:9px;color:var(--primary);font-weight:700;font-size:13px;box-shadow:inset 0 0 0 2px var(--primary)}
-.svc .web .ic,.svc .wa .ic{width:17px;height:17px}
+/* Chips: what an office offers, in its own words; an airline it names as a partner shows that carrier's tile. */
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:2px 8px;font-size:11.5px;font-weight:600;box-shadow:inset 0 0 0 1.5px var(--border);color:var(--fg)}
+.chip .lt-box{width:18px;height:18px;border-radius:4px;padding:1px}
+.chip.ok{color:var(--open);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--open) 60%,transparent)}
 
-/* Option A: the colophon card on the About page. */
-.who{border:1px solid var(--border);border-radius:14px;background:var(--card);overflow:hidden}
+/* Option A: an office's card on the offices page, the Links page's card shape. */
+.who{border:1px solid var(--border);border-radius:10px;background:var(--card);overflow:hidden}
 .who .wh2{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--secondary);color:var(--on-secondary)}
-.who .mono{display:grid;place-items:center;width:40px;height:40px;border-radius:9px;background:var(--card);color:var(--primary);font-weight:700;font-size:20px;border:1px solid var(--border)}
-.who .nm{display:grid;gap:1px;min-width:0}
+.who .mono{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:9px;background:var(--card);color:var(--primary);font-weight:700;font-size:20px;border:1px solid var(--border)}
+.who .nm{display:grid;gap:1px;min-width:0;flex:1}
 .who .nm b{font-size:14.5px;line-height:1.3}
 .who .nm span{font-size:11.5px;opacity:.85}
-.who .body{padding:12px 14px;font-size:13px;line-height:1.7}
+.who .body{padding:12px 14px 10px;font-size:13px;line-height:1.7;display:grid;gap:8px}
 .who .rowl{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--border);font-size:13px}
 .who .rowl b{font-weight:600}
 .who .rowl span{margin-inline-start:auto;color:var(--muted-fg);font-size:12px}
 .who .rowl .ic{width:15px;height:15px;color:var(--muted-fg)}
+.who .seen{padding:9px 14px;border-top:1px solid var(--border);font-size:11px;color:var(--muted-fg)}
+
+/* Option B: the offices board on a route page, under the papers box. A board like the flights board, never a green sign. */
+.ob .orow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--border)}
+.ob .mono{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--secondary);color:var(--on-secondary);font-weight:700;font-size:17px}
+.ob .on{display:grid;gap:3px;min-width:0}
+.ob .on b{font-size:13.5px;line-height:1.3}
+.ob .on span{font-size:11.5px;color:var(--muted-fg)}
+.ob .wa{display:inline-flex;align-items:center;gap:5px;height:34px;padding-inline:10px;border-radius:8px;background:var(--primary);color:var(--on-primary);font-weight:700;font-size:12px;white-space:nowrap}
+.ob .wa .ic{width:15px;height:15px}
+.ob .why2{display:flex;align-items:center;gap:6px;padding:9px 14px;border-top:1px solid var(--border);font-size:12px;color:var(--primary);font-weight:600}
+.ob .ttl{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;align-items:center;padding:10px 14px 4px}
+.ob .ttl i{display:grid;place-items:center;width:36px;height:36px;border-radius:8px;background:var(--primary);color:var(--on-primary)}
+.ob .ttl .ic{width:20px;height:20px}
+.ob .ttl b{font-size:15px;line-height:1.3}
+.ob .sub{padding:4px 14px 10px;font-size:11.5px;color:var(--muted-fg)}
 
 .tb{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--card);border-top:1px solid var(--border);flex:none;padding-bottom:4px}
 .tb span{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0 5px;color:var(--muted-fg);min-width:0}
@@ -305,23 +319,21 @@ pre .k{color:var(--primary);font-weight:700}
     <symbol id="i-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></symbol>
     <symbol id="i-msgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></symbol>
     <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></symbol>
-    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/></symbol>
     <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
     <symbol id="i-store" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></symbol>
-    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
     <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
-    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
   </defs>
 </svg>
 
 <main class="page">
   <header class="stack">
-    <p class="eyebrow">fly.sy · Pointing to Homs Reisen · 18 October 2026</p>
-    <h1>Three ways to point to Homs Reisen</h1>
+    <p class="eyebrow">fly.sy · Travel offices · 19 October 2026</p>
+    <h1>Three ways to point travellers to a travel office</h1>
     <div class="stack prose">
-      <p class="lede-x">Homs Reisen (حمص للسياحة والسفر) is a travel office in Berlin, founded in 2018, run by the people who make fly.sy. These are three ways the site can send travellers to it without becoming a sales page: a colophon that says who makes the site, a labelled service plate on the route pages where the office can actually help, and the office as a named source with a declared interest.</p>
-      <p class="muted">Every phone is a mockup in the site's own colours, font, icons and airline logos, in Arabic, opened at the part of the page that changes. What the office is said to do comes from its own website as read on 18 October 2026; nothing on fly.sy has been changed.</p>
+      <p class="lede-x">Homs Reisen (حمص للسياحة والسفر) is a Berlin travel office you trust and want to send travellers to, as your own recommendation. More offices will follow, each with its own angle: an airline it books, a taxi from the airport, a car to rent. These are three ways the site can do that without becoming a sales page: a page of recommended offices in the Links page's shape, a board under the facts on the route pages where an office can actually help, and an office as a named source. All three read one data file, so the second office is a data edit, and the page is what you will show the next office when you pitch it.</p>
+      <p class="muted">Every phone is a mockup in the site's own colours, font, icons and airline logos, in Arabic, opened at the part of the page that changes. What Homs Reisen is said to do comes from its own website as read on 18 October 2026. Nothing on fly.sy has been changed.</p>
     </div>
   </header>
 
@@ -329,33 +341,33 @@ pre .k{color:var(--primary);font-weight:700}
     <div class="stack prose">
       <p class="eyebrow">Before any option</p>
       <h2 id="h-floor">Three things every option stands on</h2>
-      <p class="muted">The site's whole value is that a reader can trust what it says about itself. A referral that contradicts the About page costs more than it earns, so these come first, whichever option you pick.</p>
+      <p class="muted">The site's whole value is that a reader can trust what it says. A recommendation borrows that trust, so these come first, whichever option you pick.</p>
     </div>
     <div class="floor">
       <div>
-        <h3>1. One sentence has to change</h3>
-        <p class="quote">“Who is behind fly.sy? An independent project by Syrians in the diaspora. No government body, no airline, <b>no travel agency</b>, and no commission on anything.”</p>
-        <p>That FAQ, the About page (“sells nothing, takes no commission”), the footer line, <code>README.md</code>, <code>HANDOFF.md</code>, the Organization markup and <code>llms.txt</code> all say it. A reader who finds the office behind the site after reading that line stops believing the data too. So the first change is the disclosure, shipped <b>before or with</b> the first referral, and said as a strength: the people who check the flight boards every week also book these flights.</p>
-        <p>“Independent” then needs its object: independent <b>of any government body, airline or embassy</b>. Not bare.</p>
+        <h3>1. The site's word about itself stays true</h3>
+        <p class="quote">“Who is behind fly.sy? An independent project by Syrians in the diaspora. No government body, no airline, no travel agency, and no commission on anything.”</p>
+        <p>Nothing here changes that: no office is behind the site, and none pays. One sentence is added to it: that the site recommends travel offices it knows and trusts. The recommendation is the site's own, like the opinions already in its notes (“a dependable fallback when the direct flights don't fit”), and it is not marked as anything else. <code>HANDOFF.md</code> already says what happens to the “no commission” line if money ever changes hands; that stays your call and is not built here.</p>
       </div>
       <div>
-        <h3>2. The office's site decides what fly.sy may say</h3>
-        <p>The site's first writing rule is “say only what the source says”. The office's website (Arabic, with a German legal notice) says, as of today:</p>
+        <h3>2. An office's own site decides what fly.sy may say</h3>
+        <p>The site's first writing rule is “say only what the source says”. For Homs Reisen the source is homs-reisen.de (Arabic, with a German legal notice), which says, as of today:</p>
         <ul>
           <li>Berlin, founded 2018; “visas, flight tickets, hotels, tourist trips, Umrah and Hajj”.</li>
-          <li>Flight tickets “to any place in the world” on international airlines; departures listed from Berlin, Hamburg, Frankfurt, Düsseldorf and Munich; Sundair among its partner logos.</li>
+          <li>Flight tickets “to any place in the world”; departures listed from Berlin, Hamburg, Frankfurt, Düsseldorf and Munich; Sundair among its partner logos.</li>
           <li>Staff speak Arabic and German. Contact by WhatsApp, phone, email or the Berlin office; its web forms say sending “starts soon”.</li>
           <li><b>Syria is not mentioned anywhere.</b></li>
         </ul>
-        <p>So fly.sy can say “tickets, visas and hotels”, but not “books flights to Syria”, until the office publishes a Syria page. That page is also where every link should land, instead of a home page about Umrah.</p>
+        <p>So fly.sy can say “tickets, visas and hotels” and “Sundair among its partners”, but not “books flights to Syria”, until the office's site does. The same rule gives every later office its chips: an airport taxi or a rental car appears on its card only in the words of its own site.</p>
       </div>
       <div>
-        <h3>3. The office is held to the site's own rules</h3>
+        <h3>3. What a recommendation means, written down</h3>
+        <p>Short, and on the page, so a traveller knows what it is and an office knows what it gets:</p>
         <ul>
-          <li>It is a commercial source, like <code>ops</code>: whatever it says is capped at “reported”, never “verified”, and the About page says so.</li>
-          <li>Its ratings and customer counts stay on its own site; fly.sy repeats facts, not praise.</li>
-          <li>Anything that invites a booking is labelled as an advertisement and names the company, which German law asks for (see below) and which honesty asks for anyway.</li>
-          <li>One mention per page, never above the answer, and never on Official links, News or Experiences: those pages promise to be about other people.</li>
+          <li>Offices you know, have dealt with, or have checked yourself. The card says what each offers in the office's own words, and when its details were last checked.</li>
+          <li>What an office says is a commercial source: capped at “reported”, never “verified”. Its ratings and customer counts stay on its own site.</li>
+          <li>One board per page, after the facts, never above the answer, and never on Official links, News or Experiences: those pages promise to be about other people.</li>
+          <li>The contract is between the traveller and the office. The site's disclaimer already covers the rest.</li>
         </ul>
       </div>
     </div>
@@ -364,18 +376,38 @@ pre .k{color:var(--primary);font-weight:700}
   <section class="verdict" aria-labelledby="h-verdict">
     <div class="stack">
       <p class="eyebrow">My recommendation</p>
-      <h2 id="h-verdict">Ship A with the first referral, make B the referral, and let C grow</h2>
-      <p>A is the floor: who makes the site, said once in the footer and once on the About page. B is where the bookings will come from: one quiet, labelled plate under the facts, only on the route pages with Germany at one end, which hands the traveller's exact plan to the office on WhatsApp. C is the most fly.sy-like idea, but it needs the office to send dated notes every week, so it earns its place over time instead of launching.</p>
+      <h2 id="h-verdict">Build A and B together on one data file; let C grow</h2>
+      <p>A is the page: every office, what it offers in its own words, its contact rows, its date. B is where the bookings come from: a board under the papers box on the route pages of the office's markets, one row per office, with a WhatsApp button that hands over the traveller's exact plan. B needs A to point at (“why we recommend them”), and A without B is a page nobody finds. C is the most fly.sy-like idea, but it needs an office to send dated notes, so it earns its place over time instead of launching.</p>
     </div>
     <div class="stack">
       <ol class="steps">
-        <li><span><b>Settle the words and the legal notice.</b> The disclosure sentence in both languages (proposed below) and whether fly.sy gets an imprint page. The office is a sole trader (Homs e. K.), so an imprint names its owner; this settles the open question in <code>HANDOFF.md</code>.</span></li>
-        <li><span><b>The office publishes its Syria page.</b> In Arabic and German: what it books from Germany, what it needs from the traveller, how to reach it. Every link from fly.sy lands there, with a UTM tag per placement.</span></li>
-        <li><span><b>Ship A.</b> The sentence everywhere it is said today, the “Who makes fly.sy” section, the footer line.</span></li>
-        <li><span><b>Ship B.</b> <code>data/agency.json</code>, the plate under the papers box on the Germany route pages in both directions, <code>rel="sponsored"</code>, the WhatsApp handoff.</span></li>
-        <li><span><b>After four weeks.</b> Read the office's analytics and decide the Documents page and C.</span></li>
+        <li><span><b>Write the words.</b> The added FAQ sentence, the page's lede and its “why these offices” paragraph, the board's title. Proposed below, in both languages.</span></li>
+        <li><span><b>Ask Homs Reisen.</b> Whether it wants to be listed, who answers its WhatsApp, and whether it will put up a Syria page in Arabic and German for the links to land on.</span></li>
+        <li><span><b>Ship A and B together.</b> <code>data/agencies.json</code>, the offices page, the board on the Germany route pages in both directions, the footer link, the FAQ sentence.</span></li>
+        <li><span><b>After four weeks, pull the numbers.</b> The admin dashboard counts views per page, so the pitch to the next office can say how many people looked at its market's pages last month, and what an office on fly.sy gets (below).</span></li>
+        <li><span><b>C when an office sends notes.</b> One source entry, the tag on its lines, nothing else.</span></li>
       </ol>
-      <p class="decide"><b>One decision before anything ships:</b> does the office want to be named on fly.sy at all? Every option names it. If the answer is no, nothing here applies, and the site keeps its current line truthfully only if the office is not in fact behind it.</p>
+      <p class="decide"><b>One decision before anything ships:</b> the order of rows when two offices share a market. File order (the order you added them) or the check date are both explainable; decide now, before an office asks.</p>
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="h-gets" style="gap:20px">
+    <div class="stack prose"><p class="eyebrow">The pitch, in one breath</p><h2 id="h-gets">What an office on fly.sy gets, and what it never gets</h2><p class="muted">This is what you tell the next office. The second column is what keeps the first worth having.</p></div>
+    <div class="gets">
+      <div class="yes"><h3><svg class="ic"><use href="#i-check"/></svg>An office on fly.sy gets</h3><ul>
+        <li>A row on every route page of its markets, both directions, both languages, under the facts: the moment someone is planning that exact trip.</li>
+        <li>A card on the offices page with what it offers and the date it was last checked, so travellers can see the listing is alive.</li>
+        <li>Its own angle, in its own words: the airlines it names, an airport taxi, a rental car, visas, hotels, Umrah. An airline it names as a partner shows that carrier's tile on routes that carrier flies.</li>
+        <li>A WhatsApp button that opens with the traveller's plan already written: the route page's address, and the passport.</li>
+        <li>Tagged traffic it can see in its own analytics, one tag per placement, and the month's view count for its market from the dashboard.</li>
+      </ul></div>
+      <div class="no"><h3><svg class="ic"><use href="#i-x"/></svg>It never gets</h3><ul>
+        <li>A say in the facts, or a line changed, added or removed for it.</li>
+        <li>A “verified” grade: what it says stays “reported”, like every operator.</li>
+        <li>A place above the answer, a green sign, or a place on the Official links, News or Experiences pages.</li>
+        <li>Its ratings or customer counts repeated on fly.sy, or a chip its own site does not back.</li>
+        <li>A row that outlives the recommendation.</li>
+      </ul></div>
     </div>
   </section>
 
@@ -390,63 +422,63 @@ pre .k{color:var(--primary);font-weight:700}
 <article class="opt" id="a" aria-labelledby="a-h">
   <div class="opt-head">
     <span class="plate" aria-hidden="true">A</span>
-    <div><h3 id="a-h">A. The colophon: say who makes it</h3><p class="ar" dir="rtl" lang="ar">من يصنع fly.sy</p></div>
-    <div class="tags"><span class="tag fill">The floor, in every case</span></div>
+    <div><h3 id="a-h">A. The offices page: recommended, dated, in their own words</h3><p class="ar" dir="rtl" lang="ar">صفحة مكاتب السفر</p></div>
+    <div class="tags"><span class="tag fill">Recommended, with B</span></div>
   </div>
   <div class="opt-body">
     <div class="opt-phone">
-      <p class="url"><span dir="ltr">fly.sy/about</span></p>
-      <div class="ph" role="group" aria-label="نموذج: قسم «من يصنع fly.sy» في صفحة عن الموقع">
+      <p class="url"><span dir="ltr">fly.sy/agencies</span></p>
+      <div class="ph" role="group" aria-label="نموذج: صفحة مكاتب السفر">
         <div class="hd"><span class="logo" dir="ltr">fly<b>.sy</b></span><span class="grow"></span><span class="hbtn"><svg class="ic"><use href="#i-search"/></svg></span><span class="hbtn" dir="ltr">English</span></div>
         <div class="scr" tabindex="0" data-scroll="a-new">
           <div class="pg">
-            <p class="crumbs">الرئيسية <span>/</span> عن الموقع</p>
-            <h3 class="h1">من أين تأتي المعلومات</h3>
-            <p class="lede">كل سطر يحمل مصدره ودرجة ثقته وتاريخ مراجعته. حين لا نجد مصدراً موثوقاً نقول ذلك بدل أن نملأ الفراغ بتخمين.</p>
-            <p class="h2">تواصل معنا</p>
-            <p class="lede" style="color:var(--fg)">تصحيح، طريق لا نعرفه، أو سؤال: راسلنا على <u dir="ltr">info@fly.sy</u></p>
-            <div class="rc"><b>حابب تبني fly.sy معنا؟</b><p class="muted">إذا عندك خبرة برمجية backend أو تصميمية frontend وتقدر تفيد الموقع من خبراتك، حط إيدك بإيدنا.</p></div>
+            <p class="crumbs">الرئيسية <span>/</span> مكاتب سفر</p>
+            <h3 class="h1">مكاتب سفر نوصي بها</h3>
+            <p class="lede">مكاتب سفر نعرفها ونثق بها، لمن يفضّل أن يحجز له إنسان. تقول كل بطاقة ما يقدّمه المكتب بكلماته هو، ومتى راجعنا بياناتها. العقد بينك وبين المكتب لا معنا.</p>
+            <p class="alert">ما يقوله مكتب لا يتجاوز درجة «من تقارير»، والتوصية لا تغيّر سطراً من المعلومات على الموقع. أكّد السعر والشروط مع المكتب نفسه قبل أن تدفع.</p>
 
-            <p class="h2 new" id="a-new">من يصنع fly.sy</p>
-            <div class="who">
+            <div class="who new" id="a-new">
               <div class="wh2">
                 <span class="mono" aria-hidden="true">ح</span>
                 <span class="nm"><b>حمص للسياحة والسفر</b><span dir="ltr">Homs Reisen · Berlin · 2018</span></span>
               </div>
-              <p class="body">مكتب سفر في برلين منذ 2018، يبيع تذاكر الطيران والتأشيرات والفنادق ورحلات العمرة، ويتحدث العربية والألمانية. فريقه هو من يكتب هذا الموقع ويراجعه. الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة، وحين نذكر المكتب في أي مكان على fly.sy نقول إنه مكتبنا ونعامله كأي مصدر تجاري: ما يقوله لا يتجاوز درجة «من تقارير».</p>
+              <div class="body">
+                <p>مكتب سفر في برلين: تذاكر طيران وتأشيرات وفنادق ورحلات عمرة. يتحدث العربية والألمانية، ويذكر موقعه صن دير بين شركائه.</p>
+                <div class="chips"><span class="chip ok"><span class="lt-box"><span class="lt lg-SR" aria-hidden="true"></span></span>شريك: صن دير</span><span class="chip">تذاكر طيران</span><span class="chip">تأشيرات</span><span class="chip">فنادق</span><span class="chip">عمرة</span></div>
+              </div>
               <div class="rowl"><b>الموقع</b><span dir="ltr">homs-reisen.de</span><svg class="ic"><use href="#i-up"/></svg></div>
+              <div class="rowl"><b>واتساب</b><span dir="ltr">wa.me/491629171309</span><svg class="ic"><use href="#i-up"/></svg></div>
+              <p class="seen">روجع 18 تشرين الأول 2026</p>
             </div>
 
-            <p class="h2">قبل أن تخطط</p>
-            <div class="rc"><p>fly.sy يعطيك فكرة عمّا تتوقعه. نجمع المعلومات ونعرض مصدر كل سطر، ولا نتحمّل أي مسؤولية عن هذه المعلومات ولا عن أي شيء يترتب عليها.</p><p>أنت، كزائر أو مسافر، مسؤول عن التأكد من كل شيء من المصادر نفسها أو من الجهات المعنية: شركة الطيران، المطار، السفارة، المعبر.</p></div>
-            <p class="fine">هذا الموقع نقطة انطلاق للتحقق لا بديل عنه. أكّد كل شيء مع شركة الطيران أو السفارة، ولا تشترِ تذكرة غير قابلة للاسترداد قبل أن تتأكد من أوراقك.</p>
+            <p class="lede" style="margin-top:4px">تدير مكتب سفر وتريد أن تكون هنا؟ راسلنا على <u dir="ltr">info@fly.sy</u></p>
           </div>
           <div class="foot-ph">
             <p class="logo" dir="ltr">fly<b>.sy</b></p>
-            <p>موقع غير رسمي، مستقل عن أي جهة حكومية أو شركة طيران أو سفارة. يصنعه فريق مكتب حمص للسياحة والسفر في برلين؛ الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة. يُحدَّث يدوياً ومن تجارب الناس.</p>
-            <p class="upd"><svg class="ic"><use href="#i-cal"/></svg>آخر تحديث 18 تشرين الأول 2026، 06:51</p>
+            <p>موقع مستقل، غير رسمي، لا يتبع أي جهة حكومية ولا يمثّل أي شركة طيران أو سفارة. يُحدَّث يدوياً ومن تجارب الناس.</p>
             <p class="ex">استكشف</p>
-            <div class="grid"><span>رحلتي</span><span>الطيران</span><span>المعابر</span><span>الأوراق المطلوبة</span><span>الأخبار</span><span>تجارب</span><span>روابط رسمية</span><span>عن الموقع</span></div>
+            <div class="grid"><span>رحلتي</span><span>الطيران</span><span>المعابر</span><span>الأوراق المطلوبة</span><span>الأخبار</span><span>تجارب</span><span>روابط رسمية</span><span class="new" style="display:inline-block">مكاتب سفر</span><span>عن الموقع</span></div>
           </div>
         </div>
         <nav class="tb" aria-hidden="true"><span><i><svg class="ic"><use href="#i-pin"/></svg></i><b>رحلتي</b></span><span><i><svg class="ic"><use href="#i-plane"/></svg></i><b>الطيران</b></span><span><i><svg class="ic"><use href="#i-land"/></svg></i><b>المعابر</b></span><span><i><svg class="ic"><use href="#i-file"/></svg></i><b>الأوراق</b></span><span><i><svg class="ic"><use href="#i-news"/></svg></i><b>الأخبار</b></span><span><i><svg class="ic"><use href="#i-msgs"/></svg></i><b>تجارب</b></span><span><i><svg class="ic"><use href="#i-link"/></svg></i><b>روابط</b></span></nav>
       </div>
-      <p class="cap">The About page, scrolled to the new section, and the footer with the new sentence. Scroll the phone.</p>
+      <p class="cap">A new page in the Links page's shape: a short lede, one card per office, a line for offices that want in, a footer link. Scroll the phone.</p>
     </div>
     <div class="opt-text">
-      <p class="lead">No sales language at all. The footer says who makes the site in one sentence, and the About page gets a “Who makes fly.sy” card: the office, its city, its founding year, what it sells in its own words, and the promise that what it says is treated like any other commercial source. The link goes to the office's website.</p>
+      <p class="lead">A page of its own, <code>/agencies</code>, built like the Links page: a short lede saying what the page is, then one card per office with its city, its languages, what it offers in its own words, its contact rows, and the date its details were last checked. The footer links to it; the route pages link to it from the papers box, or through B. The last line invites offices to write in, which is where the later pitch starts.</p>
       <h4>How it works</h4>
       <ul class="how">
-        <li>The footer's independence line (<code>indep</code> in <code>messages/index.ts</code>) and the About page's “What fly.sy is” text change in both languages; the FAQ “Who is behind fly.sy?” gets a new answer. Proposed words are below.</li>
-        <li>The same sentence goes into <code>README.md</code>, <code>HANDOFF.md</code>, the Organization description in <code>schema.ts</code> and the intro of <code>llms.txt</code>, so no copy of the old claim survives anywhere a reader or an assistant looks.</li>
-        <li>The card is the Links page's card shape (header band, body, one row per address), so it reads as a fact about a body, not as a banner. The monogram tile stands in for the office's emblem, which <code>scripts/link-logos.mjs</code> can pull from its site.</li>
-        <li>The link carries <code>?utm_source=fly.sy&amp;utm_medium=referral&amp;utm_campaign=colophon</code>, so the office's own analytics show what the About page brings. A plain link, no <code>sponsored</code>: this is a disclosure, not an advertisement.</li>
+        <li><b>One data file.</b> <code>data/agencies.json</code>, one record per office: names, city, founding year, languages, what it offers (text in its own words), <code>services</code> and <code>airlines</code> as codes for the chips, <code>markets</code> as origin ids, its links, the page that vouches for it (<code>via</code>), and <code>seen</code>. A second office is one more record. The shape is below.</li>
+        <li><b>Chips in the office's words.</b> “Partner: Sundair” because its site lists Sundair among its partners; tickets, visas, hotels, Umrah because its site sells them. A later office with an airport taxi gets a taxi chip the same way. No chip without a sentence on the office's own site.</li>
+        <li><b>The date is the promise.</b> As on the Links page, <code>seen</code> is the day the card's addresses were opened and its text compared with the office's site. A card nobody has re-checked for months says so by itself.</li>
+        <li>Not on the Links page: that page promises official bodies, and a commercial card there would cost it that promise. A new page keeps the two apart, and gives offices a page to be found on.</li>
+        <li>Links carry <code>utm_source=fly.sy&amp;utm_medium=referral&amp;utm_campaign=agencies</code>. The office's emblem comes through <code>scripts/link-logos.mjs</code> like the emblems on the Links page.</li>
       </ul>
       <div class="gw">
-        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>Costs no trust and adds some: the people who verify the flight boards also book the flights. Nothing on the route pages changes. The lightest legal footprint: it names the company, which is all a disclosure needs.</p></div>
-        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>Few people read footers or About pages, so on its own it brings little business. It is a floor, not a referral. It also makes the imprint question real: a site run for a German business usually needs one.</p></div>
+        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>The structure the site already uses for bodies it vouches for, so it reads as a fact page and not as a banner. Scales to twenty offices without a redesign. It is the page you will show the next office.</p></div>
+        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>A page nobody is sent to is a page nobody reads; it needs B, or at least a link from the papers box. The date is a promise that takes a few minutes every quarter per office.</p></div>
       </div>
-      <dl class="size"><div><dt>Size of the job</dt><dd>Small</dd></div><div><dt>Where it shows</dt><dd>Footer, About page</dd></div><div><dt>Office must do first</dt><dd>Nothing</dd></div></dl>
+      <dl class="size"><div><dt>Size of the job</dt><dd>Medium</dd></div><div><dt>Where it shows</dt><dd>A new page; footer; papers box link</dd></div><div><dt>Office must do first</dt><dd>Agree to be listed</dd></div></dl>
     </div>
   </div>
 </article>
@@ -455,13 +487,13 @@ pre .k{color:var(--primary);font-weight:700}
 <article class="opt" id="b" aria-labelledby="b-h">
   <div class="opt-head">
     <span class="plate" aria-hidden="true">B</span>
-    <div><h3 id="b-h">B. The service plate: help, after the facts, where it applies</h3><p class="ar" dir="rtl" lang="ar">لوحة الخدمة تحت الأوراق</p></div>
+    <div><h3 id="b-h">B. The offices board: after the facts, where an office can help</h3><p class="ar" dir="rtl" lang="ar">لوحة المكاتب تحت الأوراق</p></div>
     <div class="tags"><span class="tag fill">Recommended, with A</span></div>
   </div>
   <div class="opt-body">
     <div class="opt-phone">
       <p class="url"><span dir="ltr">fly.sy/from/germany/to/damascus</span></p>
-      <div class="ph" role="group" aria-label="نموذج: لوحة الخدمة في صفحة من ألمانيا إلى دمشق">
+      <div class="ph" role="group" aria-label="نموذج: لوحة المكاتب في صفحة من ألمانيا إلى دمشق">
         <div class="hd"><span class="logo" dir="ltr">fly<b>.sy</b></span><span class="grow"></span><span class="hbtn"><svg class="ic"><use href="#i-search"/></svg></span><span class="hbtn" dir="ltr">English</span></div>
         <div class="scr" tabindex="0" data-scroll="b-new">
           <div class="q">
@@ -516,15 +548,16 @@ pre .k{color:var(--primary);font-weight:700}
             </div>
             <span class="btn">الأوراق المطلوبة</span>
 
-            <div class="svc new" id="b-new">
-              <div class="top"><span class="ad">إعلان</span><span class="by">من صانعي fly.sy</span></div>
+            <div class="card ob new" id="b-new">
               <div class="ttl"><i><svg class="ic"><use href="#i-store"/></svg></i><b>تفضّل أن يحجز لك إنسان؟</b></div>
-              <p class="txt">حمص للسياحة والسفر، مكتب السفر الذي يصنع fly.sy، في برلين منذ 2018: تذاكر طيران وتأشيرات وفنادق. يتحدثون العربية والألمانية.</p>
-              <div class="acts">
-                <span class="wa"><svg class="ic"><use href="#i-chat"/></svg>أرسل هذه الخطة على واتساب</span>
-                <span class="web" dir="ltr">homs-reisen.de<svg class="ic"><use href="#i-up"/></svg></span>
+              <p class="sub">مكاتب سفر نوصي بها على هذا الطريق</p>
+              <div class="orow">
+                <span class="mono" aria-hidden="true">ح</span>
+                <span class="on"><b>حمص للسياحة والسفر</b><span>برلين · العربية والألمانية</span>
+                  <span class="chips"><span class="chip ok"><span class="lt-box"><span class="lt lg-SR" aria-hidden="true"></span></span>شريك: صن دير</span><span class="chip">تأشيرات</span><span class="chip">فنادق</span></span></span>
+                <span class="wa"><svg class="ic"><use href="#i-chat"/></svg>واتساب</span>
               </div>
-              <p class="fine">fly.sy نفسه لا يبيع شيئاً ولا يأخذ عمولة. المكتب مكتبنا، ولهذا نقولها.</p>
+              <p class="why2">لماذا نوصي بها <svg class="ic" style="width:14px;height:14px;transform:scaleX(-1)"><use href="#i-up"/></svg></p>
             </div>
 
             <div class="links2"><b>وجهات أخرى من ألمانيا</b><p><span>حلب</span><span>دير الزور</span><span>اللاذقية</span><span>القامشلي</span></p></div>
@@ -532,31 +565,29 @@ pre .k{color:var(--primary);font-weight:700}
           </div>
           <div class="foot-ph">
             <p class="logo" dir="ltr">fly<b>.sy</b></p>
-            <p>موقع غير رسمي، مستقل عن أي جهة حكومية أو شركة طيران أو سفارة. يصنعه فريق مكتب حمص للسياحة والسفر في برلين؛ الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة.</p>
+            <p>موقع مستقل، غير رسمي، لا يتبع أي جهة حكومية ولا يمثّل أي شركة طيران أو سفارة. يُحدَّث يدوياً ومن تجارب الناس.</p>
           </div>
         </div>
         <nav class="tb" aria-hidden="true"><span class="on"><i><svg class="ic"><use href="#i-pin"/></svg></i><b>رحلتي</b></span><span><i><svg class="ic"><use href="#i-plane"/></svg></i><b>الطيران</b></span><span><i><svg class="ic"><use href="#i-land"/></svg></i><b>المعابر</b></span><span><i><svg class="ic"><use href="#i-file"/></svg></i><b>الأوراق</b></span><span><i><svg class="ic"><use href="#i-news"/></svg></i><b>الأخبار</b></span><span><i><svg class="ic"><use href="#i-msgs"/></svg></i><b>تجارب</b></span><span><i><svg class="ic"><use href="#i-link"/></svg></i><b>روابط</b></span></nav>
       </div>
-      <p class="cap">The real Germany → Damascus page as of 8 October, scrolled to the papers box. The plate is the only new thing. Scroll up to see how far below the answer it sits.</p>
+      <p class="cap">The real Germany → Damascus page as of 8 October, scrolled to the papers box. The board is the only new thing. Scroll up to see how far below the answer it sits.</p>
     </div>
     <div class="opt-text">
-      <p class="lead">Under the papers box, after every fact on the page, a white plate with the green rule set in: the inverse of a way sign. It says the office exists, what it does in its own words, that it is ours, and it offers one action: send this plan on WhatsApp. It appears only on route pages with Germany at one end, in both directions.</p>
+      <p class="lead">Under the papers box, after every fact on the page, a white board like the flights board: a question as its title, one row per office that serves this route's country, and a WhatsApp button on each row. The row carries the office's city, its languages and its chips; an airline it names as a partner shows that carrier's tile when the carrier flies this route. Nothing is green, nothing sits above the answer, and 22 of the 24 countries' pages do not change.</p>
       <h4>How it works</h4>
       <ul class="how">
-        <li><b>A plate, not a sign.</b> On fly.sy green signs are the ways themselves; white plates carry extra information (“Fastest”, “Syrians only”). The office gets a plate, so it never looks like a route. Real road signs do the same: services sit on a different colour from directions.</li>
-        <li><b>Only where the office can help.</b> <code>data/agency.json</code> lists the office's markets as origin ids (<code>["DE"]</code> to start; Austria or Switzerland only if its site says so). The plate renders when the route's country is in that list, so 22 of the 24 countries' pages stay exactly as they are today.</li>
-        <li><b>After the facts, never above them.</b> The plate comes after the answer, the signs, the estimates note and the papers. People who have their answer and still want someone to do it are the ones who scroll this far.</li>
-        <li><b>The handoff carries the plan.</b> The WhatsApp button is a plain link to <code>wa.me/491629171309</code> with a prefilled message that contains the page's own address, so the office sees exactly what the traveller saw. Nothing is typed twice and nothing is stored on fly.sy. The passport (<code>?p=</code>) can be appended by the existing passport state component.</li>
-        <li><b>Labelled.</b> “إعلان · من صانعي fly.sy” (“Ad · from the makers of fly.sy”) on the plate, the company named in the text, <code>rel="sponsored noopener noreferrer"</code> on both links, and a UTM tag per placement: <code>utm_campaign=route-plate&amp;utm_content=de-damascus</code>.</li>
-        <li><b>Says what the office's site says.</b> Today that is tickets, visas, hotels, Arabic and German. The day the office's Syria page is up, the text can become “يحجز الرحلات إلى سوريا من ألمانيا” and the link can land on it.</li>
-        <li>The office's web forms are not live (“starts soon”), so the actions are WhatsApp and the website. English pages show the same plate with “Arabic and German spoken”, so an English reader knows what to expect.</li>
+        <li><b>A board, not a sign.</b> Green signs are the ways themselves; boards are information that goes with them (the flights board, the papers box). The offices get a board, so a hurried reader never takes them for a route.</li>
+        <li><b>Rows by market.</b> The board lists the offices whose <code>markets</code> include the route's country, in both directions: Germany → Damascus and Damascus → Germany. One office today, several later; the board grows a row, not a redesign.</li>
+        <li><b>The handoff carries the plan.</b> The WhatsApp button is a plain link to the office's <code>wa.me</code> number with a prefilled message that names fly.sy and contains the page's own address, so the office knows where the traveller came from and what they saw, and nothing is typed twice or stored on fly.sy. The passport (<code>?p=</code>) can be appended by the existing passport state component.</li>
+        <li><b>The chips tie the office to the route.</b> “Partner: Sundair” appears on this page because Sundair is on this page's flights board and on the office's partner list. On a page Sundair does not fly, the chip stays off. A taxi or car-rental chip from a later office shows wherever that office's markets apply.</li>
+        <li>“Why we recommend them” links to the offices page (A). Links carry <code>utm_campaign=route-board&amp;utm_content=de-damascus</code>.</li>
         <li>Server-rendered, no script, prerendered like the rest of the page; <code>worker.ts</code> and the Workers Free CPU budget are untouched.</li>
       </ul>
       <div class="gw">
-        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>The only option that puts the office in front of someone at the moment they are planning that exact trip, and the only one with a real action. Still quiet: one plate, below everything, on 2 of 24 countries, labelled, in the site's own vocabulary.</p></div>
-        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>The site now carries an advertisement, so the German rules on marking commercial communication apply in full, and the imprint question stops being optional. It needs the office's Syria page to be worth clicking. And it is the one place a hurried reader might mistake the plate for part of the answer; the label and the colour are what prevent that.</p></div>
+        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>The only option that puts an office in front of someone at the moment they are planning that exact trip, with a real action. It is also the thing you will pitch: a row on the pages of a market. Still quiet: one board, below everything, only on the markets an office serves, in the site's own vocabulary.</p></div>
+        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>The board is worth clicking only if the office's own site has something to land on; today that is an Umrah home page. With several offices in one market, their order becomes a thing offices will ask about. And a board written like an advert reads like one, so the row stays to facts: what the office sells, where, in which languages.</p></div>
       </div>
-      <dl class="size"><div><dt>Size of the job</dt><dd>Medium (plus A)</dd></div><div><dt>Where it shows</dt><dd>10 route pages × 2 directions × 2 languages, Germany only</dd></div><div><dt>Office must do first</dt><dd>A Syria page, WhatsApp ready</dd></div></dl>
+      <dl class="size"><div><dt>Size of the job</dt><dd>Medium, with A</dd></div><div><dt>Where it shows</dt><dd>10 route pages × 2 directions × 2 languages per market</dd></div><div><dt>Office must do first</dt><dd>Answer WhatsApp; a page to land on</dd></div></dl>
     </div>
   </div>
 </article>
@@ -565,7 +596,7 @@ pre .k{color:var(--primary);font-weight:700}
 <article class="opt" id="c" aria-labelledby="c-h">
   <div class="opt-head">
     <span class="plate" aria-hidden="true">C</span>
-    <div><h3 id="c-h">C. The named source: the office earns its byline</h3><p class="ar" dir="rtl" lang="ar">المكتب مصدراً مُعلَن المصلحة</p></div>
+    <div><h3 id="c-h">C. The named source: an office earns its byline</h3><p class="ar" dir="rtl" lang="ar">المكتب مصدراً مسمّى</p></div>
     <div class="tags"><span class="tag outline">Later, when the notes exist</span></div>
   </div>
   <div class="opt-body">
@@ -600,7 +631,7 @@ pre .k{color:var(--primary);font-weight:700}
             <div class="card need"><p class="ch">ما تحتاجه على هذا الطريق</p><p class="cs">تأشيرة عند الوصول · طيران</p>
               <ul>
                 <li><i class="box"></i><span>جواز صالح ستة أشهر بعد عودتك، وفيه صفحتان فارغتان.<span class="prov">المصدر: <u>نشرات سفر حكومية أجنبية</u></span></span></li>
-                <li class="new" id="c-new"><i class="box"></i><span>أهم نقطة: حتى لو كانت جنسيتك مؤهلة للتأشيرة عند الوصول، أنظمة بعض شركات الطيران لم تُحدَّث وقد ترفض إركابك دون موافقة مسبقة. اتصل بالسفارة واطلب الجواب كتابةً.<span class="prov">من تقارير · المصدر: <u>حمص للسياحة والسفر</u> <span class="own"><svg class="ic"><use href="#i-user"/></svg>مكتبنا</span> · روجع 18 تشرين الأول 2026</span></span></li>
+                <li class="new" id="c-new"><i class="box"></i><span>أهم نقطة: حتى لو كانت جنسيتك مؤهلة للتأشيرة عند الوصول، أنظمة بعض شركات الطيران لم تُحدَّث وقد ترفض إركابك دون موافقة مسبقة. اتصل بالسفارة واطلب الجواب كتابةً.<span class="prov">من تقارير · المصدر: <u>حمص للسياحة والسفر</u> <span class="own"><svg class="ic"><use href="#i-store"/></svg>مكتب سفر</span> · روجع 18 تشرين الأول 2026</span></span></li>
                 <li><i class="box"></i><span>الرسم نقداً بالدولار عند الوصول، تقريباً بين 25 و400 دولار حسب الجنسية، بموجب القرار 128 منذ 6 تموز 2025.<span class="prov">المصدر: <u>نشرات سفر حكومية أجنبية</u></span></span></li>
                 <li><i class="box"></i><span>ختم دخول إلى إسرائيل في جوازك قد يمنع منحك التأشيرة.<span class="prov">المصدر: شركات سياحة عاملة في سوريا</span></span></li>
               </ul>
@@ -611,22 +642,22 @@ pre .k{color:var(--primary);font-weight:700}
         </div>
         <nav class="tb" aria-hidden="true"><span class="on"><i><svg class="ic"><use href="#i-pin"/></svg></i><b>رحلتي</b></span><span><i><svg class="ic"><use href="#i-plane"/></svg></i><b>الطيران</b></span><span><i><svg class="ic"><use href="#i-land"/></svg></i><b>المعابر</b></span><span><i><svg class="ic"><use href="#i-file"/></svg></i><b>الأوراق</b></span><span><i><svg class="ic"><use href="#i-news"/></svg></i><b>الأخبار</b></span><span><i><svg class="ic"><use href="#i-msgs"/></svg></i><b>تجارب</b></span><span><i><svg class="ic"><use href="#i-link"/></svg></i><b>روابط</b></span></nav>
       </div>
-      <p class="cap">The papers box for a visa-on-arrival passport. The second line is today's anonymous tour-operator line, shown as if the office had sent it in, dated, with the declared-interest plate.</p>
+      <p class="cap">The papers box for a visa-on-arrival passport. The second line is today's anonymous tour-operator line, shown as if the office had sent it in, dated, with the “travel office” tag.</p>
     </div>
     <div class="opt-text">
-      <p class="lead">The office contributes what it actually learns from booking: which airline asked for what at the Düsseldorf check-in, how long a pre-approval took for a client, which fares were refundable. Each note is a dated line with the office as its named source, capped at “reported”, with a small plate that says “our office”. The referral is the byline: a reader meets the office at the moment one of its facts helps them.</p>
+      <p class="lead">An office contributes what it actually learns from booking: which airline asked for what at the Düsseldorf check-in, how long a pre-approval took for a client, which fares were refundable. Each note is a dated line with the office as its named source, capped at “reported”, with a small tag that says it is a travel office. The referral is the byline: a reader meets the office at the moment one of its facts helps them.</p>
       <h4>How it works</h4>
       <ul class="how">
-        <li>One new entry in <code>data/sources.json</code>, <code>homs</code>: name, kind “Commercial source, and our own office”, use “What the office sees when booking and at check-in on routes from Germany. A declared interest, so reported, never verified”, and its URL with <code>utm_campaign=source</code>. The About page's source list shows it automatically, with that wording.</li>
-        <li>Lines in <code>needs.json</code> and notes on routes can then cite <code>homs</code> instead of the anonymous <code>ops</code> where the office is the one who knows. <code>Provenance</code> adds the “مكتبنا / our office” plate whenever the source is the office, so the interest is visible at every citation, not only on the About page.</li>
+        <li>One entry per contributing office in <code>data/sources.json</code>: name, kind “Travel office; a commercial source”, use “What the office sees when booking and at check-in on routes from Germany. A commercial source, so reported, never verified”, and its URL with <code>utm_campaign=source</code>. The About page's source list shows it automatically, with that wording.</li>
+        <li>Lines in <code>needs.json</code> and notes on routes can then cite the office instead of the anonymous <code>ops</code> where the office is the one who knows. <code>Provenance</code> adds the “مكتب سفر / travel office” tag whenever the source is an office, so the interest is visible at every citation.</li>
         <li>Needs get an optional <code>seen</code> date so an office note shows when it was last true, as flights do.</li>
-        <li>The same rules as every source: a note says what happened, with a date, and is re-checked on the weekly pass. Tour-operator claims are capped at reported today; the owner's own office must be too, or the cap means nothing.</li>
+        <li>The same rules as every source: a note says what happened, with a date, and is re-read on the weekly pass. Tour-operator claims are capped at reported today; a recommended office's must be too, or the cap means nothing.</li>
       </ul>
       <div class="gw">
-        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>The most fly.sy of the three: the office is useful before it is visible, and the declared interest is the site's honesty model applied to itself. Natural links, no advertisement, no label needed. Over months it builds the one thing a travel office cannot buy: a record of being right.</p></div>
-        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>It only works if the office really sends dated notes every week; an empty source is worse than none. Slow to bring bookings. And every office note must pass the writing rules: no “always”, no “never”, no consequence the note does not state.</p></div>
+        <div><h4 class="good"><svg class="ic"><use href="#i-check"/></svg>Good</h4><p>The most fly.sy of the three: an office is useful before it is visible, and the tag is the site's honesty model applied to a commercial source. Natural links, no banner. Over months it builds the one thing an office cannot buy: a record of being right.</p></div>
+        <div><h4 class="watch"><svg class="ic"><use href="#i-warn"/></svg>Watch out</h4><p>It only works if an office really sends dated notes; an empty source is worse than none. Slow to bring bookings. Every office note must pass the writing rules: no “always”, no “never”, no consequence the note does not state.</p></div>
       </div>
-      <dl class="size"><div><dt>Size of the job</dt><dd>Medium, plus a weekly habit</dd></div><div><dt>Where it shows</dt><dd>Under each fact the office sent; the About page's source list</dd></div><div><dt>Office must do first</dt><dd>Send the first dated notes</dd></div></dl>
+      <dl class="size"><div><dt>Size of the job</dt><dd>Small to medium, plus a weekly habit</dd></div><div><dt>Where it shows</dt><dd>Under each fact an office sent; the About page's source list</dd></div><div><dt>Office must do first</dt><dd>Send the first dated notes</dd></div></dl>
     </div>
   </div>
 </article>
@@ -636,114 +667,119 @@ pre .k{color:var(--primary);font-weight:700}
   <section class="stack" aria-labelledby="h-cmp" style="gap:20px">
     <div class="stack"><p class="eyebrow">Side by side</p><h2 id="h-cmp">What each one does, and what it costs</h2></div>
     <div class="tw"><table>
-      <thead><tr><th scope="col"><span class="vh">Aspect</span></th><th scope="col">A<br><small>Colophon</small></th><th scope="col">B<br><small>Service plate</small></th><th scope="col">C<br><small>Named source</small></th></tr></thead>
+      <thead><tr><th scope="col"><span class="vh">Aspect</span></th><th scope="col">A<br><small>Offices page</small></th><th scope="col">B<br><small>Offices board</small></th><th scope="col">C<br><small>Named source</small></th></tr></thead>
       <tbody>
-        <tr><th scope="row">Where it appears</th><td>Footer and About page</td><td>Route pages with Germany at one end, after the papers box</td><td>Under each fact the office sent; the About page's source list</td></tr>
-        <tr><th scope="row">Who meets the office</th><td>Readers checking who we are</td><td>People planning a trip between Germany and Syria</td><td>Readers checking where a line came from</td></tr>
-        <tr><th scope="row">Offers an action</th><td><span class="mk n"><i></i>No, a link</span></td><td><span class="mk y"><i></i>WhatsApp with the plan</span></td><td><span class="mk n"><i></i>No, a link</span></td></tr>
-        <tr><th scope="row">Labelled as an ad</th><td><span class="mk p"><i></i>No: a disclosure</span></td><td><span class="mk y"><i></i>Yes</span></td><td><span class="mk p"><i></i>No: a byline with the interest declared</span></td></tr>
-        <tr><th scope="row">Trust cost</th><td>None; it adds some</td><td>Low while it stays one plate, below the facts, labelled</td><td>None; it adds knowledge</td></tr>
-        <tr><th scope="row">German rules that apply</th><td>Name the company; imprint question</td><td>Mark as commercial, name the company, imprint</td><td>Name the company; imprint question</td></tr>
-        <tr><th scope="row">The office must first</th><td>Nothing</td><td>Publish a Syria page; be reachable on WhatsApp</td><td>Send dated notes weekly</td></tr>
-        <tr><th scope="row">Bookings</th><td>Few</td><td>The most</td><td>Slow, compounding</td></tr>
-        <tr><th scope="row">Size of the job</th><td>Small</td><td>Medium, plus A</td><td>Medium, plus a weekly habit</td></tr>
+        <tr><th scope="row">Where it appears</th><td>A new page; footer; a link from the papers box</td><td>Route pages of the office's markets, after the papers box</td><td>Under each fact the office sent; the About page's source list</td></tr>
+        <tr><th scope="row">Who meets the office</th><td>Readers who want a person to book</td><td>People planning that exact trip</td><td>Readers checking where a line came from</td></tr>
+        <tr><th scope="row">Offers an action</th><td><span class="mk p"><i></i>WhatsApp and site rows</span></td><td><span class="mk y"><i></i>WhatsApp with the plan</span></td><td><span class="mk n"><i></i>No, a link</span></td></tr>
+        <tr><th scope="row">Holds many offices</th><td><span class="mk y"><i></i>Yes, one card each</span></td><td><span class="mk y"><i></i>Yes, one row each per market</span></td><td><span class="mk y"><i></i>Yes, one source each</span></td></tr>
+        <tr><th scope="row">Shows an office's own angle</th><td><span class="mk y"><i></i>Chips and text</span></td><td><span class="mk y"><i></i>Chips, tied to the route</span></td><td><span class="mk p"><i></i>Through its notes</span></td></tr>
+        <tr><th scope="row">Trust cost</th><td>None while the dates are real</td><td>Low while it stays one board, below the facts, written as facts</td><td>None; it adds knowledge</td></tr>
+        <tr><th scope="row">The office must first</th><td>Agree to be listed</td><td>Answer WhatsApp; have a page to land on</td><td>Send dated notes</td></tr>
+        <tr><th scope="row">Bookings</th><td>Some</td><td>The most</td><td>Slow, compounding</td></tr>
+        <tr><th scope="row">Size of the job</th><td>Medium</td><td>Medium, with A</td><td>Small to medium, plus a weekly habit</td></tr>
       </tbody>
     </table></div>
   </section>
 
   <section class="stack" aria-labelledby="h-words" style="gap:20px">
-    <div class="stack prose"><p class="eyebrow">The words</p><h2 id="h-words">Proposed copy, Arabic and English side by side</h2><p class="muted">Each entry would be one phrase in <code>src/messages/index.ts</code>. The office is named in Arabic as its own site names it, حمص للسياحة والسفر, and in English by its domain name, Homs Reisen. Everything said about it is what its website says today.</p></div>
+    <div class="stack prose"><p class="eyebrow">The words</p><h2 id="h-words">Proposed copy, Arabic and English side by side</h2><p class="muted">Each entry would be one phrase in <code>src/messages/index.ts</code>. Homs Reisen is named in Arabic as its own site names it, حمص للسياحة والسفر, and in English by its domain name. Everything said about it is what its website says today.</p></div>
     <div class="words">
-      <div>
-        <p class="wh">The independence line <span><code>indep</code> · footer, every page · A, B, C</span></p>
-        <div class="pair">
-          <p lang="ar" dir="rtl">موقع غير رسمي، مستقل عن أي جهة حكومية أو شركة طيران أو سفارة. يصنعه فريق مكتب حمص للسياحة والسفر في برلين؛ الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة، وحيث يظهر المكتب نقول إنه مكتبنا. يُحدَّث يدوياً ومن تجارب الناس.</p>
-          <p lang="en">Unofficial, and independent of any government body, airline or embassy. Made by the team behind Homs Reisen, a travel office in Berlin; the site itself sells nothing and takes no commission, and wherever the office appears we say it is ours. Updated by hand and from people's real experiences.</p>
-        </div>
-        <p class="was">Today: <s>Independent and unofficial. Not part of any government body; represents no airline or embassy. Updated by hand and from people's real experiences.</s></p>
-      </div>
       <div>
         <p class="wh">Who is behind fly.sy? <span><code>about.faqs</code>, also in the FAQ markup · A, B, C</span></p>
         <div class="pair">
-          <p lang="ar" dir="rtl">فريق مكتب حمص للسياحة والسفر، مكتب سفر في برلين، مع سوريين في المهجر. لا جهة حكومية ولا شركة طيران. الموقع لا يبيع شيئاً ولا يأخذ عمولة؛ المكتب يبيع خدماته على موقعه هو، وحيث نشير إليه هنا نقول إنه مكتبنا، ونعامل ما يقوله كأي مصدر تجاري: «من تقارير» لا «متحقق».</p>
-          <p lang="en">The team behind Homs Reisen, a travel office in Berlin, with Syrians in the diaspora. No government body and no airline. The site sells nothing and takes no commission; the office sells its services on its own website, and wherever we point to it here we say it is ours, and treat what it says like any commercial source: “reported”, never “verified”.</p>
+          <p lang="ar" dir="rtl">مشروع مستقل من سوريين في المهجر. لا جهة حكومية ولا شركة طيران ولا وكالة سفر، ولا عمولة على أي شيء. نوصي بمكاتب سفر نعرفها ونثق بها، وهي توصيتنا نحن.</p>
+          <p lang="en">An independent project by Syrians in the diaspora. No government body, no airline, no travel agency, and no commission on anything. We recommend travel offices we know and trust; the recommendation is our own.</p>
         </div>
-        <p class="was">Today: <s>An independent project by Syrians in the diaspora. No government body, no airline, no travel agency, and no commission on anything.</s></p>
+        <p class="was">Today: <s>An independent project by Syrians in the diaspora. No government body, no airline, no travel agency, and no commission on anything.</s> The first two sentences stay; the third is added.</p>
       </div>
       <div>
-        <p class="wh">What fly.sy is, last sentence <span><code>about.whatText</code>, <code>README.md</code>, <code>HANDOFF.md</code>, <code>schema.ts</code>, <code>llms.ts</code> · A, B, C</span></p>
+        <p class="wh">The offices page <span><code>agencies.title</code>, <code>lede</code>, <code>note</code>, <code>apply</code> · A</span></p>
         <div class="pair">
-          <p lang="ar" dir="rtl">غير رسمي، ومستقل عن أي جهة حكومية أو شركة طيران أو سفارة. يصنعه فريق مكتب حمص للسياحة والسفر في برلين؛ الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة.</p>
-          <p lang="en">It is unofficial, and independent of any government body, airline or embassy. It is made by the team behind Homs Reisen, a travel office in Berlin; the site itself sells nothing and takes no commission.</p>
-        </div>
-      </div>
-      <div>
-        <p class="wh">Who makes fly.sy <span><code>about.makers</code> · the About card · A</span></p>
-        <div class="pair">
-          <p lang="ar" dir="rtl"><b>من يصنع fly.sy</b><br>مكتب سفر في برلين منذ 2018، يبيع تذاكر الطيران والتأشيرات والفنادق ورحلات العمرة، ويتحدث العربية والألمانية. فريقه هو من يكتب هذا الموقع ويراجعه. الموقع نفسه لا يبيع شيئاً ولا يأخذ عمولة، وحين نذكر المكتب في أي مكان على fly.sy نقول إنه مكتبنا ونعامله كأي مصدر تجاري: ما يقوله لا يتجاوز درجة «من تقارير».</p>
-          <p lang="en"><b>Who makes fly.sy</b><br>A travel office in Berlin since 2018, selling flight tickets, visas, hotels and Umrah trips, in Arabic and German. Its team writes and checks this site. The site itself sells nothing and takes no commission, and wherever the office is mentioned on fly.sy we say it is ours and treat it like any commercial source: what it says never rises above “reported”.</p>
+          <p lang="ar" dir="rtl"><b>مكاتب سفر نوصي بها</b><br>مكاتب سفر نعرفها ونثق بها، لمن يفضّل أن يحجز له إنسان. تقول كل بطاقة ما يقدّمه المكتب بكلماته هو، ومتى راجعنا بياناتها. العقد بينك وبين المكتب لا معنا.<br>ما يقوله مكتب لا يتجاوز درجة «من تقارير»، والتوصية لا تغيّر سطراً من المعلومات على الموقع. أكّد السعر والشروط مع المكتب نفسه قبل أن تدفع.<br>تدير مكتب سفر وتريد أن تكون هنا؟ راسلنا.</p>
+          <p lang="en"><b>Travel offices we recommend</b><br>Travel offices we know and trust, for anyone who would rather have a person book it. Each card says what the office offers in its own words, and when we last checked its details. The contract is between you and the office, not with us.<br>What an office says never rises above “reported”, and a recommendation changes no line of the facts on this site. Confirm the price and terms with the office itself before you pay.<br>Run a travel office and want to be here? Write to us.</p>
         </div>
       </div>
       <div>
-        <p class="wh">The service plate <span><code>agency.plate</code> · route pages, Germany · B</span></p>
+        <p class="wh">The office's card, Homs Reisen <span><code>data/agencies.json</code> → <code>offers</code> · A</span></p>
         <div class="pair">
-          <p lang="ar" dir="rtl"><b>إعلان · من صانعي fly.sy</b><br><b>تفضّل أن يحجز لك إنسان؟</b><br>حمص للسياحة والسفر، مكتب السفر الذي يصنع fly.sy، في برلين منذ 2018: تذاكر طيران وتأشيرات وفنادق. يتحدثون العربية والألمانية.<br><b>أرسل هذه الخطة على واتساب</b> · homs-reisen.de<br><small>fly.sy نفسه لا يبيع شيئاً ولا يأخذ عمولة. المكتب مكتبنا، ولهذا نقولها.</small></p>
-          <p lang="en"><b>Ad · from the makers of fly.sy</b><br><b>Rather have a person book it?</b><br>Homs Reisen, the travel office that makes fly.sy, in Berlin since 2018: flight tickets, visas and hotels. Arabic and German spoken.<br><b>Send this plan on WhatsApp</b> · homs-reisen.de<br><small>fly.sy itself sells nothing and takes no commission. The office is ours, which is why we say so.</small></p>
+          <p lang="ar" dir="rtl">مكتب سفر في برلين: تذاكر طيران وتأشيرات وفنادق ورحلات عمرة. يتحدث العربية والألمانية، ويذكر موقعه صن دير بين شركائه.<br>الرقائق: شريك: صن دير · تذاكر طيران · تأشيرات · فنادق · عمرة<br>روجع 18 تشرين الأول 2026</p>
+          <p lang="en">A travel office in Berlin: flight tickets, visas, hotels and Umrah trips. Arabic and German spoken; its site lists Sundair among its partners.<br>Chips: partner: Sundair · flight tickets · visas · hotels · Umrah<br>Checked 18 Oct 2026</p>
         </div>
-        <p class="was">Once the office's Syria page exists, the middle sentence can quote it: “يحجز الرحلات إلى سوريا من ألمانيا” / “books flights to Syria from Germany”.</p>
+        <p class="was">Once the office's site has a Syria page, the first sentence can quote it, and the links can land on it.</p>
       </div>
       <div>
-        <p class="wh">The WhatsApp message <span>prefilled in the <code>wa.me</code> link · B</span></p>
+        <p class="wh">The offices board <span><code>agencies.board</code> · route pages · B</span></p>
         <div class="pair">
-          <p lang="ar" dir="rtl">مرحباً حمص للسياحة والسفر، أنظر إلى هذا الطريق على fly.sy وأريد عرض سعر: <span dir="ltr">https://fly.sy/from/germany/to/damascus?p=sy</span></p>
-          <p lang="en">Hello Homs Reisen, I'm looking at this route on fly.sy and would like a quote: <span dir="ltr">https://fly.sy/en/from/germany/to/damascus</span></p>
+          <p lang="ar" dir="rtl"><b>تفضّل أن يحجز لك إنسان؟</b><br>مكاتب سفر نوصي بها على هذا الطريق<br>الصف: حمص للسياحة والسفر · برلين · العربية والألمانية · شريك: صن دير · تأشيرات · فنادق · <b>واتساب</b><br>لماذا نوصي بها ←</p>
+          <p lang="en"><b>Rather have a person book it?</b><br>Travel offices we recommend on this route<br>The row: Homs Reisen · Berlin · Arabic and German · partner: Sundair · visas · hotels · <b>WhatsApp</b><br>Why we recommend them →</p>
+        </div>
+      </div>
+      <div>
+        <p class="wh">The WhatsApp message <span>prefilled in the <code>wa.me</code> link · A, B</span></p>
+        <div class="pair">
+          <p lang="ar" dir="rtl">مرحباً، وجدتكم على fly.sy وأنظر إلى هذا الطريق: <span dir="ltr">https://fly.sy/from/germany/to/damascus?p=sy</span> هل يمكنكم تسعيره؟</p>
+          <p lang="en">Hello, I found you on fly.sy and I'm looking at this route: <span dir="ltr">https://fly.sy/en/from/germany/to/damascus</span> Could you quote it?</p>
         </div>
       </div>
       <div>
         <p class="wh">The source entry <span><code>data/sources.json</code> → <code>homs</code> · C</span></p>
         <div class="pair">
-          <p lang="ar" dir="rtl"><b>حمص للسياحة والسفر</b> · مصدر تجاري، وهو مكتبنا<br>ما يراه المكتب في الحجز وتسجيل الدخول على الخطوط من ألمانيا. مصلحة معلنة، لذلك «من تقارير» لا «متحقق».<br>اللوحة تحت كل سطر: <b>مكتبنا</b></p>
-          <p lang="en"><b>Homs Reisen</b> · Commercial source, and our own office<br>What the office sees when booking and at check-in on routes from Germany. A declared interest, so “reported”, never “verified”.<br>The plate under each line: <b>our office</b></p>
+          <p lang="ar" dir="rtl"><b>حمص للسياحة والسفر</b> · مكتب سفر، مصدر تجاري<br>ما يراه المكتب في الحجز وتسجيل الدخول على الخطوط من ألمانيا. مصدر تجاري، لذلك «من تقارير» لا «متحقق».<br>الوسم تحت كل سطر: <b>مكتب سفر</b></p>
+          <p lang="en"><b>Homs Reisen</b> · Travel office; a commercial source<br>What the office sees when booking and at check-in on routes from Germany. A commercial source, so “reported”, never “verified”.<br>The tag under each line: <b>travel office</b></p>
         </div>
       </div>
+    </div>
+    <div class="stack prose" style="gap:10px">
+      <h3 style="font-size:18px">The record behind all three</h3>
+      <p class="muted" style="font-size:14px">One office in <code>data/agencies.json</code>. Everything the page, the board and the tag show comes from here; the second office is a second record.</p>
+<pre dir="ltr">{"id":"homs-reisen", "seen":"2026-10-18",
+ "name":{"ar":"حمص للسياحة والسفر","en":"Homs Reisen"},
+ "city":{"ar":"برلين","en":"Berlin"}, "country":"DE", "since":2018, "languages":["ar","de"],
+ "offers":{"ar":"تذاكر طيران وتأشيرات وفنادق ورحلات عمرة.","en":"Flight tickets, visas, hotels and Umrah trips."},
+ <span class="k">"services"</span>:["tickets","visas","hotels","umrah"],      // later: "airport-taxi", "car-rental", "insurance"
+ <span class="k">"airlines"</span>:["SR"],                                   // carriers its own site names as partners
+ <span class="k">"markets"</span>:["DE"],                                    // origin ids: where its row appears, both directions
+ "links":[{"kind":"site","url":"https://homs-reisen.de/"},{"kind":"whatsapp","url":"https://wa.me/491629171309"}],
+ "via":"https://homs-reisen.de/"}                           // the page its text and chips were compared with</pre>
     </div>
   </section>
 
   <section class="stack" aria-labelledby="h-law" style="gap:20px">
-    <div class="stack prose"><p class="eyebrow">Honesty, law, measurement</p><h2 id="h-law">What “well studied” means here</h2><p class="muted">Four things to get right whichever option ships. The legal points are the rules as published; they are not legal advice, and the Berlin chamber of commerce (IHK) or a lawyer should confirm them before B goes live.</p></div>
+    <div class="stack prose"><p class="eyebrow">Honesty, measurement, the one thing to know</p><h2 id="h-law">What “well studied” means here</h2></div>
     <div class="why">
       <div>
         <h3>Say only what the office's site says</h3>
         <ul>
-          <li>Today it says: Berlin, 2018, “visas, flight tickets, hotels, tourist trips, Umrah and Hajj”, tickets “to any place in the world”, Arabic and German. It does not say Syria. So fly.sy does not either, until it does.</li>
-          <li>Its Google rating and customer count stay on its site. fly.sy repeats what a body does, not how good it says it is; it does the same for airlines.</li>
-          <li>The landing page matters as much as the plate. A fly.sy reader who lands on an Umrah home page leaves. The office's Syria page, in Arabic and German, with WhatsApp on it, is step 2 of the plan for that reason.</li>
-          <li>Add the rule to <code>CLAUDE.md</code>: the office is a commercial source; cap at reported; one mention per page; never above the answer; never on Official links, News or Experiences.</li>
+          <li>Homs Reisen's site says: Berlin, 2018, “visas, flight tickets, hotels, tourist trips, Umrah and Hajj”, tickets “to any place in the world”, Arabic and German, Sundair among its partners. It does not say Syria. So fly.sy does not either, until it does.</li>
+          <li>Every chip on every later card has the same test: a sentence on the office's own site. “Taxi from the airport” needs the office to say so where a traveller can read it.</li>
+          <li>Ratings and customer counts stay on the office's site. fly.sy repeats what a body does, not how good it says it is; it does the same for airlines.</li>
+          <li>The landing page matters as much as the row. A reader who lands on an Umrah home page leaves. Asking Homs Reisen for a Syria page, in Arabic and German, is step 2 of the plan for that reason.</li>
+          <li>Add the rule to <code>CLAUDE.md</code>: offices are commercial sources; cap at reported; chips only in the office's words; one board per page, after the facts; never on Official links, News or Experiences.</li>
         </ul>
       </div>
       <div>
-        <h3>German rules on marking commercial communication</h3>
+        <h3>Measure without surveilling, and the numbers for the pitch</h3>
         <ul>
-          <li><a href="https://www.gesetze-im-internet.de/ddg/__6.html" target="_blank" rel="noopener noreferrer">§ 6 DDG</a> (in force since 14 May 2024, replacing § 6 TMG): commercial communication must be clearly recognisable as such, and the company on whose behalf it is made clearly identifiable. The plate's label and the company name do both.</li>
-          <li>§ 5a (4) UWG: hiding the commercial purpose of a business practice is unfair unless it is obvious from the context. A February 2025 Bayreuth judgment (<a href="https://www.gesetze-bayern.de/Content/Document/Y-300-Z-BECKRS-B-2025-N-44513" target="_blank" rel="noopener noreferrer">1 HK O 30/24</a>) applied both rules to undisclosed promotion. “Ad · from the makers of fly.sy” removes the question.</li>
-          <li>§ 5 DDG, the imprint: a site that carries commercial communication for a German business is usually a business-like service and needs one, naming the operator. fly.sy has none today. The office's own imprint (Homs e. K., Amtsgericht Charlottenburg, HRA 61161 B) shows the shape; linkat.sy's single-language legal page shows how this codebase does it.</li>
-          <li>The option-A disclosure alone is not advertising, but it names the company, which is what § 6 asks of any mention made on its behalf.</li>
+          <li>One UTM tag per placement, read in the office's own analytics: <code>utm_source=fly.sy&amp;utm_medium=referral&amp;utm_campaign=agencies|route-board|source&amp;utm_content=de-damascus</code>. The WhatsApp message names fly.sy, so a chat lead is attributed too.</li>
+          <li>Nothing new is stored on fly.sy, no script is added, and the WhatsApp message carries only the page address the traveller is already looking at.</li>
+          <li>The pitch's numbers already exist: <code>/admin</code> counts views per path, so “the Germany pages had N views in the last 30 days” is one query over <code>page_views</code> for paths starting <code>/from/germany/</code> and <code>/en/from/germany/</code>, plus the leaving pages. A per-market figure in the dashboard would make it a glance.</li>
+          <li>If click counts on fly.sy's side are wanted later, a <code>/go/&lt;office&gt;</code> redirect answered by <code>worker.ts</code> can count them in D1 without a third party, the way page views are counted now.</li>
         </ul>
       </div>
       <div>
         <h3>Google and the links</h3>
         <ul>
-          <li>Google asks that links which are advertisements carry <code>rel="sponsored"</code>. The plate's two links get it; the colophon's link and a source byline are ordinary links.</li>
+          <li>A recommendation you make for free is an ordinary link; nothing to mark.</li>
           <li>No keyword anchors (“cheap flights to Damascus”): the link text is the office's name or its host, as the Links page does for every body.</li>
           <li>Outside links open in a new tab with <code>noopener noreferrer</code>, as everywhere on the site.</li>
         </ul>
       </div>
       <div>
-        <h3>Measure without surveilling</h3>
+        <h3>For the record, since you said it is yours to handle</h3>
         <ul>
-          <li>One UTM tag per placement, read in the office's own analytics: <code>utm_source=fly.sy&amp;utm_medium=referral&amp;utm_campaign=colophon|route-plate|source&amp;utm_content=de-damascus</code>. The office then knows which placement and which route brings people.</li>
-          <li>Nothing new is stored on fly.sy, no script is added, and the WhatsApp message carries only the page address the traveller is already looking at.</li>
-          <li>If click counts on fly.sy's side are wanted later, a <code>/go/homs</code> redirect answered by <code>worker.ts</code> can count them in D1 without a third party, the way page views are counted now.</li>
+          <li>As your own unpaid recommendation, German law does not treat the row as advertising: § 5a (4) UWG says an act for another company has no commercial purpose when no payment or similar consideration is received or promised for it (<a href="https://www.gesetze-im-internet.de/uwg_2004/__5a.html" target="_blank" rel="noopener noreferrer">text</a>), and the definition of commercial communication in § 2 DDG leaves out statements made independently and without financial consideration (<a href="https://www.gesetze-im-internet.de/ddg/__2.html" target="_blank" rel="noopener noreferrer">text</a>). Nothing here is built for the other case, as you asked.</li>
+          <li>Those pages were unreachable when this was written (HTTP 503), so this is a summary from memory, not a quote, and not legal advice.</li>
         </ul>
       </div>
     </div>
@@ -752,20 +788,18 @@ pre .k{color:var(--primary);font-weight:700}
   <section class="stack" aria-labelledby="h-touch" style="gap:20px">
     <div class="stack prose"><p class="eyebrow">Around the site</p><h2 id="h-touch">What each option touches</h2><p class="muted">The letters say which options need the change.</p></div>
     <div class="touch">
-      <div><span><b>The words</b><span class="where"><code>src/messages/index.ts</code></span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p><code>indep</code>, <code>about.whatText</code>, the “Who is behind fly.sy?” FAQ, a new <code>about.makers</code> group (A) and <code>agency.plate</code> group (B). Both languages, typed side by side as today.</p></div>
-      <div><span><b>Every other copy of the claim</b><span class="where"><code>README.md</code>, <code>HANDOFF.md</code>, <code>src/lib/llms.ts</code>, <code>src/lib/schema.ts</code></span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p>“Sells nothing, takes no commission” and “Not for travel agencies” become the new sentence. <code>organizationLd</code> gets the new description; if the office is the site's legal operator, it can also be named as <code>parentOrganization</code>.</p></div>
-      <div><span><b>Legal notice</b><span class="where">new <code>/imprint</code> page, <code>sitemap.ts</code>, footer</span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p>One language, like linkat.sy's. Named operator, address, register entry, contact. Linked from the footer beside About.</p></div>
-      <div><span><b>The About page</b><span class="where"><code>about/page.tsx</code>, <code>site-footer.tsx</code></span><span class="abc"><i>A</i></span></span><p>The “Who makes fly.sy” section with the card; the footer sentence. The office's emblem via <code>scripts/link-logos.mjs</code> into <code>public/emblems/</code>.</p></div>
-      <div><span><b>The office's details</b><span class="where">new <code>data/agency.json</code>, <code>types.ts</code>, <code>data.ts</code>, <code>tests/</code></span><span class="abc"><i>B</i></span></span><p>Name in both languages, URL, WhatsApp number, city, founding year, what it sells in its own words, <code>markets</code> as origin ids, <code>seen</code>. A test checks every market resolves to an origin, the URL is https and the date is a date, like <code>links.test.ts</code> does for the Links page.</p></div>
-      <div><span><b>The plate</b><span class="where">new <code>service-plate.tsx</code>, <code>plan-view.tsx</code></span><span class="abc"><i>B</i></span></span><p>A server component rendered in the aside after the papers button when the route's country is in <code>markets</code>, in both directions. Builds the <code>wa.me</code> link from the page's own address; <code>rel="sponsored noopener noreferrer"</code>; UTM per route. The passport can be appended by <code>passport-ui.tsx</code>, which already knows it.</p></div>
-      <div><span><b>The Documents page, later</b><span class="where"><code>documents/page.tsx</code></span><span class="abc"><i>B</i></span></span><p>The same plate under the warning alert, if the route pages show it earns its place. Not in the first release.</p></div>
-      <div><span><b>The source and its plate</b><span class="where"><code>data/sources.json</code>, <code>provenance.tsx</code>, <code>needs.json</code>, <code>types.ts</code></span><span class="abc"><i>C</i></span></span><p>The <code>homs</code> entry; the “our office” plate whenever a line cites it; an optional <code>seen</code> on needs. Existing tests already check that every source id resolves.</p></div>
-      <div><span><b>The writing rules</b><span class="where"><code>CLAUDE.md</code></span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p>One paragraph: how the office may be mentioned, what it may be said to do, and the cap at reported.</p></div>
+      <div><span><b>The office records</b><span class="where">new <code>data/agencies.json</code>, <code>types.ts</code>, <code>data.ts</code>, <code>tests/</code></span><span class="abc"><i>A</i><i>B</i></span></span><p>One record per office, as above. A test checks every market resolves to an origin, every airline code exists, the URLs are https and the dates are dates, like <code>links.test.ts</code> does for the Links page.</p></div>
+      <div><span><b>The words</b><span class="where"><code>src/messages/index.ts</code></span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p>The added FAQ sentence; a new <code>agencies</code> group (title, lede, note, apply line, board title and subtitle, the service names). Both languages, typed side by side as today.</p></div>
+      <div><span><b>The offices page</b><span class="where">new <code>(site)/agencies/page.tsx</code>, <code>sitemap.ts</code>, <code>search.ts</code>, <code>llms.ts</code>, <code>site-footer.tsx</code></span><span class="abc"><i>A</i></span></span><p>The Links page's card shape with the chips; listed in the sitemap, the site search's pages group, <code>llms.txt</code> and the footer. The emblem via <code>scripts/link-logos.mjs</code>.</p></div>
+      <div><span><b>The board</b><span class="where">new <code>agency-board.tsx</code>, <code>plan-view.tsx</code>, <code>passport-ui.tsx</code></span><span class="abc"><i>B</i></span></span><p>A server component rendered in the aside after the papers button when the route's country is in an office's <code>markets</code>, both directions. Builds the <code>wa.me</code> link from the page's address; UTM per route; the partner tile only when the carrier is on this page's board. The passport can be appended by <code>passport-ui.tsx</code>, which already knows it.</p></div>
+      <div><span><b>The source and its tag</b><span class="where"><code>data/sources.json</code>, <code>provenance.tsx</code>, <code>needs.json</code>, <code>types.ts</code></span><span class="abc"><i>C</i></span></span><p>One source entry per contributing office; the “travel office” tag whenever a line cites one; an optional <code>seen</code> on needs. Existing tests already check that every source id resolves.</p></div>
+      <div><span><b>The pitch's numbers</b><span class="where"><code>src/app/admin/page.tsx</code>, <code>admin-data.ts</code></span><span class="abc"><i>B</i></span></span><p>Nothing in the first release; later, a views-per-market figure in the dashboard, which is one grouped query over <code>page_views</code>.</p></div>
+      <div><span><b>The rules and the records</b><span class="where"><code>CLAUDE.md</code>, <code>README.md</code>, <code>HANDOFF.md</code></span><span class="abc"><i>A</i><i>B</i><i>C</i></span></span><p>One paragraph in <code>CLAUDE.md</code> on how an office may be mentioned; a “Where things live” row for <code>agencies.json</code>; a decision row in <code>HANDOFF.md</code>: recommended offices are the owner's own picks, listed with a check date, capped at reported.</p></div>
       <div><span><b>Nothing else</b><span class="where"><code>worker.ts</code>, <code>proxy.ts</code>, D1, the map, the planner</span></span><p>Every option is prerendered text and links. No new script, no new request, no new table.</p></div>
     </div>
   </section>
 
-  <p class="foot">Mockups for discussion; nothing on fly.sy has changed. What the office is said to do is quoted from homs-reisen.de as read on 18 October 2026. Airline logos are the carriers' trademarks, shown as on the site. The legal points summarise published rules and are not legal advice.</p>
+  <p class="foot">Mockups for discussion; nothing on fly.sy has changed. What Homs Reisen is said to do is quoted from homs-reisen.de as read on 18 October 2026; whether it wants to be listed has not been asked. Airline logos are the carriers' trademarks, shown as on the site.</p>
 </main>
 
 <script>

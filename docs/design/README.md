@@ -25,13 +25,14 @@ mockup works), B direction plates, C departure boards on the airport pages, D a 
 E the way back on each route page. It also covers the departures data all five need, what else on the site the
 change touches, and a site check from the same day. `a-swap.png` is option A before and after the swap.
 
-## Pointing to Homs Reisen (18 Oct 2026, not decided)
+## Travel offices (19 Oct 2026, not decided)
 
-`round-6-agency/options.html`: three ways for the site to refer to Homs Reisen (حمص للسياحة والسفر), the Berlin
-travel office run by the people who make fly.sy, with phone mockups in the road-sign style. A a colophon on the
-About page and in the footer, B a labelled white service plate under the papers box on the Germany route pages that
-hands the traveller's plan to the office on WhatsApp, C the office as a named source with a declared interest. It
-also covers what has to change first (the "no travel agency, no commission" sentence everywhere it is said), what
-the office's own site does and does not say (nothing about Syria yet), the German rules on marking commercial
-communication, UTM measurement, the proposed copy in both languages, and the files each option touches.
-`phone-a.png`, `phone-b.png` and `phone-c.png` are the three phones.
+`round-6-agency/options.html`: three ways for the site to point travellers to travel offices the owner recommends,
+starting with Homs Reisen (حمص للسياحة والسفر) in Berlin, with phone mockups in the road-sign style and room for
+more offices, each with its own angle (an airline it books, an airport taxi, a rental car). A a page of recommended
+offices in the Links page's shape, each with what it offers in its own words and a check date; B a white board
+under the papers box on the route pages of an office's markets, one row per office, with a WhatsApp button that
+hands over the traveller's plan; C the office as a named source, capped at reported. It also covers what the
+office's own site does and does not say (nothing about Syria yet), the proposed copy in both languages, the data
+record all three read, UTM measurement and the pitch to the next office. `phone-a.png`, `phone-b.png` and
+`phone-c.png` are the three phones.
