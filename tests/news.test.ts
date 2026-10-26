@@ -15,6 +15,7 @@ type Item = {
   url?: string
   entries?: string[]
   airlines?: string[]
+  book?: { online?: string; office?: { name: Record<string, string>; whatsapp: string } }
 }
 
 test("news: every item is dated, bilingual, sourced, and links to things that exist", () => {
@@ -37,6 +38,15 @@ test("news: every item is dated, bilingual, sourced, and links to things that ex
     if (n.url) assert.match(n.url, /^https:\/\//, `${n.id} url`)
     for (const e of n.entries ?? []) assert.ok(entries[e], `${n.id} entry ${e}`)
     for (const a of n.airlines ?? []) assert.ok(airlines[a], `${n.id} airline ${a}`)
+    if (n.book) {
+      assert.ok(n.book.online || n.book.office, `${n.id} book is empty`)
+      if (n.book.online) assert.match(n.book.online, /^https:\/\//, `${n.id} book.online`)
+      if (n.book.office) {
+        for (const lang of ["ar", "en"]) assert.ok(n.book.office.name?.[lang]?.trim(), `${n.id} book.office.name.${lang}`)
+        // wa.me takes the international number as digits only: no +, no 00, no spaces.
+        assert.match(n.book.office.whatsapp, /^[1-9]\d{7,14}$/, `${n.id} book.office.whatsapp`)
+      }
+    }
   }
 })
 

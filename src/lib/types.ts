@@ -86,6 +86,14 @@ export type NewsItem = {
   /** Entry points (entries.json) and carriers (airlines.json) the item is about, linked under it. */
   entries?: string[]
   airlines?: string[]
+  /** Where to book what the item announces: the airline's own booking site, and a travel office we recommend, on WhatsApp. */
+  book?: NewsBooking
+}
+export type NewsBooking = {
+  /** The operator's own booking page, https. */
+  online?: string
+  /** `whatsapp` is the number in international form, digits only (no + or 00), as wa.me takes it. */
+  office?: { name: Text; whatsapp: string }
 }
 /** How a link reads on the Links page: a website, a page of one, an account on a platform, or an app in a store. */
 export type LinkKind = "site" | "page" | "telegram" | "facebook" | "instagram" | "x" | "youtube" | "whatsapp" | "ios" | "android"

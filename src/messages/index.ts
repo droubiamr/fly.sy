@@ -147,6 +147,13 @@ const messages = {
       lede: "ما تغيّر في المطارات والمعابر والرحلات والأوراق، بتاريخه ومصدره. ننقل كل خبر عن الجهة الرسمية أو عن الشركة نفسها، ونحدّث بيانات الموقع معه.",
       related: "ذو صلة",
       empty: "لا أخبار بعد.",
+      book: {
+        online: "احجز أونلاين",
+        office: "تواصل مع {name}",
+        note: "{name} مكتب سفر نوصي به.",
+        // The first line of the WhatsApp chat the office button opens.
+        message: "مرحباً، أريد الحجز: {title} (وصلت إليكم من fly.sy)",
+      },
     },
     links: {
       title: "الروابط الرسمية للسفر إلى سوريا",
@@ -492,6 +499,12 @@ const messages = {
       lede: "What changed at airports, crossings, flights and paperwork, each with its date and source. Every item comes from the official body or the operator itself, and the site's data is updated with it.",
       related: "Related",
       empty: "No news yet.",
+      book: {
+        online: "Book online",
+        office: "Contact {name}",
+        note: "{name} is a travel office we recommend.",
+        message: "Hello, I'd like to book: {title} (I found you on fly.sy)",
+      },
     },
     links: {
       title: "Official links for travelling to Syria",

@@ -1,15 +1,18 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { MessageCircle, Ticket } from "lucide-react"
 import { DATA, airlinePath, entryPath } from "@/lib/data"
 import { getI18n, requireLocale } from "@/lib/i18n"
 import { formatDate } from "@/lib/format"
 import { pageMetadata } from "@/lib/seo"
 import { breadcrumbLd, graph, webPageLd } from "@/lib/schema"
 import { localePath } from "@/lib/site"
+import { fmt } from "@/lib/text"
 import type { Locale } from "@/lib/types"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { JsonLd } from "@/components/json-ld"
 import { SourceLink } from "@/components/source-link"
+import { Button } from "@/components/ui/button"
 
 type Props = { params: Promise<{ lang: Locale }> }
 
@@ -45,6 +48,7 @@ export default async function NewsPage({ params }: Props) {
             ...(n.entries ?? []).map((id) => ({ key: id, path: entryPath(id), name: DATA.entries[id].name[locale] })),
             ...(n.airlines ?? []).map((code) => ({ key: code, path: airlinePath(code), name: DATA.airlines[code].name[locale] })),
           ]
+          const office = n.book?.office
           return (
             <li key={n.id} id={n.id} className="rounded-2xl border bg-card px-5 py-4">
               <p className="text-xs text-muted-foreground">
@@ -52,6 +56,29 @@ export default async function NewsPage({ params }: Props) {
               </p>
               <h2 className="mt-1 font-semibold leading-snug">{n.title[locale]}</h2>
               <p className="mt-2 text-[13.5px] leading-relaxed">{n.text[locale]}</p>
+              {n.book && (
+                <div className="mt-3">
+                  <div className="flex flex-wrap gap-2">
+                    {n.book.online && (
+                      <Button asChild className="h-11 px-4">
+                        <a href={n.book.online} target="_blank" rel="noopener noreferrer">
+                          <Ticket aria-hidden="true" />
+                          {m.news.book.online}
+                        </a>
+                      </Button>
+                    )}
+                    {office && (
+                      <Button asChild variant="outline" className="h-11 px-4">
+                        <a href={whatsapp(office.whatsapp, fmt(m.news.book.message, { title: n.title[locale] }))} target="_blank" rel="noopener noreferrer">
+                          <MessageCircle aria-hidden="true" />
+                          {fmt(m.news.book.office, { name: office.name[locale] })}
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                  {office && <p className="mt-1.5 text-xs text-muted-foreground">{fmt(m.news.book.note, { name: office.name[locale] })}</p>}
+                </div>
+              )}
               <p className="mt-2 text-xs text-muted-foreground">
                 {m.source}:{" "}
                 <SourceLink source={cited} locale={locale}>
@@ -77,4 +104,9 @@ export default async function NewsPage({ params }: Props) {
       </ul>
     </div>
   )
+}
+
+/** A WhatsApp chat with the number, its first line already typed. */
+function whatsapp(number: string, text: string) {
+  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`
 }
