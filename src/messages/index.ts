@@ -251,7 +251,7 @@ const messages = {
         },
         {
           q: "هل توجد رحلات مباشرة من أوروبا إلى سوريا؟",
-          a: "نعم، عدد قليل منها: صن دير من برلين، وليف من دوسلدورف وكولن، ودان إير من بوخارست، والسورية للطيران من أمستردام وكوبنهاغن وفيينا. شركات الطيران الأوروبية الكبرى لا تطير إلى سوريا التزاماً بتوصية EASA بشأن الأجواء السورية، وهي توصية لا حظر، لذلك تمر معظم الرحلات الأخرى عبر إسطنبول أو الخليج، أو إلى بيروت ثم براً. وأعلنت AEGEAN اليونانية خطاً بين أثينا ودمشق يبدأ في 2 كانون الأول 2026.",
+          a: "نعم، عدد قليل منها: صن دير من برلين، وليف من دوسلدورف وكولن، ودان إير من بوخارست، والسورية للطيران من أمستردام وكوبنهاغن وفيينا. شركات الطيران الأوروبية الكبرى لا تطير إلى سوريا التزاماً بتوصية EASA بشأن الأجواء السورية، وهي توصية لا حظر، لذلك تمر معظم الرحلات الأخرى عبر إسطنبول أو الخليج، أو إلى بيروت ثم براً. وأعلنت AEGEAN اليونانية خطاً بين أثينا ودمشق يبدأ في 2 كانون الأول 2026، وأعلنت الهيئة العامة للطيران المدني أن السورية للطيران تبدأ رحلات بين دمشق وبرلين في 10 تشرين الثاني 2026.",
         },
         {
           q: "من يقف خلف fly.sy؟",
@@ -602,7 +602,7 @@ const messages = {
         },
         {
           q: "Are there direct flights from Europe to Syria?",
-          a: "Yes, a few: Sundair from Berlin, LEAV Aviation from Düsseldorf and Cologne, Dan Air from Bucharest, and Syrian Air from Amsterdam, Copenhagen and Vienna. The big European airlines stay out, following EASA's advice on Syrian airspace (advice, not a ban), so most other trips connect through Istanbul or the Gulf, or fly to Beirut and continue overland. AEGEAN has announced Athens–Damascus from 2 December 2026.",
+          a: "Yes, a few: Sundair from Berlin, LEAV Aviation from Düsseldorf and Cologne, Dan Air from Bucharest, and Syrian Air from Amsterdam, Copenhagen and Vienna. The big European airlines stay out, following EASA's advice on Syrian airspace (advice, not a ban), so most other trips connect through Istanbul or the Gulf, or fly to Beirut and continue overland. AEGEAN has announced Athens–Damascus from 2 December 2026, and the civil aviation authority has announced Syrian Air flights between Damascus and Berlin from 10 November 2026.",
         },
         {
           q: "Who is behind fly.sy?",
