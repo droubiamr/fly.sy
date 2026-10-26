@@ -149,7 +149,7 @@ const messages = {
       empty: "لا أخبار بعد.",
       book: {
         online: "احجز أونلاين",
-        office: "تواصل مع {name}",
+        office: "احجز مع {name}",
         note: "{name} مكتب سفر نوصي به.",
         // The first line of the WhatsApp chat the office button opens.
         message: "مرحباً، أريد الحجز: {title} (وصلت إليكم من fly.sy)",
@@ -501,7 +501,7 @@ const messages = {
       empty: "No news yet.",
       book: {
         online: "Book online",
-        office: "Contact {name}",
+        office: "Book with {name}",
         note: "{name} is a travel office we recommend.",
         message: "Hello, I'd like to book: {title} (I found you on fly.sy)",
       },
