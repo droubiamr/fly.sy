@@ -53,8 +53,8 @@ export default async function NewsPage({ params }: Props) {
           return (
             <li key={n.id} id={n.id} className="overflow-hidden rounded-2xl border bg-card">
               {n.image && (
-                // Full width; a tall poster stops at 32rem and shows whole, on the muted ground. `unoptimized`: the
-                // files are already sized and compressed, and the Cloudflare build has no image service.
+                // A 16:9 banner on every card; a picture of another shape shows whole inside it, on the muted ground.
+                // `unoptimized`: the files are already sized and compressed, and the Cloudflare build has no image service.
                 <Image
                   src={n.image.src}
                   alt={n.image.alt[locale]}
@@ -62,7 +62,7 @@ export default async function NewsPage({ params }: Props) {
                   height={n.image.height}
                   unoptimized
                   loading={index === 0 ? "eager" : "lazy"}
-                  className="h-auto max-h-[32rem] w-full border-b bg-muted object-contain"
+                  className="aspect-video w-full border-b bg-muted object-contain"
                 />
               )}
               <div className="px-5 py-4">

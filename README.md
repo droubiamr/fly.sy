@@ -125,8 +125,8 @@ Rules:
    `source` key, and the `url` of the exact post or document. Only official bodies or the operator itself; press
    stays out of the news list. An item that announces something people can book may carry `book`: `online` is the
    operator's own booking page, and `office` a travel office we recommend (`name` in both languages, `whatsapp` the
-   number as digits only, e.g. `4917...`); the page shows a button for each. `image` is the picture the source posted with the news, shown at the top of
-   the card: `npm run news-images -- <id>` lists the pictures on the item's post (Telegram photos, or a page's
+   number as digits only, e.g. `4917...`); the page shows a button for each. `image` is the picture the source posted with the news, shown as a 16:9 banner at
+   the top of the card (another shape shows whole inside it): `npm run news-images -- <id>` lists the pictures on the item's post (Telegram photos, or a page's
    og:image) and saves each to a temp folder to look at; `npm run news-images -- <id> <n>` writes the chosen one to
    `public/news/<id>.webp` and prints the fields. Pick the picture that shows the news (the crossing, the plane,
    the poster), not a portrait or a site logo, and write `alt` in both languages saying what it shows; an item
