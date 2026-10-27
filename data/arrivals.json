@@ -25,7 +25,7 @@
   {"airline":null,"city":{"ar":"البقاع","en":"the Bekaa"},"country":"LB","entry":"JOU","from":"LB","mode":"land","hours":1.5,"status":"open","confidence":"reported","source":"sana","seen":"2026-09-20"},
   {"airline":null,"city":{"ar":"طرابلس","en":"Tripoli"},"country":"LB","entry":"JQM","from":"LB","mode":"land","hours":2,"status":"caution","confidence":"verified","source":"ports","seen":"2026-10-01"},
 
-  {"airline":null,"city":{"ar":"عمّان","en":"Amman"},"country":"JO","entry":"NAS","from":"JO","mode":"land","hours":3,"status":"open","confidence":"verified","source":"sana","seen":"2026-10-08"},
+  {"airline":null,"city":{"ar":"عمّان","en":"Amman"},"country":"JO","entry":"NAS","from":"JO","mode":"land","hours":3,"status":"closed","confidence":"verified","source":"ports","seen":"2026-10-27","note":{"ar":"مغلق منذ 27 تشرين الأول 2026 في الاتجاهين، دون موعد معلن لإعادة الفتح.","en":"Closed in both directions since 27 October 2026, with no reopening date announced."}},
   {"airline":"RJ","city":{"ar":"عمّان","en":"Amman"},"country":"JO","entry":"DAM","from":"JO","mode":"air","hours":1,"status":"open","confidence":"verified","source":"damairport","seen":"2026-10-08","note":{"ar":"3 رحلات يومياً (RJ435 وRJ437 وRJ439).","en":"3 daily (RJ435, RJ437, RJ439)."}},
   {"airline":"RJ","city":{"ar":"عمّان","en":"Amman"},"country":"JO","entry":"ALP","from":"JO","mode":"air","hours":1.4,"status":"open","confidence":"verified","source":"alpairport","seen":"2026-10-08","note":{"ar":"يومياً (RJ431)، ورحلة ثانية (RJ433) في عدة أيام من الأسبوع، غالباً من الخميس إلى الأحد.","en":"Daily (RJ431), plus a second flight (RJ433) on several days a week, mostly Thursday to Sunday."}},
 
