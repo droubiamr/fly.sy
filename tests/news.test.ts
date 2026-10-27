@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { readFileSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 
 // Reads the JSON directly and imports nothing from src, so the sweep Routine can run it
 // on a fresh clone without npm install: node --experimental-strip-types --test tests/news.test.ts
@@ -16,6 +16,7 @@ type Item = {
   entries?: string[]
   airlines?: string[]
   book?: { online?: string; office?: { name: Record<string, string>; whatsapp: string } }
+  image?: { src: string; width: number; height: number; alt: Record<string, string> }
 }
 
 test("news: every item is dated, bilingual, sourced, and links to things that exist", () => {
@@ -38,6 +39,12 @@ test("news: every item is dated, bilingual, sourced, and links to things that ex
     if (n.url) assert.match(n.url, /^https:\/\//, `${n.id} url`)
     for (const e of n.entries ?? []) assert.ok(entries[e], `${n.id} entry ${e}`)
     for (const a of n.airlines ?? []) assert.ok(airlines[a], `${n.id} airline ${a}`)
+    if (n.image) {
+      assert.equal(n.image.src, `/news/${n.id}.webp`, `${n.id} image.src`)
+      assert.ok(existsSync(new URL(`../public${n.image.src}`, import.meta.url)), `${n.id} image file missing: public${n.image.src}`)
+      for (const k of ["width", "height"] as const) assert.ok(Number.isInteger(n.image[k]) && n.image[k] > 0, `${n.id} image.${k}`)
+      for (const lang of ["ar", "en"]) assert.ok(n.image.alt?.[lang]?.trim(), `${n.id} image.alt.${lang}`)
+    }
     if (n.book) {
       assert.ok(n.book.online || n.book.office, `${n.id} book is empty`)
       if (n.book.online) assert.match(n.book.online, /^https:\/\//, `${n.id} book.online`)
