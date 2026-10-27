@@ -123,7 +123,9 @@ Rules:
 8. When a change is news (something opened, closed, started or stopped, or a rule changed), add it to the top of
    `data/news.json` as well: date it was published, a title and two or three sentences in both languages, the
    `source` key, and the `url` of the exact post or document. Only official bodies or the operator itself; press
-   stays out of the news list. `tests/news.test.ts` checks it and needs no install.
+   stays out of the news list. An item that announces something people can book may carry `book`: `online` is the
+   operator's own booking page, and `office` a travel office we recommend (`name` in both languages, `whatsapp` the
+   number as digits only, e.g. `4917...`); the page shows a button for each. `tests/news.test.ts` checks it and needs no install.
 9. `data/links.json` lists a social account or app only when the body's own website links to it: `via` is that
    page. A body with no website we can find (the ports authority) may list the one channel `sources.json` already
    cites for it. Each card's `seen` is the day every address on it was opened. `npm run links` opens them all and checks every
