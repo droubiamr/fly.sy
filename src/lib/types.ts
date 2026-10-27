@@ -88,6 +88,8 @@ export type NewsItem = {
   airlines?: string[]
   /** Where to book what the item announces: the airline's own booking site, and a travel office we recommend, on WhatsApp. */
   book?: NewsBooking
+  /** The picture the source posted with the news, saved to public/news/ by `npm run news-images`. Sits at the top of the card. */
+  image?: { src: string; width: number; height: number; alt: Text }
 }
 export type NewsBooking = {
   /** The operator's own booking page, https. */
