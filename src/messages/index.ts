@@ -243,7 +243,7 @@ const messages = {
         },
         {
           q: "هل يمكن للأجانب دخول سوريا براً من تركيا؟",
-          a: "معبر باب الهوى مفتوح للسوريين والأتراك وحاملي الجنسيتين فقط بحسب مصادرنا. الأجانب عموماً يدخلون عبر لبنان أو الأردن أو جواً.",
+          a: "معبر باب الهوى مفتوح للسوريين والأتراك وحاملي الجنسيتين فقط بحسب مصادرنا. الأجانب عموماً يدخلون عبر لبنان أو الأردن أو جواً. أغلقت هيئة المنافذ معبر نصيب مع الأردن يوم 27 تشرين الأول 2026، فتحقق من حالته في صفحة المعابر قبل السفر.",
         },
         {
           q: "كم تكلف التأشيرة عند الوصول؟",
@@ -594,7 +594,7 @@ const messages = {
         },
         {
           q: "Can foreigners enter Syria overland from Türkiye?",
-          a: "Bab al-Hawa is open to Syrians, Turkish citizens and dual nationals only, according to our sources. Foreign visitors generally enter through Lebanon or Jordan, or by air.",
+          a: "Bab al-Hawa is open to Syrians, Turkish citizens and dual nationals only, according to our sources. Foreign visitors generally enter through Lebanon or Jordan, or by air. The ports authority closed Nasib, the crossing with Jordan, on 27 October 2026, so check its status on the crossings page before you go.",
         },
         {
           q: "How much is the visa on arrival?",
