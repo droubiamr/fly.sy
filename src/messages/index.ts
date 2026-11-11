@@ -147,6 +147,7 @@ const messages = {
       lede: "ما تغيّر في المطارات والمعابر والرحلات والأوراق، بتاريخه ومصدره. ننقل كل خبر عن الجهة الرسمية أو عن الشركة نفسها، ونحدّث بيانات الموقع معه.",
       related: "ذو صلة",
       empty: "لا أخبار بعد.",
+      more: "عرض المزيد",
       book: {
         online: "احجز أونلاين",
         office: "احجز مع {name}",
@@ -499,6 +500,7 @@ const messages = {
       lede: "What changed at airports, crossings, flights and paperwork, each with its date and source. Every item comes from the official body or the operator itself, and the site's data is updated with it.",
       related: "Related",
       empty: "No news yet.",
+      more: "Show more",
       book: {
         online: "Book online",
         office: "Book with {name}",
