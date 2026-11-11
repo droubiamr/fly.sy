@@ -58,7 +58,7 @@ npm run dev
   in `src/lib/plan.ts`): the fastest running route, its time and check date. It is what snippets and AI assistants
   quote, and it doubles as the WebPage description.
 - For AI assistants: `/llms.txt` (an index of the site) and `/llms-full.txt` (every fact with its source and date),
-  written from `data/` at build time by `src/lib/llms.ts`. The data itself is at `/data/{entries,arrivals,airlines,needs,roads,origins,cities,sources,links}.json`
+  written from `data/` at build time by `src/lib/llms.ts`. The data itself is at `/data/{entries,arrivals,departures,airlines,needs,roads,origins,cities,sources,links,news}.json`
   (`src/lib/open-data.ts`) and listed in the Dataset markup. All of them are `noindex`, since the pages already
   cover them in search.
 - Structured data: `WebSite`, `Organization` and a `Dataset` (with its JSON downloads) on the home and about pages;

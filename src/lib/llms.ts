@@ -199,6 +199,12 @@ export function llmsFull(): string {
           ]
         : []
     }),
+    "## News",
+    "",
+    `${m.news.lede} Newest first; each date is the day the source published it. Page: ${en("/news")}`,
+    "",
+    ...DATA.news.map((n) => `- ${n.date}: ${n.title.en}. ${n.text.en} (${source(n.source)}${n.url ? `, ${n.url}` : ""}) ${en(`/news#${n.id}`)}`),
+    "",
     "## Sources",
     "",
     ...Object.values(DATA.sources).map((s) => {

@@ -19,6 +19,7 @@ export const DATA_FILES = [
   { id: "cities", name: { en: "Syrian cities", ar: "المدن السورية" } },
   { id: "sources", name: { en: "Sources", ar: "المصادر" } },
   { id: "links", name: { en: "Official websites and accounts for travel to Syria", ar: "المواقع والحسابات الرسمية للسفر إلى سوريا" } },
+  { id: "news", name: { en: "Dated changes to flights, crossings and paperwork, from official sources", ar: "التغييرات المؤرخة في الرحلات والمعابر والأوراق، عن المصادر الرسمية" } },
 ] as const satisfies readonly { id: string; name: Text }[]
 
 export type DataFileId = (typeof DATA_FILES)[number]["id"]
@@ -40,6 +41,8 @@ export function dataFile(id: DataFileId) {
     cities: DATA.cities,
     sources: DATA.sources,
     links: DATA.links,
+    // The picture's address is absolute here: a reader of the file is not on the site.
+    news: DATA.news.map((n) => (n.image ? { ...n, image: { ...n.image, src: `${SITE_URL}${n.image.src}` } } : n)),
   }[id]
   return {
     name: DATA_FILES.find((f) => f.id === id)!.name.en,
@@ -52,6 +55,7 @@ export function dataFile(id: DataFileId) {
       "road hours are fly.sy's own. An arrival's from and a departure's to are the country at the other end, or a group such as eu. " +
       "Departures are checked on their own (the airports' departure boards, official posts), never inferred from arrivals. " +
       "In links.json, via is the page of the body's own website that links to its accounts. " +
+      "news.json is the News page, newest first: date is the day the source published it, and url the exact post or document. " +
       "Confirm with the airline or embassy before travelling.",
     data: records,
   }
